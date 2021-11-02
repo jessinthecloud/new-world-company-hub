@@ -14,6 +14,8 @@ class CompanySeeder extends Seeder
                'name' => 'Gaiscioch',
                'tag' => 'GSCH',
                'faction_id' => 1,
+               'created_at' => now(),
+               'updated_at' => now(),
            ],
            /* 
            [

@@ -10,9 +10,21 @@ class FactionSeeder extends Seeder
     public function run()
     {
         DB::table('factions')->insert([
-            ['name' => 'Marauders',],
-            ['name' => 'Syndicate',],
-            ['name' => 'Covenant',],
+            [
+                'name' => 'Marauders', 
+                'created_at' => now(), 
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'Syndicate', 
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'Covenant',
+                 'created_at' => now(),
+                 'updated_at' => now(),
+            ],
         ]);
     }
 }
