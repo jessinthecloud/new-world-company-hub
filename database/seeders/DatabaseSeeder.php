@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,12 +14,21 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        // create Faction entries and override with default values
+         \App\Models\User::factory()->create([
+            'name' => 'Jess',
+            'email' => 'epwnaz@gmail.com',
+            'password' => Hash::make('password'),
+            'remember_token' => null,
+         ]);
          
+//        \App\Models\User::factory(5)->create();
+
         // run other seeders
         $this->call([
-            CompanySeeder::class,
             FactionSeeder::class,
+            CompanySeeder::class,
+            CharacterSeeder::class,
         ]);
     }
 }

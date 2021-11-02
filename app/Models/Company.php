@@ -10,4 +10,9 @@ class Company extends Model
     {
         return $this->belongsTo(Faction::class);
     }
+
+    public function characters()
+    {
+        return $this->hasMany(Character::class);
+    }
 }
