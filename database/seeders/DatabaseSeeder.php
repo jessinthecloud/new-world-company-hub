@@ -15,8 +15,8 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
         // create Faction entries and override with default values
-         \App\Models\Faction::factory()->make(['name' => 'Marauders',]);
-         \App\Models\Faction::factory()->make(['name' => 'Syndicate',]);
-         \App\Models\Faction::factory()->make(['name' => 'Covenant',]);
+         \App\Models\Faction::factory()->create(['name' => 'Marauders',]);
+         \App\Models\Faction::factory()->create(['name' => 'Syndicate',]);
+         \App\Models\Faction::factory()->create(['name' => 'Covenant',]);
     }
 }
