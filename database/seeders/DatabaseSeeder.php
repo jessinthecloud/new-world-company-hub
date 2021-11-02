@@ -14,9 +14,11 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // \App\Models\User::factory(10)->create();
-        // create Faction entries and override with default values
-         \App\Models\Faction::factory()->create(['name' => 'Marauders',]);
-         \App\Models\Faction::factory()->create(['name' => 'Syndicate',]);
-         \App\Models\Faction::factory()->create(['name' => 'Covenant',]);
+         
+        // run other seeders
+        $this->call([
+            CompanySeeder::class,
+            FactionSeeder::class,
+        ]);
     }
 }
