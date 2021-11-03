@@ -26,7 +26,7 @@ class Character extends Model
 
     public function class()
     {
-        return $this->belongsTo(CharacterClass::class);
+        return $this->belongsTo(CharacterClass::class, 'character_class_id');
     }
 
     public function skills()

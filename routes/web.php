@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\CharacterClass;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
@@ -20,7 +21,10 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $characters = \App\Models\Character::with(['loadouts', 'class', 'class.type', 'skills', 'user'])->get();
+//dd( $characters->pluck('class'));    
+    return view('dashboard', compact('characters'));
+    
 })->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';
