@@ -15,7 +15,7 @@ class CreateCharactersTable extends Migration
             $table->smallInteger('level');
             $table->foreignId('character_class_id')->constrained();
             $table->foreignId('company_id')->constrained();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->nullable()->constrained();
             $table->foreignId('rank_id')->constrained();
 
             $table->timestamps();

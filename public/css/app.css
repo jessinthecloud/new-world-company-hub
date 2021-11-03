@@ -32137,6 +32137,54 @@ select {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+h1 {
+  display: block;
+  font-size: 2em;
+  font-weight: bold;
+  -webkit-margin-before: .67em;
+          margin-block-start: .67em;
+  -webkit-margin-after: .67em;
+          margin-block-end: .67em;
+}
+
+h2 {
+  display: block;
+  font-size: 1.5em;
+  font-weight: bold;
+  -webkit-margin-before: .83em;
+          margin-block-start: .83em;
+  -webkit-margin-after: .83em;
+          margin-block-end: .83em;
+}
+
+h3 {
+  display: block;
+  font-size: 1.17em;
+  font-weight: bold;
+  -webkit-margin-before: 1em;
+          margin-block-start: 1em;
+  -webkit-margin-after: 1em;
+          margin-block-end: 1em;
+}
+
+h4 {
+  display: block;
+  font-size: 1.00em;
+  font-weight: bold;
+  -webkit-margin-before: 1.33em;
+          margin-block-start: 1.33em;
+  -webkit-margin-after: 1.33em;
+          margin-block-end: 1.33em;
+}
+
+p {
+  display: block;
+  -webkit-margin-before: 1em;
+          margin-block-start: 1em;
+  -webkit-margin-after: 1em;
+          margin-block-end: 1em;
+}
+
 @media (min-width: 640px) {
   .sm\:container {
     width: 100%;
@@ -188576,4 +188624,5 @@ select {
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
+
 
