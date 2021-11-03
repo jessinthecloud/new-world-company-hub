@@ -18,4 +18,19 @@ class Character extends Model
     {
         return $this->belongsTo(Company::class);
     }
+
+    public function rank()
+    {
+        return $this->belongsTo(Rank::class);
+    }
+
+    public function class()
+    {
+        return $this->belongsTo(CharacterClass::class);
+    }
+
+    public function skills()
+    {
+        return $this->belongsToMany(CharacterClass::class);
+    }
 }
