@@ -8,7 +8,7 @@ class CreateCharacterSkillsTable extends Migration
 {
     public function up()
     {
-        Schema::create( 'character_skills', function ( Blueprint $table ) {
+        Schema::create( 'character_skill', function ( Blueprint $table ) {
             $table->bigIncrements( 'id' );
 
             $table->foreignId('character_id')->constrained();

@@ -14,9 +14,11 @@ class CharacterFactory extends Factory
         return [
             'name' => $this->faker->name(),
             'level' => $this->faker->numberBetween(1, 100),
-            'class' => $this->faker->randomAscii(),
+//            'class' => $this->faker->randomAscii(),
             'company_id' => 1,
             'user_id' => 1,
+//            'class_id' => 1,
+//            'rank_id' => 1,
         ];
     }
 }

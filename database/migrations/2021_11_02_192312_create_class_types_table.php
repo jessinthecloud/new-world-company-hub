@@ -8,7 +8,7 @@ class CreateClassTypesTable extends Migration
 {
     public function up()
     {
-        Schema::create( 'class_types', function ( Blueprint $table ) {
+        Schema::create( 'character_class_types', function ( Blueprint $table ) {
             $table->bigIncrements( 'id' );
 
             $table->string('name');

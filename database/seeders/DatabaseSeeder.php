@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -23,11 +24,16 @@ class DatabaseSeeder extends Seeder
          ]);
          
 //        \App\Models\User::factory(5)->create();
-
+        
         // run other seeders
         $this->call([
             FactionSeeder::class,
             CompanySeeder::class,
+            ClassTypeSeeder::class,
+            SkillTypeSeeder::class,
+            ClassSeeder::class,
+            SkillSeeder::class,
+            RankSeeder::class,
             CharacterSeeder::class,
         ]);
     }

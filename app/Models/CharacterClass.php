@@ -8,7 +8,7 @@ class CharacterClass extends Model
 {
     public function type()
     {
-        return $this->belongsTo(ClassType::class);
+        return $this->belongsTo(CharacterClassType::class);
     }
 
     public function characters()

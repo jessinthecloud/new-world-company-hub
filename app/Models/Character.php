@@ -31,6 +31,6 @@ class Character extends Model
 
     public function skills()
     {
-        return $this->belongsToMany(CharacterClass::class);
+        return $this->belongsToMany(Skill::class);
     }
 }

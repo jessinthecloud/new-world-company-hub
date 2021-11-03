@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ClassType extends Model
+class CharacterClassType extends Model
 {
     public function classes()
     {

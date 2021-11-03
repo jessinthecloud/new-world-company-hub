@@ -13,7 +13,7 @@ class CreateClassesTable extends Migration
 
             $table->string('name');
             $table->string('description')->nullable();
-            $table->foreignId('class_type_id')->constrained();
+            $table->foreignId('character_class_type_id')->constrained();
 
             $table->timestamps();
         } );
