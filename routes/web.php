@@ -21,9 +21,14 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    $characters = \App\Models\Character::with(['loadouts', 'class', 'class.type', 'skills', 'user'])->get();
-//dd( $characters->first()->skills->first()->name);    
-    return view('dashboard', compact('characters'));
+    $characters = \App\Models\Character::with(['loadouts', 'class', 'class.type', 'skills', 'user', 'rank'])->get();
+    
+    $ranks = $characters->pluck('rank')->map(function($rank){
+        return [$rank->id => $rank->name];
+    })->all();
+    
+dd( $ranks );    
+    return view('dashboard', compact('characters', 'ranks'));
     
 })->middleware(['auth'])->name('dashboard');
 
