@@ -3,6 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Character;
+use App\Models\CharacterClass;
+use App\Models\Rank;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CharacterFactory extends Factory
@@ -14,11 +16,12 @@ class CharacterFactory extends Factory
         return [
             'name' => $this->faker->name(),
             'level' => $this->faker->numberBetween(1, 100),
-//            'class' => $this->faker->randomAscii(),
             'company_id' => 1,
             'user_id' => 1,
-//            'class_id' => 1,
-//            'rank_id' => 1,
+            // if these aren't here then other factories using
+            // this factory throw an error 
+            'character_class_id' => CharacterClass::all()->random()->id,
+            'rank_id' => Rank::all()->random()->id,
         ];
     }
 }

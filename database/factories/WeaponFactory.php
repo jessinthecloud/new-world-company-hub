@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Weapon;
+use App\Models\WeaponType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class WeaponFactory extends Factory
@@ -14,6 +15,7 @@ class WeaponFactory extends Factory
         return [
             'name' => $this->faker->name(),
             'description' => $this->faker->text(),
+            'weapon_type_id' => WeaponType::all()->random()->id,
         ];
     }
 }

@@ -14,7 +14,7 @@ class LoadoutSeeder extends Seeder
     {
         Loadout::factory()
             ->count(10)
-            ->for(Character::factory(), 'character')
+            ->for(Character::all()->random(), 'character')
             ->for(Weapon::factory(), 'main')
             ->for(Weapon::factory(), 'offhand')
             ->create();
