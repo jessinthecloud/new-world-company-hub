@@ -15,6 +15,7 @@ class CharacterSeeder extends Seeder
     {
         Character::factory()
             ->count(10)
+            // don't need state because seeder has these set
             ->state(new Sequence(
                     fn ($sequence) => [
                         'character_class_id' => CharacterClass::all()->random(),
