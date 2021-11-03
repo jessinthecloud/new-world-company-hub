@@ -13,7 +13,7 @@ class WeaponFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
-            'description' => $this->faker->randomAscii(),
+            'description' => $this->faker->text(),
         ];
     }
 }
