@@ -37,6 +37,7 @@ class DatabaseSeeder extends Seeder
             CharacterSeeder::class,
             WeaponTypeSeeder::class,
             WeaponSeeder::class,
+            LoadoutSeeder::class,
         ]);
     }
 }

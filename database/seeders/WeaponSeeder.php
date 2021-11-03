@@ -2,8 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\CharacterClass;
-use App\Models\Rank;
 use App\Models\Weapon;
 use App\Models\WeaponType;
 use Illuminate\Database\Eloquent\Factories\Sequence;

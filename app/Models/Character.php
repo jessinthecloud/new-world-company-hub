@@ -33,4 +33,9 @@ class Character extends Model
     {
         return $this->belongsToMany(Skill::class);
     }
+
+    public function loadouts()
+    {
+        return $this->hasMany(Loadout::class);
+    }
 }
