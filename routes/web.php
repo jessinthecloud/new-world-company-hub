@@ -22,7 +22,7 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     $characters = \App\Models\Character::with(['loadouts', 'class', 'class.type', 'skills', 'user'])->get();
-//dd( $characters->pluck('class'));    
+//dd( $characters->first()->skills->first()->name);    
     return view('dashboard', compact('characters'));
     
 })->middleware(['auth'])->name('dashboard');

@@ -8,7 +8,7 @@ class Skill extends Model
 {
     public function type()
     {
-        return $this->belongsTo(SkillType::class);
+        return $this->belongsTo(SkillType::class, 'skill_type_id');
     }
 
     public function characters()

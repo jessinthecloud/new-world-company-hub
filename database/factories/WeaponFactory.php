@@ -13,7 +13,7 @@ class WeaponFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->name(),
+            'name' => $this->faker->text(20),
             'description' => $this->faker->text(),
             'weapon_type_id' => WeaponType::all()->random()->id,
         ];

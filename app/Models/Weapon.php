@@ -11,6 +11,16 @@ class Weapon extends Model
     
     public function type()
     {
-        return $this->belongsTo(WeaponType::class);
+        return $this->belongsTo(WeaponType::class, 'weapon_type_id');
+    }
+
+    public function mainLoadout()
+    {
+        return $this->hasMany(Loadout::class, 'main_hand_id');
+    }
+
+    public function offhandLoadout()
+    {
+        return $this->hasMany(Loadout::class, 'offhand_id');
     }
 }
