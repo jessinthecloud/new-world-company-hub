@@ -23,11 +23,11 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     $characters = \App\Models\Character::with(['loadouts', 'class', 'class.type', 'skills', 'user', 'rank'])->get();
     
-    $ranks = $characters->pluck('rank')->map(function($rank){
-        return [$rank->id => $rank->name];
+    $ranks = $characters->pluck('rank')->unique()->map(function($rank){
+        return ['value'=>$rank->id, 'text' => $rank->name];
     })->all();
     
-dd( $ranks );    
+//dd( $ranks );    
     return view('dashboard', compact('characters', 'ranks'));
     
 })->middleware(['auth'])->name('dashboard');
