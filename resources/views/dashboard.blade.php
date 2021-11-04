@@ -10,6 +10,12 @@
             <x-dashboard.section 
                 :title="'Character'"
             >
+                <x-label for="name">Name:</x-label>
+                <x-input id="name" type="text" name="name" class=""></x-input>
+
+                <x-label for="level">Level:</x-label>
+                <x-input id="level" type="text" name="level" class=""></x-input>
+                
                 <x-dashboard.rank-select
                     :ranks="$ranks"
                 ></x-dashboard.rank-select>
