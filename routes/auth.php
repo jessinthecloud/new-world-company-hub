@@ -14,9 +14,9 @@ use Illuminate\Support\Facades\Route;
 /**
  * Login via Discord API
  */
-Route::get('/auth/discord/redirect', [\App\Http\Controllers\DiscordController::class, 'redirect'])->name('discord.redirect');
+Route::get('/auth/discord/redirect', [\App\Http\Controllers\Auth\DiscordController::class, 'redirect'])->name( 'discord.redirect');
 
-Route::get('/auth/discord/callback', [\App\Http\Controllers\DiscordController::class, 'callback'])->name('discord.callback');
+Route::get('/auth/discord/callback', [\App\Http\Controllers\Auth\DiscordController::class, 'callback'])->name( 'discord.callback');
 
 // BREEZE ROUTES:
 

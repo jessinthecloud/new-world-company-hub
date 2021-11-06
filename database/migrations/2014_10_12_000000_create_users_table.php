@@ -20,12 +20,6 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('password')->nullable();
             $table->timestamp('email_verified_at')->nullable();
-            // move to separate table?
-            $table->string('discord_nickname')->nullable();
-            $table->string('discord_avatar')->nullable();
-            $table->string('discord_token')->nullable();
-            $table->string('discord_refresh_token')->nullable();
-            $table->string('discord_expires_in')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use GuzzleHttp\Exception\ClientException;
 use Laravel\Socialite\Facades\Socialite;
@@ -75,13 +76,16 @@ class DiscordController extends Controller
                 'name' => $user->name,
                 'email' => $user->email,
                 'nickname' => $user->nickname,
-                'discord_nickname' => $user->nickname,
+            ]
+        );
+        
+        
+
+        /*'discord_nickname' => $user->nickname,
                 'discord_avatar' => $user->avatar,
                 'discord_token' => $user->token,
                 'discord_refresh_token' => $user->refreshToken,
-                'discord_expires_in' => $user->expiresIn,
-            ]
-        );
+                'discord_expires_in' => $user->expiresIn,*/
         
         dd($user);
          
