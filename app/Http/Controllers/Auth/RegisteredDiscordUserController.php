@@ -20,6 +20,7 @@ use Laravel\Socialite\Two\InvalidStateException;
 
 class RegisteredDiscordUserController extends Controller
 {
+
     /**
      * Obtain the user information from Discord.
      *
@@ -33,78 +34,68 @@ class RegisteredDiscordUserController extends Controller
      * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\RedirectResponse
+     *
+     * @throws ClientException
+     * @throws InvalidStateException
      */
-    public function store(Request $request)
+    public function callback(Request $request)
     {
-        /**
-         * Make the Socialite request to authenticate with Discord
-         *
-         * @throws ClientException
-         * @throws InvalidStateException
-         */
         try {
-            $discord_user = Socialite::driver( 'discord' )->user();
-        } catch(ClientException $e) {
-            return redirect(route('register'))
-            ->withErrors(['Discord authorization denied. Please try again or enter your information to register.']);
-        } catch(InvalidStateException $e) {
-            return redirect(route('register'))
-            ->withErrors(['Invalid discord request, please try again.']);
+            return redirect( route( 'discord.store' ) )
+                ->with([
+                    'discord_user' => Socialite::driver( 'discord' )->user()
+                ]);
+        } catch ( ClientException $e ) {
+            return redirect( route( 'register' ) )
+                ->withErrors( ['Discord authorization denied. Please try again or enter your information to register.'] );
+        } catch ( InvalidStateException $e ) {
+            return redirect( route( 'register' ) )
+                ->withErrors( ['Invalid discord request, please try again.'] );
         }
-        
-        $validator = Validator::make(
-            ['email' => $discord_user->email],
-            [
-                'email' => ['required', 'string', 'email', 'max:255', 'unique:users', 'unique:discord_data'],
-            ],
-            [
-                'email.unique' => 'This email account already exists. Trying <a class="underline hover:no-underline" href="'.route('login').'">logging in</a> instead',
-            ]
-        );
+    }
 
-        if ($validator->fails()) {
-            $request->session()->invalidate();
-            return redirect(route('register'))
-                ->withErrors($validator);
-        }
-
-        // create eloquent user
+    /**
+     * Handle and store the user account w/ discord info   
+     * 
+     * @param \App\Http\Requests\DiscordRegisterRequest $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function store(DiscordRegisterRequest $request)
+    {
+        // find or create eloquent user
+        // user account may exist and should be tied to discord data
         $user = User::firstOrcreate(
-            [ 'email' => $discord_user->email, ],
+            [ 'email' => $request->discord_user->email, ],
             [
-                'name' => $discord_user->name,
-                'email' => $discord_user->email,
-                'nickname' => $discord_user->nickname,
+                'name' => $request->discord_user->name,
+                'email' => $request->discord_user->email,
+                'nickname' => $request->discord_user->nickname,
             ]
         );
 
-//dump($user);
-
-        // save discord data and attach to user
+        // save discord data and tie to user
         $data = DiscordData::create(
             [
                 'user_id' => $user->id,
                 'name' => $user->name,
                 'nickname' => $user->nickname,
                 'email' => $user->email,
-                'avatar' => $discord_user->avatar,
-                'token' => $discord_user->token,
-                'refresh_token' => $discord_user->refreshToken,
-                'expires_in' => $discord_user->expiresIn,
+                'avatar' => $request->discord_user->avatar,
+                'token' => $request->discord_user->token,
+                'refresh_token' => $request->discord_user->refreshToken,
+                'expires_in' => $request->discord_user->expiresIn,
             ]
         );
-        
-//dump($data);
 
         event(new Registered($user));
 
-        if ($discord_user->user['verified'] && $user->markEmailAsVerified()) {
-//dump('verified');        
+        if ($request->discord_user->user['verified'] && $user->markEmailAsVerified()) {
             event(new Verified($user));
         }
 
         Auth::login($user);
-//dd('Success!');
+
         return redirect(RouteServiceProvider::HOME);
 
     }

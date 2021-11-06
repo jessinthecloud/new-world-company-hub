@@ -5,15 +5,20 @@
                 <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
             </a>
         </x-slot>
-
-        @if (Route::has('discord.redirect'))
+        
+        @if(!empty(session('status')))
             <x-utils.card>
                 <!-- Session Status -->
                 <x-auth-session-status class="mb-4" :status="session('status')" />
-
-                <!-- Validation Errors -->
-                <x-auth-validation-errors class="mb-4" :errors="$errors" />
-
+            </x-utils.card>
+        @endif
+        
+        <!-- Validation Errors -->
+        <x-forms.form-errors class="w-full sm:max-w-md"/>
+        
+        @if (Route::has('discord.redirect'))
+            <x-utils.card>
+                
                 <form method="POST" action="{{ route('discord.login') }}">
                     @csrf
 
@@ -49,14 +54,8 @@
             </div>
         @endif
 
-        <x-utils.card>
-
-            <!-- Session Status -->
-            <x-auth-session-status class="mb-4" :status="session('status')" />
-    
-            <!-- Validation Errors -->
-            <x-auth-validation-errors class="mb-4" :errors="$errors" />
-    
+        <x-utils.card>    
+           
             <form method="POST" action="{{ route('login') }}">
                 @csrf
     

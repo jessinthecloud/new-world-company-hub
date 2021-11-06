@@ -11,21 +11,14 @@ use Laravel\Socialite\Two\InvalidStateException;
 
 class DiscordRegisterRequest extends FormRequest
 {
-    public DiscordUser $discord_user;
-   /* 
-    public function __construct(
-    array $query = [],
-    array $request = [],
-    array $attributes = [],
-    array $cookies = [],
-    array $files = [],
-    array $server = [],
-    $content = null
-    )
-    {
-        parent::__construct( $query, $request, $attributes, $cookies, $files, $server, $content );
-//ddd($this, $_REQUEST, $_SERVER);
-    }*/
+    /**
+     * The route that users should be redirected to if validation fails.
+     *
+     * @var string
+     */
+    protected $redirectRoute = 'login';
+    
+    public ?DiscordUser $discord_user;
 
     /**
      * Prepare the data for validation.
@@ -36,47 +29,11 @@ class DiscordRegisterRequest extends FormRequest
     protected function prepareForValidation()
     {
         $this->discord_user = $this->session()->get('discord_user');
-//        ddd('prepare', $this->session()->get('discord_user'), $this->discord_user);
-        /*    
-                $result = $this->setDiscordUser();
-        
-                if($result !== true){
-                    // if we get here without a user, Discord Auth failed
-        //dump($result);
-        //ddd($result->getSession(), $result->getSession()->get('errors')->all());
-        
-                    $errors = $result->getSession()->get('errors')->all();
-                    $result->getSession()->invalidate();
-                                
-                    return redirect('/register')
-                        ->withErrors($errors);
-                }*/
     
         $this->merge([
             'email' => $this->discord_user->email,
         ]);
     }
-
-    /**
-     * Make the Socialite request to authenticate with Discord
-     *
-     * @throws ClientException
-     * @throws InvalidStateException
-     *
-    protected function setDiscordUser()
-    {
-        try {
-            $this->discord_user = Socialite::driver( 'discord' )->user();
-            return true;
-        } catch(ClientException $e) {
-            return redirect(route('register'))
-                ->withErrors(['Discord authorization denied. Please try again or enter your registration information.']);
-        } catch(InvalidStateException $e) {
-            return redirect(route('register'))
-                ->withErrors(['Invalid discord request, please try again.']);
-        }
-    }
-    // */
 
     /**
      * Get the validation rules that apply to the request.
@@ -86,7 +43,7 @@ class DiscordRegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users', 'unique:discord_data'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:discord_data'],
         ];
     }
 
@@ -98,7 +55,7 @@ class DiscordRegisterRequest extends FormRequest
     public function messages()
     {
         return [
-            'email.unique' => 'This email already exists. Trying logging in instead: '.route('login'),
+            'email.unique' => 'This email account already exists. Trying logging in instead',
         ];
     }
 }
