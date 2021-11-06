@@ -1,0 +1,20 @@
+nav.vert-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+nav.vert-nav > ul {
+  font-size: 1rem;
+  font-weight: normal;
+}
+nav.vert-nav > ul > li, nav.vert-nav > ul > li > a {
+  font-size: 1.1em;
+  font-weight: bold;
+}
+nav.vert-nav > ul > li > ul li > ul, nav.vert-nav > ul > li > a > ul li > ul {
+  font-size: 1rem;
+  font-weight: normal;
+}
+nav.vert-nav > ul > li > ul li > ul > li, nav.vert-nav > ul > li > ul li > ul > li > a, nav.vert-nav > ul > li > a > ul li > ul > li, nav.vert-nav > ul > li > a > ul li > ul > li > a {
+  font-weight: bold;
+}

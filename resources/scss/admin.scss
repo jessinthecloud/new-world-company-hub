@@ -1,0 +1,36 @@
+nav.vert-nav {
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+    
+    & > ul {
+        // top level menu items are a heading
+        & > li,
+        & > li > a {
+            font-size   : 1.1em;
+            font-weight : bold;
+            // any item with a list as children is a menu heading
+            & > ul li > ul {
+                & > li,
+                & > li > a {
+                    font-weight : bold;
+                }
+
+                // don't change all li, just the first
+                font-size   : 1rem;
+                font-weight : normal;
+            }
+
+            // ul li > ul li,a 
+        }
+
+        // li, a
+
+        // don't change all li, just the first
+        font-size   : 1rem;
+        font-weight : normal;
+
+    } // ul
+} // .vert-nav
