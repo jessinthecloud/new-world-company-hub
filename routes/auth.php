@@ -10,6 +10,16 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
+
+/**
+ * Login via Discord API
+ */
+Route::get('/auth/discord/redirect', [\App\Http\Controllers\DiscordController::class, 'redirect'])->name('discord.redirect');
+
+Route::get('/auth/discord/callback', [\App\Http\Controllers\DiscordController::class, 'callback'])->name('discord.callback');
+
+// BREEZE ROUTES:
+
 Route::get('/register', [RegisteredUserController::class, 'create'])
                 ->middleware('guest')
                 ->name('register');
