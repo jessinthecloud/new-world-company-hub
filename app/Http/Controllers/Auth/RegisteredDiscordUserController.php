@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\DiscordAuthorizedRequest;
 use App\Http\Requests\DiscordRegisterRequest;
 use App\Models\DiscordData;
 use App\Models\User;
@@ -35,37 +36,37 @@ class RegisteredDiscordUserController extends Controller
      */
     public function store(Request $request)
     {
-    dump($request);
-    
         /**
+         * Make the Socialite request to authenticate with Discord
+         *
          * @throws ClientException
          * @throws InvalidStateException
-         */ 
+         */
         try {
             $discord_user = Socialite::driver( 'discord' )->user();
         } catch(ClientException $e) {
             return redirect(route('register'))
-                ->withErrors(['Discord authorization cancelled. Please try again or enter your registration information.']);
+            ->withErrors(['Discord authorization denied. Please try again or enter your information to register.']);
         } catch(InvalidStateException $e) {
             return redirect(route('register'))
-                ->withErrors(['Invalid discord request, please try again.']);
+            ->withErrors(['Invalid discord request, please try again.']);
         }
-        $validator = Validator::validate(
-            $discord_user->toArray(),
-            [            
-                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+        
+        $validator = Validator::make(
+            ['email' => $discord_user->email],
+            [
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users', 'unique:discord_data'],
+            ],
+            [
+                'email.unique' => 'This email account already exists. Trying <a class="underline hover:no-underline" href="'.route('login').'">logging in</a> instead',
             ]
         );
 
         if ($validator->fails()) {
-            // TODO: send message that account already exists
+            $request->session()->invalidate();
             return redirect(route('register'))
                 ->withErrors($validator);
         }
-
-dd($discord_user);
-
-        // TODO: check for existing discord info
 
         // create eloquent user
         $user = User::firstOrcreate(
