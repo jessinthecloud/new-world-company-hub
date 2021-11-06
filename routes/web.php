@@ -23,16 +23,16 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
 //    $characters = \App\Models\Character::with(['loadouts', 'class', 'class.type', 'skills', 'user', 'rank'])->get();
     
-    $ranks = \App\Models\Rank::distinct()->get()->map(function($rank){
-        return ['value'=>$rank->id, 'text' => $rank->name];
+    $ranks = \App\Models\Rank::distinct()->get()->mapWithKeys(function($rank){
+        return [$rank->name => $rank->id];
     })->all();
 
-    $skills = \App\Models\Skill::distinct()->get()->map(function($skill){
-        return ['value'=>$skill->id, 'text' => $skill->name];
+    $skills = \App\Models\Skill::distinct()->get()->mapWithKeys(function($skill, $key){
+        return [$skill->name => $skill->id];
     })->all();
     
 //dd( $ranks );    
-    return view('dashboard', compact('ranks'));
+    return view('dashboard', ['ranks'=>$ranks, 'form_action'=>route('dashboard')]);
     
 })->middleware(['auth'])->name('dashboard');
 
