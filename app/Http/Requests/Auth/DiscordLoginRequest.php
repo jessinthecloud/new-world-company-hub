@@ -2,22 +2,14 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Models\DiscordData;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
+use Laravel\Socialite\Facades\Socialite;
 
 class DiscordLoginRequest extends LoginRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -26,7 +18,7 @@ class DiscordLoginRequest extends LoginRequest
     public function rules()
     {
         return [
-            'email' => ['required', 'string', 'email', 'exists:users'],
+            'email' => ['required', 'string', 'email', 'exists:users', 'exists:discord_data'],
         ];
     }
 
@@ -41,15 +33,21 @@ class DiscordLoginRequest extends LoginRequest
     {
         $this->ensureIsNotRateLimited();
         
-        // TODO: make sure attempt is done with discord token?
+        // TODO: make sure attempt is done with discord token
+        $token = DiscordData::select('token')->where('email', $this->only('email'))->first();
+dump($token);
+        $user = Socialite::driver('discord')->userFromToken($token);
+ddd($user);
 
-        if (! Auth::attempt($this->only('email'), $this->boolean('remember'))) {
+        if ( !isset($user) ) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
                 'email' => __('auth.failed'),
             ]);
         }
+        
+        Auth::login($user, $this->boolean('remember'));
 
         RateLimiter::clear($this->throttleKey());
     }

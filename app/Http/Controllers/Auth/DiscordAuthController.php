@@ -48,8 +48,6 @@ class DiscordAuthController extends Controller
      */
     public function store(DiscordLoginRequest $request)
     {
-        // TODO: check user discord token
-        
         $request->authenticate();
 
         $request->session()->regenerate();

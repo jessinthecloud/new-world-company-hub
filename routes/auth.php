@@ -17,7 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/auth/discord/redirect', [\App\Http\Controllers\Auth\DiscordAuthController::class, 'redirect'])
                 ->name( 'discord.redirect');
 
-Route::get('/auth/discord/callback', [\App\Http\Controllers\Auth\RegisteredDiscordUserController::class, 'callback'])->name( 'discord.callback');
+Route::get('/auth/discord/callback', [\App\Http\Controllers\Auth\RegisteredDiscordUserController::class, 'callback'])
+                ->name( 'discord.callback');
 
 Route::get('/auth/discord/store', [\App\Http\Controllers\Auth\RegisteredDiscordUserController::class, 'store'])
                 ->name( 'discord.store');
