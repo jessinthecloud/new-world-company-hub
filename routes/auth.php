@@ -12,14 +12,21 @@ use Illuminate\Support\Facades\Route;
 
 
 /**
- * Login via Discord API
+ * Auth via Discord API
  */
-Route::get('/auth/discord/redirect', [\App\Http\Controllers\Auth\DiscordController::class, 'redirect'])->name( 'discord.redirect');
+Route::get('/auth/discord/redirect', [\App\Http\Controllers\Auth\DiscordAuthController::class, 'redirect'])
+                ->name( 'discord.redirect');
 
-Route::get('/auth/discord/callback', [\App\Http\Controllers\Auth\DiscordController::class, 'callback'])->name( 'discord.callback');
+Route::get('/auth/discord/callback', [\App\Http\Controllers\Auth\RegisteredDiscordUserController::class, 'store'])
+                ->name( 'discord.callback');
 
-// BREEZE ROUTES:
+Route::post('/auth/discord/login', [\App\Http\Controllers\Auth\DiscordAuthController::class, 'store'])
+                ->middleware('guest')
+                ->name('discord.login');
 
+/**
+ * Breeze Routes
+ */
 Route::get('/register', [RegisteredUserController::class, 'create'])
                 ->middleware('guest')
                 ->name('register');
