@@ -33,7 +33,29 @@ Route::get('/dashboard', function () {
     
 //dd( $ranks );    
     return view('dashboard', ['ranks'=>$ranks, 'form_action'=>route('dashboard')]);
-    
 })->middleware(['auth'])->name('dashboard');
+
+Route::middleware('auth')->group(function(){
+    Route::resources([
+        'characters' => \App\Http\Controllers\CharactersController::class,
+        'loadouts' => \App\Http\Controllers\LoadoutsController::class,
+    ]);
+});
+
+/* 
+Route::middleware('admin')->group(function(){
+    Route::resources([
+        'users' => \App\Http\Controllers\UserController::class,
+        'factions' => \App\Http\Controllers\FactionsController::class,
+        'companies' => \App\Http\Controllers\CompaniesController::class,
+        'skills' => \App\Http\Controllers\SkillsController::class,
+        'skill-types' => \App\Http\Controllers\SkillTypesController::class,
+        'classes' => \App\Http\Controllers\ClassesController::class,
+        'class-types' => \App\Http\Controllers\ClassTypesController::class,
+        'weapons' => \App\Http\Controllers\WeaponController::class,
+        'weapon-types' => \App\Http\Controllers\WeaponTypeController::class,
+    ]);
+}); 
+*/
 
 require __DIR__.'/auth.php';

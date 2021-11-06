@@ -8,6 +8,7 @@ h1 {
     font-weight: bold;
     margin-block-start: .67em;
     margin-block-end: .67em;
+    margin: 0;
 }
 
 h2 {
@@ -16,6 +17,7 @@ h2 {
     font-weight: bold;
     margin-block-start: .83em;
     margin-block-end: .83em;
+    margin: 0;
 }
 
 h3 {
@@ -24,6 +26,7 @@ h3 {
     font-weight: bold;
     margin-block-start: 1em;
     margin-block-end: 1em;
+    margin: 0;
 }
 
 h4 {
@@ -31,7 +34,8 @@ h4 {
     font-size: 1.00em;
     font-weight: bold;
     margin-block-start: 1.33em;
-    margin-block-end: 1.33em; 
+    margin-block-end: 1.33em;
+    margin: 0;
 }
 
 p {

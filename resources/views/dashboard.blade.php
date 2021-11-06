@@ -6,44 +6,38 @@
     </x-slot>
 
     <div class="py-12">
-        <div id="wrapper-inner" class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div id="wrapper-inner" class="max-w-7xl mx-auto flex flex-wrap sm:px-6 lg:px-8">
             <x-dashboard.section 
-                :title="'Character'"
+                :title="'Characters'"
+                class="lg:mr-6"
             >
-                <x-forms.form
-                    {{-- send as plain html attribute --}}
-                    action="{{ $form_action ?? '' }}"
-                    {{-- set the custom $method variable --}}
-                    {{-- (not the form method attribute) --}}
-                    :method="$method ?? null"
+                <x-button-link 
+                    href="{{ route('characters.create') }}"
                 >
-                    <x-forms.field :name="'name'">
-                        <x-forms.label for="name" :required="true">Name:</x-forms.label>
-                        <x-forms.input id="name" type="text" name="name" class="" :required="true" value="{{ old('name') ?? '' }}"/>
-                    </x-forms.field>
+                    Create
+                </x-button-link>
 
-                    <x-forms.field :name="'level'">
-                        <x-forms.label for="level" :required="true">Level:</x-forms.label>
-                        <x-forms.input id="level" type="text" name="level" class="" :required="true" value="{{ old('level') ?? '' }}" />
-                    </x-forms.field>
+                <x-button-link
+                    href="{{ route('characters.index') }}"
+                >
+                    Edit / Delete
+                </x-button-link>
+            </x-dashboard.section>
 
-                    <x-forms.field :name="'rank'">
-                        <x-forms.label for="rank" :required="true">Rank:</x-forms.label>
-                        <x-forms.select name="rank" id="rank"
-                            :values="$ranks"
-                            :required="true"
-                        ></x-forms.select>
-                    </x-forms.field>
+            <x-dashboard.section
+                :title="'Loadouts'"
+            >
+                <x-button-link
+                        href="{{ route('loadouts.create') }}"
+                >
+                    Create
+                </x-button-link>
 
-                    {{-- 
-                    <x-forms.field :name="'rank'">
-                        <x-forms.label for="skill">Skill:</x-forms.label>
-                        <x-forms.select name="skill" id="skill"
-                            :values="$skills"
-                        ></x-forms.select>
-                    </x-forms.field>
-                    --}}
-                </x-forms.form>
+                <x-button-link
+                        href="{{ route('loadouts.index') }}"
+                >
+                    Edit / Delete
+                </x-button-link>
             </x-dashboard.section>
         </div>
     </div>
