@@ -2,11 +2,11 @@
     :title="'Character'"
 >
     <x-forms.form
-            {{-- send as plain html attribute --}}
-            action="{{ $form_action ?? '' }}"
-            {{-- set the custom $method variable --}}
-            {{-- (not the form method attribute) --}}
-            :method="$method ?? null"
+        {{-- send as plain html attribute --}}
+        action="{{ $form_action ?? '' }}"
+        {{-- set the custom $method variable --}}
+        {{-- (not the form method attribute) --}}
+        :method="$method ?? null"
     >
         <x-forms.field :name="'name'">
             <x-forms.label for="name" :required="true">Name:</x-forms.label>
@@ -21,8 +21,8 @@
         <x-forms.field :name="'rank'">
             <x-forms.label for="rank" :required="true">Rank:</x-forms.label>
             <x-forms.select name="rank" id="rank"
-                            :values="$ranks"
-                            :required="true"
+                :values="$ranks"
+                :required="true"
             ></x-forms.select>
         </x-forms.field>
 
