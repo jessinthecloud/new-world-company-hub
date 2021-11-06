@@ -14,7 +14,7 @@ class CreateDiscordDataTable extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('name');
             $table->string('nickname');
-            $table->string('email');
+            $table->string('email')->unique();
             $table->string('avatar')->nullable();
             $table->string('token')->nullable();
             $table->string('refresh_token')->nullable();

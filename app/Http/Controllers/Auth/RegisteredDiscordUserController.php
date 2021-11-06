@@ -13,34 +13,59 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\InvalidStateException;
 
 class RegisteredDiscordUserController extends Controller
-{    
+{
     /**
      * Obtain the user information from Discord.
-     * 
+     *
      * The user object returned by the user method provides a
      * variety of properties and methods you may use to store
      * information about the user in your own database
      *
      * @see https://discord.com/developers/docs/topics/oauth2#authorization-code-grant-access-token-response
      * @see https://laravel.com/docs/8.x/socialite#retrieving-user-details
-     * 
+     *
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(DiscordRegisterRequest $request)
+    public function store(Request $request)
     {
-//    dump($request);
+    dump($request);
+    
+        /**
+         * @throws ClientException
+         * @throws InvalidStateException
+         */ 
+        try {
+            $discord_user = Socialite::driver( 'discord' )->user();
+        } catch(ClientException $e) {
+            return redirect(route('register'))
+                ->withErrors(['Discord authorization cancelled. Please try again or enter your registration information.']);
+        } catch(InvalidStateException $e) {
+            return redirect(route('register'))
+                ->withErrors(['Invalid discord request, please try again.']);
+        }
+        $validator = Validator::validate(
+            $discord_user->toArray(),
+            [            
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            ]
+        );
 
-        // TODO: check for successful discord auth
-        
-        /* @throws ClientException */
-        /* @throws InvalidStateException */ 
-        $discord_user = Socialite::driver('discord')->user();
+        if ($validator->fails()) {
+            // TODO: send message that account already exists
+            return redirect(route('register'))
+                ->withErrors($validator);
+        }
 
-//dump($discord_user);
+dd($discord_user);
+
+        // TODO: check for existing discord info
 
         // create eloquent user
         $user = User::firstOrcreate(
@@ -55,8 +80,7 @@ class RegisteredDiscordUserController extends Controller
 //dump($user);
 
         // save discord data and attach to user
-        $data = DiscordData::updateOrcreate(
-            [ 'email' => $discord_user->email, ],
+        $data = DiscordData::create(
             [
                 'user_id' => $user->id,
                 'name' => $user->name,

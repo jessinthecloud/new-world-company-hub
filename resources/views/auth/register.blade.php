@@ -5,7 +5,10 @@
                 <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
             </a>
         </x-slot>
-
+        
+        <!-- Validation Errors -->
+        <x-forms.form-errors class="w-full sm:max-w-md"/>
+        
         @if (Route::has('discord.redirect'))
             <x-utils.card>
                 <div class="flex flex-wrap items-center justify-center">
@@ -20,10 +23,7 @@
             </div>
         @endif
 
-        <x-utils.card>
-            <!-- Validation Errors -->
-            <x-auth-validation-errors class="mb-4" :errors="$errors" />
-    
+        <x-utils.card>    
             <form method="POST" action="{{ route('register') }}">
                 @csrf
     
