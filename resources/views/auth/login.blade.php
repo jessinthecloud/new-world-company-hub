@@ -51,6 +51,15 @@
                     {{ __('Log in') }}
                 </x-button>
             </div>
+
+            @if (Route::has('discord.redirect'))
+                <div class="flex flex-wrap items-center justify-center mt-4">
+                    <p class="block w-full text-center">- OR -</p>
+                    <x-button-link class="block bg-indigo-500 ml-3" href="{{ route('discord.redirect') }}">
+                        {{ __('Log in with Discord') }}
+                    </x-button-link>
+                </div>
+            @endif
         </form>
     </x-auth-card>
 </x-guest-layout>

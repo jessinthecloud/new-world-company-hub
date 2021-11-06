@@ -1,12 +1,12 @@
 <x-layouts.html-head
-        :meta-content="$meta_content ?? ''"
-        :title="$title ?? ''"
-        :styles="$styles ?? null"
-        :scripts="$scripts ?? null"
-        {{-- additional <head> content --}}
-        :headslot="$headslot ?? ''"
+    :meta-content="$meta_content ?? ''"
+    :title="$title ?? ''"
+    :styles="$styles ?? null"
+    :scripts="$scripts ?? null"
+    {{-- additional <head> content --}}
+    :headslot="$headslot ?? ''"
 
-        {{-- also has meta, styles, and head_scripts @stacks --}}
+    {{-- also has meta, styles, and head_scripts @stacks --}}
 >
     {{-- additional header content --}}
     {!! $header_slot ?? '' !!}

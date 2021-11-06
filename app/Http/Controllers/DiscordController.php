@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use GuzzleHttp\Exception\ClientException;
 use Laravel\Socialite\Facades\Socialite;
+use Laravel\Socialite\Two\InvalidStateException;
 
 class DiscordController extends Controller
 {
@@ -47,6 +50,8 @@ class DiscordController extends Controller
      */
     public function callback()
     {
+        /* @throws ClientException */
+        /* @throws InvalidStateException */ 
         $user = Socialite::driver('discord')->user();
 
         /**
@@ -57,8 +62,28 @@ class DiscordController extends Controller
          * name
          * email
          * avatar
+         * 
+         * token
+         * refreshToken
+         * expiresIn
          */
-
+        dump($user);
+        
+        $user = User::firstOrCreate(
+            ['email' => $user->email], // unique field to check for
+            [
+                'name' => $user->name,
+                'email' => $user->email,
+                'nickname' => $user->nickname,
+                'discord_nickname' => $user->nickname,
+                'discord_avatar' => $user->avatar,
+                'discord_token' => $user->token,
+                'discord_refresh_token' => $user->refreshToken,
+                'discord_expires_in' => $user->expiresIn,
+            ]
+        );
+        
         dd($user);
+         
     }
 }
