@@ -9,14 +9,17 @@
     {{ $autofocus ? 'autofocus' : '' }} 
 >
     {{ $slot ?? '' }}
-
-    @foreach($values as $text => $value)
-        <option value="{{ $value ?? '' }}"
-            @if(old($attributes->get('name')) == $value)
-                SELECTED
-            @endif
-        >
-            {{ $text }}
-        </option>
-    @endforeach
+    
+    @isset($values)
+        <option value=""></option>
+        @foreach($values as $text => $value)
+            <option value="{{ $value ?? '' }}"
+                @if(old($attributes->get('name')) == $value)
+                    SELECTED
+                @endif
+            >
+                {{ $text }}
+            </option>
+        @endforeach
+    @endisset
 </select>

@@ -9,7 +9,7 @@
     
     {{-- for update or destroy, set method to PUT or DELETE in the form --}}
     @isset($method)
-        @method($method);
+        @method($method)
     @endisset
     
     {{-- Allow addiitonal HTML in the form,

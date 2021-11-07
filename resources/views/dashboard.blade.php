@@ -18,7 +18,7 @@
                 </x-button-link>
 
                 <x-button-link
-                    href="{{ route('characters.index') }}"
+                    href="{{ route('characters.edit') }}"
                 >
                     Edit / Delete
                 </x-button-link>
@@ -28,13 +28,13 @@
                 :title="'Loadouts'"
             >
                 <x-button-link
-                        href="{{ route('loadouts.create') }}"
+                    href="{{ route('loadouts.create') }}"
                 >
                     Create
                 </x-button-link>
 
                 <x-button-link
-                        href="{{ route('loadouts.index') }}"
+                    href="{{ route('loadouts.index') }}"
                 >
                     Edit / Delete
                 </x-button-link>

@@ -21,21 +21,16 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-//    $characters = \App\Models\Character::with(['loadouts', 'class', 'class.type', 'skills', 'user', 'rank'])->get();
-    
-    $ranks = \App\Models\Rank::distinct()->get()->mapWithKeys(function($rank){
-        return [$rank->name => $rank->id];
-    })->all();
-
-    $skills = \App\Models\Skill::distinct()->get()->mapWithKeys(function($skill, $key){
-        return [$skill->name => $skill->id];
-    })->all();
-    
-//dd( $ranks );    
-    return view('dashboard', ['ranks'=>$ranks, 'form_action'=>route('dashboard')]);
+    return view('dashboard', ['form_action'=>route('dashboard')]);
 })->middleware(['auth'])->name('dashboard');
 
 Route::middleware('auth')->group(function(){
+    // find char selected in drop down
+    Route::post('/characters/find', [\App\Http\Controllers\CharactersController::class, 'find'])->name('characters.find');
+    
+    Route::get('/characters/edit', [\App\Http\Controllers\CharactersController::class, 'edit'])->name('characters.edit');
+    Route::get('/characters/destroy', [\App\Http\Controllers\CharactersController::class, 'destroy'])->name('characters.destroy');
+    
     Route::resources([
         'characters' => \App\Http\Controllers\CharactersController::class,
         'loadouts' => \App\Http\Controllers\LoadoutsController::class,
