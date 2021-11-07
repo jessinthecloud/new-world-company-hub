@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CharacterUpsertRequest;
 use App\Models\Character;
 use App\Models\CharacterClass;
 use App\Models\Rank;
@@ -50,7 +51,7 @@ class CharactersController extends Controller
         );
     }
 
-    public function store( Request $request )
+    public function store( CharacterUpsertRequest $request )
     {
         //
     }
@@ -98,7 +99,7 @@ class CharactersController extends Controller
             if($character->class->id === $value){
                 $class_options .= ' SELECTED ';
             }
-            $class_options .= '>'.$text.'</option>';
+            $class_options .= '>'.$text.' ('.$character->class->type->name.')</option>';
         }
         
         return view(
@@ -114,9 +115,29 @@ class CharactersController extends Controller
         );
     }
 
-    public function update( Request $request, Character $character )
+    public function update( CharacterUpsertRequest $request, Character $character )
     {
-    
+        $validated = $request->validated();
+//dump($validated, $character, $character->skills->pluck('pivot')->pluck('level')/*, $request*/);
+        $character->name = $validated['name'];
+        $character->level = $validated['level'];
+        // relations
+        $character->rank()->associate($validated['rank']);
+        $character->class()->associate($validated['class']);
+        $character->save();
+        // update skills levels related to this character on pivot table
+        foreach($validated['skills'] as $skill => $level){
+            // don't need to save
+            $character->skills()->updateExistingPivot($skill, ['level'=>$level]);
+        }
+        
+//        dump($character, $character->skills->pluck('pivot')->pluck('level'));
+        return redirect(route('dashboard'))->with([
+            'status'=> [
+                'type'=>'success',
+                'message' => 'Character updated successfully'
+            ]
+        ]);
     }
 
     public function destroy( Character $character )

@@ -38,7 +38,15 @@
                             :required="true"
                         >{!! $rank_options ?? '' !!}</x-forms.select>
                     </x-forms.field>
-                    
+
+                    <x-forms.field :name="'class'" class="mb-6">
+                        <x-forms.label for="class" :required="true">Class:</x-forms.label>
+                        <x-forms.select name="class" id="class"
+                                        :values="$classes ?? null"
+                                        :required="true"
+                        >{!! $class_options ?? '' !!}</x-forms.select>
+                    </x-forms.field>
+
                     <x-forms.field :name="'level'">
                         <x-forms.label for="level" :required="true">Level:</x-forms.label>
                         <x-forms.input
@@ -51,14 +59,6 @@
                                 :required="true"
                         />
                     </x-forms.field>
-
-                    <x-forms.field :name="'class'" class="mb-6">
-                        <x-forms.label for="class" :required="true">Class:</x-forms.label>
-                        <x-forms.select name="class" id="class"
-                                        :values="$classes ?? null"
-                                        :required="true"
-                        >{!! $class_options ?? '' !!}</x-forms.select>
-                    </x-forms.field>
                     
                     <div class="character-skills border rounded-md p-6 mt-6">
                         <h3 class="mb-6">Skills</h3>
@@ -67,7 +67,7 @@
                                 <h4 class="w-full mb-4">{{ $skillType->name }}</h4>
                                 @foreach($skillType->skills as $skill)
                                     <x-forms.field 
-                                        :name="'skill['.$skill->id.']'" 
+                                        :name="'skills['.$skill->id.']'" 
                                         class="flex flex-wrap justify-start items-center w-1/4 pr-4"
                                     >
                                         <x-forms.label 
@@ -82,7 +82,7 @@
                                             class=""
                                             size="5"
                                             type="text"
-                                            name="{{ 'skill['.$skill->id.']' }}"
+                                            name="{{ 'skills['.$skill->id.']' }}"
                                             value="{{ old('skill-'.$skill->id) 
                                                 ?? ((isset($character) 
                                                     && $character->skills->where('id', $skill->id)->first() !== null) 
