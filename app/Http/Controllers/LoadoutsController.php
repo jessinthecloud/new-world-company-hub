@@ -13,13 +13,17 @@ class LoadoutsController extends Controller
 {
     public function index()
     {
+    }
+    
+    public function choose()
+    {
         $loadouts = Loadout::orderBy('name')->orderBy('weight')->get()->mapWithKeys(function($loadout){
             return [$loadout->name => $loadout->id];
         })->all();
         $form_action = route('loadouts.find');
 
         return view(
-            'dashboard.loadout.index',
+            'dashboard.loadout.choose',
             compact('loadouts', 'form_action')
         );
     }

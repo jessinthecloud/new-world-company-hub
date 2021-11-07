@@ -16,13 +16,17 @@ class CharactersController extends Controller
 {
     public function index()
     {
+    }
+
+    public function choose()
+    {
         $characters = Character::orderBy('name')->orderBy('level')->get()->mapWithKeys(function($character){
             return [$character->name.' ( Level '.$character->level.')' => $character->id];
         })->all();
         $form_action = route('characters.find');
         
         return view(
-            'dashboard.character.index', 
+            'dashboard.character.choose', 
             compact('characters', 'form_action')
         );
     }

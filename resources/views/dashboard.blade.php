@@ -20,7 +20,7 @@
                     Create
                 </x-button-link>
 
-                <x-button-link href="{{ route('characters.index') }}">
+                <x-button-link href="{{ route('characters.choose') }}">
                     Edit / Delete
                 </x-button-link>
             </x-dashboard.section>
@@ -33,7 +33,7 @@
                     Create
                 </x-button-link>
 
-                <x-button-link href="{{ route('loadouts.index') }}">
+                <x-button-link href="{{ route('loadouts.choose') }}">
                     Edit / Delete
                 </x-button-link>
             </x-dashboard.section>
@@ -46,7 +46,7 @@
                     Create
                 </x-button-link>
 
-                <x-button-link href="{{ route('companies.index') }}">
+                <x-button-link href="{{ route('companies.choose') }}">
                     Edit / Delete
                 </x-button-link>
             </x-dashboard.section>
@@ -59,7 +59,7 @@
                     Create
                 </x-button-link>
 
-                <x-button-link href="{{ route('factions.index') }}">
+                <x-button-link href="{{ route('factions.choose') }}">
                     Edit / Delete
                 </x-button-link>
             </x-dashboard.section>

@@ -25,14 +25,17 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 Route::middleware('auth')->group(function(){
-    // find char selected in drop down
+
+    // choose from drop down
+    Route::get('/characters/choose', [\App\Http\Controllers\CharactersController::class, 'choose'])->name('characters.choose');
+    Route::get('/companies/choose', [\App\Http\Controllers\CompaniesController::class, 'choose'])->name('companies.choose');
+    Route::get('/factions/choose', [\App\Http\Controllers\FactionsController::class, 'choose'])->name('factions.choose');
+    Route::get('/loadouts/choose', [\App\Http\Controllers\LoadoutsController::class, 'choose'])->name('loadouts.choose');
+    
+    // find char chosen from drop down
     Route::post('/characters/find', [\App\Http\Controllers\CharactersController::class, 'find'])->name('characters.find');
-
-    // find company selected in drop down
     Route::post('/companies/find', [\App\Http\Controllers\CompaniesController::class, 'find'])->name('companies.find');
-
     Route::post('/factions/find', [\App\Http\Controllers\FactionsController::class, 'find'])->name('factions.find');
-
     Route::post('/loadouts/find', [\App\Http\Controllers\LoadoutsController::class, 'find'])->name('loadouts.find');
     
     /*Route::get('/characters/edit', [\App\Http\Controllers\CharactersController::class, 'edit'])->name('characters.edit.select');

@@ -12,13 +12,17 @@ class CompaniesController extends Controller
 {
     public function index()
     {
+    }
+
+    public function choose()
+    {
         $companies = Company::with('faction')->orderBy('name')->get()->mapWithKeys(function($company){
             return [$company->name.' ('.$company->faction->name.')' => $company->id];
         })->all();
         $form_action = route('companies.find');
 
         return view(
-            'dashboard.company.index',
+            'dashboard.company.choose',
             compact('companies', 'form_action')
         );
     }
