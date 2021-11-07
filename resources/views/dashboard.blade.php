@@ -27,12 +27,25 @@
 
             <x-dashboard.section
                 :title="'Loadouts'"
+                class="lg:mr-6"
             >
                 <x-button-link href="{{ route('loadouts.create') }}">
                     Create
                 </x-button-link>
 
                 <x-button-link href="{{ route('loadouts.index') }}">
+                    Edit / Delete
+                </x-button-link>
+            </x-dashboard.section>
+
+            <x-dashboard.section
+                :title="'Companies'"
+            >
+                <x-button-link href="{{ route('companies.create') }}">
+                    Create
+                </x-button-link>
+
+                <x-button-link href="{{ route('companies.index') }}">
                     Edit / Delete
                 </x-button-link>
             </x-dashboard.section>
