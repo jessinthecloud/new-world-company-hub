@@ -15,38 +15,14 @@
         
         <!-- Validation Errors -->
         <x-forms.form-errors class="w-full sm:max-w-md"/>
-        
+
         @if (Route::has('discord.redirect'))
             <x-utils.card>
-                
-                <form method="POST" action="{{ route('discord.login') }}">
-                    @csrf
-
-                    <!-- Email Address -->
-                    <div>
-                        <x-forms.label for="email" :value="__('Email')" />
-
-                        <x-forms.input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
-                    </div>
-                    <!-- Remember Me -->
-                    <div class="block mt-4">
-                        <label for="remember_me" class="inline-flex items-center">
-                            <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" name="remember">
-                            <span class="ml-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-                        </label>
-                    </div>
-
-                    <div class="flex items-center justify-end mt-4">
-                        <x-button class="bg-indigo-500 ml-3">
-                            {{ __('Log in with Discord') }}
-                        </x-button>
-                    </div>
-                </form>
-                {{--<div class="flex flex-wrap items-center justify-center">
+                <div class="flex flex-wrap items-center justify-center">
                     <x-button-link class="block bg-indigo-500 ml-3" href="{{ route('discord.redirect') }}">
                         {{ __('Login with Discord') }}
                     </x-button-link>
-                </div>--}}
+                </div>
             </x-utils.card>
 
             <div class="flex flex-wrap items-center justify-center mt-6">

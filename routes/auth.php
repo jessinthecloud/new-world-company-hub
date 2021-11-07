@@ -13,29 +13,22 @@ use Illuminate\Support\Facades\Route;
 
 /**
  * Auth via Discord API
- *
+ */
 Route::get('/auth/discord/redirect', [\App\Http\Controllers\Auth\DiscordAuthController::class, 'redirect'])
                 ->name( 'discord.redirect');
 
-Route::get('/auth/discord/callback', [\App\Http\Controllers\Auth\RegisteredDiscordUserController::class, 'callback'])
+Route::get('/auth/discord/callback', [\App\Http\Controllers\Auth\DiscordAuthController::class, 'callback'])
                 ->name( 'discord.callback');
-
-Route::get('/auth/discord/store', [\App\Http\Controllers\Auth\RegisteredDiscordUserController::class, 'store'])
-                ->name( 'discord.store');
-
-Route::post('/auth/discord/login', [\App\Http\Controllers\Auth\DiscordAuthController::class, 'store'])
-                ->middleware('guest')
-                ->name('discord.login');
 
 /**
  * Breeze Routes
  */
-/*Route::get('/register', [RegisteredUserController::class, 'create'])
+Route::get('/register', [RegisteredUserController::class, 'create'])
                 ->middleware('guest')
                 ->name('register');
 
 Route::post('/register', [RegisteredUserController::class, 'store'])
-                ->middleware('guest');*/
+                ->middleware('guest');
 
 Route::get('/login', [AuthenticatedSessionController::class, 'create'])
                 ->middleware('guest')
