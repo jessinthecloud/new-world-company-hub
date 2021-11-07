@@ -12,7 +12,6 @@ class CompanySeeder extends Seeder
         DB::table('companies')->insert([
            [
                'name' => 'Gaiscioch',
-               'tag' => 'GSCH',
                'faction_id' => 1,
                'created_at' => now(),
                'updated_at' => now(),

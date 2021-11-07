@@ -16,6 +16,10 @@
                 :title="'Characters'"
                 class="min-w-1/3 mb-6 lg:mr-6"
             >
+                <x-button-link href="{{ route('characters.index') }}">
+                    View All
+                </x-button-link>
+                
                 <x-button-link href="{{ route('characters.create') }}">
                     Create
                 </x-button-link>

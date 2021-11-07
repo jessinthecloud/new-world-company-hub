@@ -20,11 +20,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard', ['form_action'=>route('dashboard')]);
-})->middleware(['auth'])->name('dashboard');
+Route::middleware(['auth', 'role:super-admin'])->group(function(){
 
-Route::middleware('auth')->group(function(){
+    Route::get('/dashboard', function () {
+        return view('dashboard', ['form_action'=>route('dashboard')]);
+    })->name('dashboard');
 
     // choose from drop down
     Route::get('/characters/choose', [\App\Http\Controllers\CharactersController::class, 'choose'])->name('characters.choose');
@@ -48,6 +48,7 @@ Route::middleware('auth')->group(function(){
         'factions' => \App\Http\Controllers\FactionsController::class,
     ]);
 });
+
 
 /* 
 Route::middleware('admin')->group(function(){
