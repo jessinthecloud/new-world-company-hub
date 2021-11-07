@@ -18,7 +18,15 @@ a {
 } // a
 
 // -- FORMS -----------
+// add spacing to consecutive fields aligned horizontally
+.flex .field {
+    &:first-of-type,
+    & + .field {
+        margin-right: 1em;
+    }
+}
 .field {
+    // add spacing to consecutive fields aligned vertically
     &:first-of-type,
     & + .field {
         margin-bottom: 1em;

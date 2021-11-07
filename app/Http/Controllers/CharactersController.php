@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Character;
+use App\Models\CharacterClass;
 use App\Models\Rank;
 use App\Models\Skill;
 use App\Models\SkillType;
@@ -72,19 +73,32 @@ class CharactersController extends Controller
             return [$rank->name => $rank->id];
         })->all();
 
-        $character = $character->load('skills');
+        $classes = CharacterClass::distinct()->get()->mapWithKeys(function($class){
+            return [$class->name => $class->id];
+        })->all();
+
+        $character = $character->load('skills', 'rank', 'company', 'class', 'user');
         
         $skillTypes = SkillType::with(['skills' => function ($query) {
             $query->orderBy('order');
         }])->orderBy('order')->get()->all();
         
-        $options = '';
+        $rank_options = '';
         foreach($ranks as $text => $value) {
-            $options .= '<option value="'.$value.'"';
+            $rank_options .= '<option value="'.$value.'"';
                 if($character->rank->id === $value){
-                    $options .= ' SELECTED ';
+                    $rank_options .= ' SELECTED ';
                 }
-            $options .= '>'.$text.'</option>';
+            $rank_options .= '>'.$text.'</option>';
+        }
+
+        $class_options = '';
+        foreach($classes as $text => $value) {
+            $class_options .= '<option value="'.$value.'"';
+            if($character->class->id === $value){
+                $class_options .= ' SELECTED ';
+            }
+            $class_options .= '>'.$text.'</option>';
         }
         
         return view(
@@ -92,7 +106,8 @@ class CharactersController extends Controller
             [
                 'character' => $character,
                 'skillTypes' => $skillTypes,
-                'options' => $options,
+                'rank_options' => $rank_options,
+                'class_options' => $class_options,
                 'method' => 'PUT',
                 'form_action' => route('characters.update', ['character'=>$character]) 
             ]
@@ -101,7 +116,7 @@ class CharactersController extends Controller
 
     public function update( Request $request, Character $character )
     {
-        //
+    
     }
 
     public function destroy( Character $character )

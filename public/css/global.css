@@ -5,6 +5,10 @@ a.button-link {
   text-decoration: none;
 }
 
+.flex .field:first-of-type, .flex .field + .field {
+  margin-right: 1em;
+}
+
 .field:first-of-type, .field + .field {
   margin-bottom: 1em;
 }
