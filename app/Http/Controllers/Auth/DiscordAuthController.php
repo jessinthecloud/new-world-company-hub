@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\DiscordLoginRequest;
-use App\Http\Requests\Auth\LoginRequest;
 use App\Models\DiscordData;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
@@ -41,6 +39,8 @@ class DiscordAuthController extends Controller
      */
     public function redirect()
     {
+        // TODO: check for remember me before going to discord ?
+        
         return Socialite::driver('discord')
             // add additional scopes (stuff we can access)
             // all scopes: https://discord.com/developers/docs/topics/oauth2#shared-resources-oauth2-scopes
