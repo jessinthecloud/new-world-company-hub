@@ -32,6 +32,8 @@ Route::middleware('auth')->group(function(){
     Route::post('/companies/find', [\App\Http\Controllers\CompaniesController::class, 'find'])->name('companies.find');
 
     Route::post('/factions/find', [\App\Http\Controllers\FactionsController::class, 'find'])->name('factions.find');
+
+    Route::post('/loadouts/find', [\App\Http\Controllers\LoadoutsController::class, 'find'])->name('loadouts.find');
     
     /*Route::get('/characters/edit', [\App\Http\Controllers\CharactersController::class, 'edit'])->name('characters.edit.select');
     Route::get('/characters/destroy', [\App\Http\Controllers\CharactersController::class, 'destroy'])->name('characters.destroy.select');*/
