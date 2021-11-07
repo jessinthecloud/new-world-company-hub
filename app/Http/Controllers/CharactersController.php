@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Character;
 use App\Models\Rank;
 use App\Models\Skill;
+use App\Models\SkillType;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
@@ -73,6 +74,10 @@ class CharactersController extends Controller
 
         $character = $character->load('skills');
         
+        $skillTypes = SkillType::with(['skills' => function ($query) {
+            $query->orderBy('order');
+        }])->orderBy('order')->get()->all();
+        
         $options = '';
         foreach($ranks as $text => $value) {
             $options .= '<option value="'.$value.'"';
@@ -86,6 +91,7 @@ class CharactersController extends Controller
             'dashboard.character.create-edit', 
             [
                 'character' => $character,
+                'skillTypes' => $skillTypes,
                 'options' => $options,
                 'method' => 'PUT',
                 'form_action' => route('characters.update', ['character'=>$character]) 

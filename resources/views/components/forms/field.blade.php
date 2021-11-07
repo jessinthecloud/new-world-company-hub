@@ -1,4 +1,4 @@
-@props(['instructions', 'name', 'required'=>false, ])
+@props(['instructions', 'name'=>'', 'required'=>false, ])
 
 <div {!! $attributes->merge(['class' => 'field']) !!}>
     {{-- form inputs passed through --}}

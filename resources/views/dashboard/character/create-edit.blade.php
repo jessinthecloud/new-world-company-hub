@@ -36,15 +36,27 @@
                         >{!! $options ?? '' !!}</x-forms.select>
                     </x-forms.field>
                     
-                    <div class="character-skills flex flex-wrap justify-start">
-                        @foreach($skills as $skill)
-                            <x-forms.field :name="'skill_'.$skill->id" class="flex flex-wrap justify-start items-center w-1/4 pr-4">
-                                <x-forms.label for="'skill-'.$skill->id" class="min-w-content w-28 mr-2" :required="false">
-                                    {{ $skill->name }}:
-                                </x-forms.label>
-                                <x-forms.input id="'skill-'.$skill->id" type="text" name="'skill-'.$skill->id" size="5" class="" :required="false" 
-                                    value="{{ old('skill-'.$skill->id) ?? ((isset($character)) ? $character->skills->where('id', $skill->id) : null) ?? '' }}"/>
-                            </x-forms.field>
+                    <div class="character-skills border rounded-md p-6 mt-6">
+                        <h3 class="mb-6">Skills</h3>
+                        @foreach($skillTypes as $skillType)
+                            <x-forms.field class="flex flex-wrap justify-start">
+                                <h4 class="w-full mb-4">{{ $skillType->name }}</h4>
+                                @foreach($skillType->skills as $skill)
+                                    <x-forms.field :name="'skill_'.$skill->id" class="flex flex-wrap justify-start items-center w-1/4 pr-4">
+                                        <x-forms.label for="'skill-'.$skill->id" class="min-w-content w-28 mr-2 text-right" :required="false">
+                                            {{ $skill->name }}:
+                                        </x-forms.label>
+                                        <x-forms.input id="'skill-'.$skill->id" type="text" name="'skill-'.$skill->id" size="5" class="" :required="false" 
+                                            value="{{ old('skill-'.$skill->id) 
+                                                ?? ((isset($character) 
+                                                    && $character->skills->where('id', $skill->id)->first() !== null) 
+                                                        ? $character->skills->where('id', $skill->id)->first()->pivot->level 
+                                                        : null) 
+                                                ?? 0 }}"
+                                        />
+                                    </x-forms.field>
+                                @endforeach
+                            </x-forms.field>                             
                         @endforeach
                     </div>
                 </x-forms.form>
