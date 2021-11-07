@@ -35,15 +35,18 @@
                             :required="true"
                         >{!! $options ?? '' !!}</x-forms.select>
                     </x-forms.field>
-            
-                    {{-- 
-                    <x-forms.field :name="'skill'">
-                        <x-forms.label for="skill">Skill:</x-forms.label>
-                        <x-forms.select name="skill" id="skill"
-                            :values="$skills"
-                        ></x-forms.select>
-                    </x-forms.field>
-                    --}}
+                    
+                    <div class="character-skills flex flex-wrap justify-start">
+                        @foreach($skills as $skill)
+                            <x-forms.field :name="'skill_'.$skill->id" class="flex flex-wrap justify-start items-center w-1/4 pr-4">
+                                <x-forms.label for="'skill-'.$skill->id" class="min-w-content w-28 mr-2" :required="false">
+                                    {{ $skill->name }}:
+                                </x-forms.label>
+                                <x-forms.input id="'skill-'.$skill->id" type="text" name="'skill-'.$skill->id" size="5" class="" :required="false" 
+                                    value="{{ old('skill-'.$skill->id) ?? ((isset($character)) ? $character->skills->where('id', $skill->id) : null) ?? '' }}"/>
+                            </x-forms.field>
+                        @endforeach
+                    </div>
                 </x-forms.form>
             </x-dashboard.section>
         </div>

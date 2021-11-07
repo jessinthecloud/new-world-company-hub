@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Character;
 use App\Models\Rank;
+use App\Models\Skill;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
@@ -39,13 +40,11 @@ class CharactersController extends Controller
             return [$rank->name => $rank->id];
         })->all();
 
-        /*$skills = Skill::distinct()->get()->mapWithKeys(function($skill, $key){
-            return [$skill->name => $skill->id];
-        })->all();*/
+        $skills = Skill::distinct()->get()->all();
     
         return view(
             'dashboard.character.create-edit', 
-            compact('ranks')
+            compact('ranks', 'skills')
         );
     }
 
@@ -71,6 +70,8 @@ class CharactersController extends Controller
         $ranks = Rank::distinct()->get()->mapWithKeys(function($rank){
             return [$rank->name => $rank->id];
         })->all();
+
+        $character = $character->load('skills');
         
         $options = '';
         foreach($ranks as $text => $value) {
@@ -84,7 +85,7 @@ class CharactersController extends Controller
         return view(
             'dashboard.character.create-edit', 
             [
-                'character' => $character, 
+                'character' => $character,
                 'options' => $options,
                 'method' => 'PUT',
                 'form_action' => route('characters.update', ['character'=>$character]) 

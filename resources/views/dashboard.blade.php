@@ -11,15 +11,11 @@
                 :title="'Characters'"
                 class="lg:mr-6"
             >
-                <x-button-link 
-                    href="{{ route('characters.create') }}"
-                >
+                <x-button-link href="{{ route('characters.create') }}">
                     Create
                 </x-button-link>
 
-                <x-button-link
-                    href="{{ route('characters.index') }}"
-                >
+                <x-button-link href="{{ route('characters.index') }}">
                     Edit / Delete
                 </x-button-link>
             </x-dashboard.section>
@@ -27,15 +23,11 @@
             <x-dashboard.section
                 :title="'Loadouts'"
             >
-                <x-button-link
-                    href="{{ route('loadouts.create') }}"
-                >
+                <x-button-link href="{{ route('loadouts.create') }}">
                     Create
                 </x-button-link>
 
-                <x-button-link
-                    href="{{ route('loadouts.index') }}"
-                >
+                <x-button-link href="{{ route('loadouts.index') }}">
                     Edit / Delete
                 </x-button-link>
             </x-dashboard.section>

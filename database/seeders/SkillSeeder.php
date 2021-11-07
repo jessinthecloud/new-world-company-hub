@@ -13,6 +13,7 @@ class SkillSeeder extends Seeder
            [
            'name' => 'Weaponsmithing',
            'description' => '',
+           'order' => 10,
            'skill_type_id' => 1,
            'created_at' => now(),
            'updated_at' => now(),
@@ -20,6 +21,7 @@ class SkillSeeder extends Seeder
            [
            'name' => 'Armoring',
            'description' => '',
+           'order' => 20,
            'skill_type_id' => 1,
            'created_at' => now(),
            'updated_at' => now(),
@@ -27,6 +29,7 @@ class SkillSeeder extends Seeder
            [
            'name' => 'Engineering',
            'description' => '',
+           'order' => 30,
            'skill_type_id' => 1,
            'created_at' => now(),
            'updated_at' => now(),
@@ -34,6 +37,7 @@ class SkillSeeder extends Seeder
            [
            'name' => 'Jewelcrafting',
            'description' => '',
+           'order' => 40,
            'skill_type_id' => 1,
            'created_at' => now(),
            'updated_at' => now(),
@@ -41,6 +45,7 @@ class SkillSeeder extends Seeder
            [
            'name' => 'Arcana',
            'description' => '',
+           'order' => 50,
            'skill_type_id' => 1,
            'created_at' => now(),
            'updated_at' => now(),
@@ -48,6 +53,7 @@ class SkillSeeder extends Seeder
            [
            'name' => 'Cooking',
            'description' => '',
+           'order' => 60,
            'skill_type_id' => 1,
            'created_at' => now(),
            'updated_at' => now(),
@@ -55,6 +61,7 @@ class SkillSeeder extends Seeder
            [
            'name' => 'Furnishing',
            'description' => '',
+           'order' => 70,
            'skill_type_id' => 1,
            'created_at' => now(),
            'updated_at' => now(),
@@ -63,6 +70,7 @@ class SkillSeeder extends Seeder
            [
            'name' => 'Smelting',
            'description' => '',
+           'order' => 80,
            'skill_type_id' => 2,
            'created_at' => now(),
            'updated_at' => now(),
@@ -70,6 +78,7 @@ class SkillSeeder extends Seeder
            [
            'name' => 'Woodworking',
            'description' => '',
+           'order' => 90,
            'skill_type_id' => 2,
            'created_at' => now(),
            'updated_at' => now(),
@@ -77,6 +86,7 @@ class SkillSeeder extends Seeder
            [
            'name' => 'Leatherworking',
            'description' => '',
+           'order' => 100,
            'skill_type_id' => 2,
            'created_at' => now(),
            'updated_at' => now(),
@@ -84,6 +94,7 @@ class SkillSeeder extends Seeder
            [
            'name' => 'Weaving',
            'description' => '',
+           'order' => 110,
            'skill_type_id' => 2,
            'created_at' => now(),
            'updated_at' => now(),
@@ -91,6 +102,7 @@ class SkillSeeder extends Seeder
            [
            'name' => 'Stonecutting',
            'description' => '',
+           'order' => 120,
            'skill_type_id' => 2,
            'created_at' => now(),
            'updated_at' => now(),
@@ -99,6 +111,7 @@ class SkillSeeder extends Seeder
            [
            'name' => 'Logging',
            'description' => '',
+           'order' => 130,
            'skill_type_id' => 3,
            'created_at' => now(),
            'updated_at' => now(),
@@ -106,6 +119,7 @@ class SkillSeeder extends Seeder
            [
            'name' => 'Mining',
            'description' => '',
+           'order' => 140,
            'skill_type_id' => 3,
            'created_at' => now(),
            'updated_at' => now(),
@@ -113,6 +127,7 @@ class SkillSeeder extends Seeder
            [
            'name' => 'Fishing',
            'description' => '',
+           'order' => 150,
            'skill_type_id' => 3,
            'created_at' => now(),
            'updated_at' => now(),
@@ -120,13 +135,15 @@ class SkillSeeder extends Seeder
            [
            'name' => 'Harvesting',
            'description' => '',
+           'order' => 160,
            'skill_type_id' => 3,
            'created_at' => now(),
            'updated_at' => now(),
            ],
            [
-           'name' => 'Skinning',
+           'name' => 'Tracking & Skinning',
            'description' => '',
+           'order' => 170,
            'skill_type_id' => 3,
            'created_at' => now(),
            'updated_at' => now(),
@@ -135,6 +152,7 @@ class SkillSeeder extends Seeder
            [
            'name' => 'Sword and Shield',
            'description' => '',
+           'order' => 180,
            'skill_type_id' => 4,
            'created_at' => now(),
            'updated_at' => now(),
@@ -142,6 +160,7 @@ class SkillSeeder extends Seeder
            [
            'name' => 'Rapier',
            'description' => '',
+           'order' => 190,
            'skill_type_id' => 4,
            'created_at' => now(),
            'updated_at' => now(),
@@ -149,6 +168,7 @@ class SkillSeeder extends Seeder
            [
            'name' => 'Hatchet',
            'description' => '',
+           'order' => 200,
            'skill_type_id' => 4,
            'created_at' => now(),
            'updated_at' => now(),
@@ -156,6 +176,7 @@ class SkillSeeder extends Seeder
            [
            'name' => 'Spear',
            'description' => '',
+           'order' => 210,
            'skill_type_id' => 4,
            'created_at' => now(),
            'updated_at' => now(),
@@ -163,6 +184,7 @@ class SkillSeeder extends Seeder
            [
            'name' => 'Great Axe',
            'description' => '',
+           'order' => 220,
            'skill_type_id' => 4,
            'created_at' => now(),
            'updated_at' => now(),
@@ -170,6 +192,7 @@ class SkillSeeder extends Seeder
            [
            'name' => 'War Hammer',
            'description' => '',
+           'order' => 230,
            'skill_type_id' => 4,
            'created_at' => now(),
            'updated_at' => now(),
@@ -177,6 +200,7 @@ class SkillSeeder extends Seeder
            [
            'name' => 'Bow',
            'description' => '',
+           'order' => 240,
            'skill_type_id' => 4,
            'created_at' => now(),
            'updated_at' => now(),
@@ -184,6 +208,7 @@ class SkillSeeder extends Seeder
            [
            'name' => 'Musket',
            'description' => '',
+           'order' => 250,
            'skill_type_id' => 4,
            'created_at' => now(),
            'updated_at' => now(),
@@ -191,6 +216,7 @@ class SkillSeeder extends Seeder
            [
            'name' => 'Fire Staff',
            'description' => '',
+           'order' => 260,
            'skill_type_id' => 4,
            'created_at' => now(),
            'updated_at' => now(),
@@ -198,6 +224,7 @@ class SkillSeeder extends Seeder
            [
            'name' => 'Life Staff',
            'description' => '',
+           'order' => 270,
            'skill_type_id' => 4,
            'created_at' => now(),
            'updated_at' => now(),
@@ -205,6 +232,7 @@ class SkillSeeder extends Seeder
            [
            'name' => 'Ice Gauntlet',
            'description' => '',
+           'order' => 280,
            'skill_type_id' => 4,
            'created_at' => now(),
            'updated_at' => now(),
