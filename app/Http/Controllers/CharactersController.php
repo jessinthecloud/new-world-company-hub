@@ -59,6 +59,13 @@ class CharactersController extends Controller
         //
     }
 
+    /**
+     * Character edit form 
+     * 
+     * @param \App\Models\Character $character
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function edit( Character $character )
     {
         $ranks = Rank::distinct()->get()->mapWithKeys(function($rank){

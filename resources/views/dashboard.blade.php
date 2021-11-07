@@ -18,7 +18,7 @@
                 </x-button-link>
 
                 <x-button-link
-                    href="{{ route('characters.edit') }}"
+                    href="{{ route('characters.index') }}"
                 >
                     Edit / Delete
                 </x-button-link>
