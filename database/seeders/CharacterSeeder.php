@@ -24,8 +24,8 @@ class CharacterSeeder extends Seeder
                 )
             )
             ->hasAttached(
-                Skill::all()->random(3),
-                ['level' => abs(rand(1,100))],
+                Skill::all()->random(Skill::count()),
+                ['level' => abs(rand(0,100))],
             )
             ->create();
     }
