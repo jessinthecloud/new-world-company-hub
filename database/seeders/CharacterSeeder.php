@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Company;
 use App\Models\Skill;
 use Illuminate\Database\Seeder;
 use App\Models\Character;
@@ -19,7 +20,8 @@ class CharacterSeeder extends Seeder
             ->state(new Sequence(
                     fn ($sequence) => [
                         'character_class_id' => CharacterClass::all()->random(),
-                        'rank_id' => Rank::all()->random()
+                        'rank_id' => Rank::all()->random(),
+                        'company_id' => Company::all()->random(),
                     ],
                 )
             )
