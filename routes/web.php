@@ -28,8 +28,10 @@ Route::middleware('auth')->group(function(){
     // find char selected in drop down
     Route::post('/characters/find', [\App\Http\Controllers\CharactersController::class, 'find'])->name('characters.find');
 
-    // find char selected in drop down
+    // find company selected in drop down
     Route::post('/companies/find', [\App\Http\Controllers\CompaniesController::class, 'find'])->name('companies.find');
+
+    Route::post('/factions/find', [\App\Http\Controllers\FactionsController::class, 'find'])->name('factions.find');
     
     /*Route::get('/characters/edit', [\App\Http\Controllers\CharactersController::class, 'edit'])->name('characters.edit.select');
     Route::get('/characters/destroy', [\App\Http\Controllers\CharactersController::class, 'destroy'])->name('characters.destroy.select');*/
@@ -38,6 +40,7 @@ Route::middleware('auth')->group(function(){
         'characters' => \App\Http\Controllers\CharactersController::class,
         'loadouts' => \App\Http\Controllers\LoadoutsController::class,
         'companies' => \App\Http\Controllers\CompaniesController::class,
+        'factions' => \App\Http\Controllers\FactionsController::class,
     ]);
 });
 

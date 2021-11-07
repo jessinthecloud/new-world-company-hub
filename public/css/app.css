@@ -7043,6 +7043,26 @@ select {
   min-width: max-content;
 }
 
+.min-w-1\/4 {
+  min-width: 25%;
+}
+
+.min-w-1\/3 {
+  min-width: 33%;
+}
+
+.min-w-1\/2 {
+  min-width: 50%;
+}
+
+.min-w-2\/3 {
+  min-width: 66%;
+}
+
+.min-w-3\/4 {
+  min-width: 75%;
+}
+
 .max-w-0 {
   max-width: 0rem;
 }
@@ -38481,6 +38501,26 @@ p {
     min-width: max-content;
   }
 
+  .sm\:min-w-1\/4 {
+    min-width: 25%;
+  }
+
+  .sm\:min-w-1\/3 {
+    min-width: 33%;
+  }
+
+  .sm\:min-w-1\/2 {
+    min-width: 50%;
+  }
+
+  .sm\:min-w-2\/3 {
+    min-width: 66%;
+  }
+
+  .sm\:min-w-3\/4 {
+    min-width: 75%;
+  }
+
   .sm\:max-w-0 {
     max-width: 0rem;
   }
@@ -69787,6 +69827,26 @@ p {
     min-width: -webkit-max-content;
     min-width: -moz-max-content;
     min-width: max-content;
+  }
+
+  .md\:min-w-1\/4 {
+    min-width: 25%;
+  }
+
+  .md\:min-w-1\/3 {
+    min-width: 33%;
+  }
+
+  .md\:min-w-1\/2 {
+    min-width: 50%;
+  }
+
+  .md\:min-w-2\/3 {
+    min-width: 66%;
+  }
+
+  .md\:min-w-3\/4 {
+    min-width: 75%;
   }
 
   .md\:max-w-0 {
@@ -101097,6 +101157,26 @@ p {
     min-width: max-content;
   }
 
+  .lg\:min-w-1\/4 {
+    min-width: 25%;
+  }
+
+  .lg\:min-w-1\/3 {
+    min-width: 33%;
+  }
+
+  .lg\:min-w-1\/2 {
+    min-width: 50%;
+  }
+
+  .lg\:min-w-2\/3 {
+    min-width: 66%;
+  }
+
+  .lg\:min-w-3\/4 {
+    min-width: 75%;
+  }
+
   .lg\:max-w-0 {
     max-width: 0rem;
   }
@@ -132405,6 +132485,26 @@ p {
     min-width: max-content;
   }
 
+  .xl\:min-w-1\/4 {
+    min-width: 25%;
+  }
+
+  .xl\:min-w-1\/3 {
+    min-width: 33%;
+  }
+
+  .xl\:min-w-1\/2 {
+    min-width: 50%;
+  }
+
+  .xl\:min-w-2\/3 {
+    min-width: 66%;
+  }
+
+  .xl\:min-w-3\/4 {
+    min-width: 75%;
+  }
+
   .xl\:max-w-0 {
     max-width: 0rem;
   }
@@ -163711,6 +163811,26 @@ p {
     min-width: -webkit-max-content;
     min-width: -moz-max-content;
     min-width: max-content;
+  }
+
+  .\32xl\:min-w-1\/4 {
+    min-width: 25%;
+  }
+
+  .\32xl\:min-w-1\/3 {
+    min-width: 33%;
+  }
+
+  .\32xl\:min-w-1\/2 {
+    min-width: 50%;
+  }
+
+  .\32xl\:min-w-2\/3 {
+    min-width: 66%;
+  }
+
+  .\32xl\:min-w-3\/4 {
+    min-width: 75%;
   }
 
   .\32xl\:max-w-0 {

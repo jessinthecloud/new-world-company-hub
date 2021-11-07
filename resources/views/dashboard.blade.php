@@ -14,7 +14,7 @@
         <div id="wrapper-inner" class="max-w-7xl mx-auto flex flex-wrap sm:px-6 lg:px-8">
             <x-dashboard.section 
                 :title="'Characters'"
-                class="lg:mr-6"
+                class="min-w-1/3 mb-6 lg:mr-6"
             >
                 <x-button-link href="{{ route('characters.create') }}">
                     Create
@@ -27,7 +27,7 @@
 
             <x-dashboard.section
                 :title="'Loadouts'"
-                class="lg:mr-6"
+                class="min-w-1/3 mb-6"
             >
                 <x-button-link href="{{ route('loadouts.create') }}">
                     Create
@@ -40,12 +40,26 @@
 
             <x-dashboard.section
                 :title="'Companies'"
+                class="min-w-1/3 mb-6 lg:mr-6"
             >
                 <x-button-link href="{{ route('companies.create') }}">
                     Create
                 </x-button-link>
 
                 <x-button-link href="{{ route('companies.index') }}">
+                    Edit / Delete
+                </x-button-link>
+            </x-dashboard.section>
+
+            <x-dashboard.section
+                :title="'Factions'"
+                class="min-w-1/3  mb-6"
+            >
+                <x-button-link href="{{ route('factions.create') }}">
+                    Create
+                </x-button-link>
+
+                <x-button-link href="{{ route('factions.index') }}">
                     Edit / Delete
                 </x-button-link>
             </x-dashboard.section>
