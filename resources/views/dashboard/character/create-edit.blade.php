@@ -17,7 +17,8 @@
                     {{-- set the custom $method variable --}}
                     {{-- (not the form method attribute) --}}
                     :method="$method ?? null"
-                    class="flex flex-wrap"
+                    :button-text="$button_text"
+                    class="flex flex-wrap justify-start"
                 >
                     <x-forms.field :name="'name'">
                         <x-forms.label for="name" :required="true">Name:</x-forms.label>
@@ -29,6 +30,14 @@
                             value="{{ old('name') ?? $character->name ?? '' }}"
                             :required="true" 
                         />
+                    </x-forms.field>
+
+                    <x-forms.field :name="'company'" class="mb-6">
+                        <x-forms.label for="company" :required="true">Company:</x-forms.label>
+                        <x-forms.select name="company" id="company"
+                            :values="$companies ?? null"
+                            :required="true"
+                        >{!! $company_options ?? '' !!}</x-forms.select>
                     </x-forms.field>
                     
                     <x-forms.field :name="'rank'" class="mb-6">
@@ -50,18 +59,18 @@
                     <x-forms.field :name="'level'">
                         <x-forms.label for="level" :required="true">Level:</x-forms.label>
                         <x-forms.input
-                                id="level"
-                                class=""
-                                type="text"
-                                name="level"
-                                size="10"
-                                value="{{ old('level') ?? $character->level ??'' }}"
-                                :required="true"
+                            id="level"
+                            class=""
+                            type="text"
+                            name="level"
+                            size="10"
+                            value="{{ old('level') ?? $character->level ?? '' }}"
+                            :required="true"
                         />
                     </x-forms.field>
                     
-                    <div class="character-skills border rounded-md p-6 mt-6">
-                        <h3 class="mb-6">Skills</h3>
+                    <div class="character-skills border rounded-md p-6 mt-6 mb-6">
+                        <h3 class="mb-6">Skill Levels</h3>
                         @foreach($skillTypes as $skillType)
                             <x-forms.field class="flex flex-wrap justify-start border-t pt-4">
                                 <h4 class="w-full mb-4">{{ $skillType->name }}</h4>
@@ -88,7 +97,7 @@
                                                     && $character->skills->where('id', $skill->id)->first() !== null) 
                                                         ? $character->skills->where('id', $skill->id)->first()->pivot->level 
                                                         : null) 
-                                                ?? 0 }}"
+                                                ?? '' }}"
                                             :required="false"
                                         />
                                     </x-forms.field>
@@ -96,6 +105,13 @@
                             </x-forms.field>                             
                         @endforeach
                     </div>
+                    
+                    <x-slot name="button">
+                        <div class="flex flex-wrap flex-grow justify-end">
+                            <x-button>{{ $button_text }}</x-button>
+                        </div>
+                    </x-slot>
+                    
                 </x-forms.form>
             </x-dashboard.section>
         </div>

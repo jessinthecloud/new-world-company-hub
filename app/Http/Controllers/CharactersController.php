@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CharacterUpsertRequest;
 use App\Models\Character;
 use App\Models\CharacterClass;
+use App\Models\Company;
 use App\Models\Rank;
 use App\Models\Skill;
 use App\Models\SkillType;
@@ -43,17 +44,53 @@ class CharactersController extends Controller
             return [$rank->name => $rank->id];
         })->all();
 
-        $skills = Skill::distinct()->get()->all();
+        $classes = CharacterClass::with('type')->get()->mapWithKeys(function($class){
+            return [$class->name.' ('.$class->type->name.')' => $class->id];
+        })->all();
+
+        $companies = Company::with('faction')->get()->mapWithKeys(function($company){
+            return [$company->name.' ('.$company->faction->name.')' => $company->id];
+        })->all();
+
+        $skillTypes = SkillType::with(['skills' => function ($query) {
+            $query->orderBy('order');
+        }])->orderBy('order')->get()->all();
+        
+    
+        $form_action = route('characters.store');
+        $button_text = 'Create';
     
         return view(
             'dashboard.character.create-edit', 
-            compact('ranks', 'skills')
+            compact('ranks', 'skillTypes', 'classes', 'companies', 'form_action', 'button_text')
         );
     }
 
     public function store( CharacterUpsertRequest $request )
     {
-        //
+        $validated = $request->validated();
+//dump($validated, $character, $character->skills->pluck('pivot')->pluck('level')/*, $request*/);
+        $character = Character::create([
+            'name' => $validated['name'],
+            'level' => $validated['level'],
+            // relations
+            'character_class_id' => $validated['class'],
+            'rank_id' => $validated['rank'],
+            'company_id' => $validated['company'],
+        ]);
+        // update skills levels related to this character on pivot table
+        foreach($validated['skills'] as $skill_id => $level){
+            // don't need to ->save()
+            $character->skills()->attach($skill_id, ['level'=>$level ?? 0]);
+        }
+
+//        dump($character, $character->skills->pluck('pivot')->pluck('level'));
+        return redirect(route('dashboard'))->with([
+            'status'=> [
+                'type'=>'success',
+                'message' => 'Character created successfully'
+            ]
+        ]);
     }
 
     public function show( Character $character )
@@ -75,7 +112,11 @@ class CharactersController extends Controller
         })->all();
 
         $classes = CharacterClass::distinct()->get()->mapWithKeys(function($class){
-            return [$class->name => $class->id];
+            return [$class->name.' ('.$class->type->name.')' => $class->id];
+        })->all();
+
+        $companies = Company::with('faction')->get()->mapWithKeys(function($company){
+            return [$company->name.' ('.$company->faction->name.')' => $company->id];
         })->all();
 
         $character = $character->load('skills', 'rank', 'company', 'class', 'user');
@@ -99,7 +140,16 @@ class CharactersController extends Controller
             if($character->class->id === $value){
                 $class_options .= ' SELECTED ';
             }
-            $class_options .= '>'.$text.' ('.$character->class->type->name.')</option>';
+            $class_options .= '>'.$text.'</option>';
+        }
+
+        $company_options = '';
+        foreach($companies as $text => $value) {
+            $company_options .= '<option value="'.$value.'"';
+            if($character->company->id === $value){
+                $company_options .= ' SELECTED ';
+            }
+            $company_options .= '>'.$text.'</option>';
         }
         
         return view(
@@ -109,8 +159,10 @@ class CharactersController extends Controller
                 'skillTypes' => $skillTypes,
                 'rank_options' => $rank_options,
                 'class_options' => $class_options,
+                'company_options' => $company_options,
                 'method' => 'PUT',
-                'form_action' => route('characters.update', ['character'=>$character]) 
+                'form_action' => route('characters.update', ['character'=>$character]), 
+                'button_text' => 'Edit',
             ]
         );
     }
@@ -124,11 +176,12 @@ class CharactersController extends Controller
         // relations
         $character->rank()->associate($validated['rank']);
         $character->class()->associate($validated['class']);
+        $character->company()->associate($validated['company']);
         $character->save();
         // update skills levels related to this character on pivot table
         foreach($validated['skills'] as $skill => $level){
             // don't need to save
-            $character->skills()->updateExistingPivot($skill, ['level'=>$level]);
+            $character->skills()->updateExistingPivot($skill, ['level'=>$level ?? 0]);
         }
         
 //        dump($character, $character->skills->pluck('pivot')->pluck('level'));
@@ -142,6 +195,13 @@ class CharactersController extends Controller
 
     public function destroy( Character $character )
     {
-        //
+        Character::destroy($character);
+        
+        return redirect(route('dashboard'))->with([
+            'status'=> [
+                'type'=>'success',
+                'message' => 'Character deleted successfully'
+            ]
+        ]);
     }
 }
