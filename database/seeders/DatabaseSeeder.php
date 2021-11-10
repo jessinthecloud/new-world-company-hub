@@ -17,7 +17,10 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
 
-        $this->call(RoleSeeder::class);
+        $this->call([
+            PermissionSeeder::class,
+//            RoleSeeder::class,
+        ]);
         
         // create Faction entries and override with default values
          \App\Models\User::factory()
