@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             PermissionSeeder::class,
-//            RoleSeeder::class,
+            RoleSeeder::class,
         ]);
         
         // create Faction entries and override with default values
