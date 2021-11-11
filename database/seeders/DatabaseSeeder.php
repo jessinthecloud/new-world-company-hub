@@ -23,17 +23,19 @@ class DatabaseSeeder extends Seeder
         ]);
         
         // create Faction entries and override with default values
-         \App\Models\User::factory()
-             ->hasAttached(
-                 Role::where('name', '=', 'Super Admin')->first(),
+         $user = \App\Models\User::factory()
+             /*->hasAttached(
+                 Role::where('name', '=', 'super-admin')->first(),
                  ['team_id' => 0,]
-             )
+             )*/
             ->create([
                 'name' => 'Jess',
                 'email' => 'epwnaz@gmail.com',
                 'password' => Hash::make('password'),
                 'remember_token' => null,
             ]);
+            
+        $user->assignRole('super-admin');
         
         // run other seeders
         $this->call([

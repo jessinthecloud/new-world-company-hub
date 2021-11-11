@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
 use Spatie\Permission\PermissionRegistrar;
 
 class PermissionSeeder extends Seeder
@@ -14,11 +13,11 @@ class PermissionSeeder extends Seeder
         // Reset cached roles and permissions
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
         
-        $actions = ['do all', 'create', 'edit', 'view', 'delete'];
+        /*$actions = ['do all', 'create', 'edit', 'view', 'delete'];
         $ownership = ['for all', 'for my own', "for my company's", "for my faction's", 'for specific'];
         $models = [
             'User', 'Role', 'Permission', 'Faction', 'Company', 'Character', 'Loadout', 'Class', 'Class Type', 'Weapon', 'Weapon Type', 'Rank', 'Skill', 'Skill Type', 'Event', 'Roster', 'Position', 'House', 'Trophy', 'Trophy Type',
-        ];
+        ];*/
         
         // create permissions
         /*Permission::create(['name' => 'do all']);
@@ -127,6 +126,27 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'create own faction events']);
         Permission::create(['name' => 'edit own faction events']);
         Permission::create(['name' => 'delete own faction events']);
+
+// -- positions --
+        Permission::create(['name' => 'view positions']);
+        Permission::create(['name' => 'create positions']);
+        Permission::create(['name' => 'edit positions']);
+        Permission::create(['name' => 'delete positions']);
+        // their own
+        Permission::create(['name' => 'view own positions']);
+        Permission::create(['name' => 'create own positions']);
+        Permission::create(['name' => 'edit own positions']);
+        Permission::create(['name' => 'delete own positions']);
+        // their companies'
+        Permission::create(['name' => 'view own company positions']);
+        Permission::create(['name' => 'create own company positions']);
+        Permission::create(['name' => 'edit own company positions']);
+        Permission::create(['name' => 'delete own company positions']);
+        // their factions'
+        Permission::create(['name' => 'view own faction positions']);
+        Permission::create(['name' => 'create own faction positions']);
+        Permission::create(['name' => 'edit own faction positions']);
+        Permission::create(['name' => 'delete own faction positions']);
         
     // -- users --
         Permission::create(['name' => 'view users']);
