@@ -2,6 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models\Event;
+use App\Models\Position;
+use App\Models\Roster;
+use App\Policies\EventPolicy;
+use App\Policies\PositionPolicy;
+use App\Policies\RosterPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -14,6 +20,9 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+        Event::class    => EventPolicy::class,
+        Roster::class   => RosterPolicy::class,
+        Position::class => PositionPolicy::class,
     ];
 
     /**

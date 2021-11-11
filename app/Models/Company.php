@@ -15,4 +15,9 @@ class Company extends Model
     {
         return $this->hasMany(Character::class);
     }
+
+    public function events()
+    {
+        $this->hasMany(Event::class);
+    }
 }

@@ -38,4 +38,9 @@ class Character extends Model
     {
         return $this->hasMany(Loadout::class);
     }
+
+    public function positions()
+    {
+        return $this->hasMany(Position::class);
+    }
 }

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 
+use App\Models\EventType;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
@@ -36,6 +37,15 @@ class DatabaseSeeder extends Seeder
             ]);
             
         $user->assignRole('super-admin');
+        
+        // event types 
+        EventType::create([
+            'name' => 'War',
+//            'description' => '',
+        ], [
+            'name' => 'Invasion',
+        //            'description' => '',
+        ]);
         
         // run other seeders
         $this->call([
