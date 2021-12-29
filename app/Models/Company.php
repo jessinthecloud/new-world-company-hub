@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Company extends Model
 {
+    protected $guarded = [];
+    
     public function faction()
     {
         return $this->belongsTo(Faction::class);

@@ -33,6 +33,10 @@
                 :title="'Loadouts'"
                 class="min-w-1/3 mb-6"
             >
+                <x-button-link href="{{ route('loadouts.index') }}">
+                    View All
+                </x-button-link>
+                
                 <x-button-link href="{{ route('loadouts.create') }}">
                     Create
                 </x-button-link>
@@ -46,6 +50,10 @@
                 :title="'Companies'"
                 class="min-w-1/3 mb-6 lg:mr-6"
             >
+                <x-button-link href="{{ route('companies.index') }}">
+                    View All
+                </x-button-link>
+            
                 <x-button-link href="{{ route('companies.create') }}">
                     Create
                 </x-button-link>
@@ -59,11 +67,32 @@
                 :title="'Factions'"
                 class="min-w-1/3  mb-6"
             >
+                <x-button-link href="{{ route('factions.index') }}">
+                    View All
+                </x-button-link>
+                
                 <x-button-link href="{{ route('factions.create') }}">
                     Create
                 </x-button-link>
 
                 <x-button-link href="{{ route('factions.choose') }}">
+                    Edit / Delete
+                </x-button-link>
+            </x-dashboard.section>
+            
+            <x-dashboard.section
+                :title="'Weapons'"
+                class="min-w-1/3  mb-6"
+            >
+                <x-button-link href="{{ route('weapons.index') }}">
+                    View All
+                </x-button-link>
+                
+                <x-button-link href="{{ route('weapons.create') }}">
+                    Create
+                </x-button-link>
+
+                <x-button-link href="{{ route('weapons.choose') }}">
                     Edit / Delete
                 </x-button-link>
             </x-dashboard.section>

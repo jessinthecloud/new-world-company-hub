@@ -13,6 +13,11 @@ class LoadoutsController extends Controller
 {
     public function index()
     {
+        $loadouts = Loadout::with('character','main','offhand')->orderBy('name')->orderBy('weight')->get()->mapWithKeys(function($loadout){
+            return [$loadout->id => $loadout->name . ' (Main: '.$loadout->main->name.' -- Offhand: '.$loadout->off?->name.')'];
+        })->all();
+        
+        dump($loadouts);
     }
     
     public function choose()
@@ -50,7 +55,7 @@ class LoadoutsController extends Controller
         })->all();
         
         $form_action = route('loadouts.store');
-        $button_text = 'Create';
+        $button_text = 'Add';
 
         return view(
         'dashboard.loadout.create-edit',

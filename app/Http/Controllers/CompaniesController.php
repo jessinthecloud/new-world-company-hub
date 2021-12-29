@@ -12,6 +12,11 @@ class CompaniesController extends Controller
 {
     public function index()
     {
+        $companies = Company::with('faction')->orderBy('name')->get()->mapWithKeys(function($company){
+            return [$company->id => $company->name.' ('.$company->faction->name.')'];
+        })->all();
+        
+        dump($companies);
     }
 
     public function choose()

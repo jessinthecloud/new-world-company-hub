@@ -11,12 +11,17 @@ class FactionsController extends Controller
 {
     public function index()
     {
+        $factions = Faction::orderBy('name')->get()->mapWithKeys(function($faction){
+            return [$faction->name => $faction->id];
+        })->all();
+        
+        dump($factions);
     }
 
     public function choose()
     {
         $factions = Faction::orderBy('name')->get()->mapWithKeys(function($faction){
-            return [$faction->name => $faction->id];
+            return [$faction->id => $faction->name];
         })->all();
         $form_action = route('factions.find');
 

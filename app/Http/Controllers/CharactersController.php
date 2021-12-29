@@ -16,12 +16,17 @@ class CharactersController extends Controller
 {
     public function index()
     {
+        $characters = Character::with('class.type')->orderBy('name')->orderBy('level')->get()->mapWithKeys(function($character){
+            return [$character->id => $character->name.' (Level '.$character->level.') '.$character->class->name.' '.$character->class->type->name];
+        })->all();
+        
+        dump($characters);
     }
 
     public function choose()
     {
         $characters = Character::orderBy('name')->orderBy('level')->get()->mapWithKeys(function($character){
-            return [$character->name.' ( Level '.$character->level.')' => $character->id];
+            return [$character->name.' (Level '.$character->level.')' => $character->id];
         })->all();
         $form_action = route('characters.find');
         
@@ -62,7 +67,7 @@ class CharactersController extends Controller
         
     
         $form_action = route('characters.store');
-        $button_text = 'Create';
+        $button_text = 'Add';
     
         return view(
             'dashboard.character.create-edit', 

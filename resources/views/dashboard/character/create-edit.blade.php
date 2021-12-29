@@ -21,7 +21,7 @@
                     class="flex flex-wrap justify-start"
                 >
                     <x-forms.field :name="'name'">
-                        <x-forms.label for="name" :required="true">Name:</x-forms.label>
+                        <x-forms.label for="name" :required="true">Name (in-game):</x-forms.label>
                         <x-forms.input 
                             id="name"
                             class=""
