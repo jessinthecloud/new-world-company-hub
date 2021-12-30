@@ -12,11 +12,11 @@ class CreateCharactersTable extends Migration
             $table->bigIncrements( 'id' );
 
             $table->string('name');
-            $table->smallInteger('level');
+            $table->smallInteger('level')->nullable();
             $table->foreignId('character_class_id')->constrained();
             $table->foreignId('company_id')->constrained();
             $table->foreignId('user_id')->nullable()->constrained();
-            $table->foreignId('rank_id')->constrained();
+            $table->foreignId('rank_id')->nullable()->constrained();
 
             $table->timestamps();
         } );
