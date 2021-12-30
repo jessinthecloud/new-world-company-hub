@@ -70,16 +70,30 @@ class DiscordAuthController extends Controller
         try {
             $discordUser = Socialite::driver( 'discord' )->user();
 //dump($discordUser);
-            // find or create eloquent user
-            // account may exist and should be tied to discord data
-            $user = User::firstOrcreate(
-                [ 'email' => $discordUser->email, ],
-                [
+            // find or create eloquent user with this discord name
+            $user = User::where('discord_name',  $discordUser->nickname)->get();
+            if($user->isEmpty()){
+                // account may exist prior to logging in with discord
+                // and should be tied to discord data
+                $user = User::updateOrCreate(
+                    [ 'email' => $discordUser->email, ],
+                    [
+                        'name' => $discordUser->name,
+                        'email' => $discordUser->email,
+                        'discord_name' => $discordUser->nickname,
+                    ]
+                );
+            }
+            else{
+                $user = $user->sole()->update([
                     'name' => $discordUser->name,
                     'email' => $discordUser->email,
-                    'nickname' => $discordUser->nickname,
-                ]
-            );
+                    'discord_name' => $discordUser->nickname,
+                ]);
+                // may not need this
+                $user->save();
+            }
+            
 //dd($user);
             // update or save discord data and tie to user
             $data = DiscordData::updateOrCreate(
