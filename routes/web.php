@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
 Route::middleware(['guest'])->group(function() {
 
@@ -26,13 +26,33 @@ Route::middleware(['guest'])->group(function() {
 
 Route::middleware(['auth'])->group(function(){
 
+    // import rosters
+    Route::get(
+        '/import', 
+        [\App\Http\Controllers\ImportController::class, 'create'] 
+    )
+    ->name( 'import.create' );
+    Route::post(
+        '/import', 
+        [\App\Http\Controllers\ImportController::class, 'store'] 
+    )
+    ->name( 'import.store' );
+    
+
     // roster sign up
-    Route::get('/signup', function () {
-        return view( 'signup' );
-    })
+    Route::get(
+        '/{faction}/{company}/signup', 
+        [\App\Http\Controllers\RosterSignupController::class, 'signup'] 
+    )
     ->name( 'roster.signup' );
     
     Route::middleware(['role:super-admin'])->group(function() {
+    
+        // temp roster show
+        Route::get( '/roster', [\App\Http\Controllers\RostersController::class, 'show'] )->name(
+        'rosters.show'
+        );
+    
         Route::get( '/dashboard', function () {
             return view( 'dashboard', ['form_action' => route( 'dashboard' )] );
         } )->name( 'dashboard' );

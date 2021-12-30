@@ -95,6 +95,7 @@ class DiscordAuthController extends Controller
             }
             
 //dd($user);
+
             // update or save discord data and tie to user
             $data = DiscordData::updateOrCreate(
                 [ 'email' => $discordUser->email, ],

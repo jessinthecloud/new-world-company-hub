@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Character;
 use App\Models\Roster;
 use Illuminate\Http\Request;
 
@@ -9,7 +10,6 @@ class RostersController extends Controller
 {
     public function index()
     {
-        //
     }
 
     public function create()
@@ -22,9 +22,9 @@ class RostersController extends Controller
         //
     }
 
-    public function show( Roster $roster )
+    public function show( Roster $roster=null )
     {
-        //
+        ddd(Character::where('company_id', 1)->get()->all());
     }
 
     public function edit( Roster $roster )

@@ -12,6 +12,25 @@
     
     <div class="py-12">
         <div id="wrapper-inner" class="max-w-7xl mx-auto flex flex-wrap sm:px-6 lg:px-8">
+        
+            <x-dashboard.section 
+                :title="'Import'"
+                class="min-w-1/3 mb-6 lg:mr-6"
+            >
+                <x-button-link href="{{ route('import.create') }}">
+                    Import Roster
+                </x-button-link>
+            </x-dashboard.section>
+            
+            <x-dashboard.section 
+                :title="'Rosters'"
+                class="min-w-1/3 mb-6 lg:mr-6"
+            >
+                <x-button-link href="{{ route('rosters.show') }}">
+                    View Breakpoint Roster
+                </x-button-link>
+            </x-dashboard.section>
+        
             <x-dashboard.section 
                 :title="'Characters'"
                 class="min-w-1/3 mb-6 lg:mr-6"
