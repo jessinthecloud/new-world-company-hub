@@ -237,6 +237,14 @@ class SkillSeeder extends Seeder
            'created_at' => now(),
            'updated_at' => now(),
            ],
+           [
+           'name' => 'Void Gauntlet',
+           'description' => '',
+           'order' => 280,
+           'skill_type_id' => 4,
+           'created_at' => now(),
+           'updated_at' => now(),
+           ],
        ]);
     }
 }
