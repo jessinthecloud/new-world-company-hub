@@ -56,10 +56,10 @@ class DatabaseSeeder extends Seeder
             ClassSeeder::class,
             SkillSeeder::class,
             RankSeeder::class,
-            CharacterSeeder::class,
+//            CharacterSeeder::class,
             WeaponTypeSeeder::class,
             WeaponSeeder::class,
-            LoadoutSeeder::class,
+//            LoadoutSeeder::class,
         ]);
     }
 }
