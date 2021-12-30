@@ -6,6 +6,7 @@ use App\Models\Weapon;
 use App\Models\WeaponType;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class WeaponSeeder extends Seeder
 {
@@ -16,97 +17,97 @@ class WeaponSeeder extends Seeder
             ->state(new Sequence(
                 fn ($sequence) => [
                         'weapon_type_id' => WeaponType::all()->random(),
-                    ],
+                    (,
                 )
             )
             ->create();*/
 
         // simplify for now
-        return [
+        DB::table('weapons')->insert( [
             [ // 1
                 'name'        => 'Sword and Shield',
                 'description' => '',
-                'skill_id'    => 18,
+                'weapon_type_id' => 1,
                 'created_at'  => now(),
                 'updated_at'  => now(),
             ],
             [// 2
                 'name'        => 'Rapier',
                 'description' => '',
-                'skill_id'    => 19,
+                'weapon_type_id' => 2,
                 'created_at'  => now(),
                 'updated_at'  => now(),
             ],
             [// 3
                 'name'        => 'Hatchet',
                 'description' => '',
-                'skill_id'    => 20,
+                'weapon_type_id' => 3,
                 'created_at'  => now(),
                 'updated_at'  => now(),
             ],
             [// 4
                 'name'        => 'Spear',
                 'description' => '',
-                'skill_id'    => 21,
+                'weapon_type_id' => 4,
                 'created_at'  => now(),
                 'updated_at'  => now(),
             ],
             [// 5
                 'name'        => 'Great Axe',
                 'description' => '',
-                'skill_id'    => 22,
+                'weapon_type_id' => 5,
                 'created_at'  => now(),
                 'updated_at'  => now(),
             ],
             [ // 6 
                 'name'        => 'War Hammer',
                 'description' => '',
-                'skill_id'    => 23,
+                'weapon_type_id' => 6,
                 'created_at'  => now(),
                 'updated_at'  => now(),
             ],
             [ // 7
                 'name'        => 'Bow',
                 'description' => '',
-                'skill_id'    => 24,
+                'weapon_type_id' => 7,
                 'created_at'  => now(),
                 'updated_at'  => now(),
             ],
             [ // 8
                 'name'        => 'Musket',
                 'description' => '',
-                'skill_id'    => 25,
+                'weapon_type_id' => 8,
                 'created_at'  => now(),
                 'updated_at'  => now(),
             ],
             [ // 9
                 'name'        => 'Fire Staff',
                 'description' => '',
-                'skill_id'    => 26,
+                'weapon_type_id' => 9,
                 'created_at'  => now(),
                 'updated_at'  => now(),
             ],
             [ // 10
                 'name'        => 'Life Staff',
                 'description' => '',
-                'skill_id'    => 27,
+                'weapon_type_id' => 10,
                 'created_at'  => now(),
                 'updated_at'  => now(),
             ],
             [ // 11
                 'name'        => 'Ice Gauntlet',
                 'description' => '',
-                'skill_id'    => 28,
+                'weapon_type_id' => 11,
                 'created_at'  => now(),
                 'updated_at'  => now(),
             ],
             [ // 12
                 'name'        => 'Void Gauntlet',
                 'description' => '',
-                'skill_id'    => 29,
+                'weapon_type_id' => 12,
                 'created_at'  => now(),
                 'updated_at'  => now(),
             ],
-        ];
+        ]);
     }
 }
