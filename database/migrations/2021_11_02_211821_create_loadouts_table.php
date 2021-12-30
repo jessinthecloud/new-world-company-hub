@@ -12,7 +12,7 @@ class CreateLoadoutsTable extends Migration
             $table->bigIncrements( 'id' );
 
             $table->string('name')->nullable();
-            $table->unsignedFloat('weight');
+            $table->unsignedFloat('weight')->nullable();
             // class via character
             $table->foreignId('character_id')->constrained();
             $table->foreignId('main_hand_id')->constrained('weapons');
