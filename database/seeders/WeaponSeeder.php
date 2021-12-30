@@ -108,6 +108,20 @@ class WeaponSeeder extends Seeder
                 'created_at'  => now(),
                 'updated_at'  => now(),
             ],
+            [ // 9
+                'name'        => 'Firestaff',
+                'description' => '',
+                'weapon_type_id' => 9,
+                'created_at'  => now(),
+                'updated_at'  => now(),
+            ],
+            [ // 10
+                'name'        => 'Lifestaff',
+                'description' => '',
+                'weapon_type_id' => 10,
+                'created_at'  => now(),
+                'updated_at'  => now(),
+            ],
         ]);
     }
 }
