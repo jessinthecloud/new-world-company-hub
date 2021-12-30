@@ -12,8 +12,7 @@ class CreateRostersTable extends Migration
             $table->bigIncrements( 'id' );
 
             $table->string('name');
-            $table->dateTime('datetime');
-            $table->foreignId('event_id')->constrained();
+            $table->foreignId('event_id')->nullable()->constrained();
             $table->foreignId('company_id')->constrained();
 
             $table->timestamps();
