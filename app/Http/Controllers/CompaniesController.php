@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Livewire\CompanyTable;
 use App\Http\Requests\CompanyUpsertRequest;
+use App\Models\CharacterClass;
 use App\Models\Company;
 use App\Models\Faction;
+use App\Models\Weapon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -85,9 +87,17 @@ class CompaniesController extends Controller
      */
     public function show(Company $company)
     {
-//        $table = new CompanyTable(company: $company);
+        $classes = CharacterClass::orderBy('name')->get()->mapWithKeys(function($class){
+            return [$class->id => $class->name];
+        });
         
-        return view('company.show', compact('company'));
+        $weapons = Weapon::orderBy('name')->get()->mapWithKeys(function($class){
+            return [$class->id => $class->name];
+        });
+        
+        return view('company.show', 
+            compact('company', 'classes', 'weapons')
+        );
     }
 
     /**

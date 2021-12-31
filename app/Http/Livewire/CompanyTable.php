@@ -3,27 +3,42 @@
 namespace App\Http\Livewire;
 
 use App\Models\Character;
+use App\Models\CharacterClass;
 use App\Models\Company;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
+use Rappasoft\LaravelLivewireTables\Views\Filter;
 
 class CompanyTable extends DataTableComponent
 {
 
     public Company $company;
+    
+    // passed in as Collections and then made arrays
+    public $classes;
+    public $weapons;
 
     public function __construct( $id = null )
     {
         parent::__construct( $id );
+
     }
     
     // construct is called before company can be set,
     // so use livewire mount() to load
     // the company param sent
-    public function mount(Company $company)
+    public function mount(Company $company, Collection $classes, Collection $weapons)
     {
         $this->company = $company;
+        
+        // add "Any" to the front 
+        $classes->prepend('Any', '');
+        $weapons->prepend('Any', '');
+
+        $this->classes = $classes->all();
+        $this->weapons = $weapons->all();
     }
 
     public function columns() : array
@@ -38,17 +53,47 @@ class CompanyTable extends DataTableComponent
             Column::make( 'Class', 'class.name' )
                 ->sortable()
                 ->searchable(),
-            Column::make( 'Name', 'loadout.main.name' )
+            Column::make( 'Main Hand', 'loadout.main.name' )
                 ->sortable()
                 ->searchable(),
-            Column::make( 'Name', 'loadout.offhand.name' )
+            Column::make( 'Offhand', 'loadout.offhand.name' )
                 ->sortable()
                 ->searchable(),
+        ];
+    }
+    
+    public function filters(): array
+    {
+        return [
+            'class' => Filter::make('Class')
+                ->select($this->classes),
+            'weapon' => Filter::make('Weapon')
+                ->select($this->weapons),
+            /*'tags' => Filter::make('Tags')
+                ->multiSelect([
+                    'tag1' => 'Tags 1',
+                    'tag2' => 'Tags 2',
+                    'tag3' => 'Tags 3',
+                    'tag4' => 'Tags 4',
+                ]),    */ 
         ];
     }
 
     public function query() : Builder
     {
-        return Character::with('loadout')->whereRelation( 'company', 'id', $this->company->id );
+        return Character::with('loadout')
+            ->whereRelation( 'company', 'id', $this->company->id )
+            
+            // -- class filter --
+            ->when($this->getFilter('class'), fn ($query, $class) => $query->whereRelation('class', 'id', $class))
+            
+            // -- weapon filter -- match the weapon filter to main hand or offhand
+            ->when($this->getFilter('weapon'), fn ($query, $weapon) => 
+                $query->where(function($query) use ($weapon){
+                    return $query
+                        ->whereRelation('loadout.main', 'id', $weapon)
+                        ->orWhereRelation('loadout.offhand', 'id', $weapon);
+                })
+            );
     }
 }
