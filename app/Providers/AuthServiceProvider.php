@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\Company;
 use App\Models\Event;
 use App\Models\Position;
 use App\Models\Roster;
+use App\Policies\CompanyPolicy;
 use App\Policies\EventPolicy;
 use App\Policies\PositionPolicy;
 use App\Policies\RosterPolicy;
@@ -20,9 +22,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
-        Event::class    => EventPolicy::class,
-        Roster::class   => RosterPolicy::class,
-        Position::class => PositionPolicy::class,
+        // Policies with conventional naming are auto-registered here
+        // Company, Roster, Event
     ];
 
     /**
@@ -36,8 +37,11 @@ class AuthServiceProvider extends ServiceProvider
 
         /**
          * Implicitly grant "Super Admin" role all permissions
-         * This works in the app by using gate-related functions like auth()->user->can() and @can()
-         * Gate::before rules need to return null rather than false, else it will interfere with normal policy operation
+         * This works in the app by using gate-related functions
+         * like auth()->user->can() and @can()
+         * 
+         * Gate::before rules need to return null rather than false,
+         * else it will interfere with normal policy operation
          * 
          * @see https://spatie.be/docs/laravel-permission/v5/basic-usage/super-admin
          */

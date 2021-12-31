@@ -77,7 +77,6 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'delete companies']);
         // their own
         Permission::create(['name' => 'view own companies']);
-        Permission::create(['name' => 'create own companies']);
         Permission::create(['name' => 'edit own companies']);
         Permission::create(['name' => 'delete own companies']);
         // their factions'

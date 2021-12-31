@@ -2,11 +2,10 @@
 
 namespace App\Policies;
 
-use App\Models\Position;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class PositionPolicy
+class UserPolicy
 {
     use HandlesAuthorization;
 
@@ -20,7 +19,7 @@ class PositionPolicy
         //
     }
 
-    public function view( User $user, Position $position ) : bool
+    public function view( User $user, User $model ) : bool
     {
         //
     }
@@ -30,22 +29,22 @@ class PositionPolicy
         //
     }
 
-    public function update( User $user, Position $position ) : bool
+    public function update( User $user, User $model ) : bool
     {
         //
     }
 
-    public function delete( User $user, Position $position ) : bool
+    public function delete( User $user, User $model ) : bool
     {
         //
     }
 
-    public function restore( User $user, Position $position ) : bool
+    public function restore( User $user, User $model ) : bool
     {
         //
     }
 
-    public function forceDelete( User $user, Position $position ) : bool
+    public function forceDelete( User $user, User $model ) : bool
     {
         //
     }
