@@ -39,7 +39,11 @@ class CompaniesController extends Controller
     public function find(Request $request)
     {
 //    ddd($request);
-        return redirect(route('companies.'.$request->action, ['company'=>$request->company]));
+        return redirect(
+            route('companies.'.$request->action, [
+                'company'=>$request->company
+            ])
+        );
     }
 
     /**

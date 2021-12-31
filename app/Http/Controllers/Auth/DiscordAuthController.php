@@ -72,6 +72,7 @@ class DiscordAuthController extends Controller
 //dump($discordUser);
             // find or create eloquent user with this discord name
             $user = User::where('discord_name',  $discordUser->nickname)->get();
+          
             if($user->isEmpty()){
                 // account may exist prior to logging in with discord
                 // and should be tied to discord data
@@ -85,16 +86,16 @@ class DiscordAuthController extends Controller
                 );
             }
             else{
-                $user = $user->sole()->update([
-                    'name' => $discordUser->name,
-                    'email' => $discordUser->email,
-                    'discord_name' => $discordUser->nickname,
-                ]);
-                // may not need this
+                $user = $user->sole();
+                $user->update(
+                    ['discord_name' => $discordUser->nickname,],
+                    [
+                        'name' => $discordUser->name,
+                        'email' => $discordUser->email,
+                        'discord_name' => $discordUser->nickname,
+                    ]);
                 $user->save();
             }
-            
-//dd($user);
 
             // update or save discord data and tie to user
             $data = DiscordData::updateOrCreate(
