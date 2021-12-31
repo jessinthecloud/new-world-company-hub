@@ -13,21 +13,20 @@ class PermissionSeeder extends Seeder
         // Reset cached roles and permissions
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
         
-        /*$actions = ['do all', 'create', 'edit', 'view', 'delete'];
-        $ownership = ['for all', 'for my own', "for my company's", "for my faction's", 'for specific'];
-        $models = [
-            'User', 'Role', 'Permission', 'Faction', 'Company', 'Character', 'Loadout', 'Class', 'Class Type', 'Weapon', 'Weapon Type', 'Rank', 'Skill', 'Skill Type', 'Event', 'Roster', 'Position', 'House', 'Trophy', 'Trophy Type',
-        ];*/
-        
-        // create permissions
-        /*Permission::create(['name' => 'do all']);
-        
-        Permission::create(['name' => 'view all']);
-        Permission::create(['name' => 'create all']);
-        Permission::create(['name' => 'edit all']);
-        Permission::create(['name' => 'delete all']);*/
+// -- faction --
+        // all
+        Permission::create(['name' => 'view faction']);
+        Permission::create(['name' => 'create faction']);
+        Permission::create(['name' => 'edit faction']);
+        Permission::create(['name' => 'delete faction']);
+        // their own
+        Permission::create(['name' => 'view own faction']);
+        Permission::create(['name' => 'create own faction']);
+        Permission::create(['name' => 'edit own faction']);
+        Permission::create(['name' => 'delete own faction']);
         
     // -- characters --
+        // all
         Permission::create(['name' => 'view characters']);
         Permission::create(['name' => 'create characters']);
         Permission::create(['name' => 'edit characters']);
@@ -47,7 +46,9 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'create own faction characters']);
         Permission::create(['name' => 'edit own faction characters']);
         Permission::create(['name' => 'delete own faction characters']);
+        
     // -- loadouts --
+        // all
         Permission::create(['name' => 'view loadouts']);
         Permission::create(['name' => 'create loadouts']);
         Permission::create(['name' => 'edit loadouts']);
@@ -67,10 +68,9 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'create own faction loadouts']);
         Permission::create(['name' => 'edit own faction loadouts']);
         Permission::create(['name' => 'delete own faction loadouts']);
-    // -- companies --
-        // do all for their company
-        Permission::create(['name' => 'govern company']);
         
+    // -- companies --
+        // all
         Permission::create(['name' => 'view companies']);
         Permission::create(['name' => 'create companies']);
         Permission::create(['name' => 'edit companies']);
@@ -85,7 +85,9 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'create own faction companies']);
         Permission::create(['name' => 'edit own faction companies']);
         Permission::create(['name' => 'delete own faction companies']);
+        
     // -- rosters --
+        // all
         Permission::create(['name' => 'view rosters']);
         Permission::create(['name' => 'create rosters']);
         Permission::create(['name' => 'edit rosters']);
@@ -107,6 +109,7 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'delete own faction rosters']);
         
     // -- events --
+        // all
         Permission::create(['name' => 'view events']);
         Permission::create(['name' => 'create events']);
         Permission::create(['name' => 'edit events']);
@@ -128,6 +131,7 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'delete own faction events']);
 
 // -- positions --
+        // all
         Permission::create(['name' => 'view positions']);
         Permission::create(['name' => 'create positions']);
         Permission::create(['name' => 'edit positions']);
@@ -149,38 +153,14 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'delete own faction positions']);
         
     // -- users --
+        // all
         Permission::create(['name' => 'view users']);
         Permission::create(['name' => 'create users']);
         Permission::create(['name' => 'edit users']);
         Permission::create(['name' => 'delete users']);
-
+        // misc
         Permission::create(['name' => 'view own faction users']);
         Permission::create(['name' => 'view own company users']);
         Permission::create(['name' => 'edit users cosmetic info']);
-        
-        // ownership
-        /*Permission::create(['name' => 'of all']);
-        Permission::create(['name' => 'of their own']);
-        Permission::create(['name' => 'of their company']);
-        Permission::create(['name' => 'of their faction']);*/
-
-        /*// create permissions
-        Permission::create(['name' => 'do all']);
-        Permission::create(['name' => 'view']);
-        Permission::create(['name' => 'create']);
-        Permission::create(['name' => 'edit']);
-        Permission::create(['name' => 'delete']);
-        // models
-        Permission::create(['name' => 'characters']);
-        Permission::create(['name' => 'loadouts']);
-        Permission::create(['name' => 'companies']);
-        Permission::create(['name' => 'rosters']);
-        Permission::create(['name' => 'users']);
-        // ownership
-        Permission::create(['name' => 'for all']);
-        Permission::create(['name' => 'of their company']);
-        Permission::create(['name' => 'of their faction']);
-        Permission::create(['name' => 'of their own']);*/
-
     }
 }

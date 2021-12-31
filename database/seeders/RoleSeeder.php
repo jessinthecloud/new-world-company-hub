@@ -38,9 +38,6 @@ class RoleSeeder extends Seeder
 
         $governor = Role::create(['name' => 'governor']);
         $governor->givePermissionTo(
-            
-            'govern company',
-            
         // -- own permissions
             'view own characters',
             'create own characters',
@@ -77,6 +74,42 @@ class RoleSeeder extends Seeder
             'view own faction users',
             'view own faction characters',
             'view own faction loadouts',
+        );
+        
+        $consul = Role::create(['name' => 'consul']);
+        $consul->givePermissionTo(            
+        // -- own permissions
+            'view own characters',
+            'create own characters',
+            'edit own characters',
+            'delete own characters',
+            
+            'view own loadouts',
+            'create own loadouts',
+            'edit own loadouts',
+            'delete own loadouts',
+            
+            'view own companies',
+            'edit own companies',
+            
+            'view own faction companies',
+            'view own rosters',
+            'view own company rosters',
+
+        // -- company permissions
+            'view own company users',
+            'view own company rosters',
+            'create own company rosters',
+            'edit own company rosters',
+            'view own company characters',
+            'view own company loadouts',
+            'view own company events', 'create own company events', 'edit own company events',
+            'view own company positions', 'create own company positions', 'edit own company positions',
+
+        // -- faction permissions
+            'view own faction companies',
+            'view own faction events',
+            'view own faction characters',
         );
         
         $officer = Role::create(['name' => 'officer']);
