@@ -23,7 +23,7 @@ class LoadoutsController extends Controller
     public function choose()
     {
         $loadouts = Loadout::orderBy('name')->orderBy('weight')->get()->mapWithKeys(function($loadout){
-            return [$loadout->name => $loadout->id];
+            return [$loadout->id => $loadout->name];
         })->all();
         $form_action = route('loadouts.find');
 
@@ -47,19 +47,19 @@ class LoadoutsController extends Controller
     public function create() : View
     {
         $characters = Character::with('class')->orderBy('name')->get()->mapWithKeys(function($class){
-            return [$class->name => $class->id];
+            return [$class->id => $class->name];
         })->all();
 
         $weapons = Weapon::orderBy('name')->get()->mapWithKeys(function($weapon){
-            return [$weapon->name.' ('.$weapon->type->name.')' => $weapon->id];
+            return [$weapon->id => $weapon->name.' ('.$weapon->type->name.')'];
         })->all();
         
         $form_action = route('loadouts.store');
         $button_text = 'Add';
 
         return view(
-        'dashboard.loadout.create-edit',
-        compact('weapons', 'characters', 'form_action', 'button_text')
+            'dashboard.loadout.create-edit',
+            compact('weapons', 'characters', 'form_action', 'button_text')
         );
     }
 
@@ -99,13 +99,13 @@ class LoadoutsController extends Controller
     public function edit( Loadout $loadout )
     {
         $characters = Character::with('class')->orderBy('name')->get()->mapWithKeys(function($class){
-            return [$class->name => $class->id];
+            return [$class->id => $class->name];
         })->all();
 
         $loadout = $loadout->load('main', 'offhand', 'character');
 
         $weapons = Weapon::orderBy('name')->get()->mapWithKeys(function($weapon){
-            return [$weapon->name.' ('.$weapon->type->name.')' => $weapon->id];
+            return [$weapon->id => $weapon->name.' ('.$weapon->type->name.')'];
         })->all();
 
         $character_options = '';
