@@ -19,21 +19,23 @@ class CompanyTable extends DataTableComponent
     // passed in as Collections and then made arrays
     public $classes;
     public $weapons;
-
-    public function __construct( $id = null )
-    {
-        parent::__construct( $id );
-
-    }
     
-    // construct is called before company can be set,
-    // so use livewire mount() to load
-    // the company param sent
+     
+    /**
+     * constructor is called before company can be set,
+     * so use livewire mount() to load the params sent
+     *
+     * @param \App\Models\Company            $company
+     * @param \Illuminate\Support\Collection $classes
+     * @param \Illuminate\Support\Collection $weapons
+     *
+     * @return void
+     */
     public function mount(Company $company, Collection $classes, Collection $weapons)
     {
         $this->company = $company;
         
-        // add "Any" to the front 
+        // add "Any" to the front of the filter arrays
         $classes->prepend('Any', '');
         $weapons->prepend('Any', '');
 
@@ -69,13 +71,6 @@ class CompanyTable extends DataTableComponent
                 ->select($this->classes),
             'weapon' => Filter::make('Weapon')
                 ->select($this->weapons),
-            /*'tags' => Filter::make('Tags')
-                ->multiSelect([
-                    'tag1' => 'Tags 1',
-                    'tag2' => 'Tags 2',
-                    'tag3' => 'Tags 3',
-                    'tag4' => 'Tags 4',
-                ]),    */ 
         ];
     }
 
