@@ -41,10 +41,16 @@ class DatabaseSeeder extends Seeder
         // event types 
         EventType::create([
             'name' => 'War',
-//            'description' => '',
+            'slug' => 'war',
+            'description' => '',
         ], [
             'name' => 'Invasion',
-        //            'description' => '',
+            'slug' => 'invasion',
+            'description' => '',
+        ], [
+            'name' => 'Chest Run',
+            'slug' => 'chest-run',
+            'description' => '',
         ]);
         
         // run other seeders

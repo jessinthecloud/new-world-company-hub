@@ -12,16 +12,19 @@ class FactionSeeder extends Seeder
         DB::table('factions')->insert([
             [
                 'name' => 'Marauders', 
+                'slug' => 'marauders', 
                 'created_at' => now(), 
                 'updated_at' => now(),
             ],
             [
                 'name' => 'Syndicate', 
+                'slug' => 'syndicate', 
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'name' => 'Covenant',
+                'slug' => 'covenant',
                  'created_at' => now(),
                  'updated_at' => now(),
             ],

@@ -12,6 +12,7 @@ class SkillTypeSeeder extends Seeder
         DB::table('skill_types')->insert([
            [
                'name' => 'Crafting',
+               'slug' => 'crafting',
                'order' => 10,
                'description' => '',
                'created_at' => now(),
@@ -19,6 +20,7 @@ class SkillTypeSeeder extends Seeder
            ],
            [
                'name' => 'Refining',
+               'slug' => 'refining',
                'order' => 20,
                'description' => '',
                'created_at' => now(),
@@ -26,6 +28,7 @@ class SkillTypeSeeder extends Seeder
            ],
            [
                'name' => 'Gathering',
+               'slug' => 'gathering',
                'order' => 30,
                'description' => '',
                'created_at' => now(),
@@ -33,6 +36,7 @@ class SkillTypeSeeder extends Seeder
            ],
            [
                'name' => 'Weapon Mastery',
+               'slug' => 'weapon-mastery',
                'order' => 40,
                'description' => '',
                'created_at' => now(),

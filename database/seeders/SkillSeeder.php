@@ -12,6 +12,7 @@ class SkillSeeder extends Seeder
         DB::table('skills')->insert([
            [
            'name' => 'Weaponsmithing',
+           'slug' => 'weaponsmithing',
            'description' => '',
            'order' => 10,
            'skill_type_id' => 1,
@@ -20,6 +21,7 @@ class SkillSeeder extends Seeder
            ],
            [
            'name' => 'Armoring',
+           'slug' => 'armoring',
            'description' => '',
            'order' => 20,
            'skill_type_id' => 1,
@@ -28,6 +30,7 @@ class SkillSeeder extends Seeder
            ],
            [
            'name' => 'Engineering',
+           'slug' => 'engineering',
            'description' => '',
            'order' => 30,
            'skill_type_id' => 1,
@@ -36,6 +39,7 @@ class SkillSeeder extends Seeder
            ],
            [
            'name' => 'Jewelcrafting',
+           'slug' => 'jewelcrafting',
            'description' => '',
            'order' => 40,
            'skill_type_id' => 1,
@@ -44,6 +48,7 @@ class SkillSeeder extends Seeder
            ],
            [
            'name' => 'Arcana',
+           'slug' => 'arcana',
            'description' => '',
            'order' => 50,
            'skill_type_id' => 1,
@@ -52,6 +57,7 @@ class SkillSeeder extends Seeder
            ],
            [
            'name' => 'Cooking',
+           'slug' => 'cooking',
            'description' => '',
            'order' => 60,
            'skill_type_id' => 1,
@@ -60,6 +66,7 @@ class SkillSeeder extends Seeder
            ],
            [
            'name' => 'Furnishing',
+           'slug' => 'furnishing',
            'description' => '',
            'order' => 70,
            'skill_type_id' => 1,
@@ -69,6 +76,7 @@ class SkillSeeder extends Seeder
            // refining
            [
            'name' => 'Smelting',
+           'slug' => 'smelting',
            'description' => '',
            'order' => 80,
            'skill_type_id' => 2,
@@ -77,6 +85,7 @@ class SkillSeeder extends Seeder
            ],
            [
            'name' => 'Woodworking',
+           'slug' => 'woodworking',
            'description' => '',
            'order' => 90,
            'skill_type_id' => 2,
@@ -85,6 +94,7 @@ class SkillSeeder extends Seeder
            ],
            [
            'name' => 'Leatherworking',
+           'slug' => 'leatherworking',
            'description' => '',
            'order' => 100,
            'skill_type_id' => 2,
@@ -93,6 +103,7 @@ class SkillSeeder extends Seeder
            ],
            [
            'name' => 'Weaving',
+           'slug' => 'weaving',
            'description' => '',
            'order' => 110,
            'skill_type_id' => 2,
@@ -101,6 +112,7 @@ class SkillSeeder extends Seeder
            ],
            [
            'name' => 'Stonecutting',
+           'slug' => 'stonecutting',
            'description' => '',
            'order' => 120,
            'skill_type_id' => 2,
@@ -110,6 +122,7 @@ class SkillSeeder extends Seeder
            // gathering
            [
            'name' => 'Logging',
+           'slug' => 'logging',
            'description' => '',
            'order' => 130,
            'skill_type_id' => 3,
@@ -118,6 +131,7 @@ class SkillSeeder extends Seeder
            ],
            [
            'name' => 'Mining',
+           'slug' => 'mining',
            'description' => '',
            'order' => 140,
            'skill_type_id' => 3,
@@ -126,6 +140,7 @@ class SkillSeeder extends Seeder
            ],
            [
            'name' => 'Fishing',
+           'slug' => 'fishing',
            'description' => '',
            'order' => 150,
            'skill_type_id' => 3,
@@ -134,6 +149,7 @@ class SkillSeeder extends Seeder
            ],
            [
            'name' => 'Harvesting',
+           'slug' => 'harvesting',
            'description' => '',
            'order' => 160,
            'skill_type_id' => 3,
@@ -141,7 +157,8 @@ class SkillSeeder extends Seeder
            'updated_at' => now(),
            ],
            [
-           'name' => 'Tracking & Skinning',
+           'name' => 'Tracking and Skinning',
+           'slug' => 'tracking-and-skinning',
            'description' => '',
            'order' => 170,
            'skill_type_id' => 3,
@@ -151,6 +168,7 @@ class SkillSeeder extends Seeder
            // weapon mastery
            [
            'name' => 'Sword and Shield',
+           'slug' => 'sword-and-shield',
            'description' => '',
            'order' => 180,
            'skill_type_id' => 4,
@@ -159,6 +177,7 @@ class SkillSeeder extends Seeder
            ],
            [
            'name' => 'Rapier',
+           'slug' => 'rapier',
            'description' => '',
            'order' => 190,
            'skill_type_id' => 4,
@@ -167,6 +186,7 @@ class SkillSeeder extends Seeder
            ],
            [
            'name' => 'Hatchet',
+           'slug' => 'hatchet',
            'description' => '',
            'order' => 200,
            'skill_type_id' => 4,
@@ -175,6 +195,7 @@ class SkillSeeder extends Seeder
            ],
            [
            'name' => 'Spear',
+           'slug' => 'spear',
            'description' => '',
            'order' => 210,
            'skill_type_id' => 4,
@@ -183,6 +204,7 @@ class SkillSeeder extends Seeder
            ],
            [
            'name' => 'Great Axe',
+           'slug' => 'great-axe',
            'description' => '',
            'order' => 220,
            'skill_type_id' => 4,
@@ -191,6 +213,7 @@ class SkillSeeder extends Seeder
            ],
            [
            'name' => 'War Hammer',
+           'slug' => 'war-hammer',
            'description' => '',
            'order' => 230,
            'skill_type_id' => 4,
@@ -199,6 +222,7 @@ class SkillSeeder extends Seeder
            ],
            [
            'name' => 'Bow',
+           'slug' => 'bow',
            'description' => '',
            'order' => 240,
            'skill_type_id' => 4,
@@ -207,6 +231,7 @@ class SkillSeeder extends Seeder
            ],
            [
            'name' => 'Musket',
+           'slug' => 'musket',
            'description' => '',
            'order' => 250,
            'skill_type_id' => 4,
@@ -215,6 +240,7 @@ class SkillSeeder extends Seeder
            ],
            [
            'name' => 'Fire Staff',
+           'slug' => 'fire-staff',
            'description' => '',
            'order' => 260,
            'skill_type_id' => 4,
@@ -223,6 +249,7 @@ class SkillSeeder extends Seeder
            ],
            [
            'name' => 'Life Staff',
+           'slug' => 'life-staff',
            'description' => '',
            'order' => 270,
            'skill_type_id' => 4,
@@ -231,6 +258,7 @@ class SkillSeeder extends Seeder
            ],
            [
            'name' => 'Ice Gauntlet',
+           'slug' => 'ice-gauntlet',
            'description' => '',
            'order' => 280,
            'skill_type_id' => 4,
@@ -239,6 +267,7 @@ class SkillSeeder extends Seeder
            ],
            [
            'name' => 'Void Gauntlet',
+           'slug' => 'void-gauntlet',
            'description' => '',
            'order' => 280,
            'skill_type_id' => 4,

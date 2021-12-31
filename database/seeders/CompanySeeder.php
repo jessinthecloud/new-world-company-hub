@@ -12,6 +12,7 @@ class CompanySeeder extends Seeder
         DB::table('companies')->insert([
            [
                'name' => 'Breakpoint',
+               'slug' => 'breakpoint',
                'faction_id' => 1,
                'created_at' => now(),
                'updated_at' => now(),

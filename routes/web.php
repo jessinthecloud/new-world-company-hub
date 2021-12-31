@@ -124,9 +124,6 @@ Route::middleware(['auth'])->group(function(){
         ->only(['index', 'show']);
     Route::resource('weapons', \App\Http\Controllers\WeaponsController::class)
         ->only(['index', 'show']);
-        
-    Route::get( '/companies/{company}/roster', [\App\Http\Controllers\LoadoutsController::class, 'choose'] )
-        ->name('loadouts.choose');
 }); // end auth
 
 
