@@ -60,7 +60,7 @@ Route::middleware(['auth'])->group(function(){
         );
     
         Route::get( '/dashboard', function () {
-            return view( 'dashboard', ['form_action' => route( 'dashboard' )] );
+            return view( 'dashboard.index', ['form_action' => route( 'dashboard' )] );
         } )->name( 'dashboard' );
 
         // choose from drop down
