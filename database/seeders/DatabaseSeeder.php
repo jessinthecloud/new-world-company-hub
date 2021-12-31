@@ -79,7 +79,7 @@ class DatabaseSeeder extends Seeder
                 'remember_token' => null,
             ]);
             
-        Character::factory()
+        $govchar = Character::factory()
             // don't need state because seeder has these set
             ->state(new Sequence(
                     fn ($sequence) => [
@@ -95,6 +95,8 @@ class DatabaseSeeder extends Seeder
             )
             ->create();
             
+        $govchar->user()->associate($governor);
+        $govchar->save();
         $governor->assignRole('governor');
     }
 }

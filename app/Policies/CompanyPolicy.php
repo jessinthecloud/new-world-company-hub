@@ -15,6 +15,14 @@ class CompanyPolicy
         //
     }
 
+    /**
+     * To check specific permissions via this policy:
+     * Gate::allows('view', App\Models\Company::class);
+     * 
+     * @param \App\Models\User $user
+     *
+     * @return bool
+     */
     public function viewAny( User $user ) : bool
     {
         return $user->can(['view companies']);
@@ -24,9 +32,21 @@ class CompanyPolicy
     {
         return (
             $user->can(['view companies']) 
-            ||(
-                $user->load('characters.company')
-                    ->where('characters.company.id', $company->id)
+            ||
+            (
+                (
+                    $user->can('view own companies')
+                    &&
+                    $user->load('characters.company')
+                        ->where('characters.company.id', $company->id)
+                )
+                ||
+                (
+                    $user->can('view own faction companies') 
+                    && 
+                    $user->load('characters.company')
+                        ->where('characters.company.faction.id', $company->faction->id)
+                )
             ) 
         );
     }
