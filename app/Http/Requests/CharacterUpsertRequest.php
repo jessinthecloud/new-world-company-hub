@@ -19,14 +19,15 @@ class CharacterUpsertRequest extends FormRequest
            'level' => ['required', 'numeric', 'max:255'], 
            'rank' => ['required', 'numeric', 'exists:ranks,id'], 
            'class' => ['required', 'numeric', 'exists:character_classes,id'],
+           'company' => ['required', 'numeric', 'exists:companies,id'],
            // define the valid array keys (skill ids) 
-           'skills' => ['array:'.$valid_skill_ids_string],
+           'skills' => ['array:'.$valid_skill_ids_string, 'nullable'],
         ];
         
         // check each item of input array
         foreach($this->skills as $skill_id => $level){
             // set nested rules with dot notation
-            $rules ['skills.'.$skill_id]= ['numeric', 'max:100000'];
+            $rules ['skills.'.$skill_id]= ['numeric', 'max:100000', 'nullable'];
         }
        
         return $rules;

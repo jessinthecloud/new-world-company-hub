@@ -13,7 +13,7 @@ class FactionsController extends Controller
     public function index()
     {
         $factions = Faction::orderBy('name')->get()->mapWithKeys(function($faction){
-            return [$faction->name => $faction->id];
+            return [$faction->slug => $faction->name];
         })->all();
         
         dump($factions);
@@ -22,7 +22,7 @@ class FactionsController extends Controller
     public function choose()
     {
         $factions = Faction::orderBy('name')->get()->mapWithKeys(function($faction){
-            return [$faction->id => $faction->name];
+            return [$faction->slug => $faction->name];
         })->all();
         $form_action = route('factions.find');
 
@@ -35,7 +35,7 @@ class FactionsController extends Controller
     public function find(Request $request)
     {
 //    ddd($request);
-        return redirect(route('factions.'.$request->action, ['faction'=>$request->faction]));
+        return redirect(route('factions.'.$request->action, ['faction' => $request->faction]));
     }
 
     /**
@@ -46,7 +46,7 @@ class FactionsController extends Controller
     public function create() : View
     {
         $factions = Faction::orderBy('name')->get()->mapWithKeys(function($faction){
-            return [$faction->name => $faction->id];
+            return [$faction->slug => $faction->name];
         })->all();
 
         $form_action = route('factions.store');
@@ -90,7 +90,7 @@ class FactionsController extends Controller
     public function edit( Faction $faction )
     {
         $factions = Faction::distinct()->get()->mapWithKeys(function($faction){
-            return [$faction->name => $faction->id];
+            return [$faction->slug => $faction->name];
         })->all();
 
         return view(

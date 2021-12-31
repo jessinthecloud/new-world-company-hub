@@ -109,7 +109,7 @@ class LoadoutsController extends Controller
         })->all();
 
         $character_options = '';
-        foreach($characters as $text => $value) {
+        foreach($characters as $value => $text) {
             $character_options .= '<option value="'.$value.'"';
             if($loadout->character->id === $value){
                 $character_options .= ' SELECTED ';
@@ -118,7 +118,7 @@ class LoadoutsController extends Controller
         }
 
         $main_options = '';
-        foreach($weapons as $text => $value) {
+        foreach($weapons as $value => $text) {
             $main_options .= '<option value="'.$value.'"';
             if($loadout->main->id === $value){
                 $main_options .= ' SELECTED ';
@@ -127,7 +127,7 @@ class LoadoutsController extends Controller
         }
 
         $offhand_options = '';
-        foreach($weapons as $text => $value) {
+        foreach($weapons as $value => $text) {
             $offhand_options .= '<option value="'.$value.'"';
             if($loadout->offhand->id === $value){
                 $offhand_options .= ' SELECTED ';

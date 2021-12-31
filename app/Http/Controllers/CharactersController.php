@@ -18,7 +18,7 @@ class CharactersController extends Controller
     public function index()
     {
         $characters = Character::with('class.type')->orderBy('name')->orderBy('level')->get()->mapWithKeys(function($character){
-            return [$character->id => $character->name.' (Level '.$character->level.') '.$character->class->name.' '.$character->class->type->name];
+            return [$character->slug => $character->name.' (Level '.$character->level.') '.$character->class->name.' '.$character->class->type->name];
         })->all();
         
         dump($characters);
@@ -27,7 +27,7 @@ class CharactersController extends Controller
     public function choose()
     {
         $characters = Character::orderBy('name')->orderBy('level')->get()->mapWithKeys(function($character){
-            return [$character->name.' (Level '.$character->level.')' => $character->id];
+            return [$character->slug => $character->name.' (Level '.$character->level.')'];
         })->all();
         $form_action = route('characters.find');
         
@@ -39,7 +39,6 @@ class CharactersController extends Controller
 
     public function find(Request $request)
     {
-//    ddd($request);
         return redirect(route('characters.'.$request->action, ['character'=>$request->character]));
     }
 
@@ -51,15 +50,15 @@ class CharactersController extends Controller
     public function create() : View
     {
         $ranks = Rank::distinct()->get()->mapWithKeys(function($rank){
-            return [$rank->name => $rank->id];
+            return [$rank->id => $rank->name];
         })->all();
 
         $classes = CharacterClass::with('type')->get()->mapWithKeys(function($class){
-            return [$class->name.' ('.$class->type->name.')' => $class->id];
+            return [$class->id => $class->name.' ('.$class->type->name.')'];
         })->all();
 
         $companies = Company::with('faction')->get()->mapWithKeys(function($company){
-            return [$company->name.' ('.$company->faction->name.')' => $company->id];
+            return [$company->slug => $company->name.' ('.$company->faction->name.')'];
         })->all();
 
         $skillTypes = SkillType::with(['skills' => function ($query) {
@@ -119,15 +118,15 @@ class CharactersController extends Controller
     public function edit( Character $character )
     {
         $ranks = Rank::distinct()->get()->mapWithKeys(function($rank){
-            return [$rank->name => $rank->id];
+            return [$rank->id => $rank->name];
         })->all();
 
         $classes = CharacterClass::distinct()->get()->mapWithKeys(function($class){
-            return [$class->name.' ('.$class->type->name.')' => $class->id];
+            return [$class->id => $class->name.' ('.$class->type->name.')'];
         })->all();
 
         $companies = Company::with('faction')->get()->mapWithKeys(function($company){
-            return [$company->name.' ('.$company->faction->name.')' => $company->id];
+            return [$company->slug => $company->name.' ('.$company->faction->name.')'];
         })->all();
 
         $character = $character->load('skills', 'rank', 'company', 'class', 'user');
@@ -136,17 +135,17 @@ class CharactersController extends Controller
             $query->orderBy('order');
         }])->orderBy('order')->get()->all();
         
-        $rank_options = '';
-        foreach($ranks as $text => $value) {
+        $rank_options = '<option value="'.null.'"></option>';
+        foreach($ranks as $value => $text) {
             $rank_options .= '<option value="'.$value.'"';
-                if($character->rank->id === $value){
+                if($character->rank?->id === $value){
                     $rank_options .= ' SELECTED ';
                 }
             $rank_options .= '>'.$text.'</option>';
         }
 
         $class_options = '';
-        foreach($classes as $text => $value) {
+        foreach($classes as $value => $text) {
             $class_options .= '<option value="'.$value.'"';
             if($character->class->id === $value){
                 $class_options .= ' SELECTED ';
@@ -155,9 +154,9 @@ class CharactersController extends Controller
         }
 
         $company_options = '';
-        foreach($companies as $text => $value) {
+        foreach($companies as $value => $text) {
             $company_options .= '<option value="'.$value.'"';
-            if($character->company->id === $value){
+            if($character->company->slug === $value){
                 $company_options .= ' SELECTED ';
             }
             $company_options .= '>'.$text.'</option>';

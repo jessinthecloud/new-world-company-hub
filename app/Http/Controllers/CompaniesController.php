@@ -17,7 +17,7 @@ class CompaniesController extends Controller
     public function index()
     {
         $companies = Company::with('faction')->orderBy('name')->get()->mapWithKeys(function($company){
-            return [$company->id => $company->name.' ('.$company->faction->name.')'];
+            return [$company->slug => $company->name.' ('.$company->faction->name.')'];
         })->all();
         
         dump($companies);
@@ -26,7 +26,7 @@ class CompaniesController extends Controller
     public function choose()
     {
         $companies = Company::with('faction')->orderBy('name')->get()->mapWithKeys(function($company){
-            return [$company->name.' ('.$company->faction->name.')' => $company->id];
+            return [$company->slug => $company->name.' ('.$company->faction->name.')'];
         })->all();
         $form_action = route('companies.find');
 
@@ -54,7 +54,7 @@ class CompaniesController extends Controller
     public function create() : View
     {
         $factions = Faction::orderBy('name')->get()->mapWithKeys(function($faction){
-            return [$faction->name => $faction->id];
+            return [$faction->slug => $faction->name];
         })->all();
 
         $form_action = route('companies.store');
@@ -116,13 +116,13 @@ class CompaniesController extends Controller
         $company = $company->load('faction');
 
         $factions = Faction::distinct()->get()->mapWithKeys(function($faction){
-            return [$faction->name => $faction->id];
+            return [$faction->slug => $faction->name];
         })->all();
 
         $faction_options = '';
-        foreach($factions as $text => $value) {
+        foreach($factions as $value => $text) {
             $faction_options .= '<option value="'.$value.'"';
-            if($company->faction->id === $value){
+            if($company->faction->slug === $value){
                 $faction_options .= ' SELECTED ';
             }
             $faction_options .= '>'.$text.'</option>';

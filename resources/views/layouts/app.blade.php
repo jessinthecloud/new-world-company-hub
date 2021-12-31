@@ -20,6 +20,11 @@
             {{ $header }}
         </div>
     </header>
+    
+    @if(!empty(session('status')))
+    <!-- Session Status -->
+        <x-auth-session-status class="mb-6" :status="session('status')" />
+    @endif
 
     <!-- Page Content -->
     <main>

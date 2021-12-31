@@ -12,7 +12,7 @@
     
     @isset($values)
         <option value=""></option>
-        @foreach($values as $text => $value)
+        @foreach($values as $value => $text)
             <option value="{{ $value ?? '' }}"
                 @if(old($attributes->get('name')) == $value)
                     SELECTED

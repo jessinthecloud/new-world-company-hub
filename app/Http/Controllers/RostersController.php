@@ -44,7 +44,7 @@ class RostersController extends Controller
 
     public function show( Roster $roster=null )
     {
-        ddd(Character::where('company_id', 1)->get()->all());
+        //
     }
 
     public function edit( Roster $roster )
