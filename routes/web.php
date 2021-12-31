@@ -29,28 +29,34 @@ Route::middleware(['auth'])->group(function(){
     // import rosters
     Route::get(
         '/import', 
-        [\App\Http\Controllers\ImportController::class, 'create'] 
+        [\App\Http\Controllers\ImportRosterController::class, 'create'] 
     )
     ->name( 'import.create' );
     Route::post(
         '/import', 
-        [\App\Http\Controllers\ImportController::class, 'store'] 
+        [\App\Http\Controllers\ImportRosterController::class, 'store'] 
     )
     ->name( 'import.store' );
     
 
     // roster sign up
-    Route::get(
+    /*Route::get(
         '/{faction}/{company}/signup', 
         [\App\Http\Controllers\RosterSignupController::class, 'signup'] 
     )
-    ->name( 'roster.signup' );
+    ->name( 'roster.signup' );*/
     
     Route::middleware(['role:super-admin'])->group(function() {
     
         // temp roster show
         Route::get( '/roster', [\App\Http\Controllers\RostersController::class, 'show'] )->name(
         'rosters.show'
+        );
+        Route::get( '/rosters/choose', [\App\Http\Controllers\RostersController::class, 'choose'] )->name(
+        'rosters.choose'
+        );
+        Route::get( '/rosters/find', [\App\Http\Controllers\RostersController::class, 'choose'] )->name(
+        'rosters.find'
         );
     
         Route::get( '/dashboard', function () {
@@ -118,6 +124,9 @@ Route::middleware(['auth'])->group(function(){
         ->only(['index', 'show']);
     Route::resource('weapons', \App\Http\Controllers\WeaponsController::class)
         ->only(['index', 'show']);
+        
+    Route::get( '/companies/{company}/roster', [\App\Http\Controllers\LoadoutsController::class, 'choose'] )
+        ->name('loadouts.choose');
 }); // end auth
 
 

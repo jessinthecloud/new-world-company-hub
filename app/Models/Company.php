@@ -8,6 +8,16 @@ class Company extends Model
 {
     protected $guarded = [];
     
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+    
     public function faction()
     {
         return $this->belongsTo(Faction::class);

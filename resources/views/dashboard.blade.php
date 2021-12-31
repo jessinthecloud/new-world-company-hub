@@ -24,10 +24,10 @@
             
             <x-dashboard.section 
                 :title="'Rosters'"
-                class="min-w-1/3 mb-6 lg:mr-6"
+                class="min-w-1/3 mb-6"
             >
-                <x-button-link href="{{ route('rosters.show') }}">
-                    View Breakpoint Roster
+                <x-button-link href="{{ route('rosters.index') }}">
+                    View All
                 </x-button-link>
             </x-dashboard.section>
         
