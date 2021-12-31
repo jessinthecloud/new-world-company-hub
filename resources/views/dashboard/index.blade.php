@@ -86,7 +86,7 @@
                         \App\Models\Company::with('faction')
                             ->orderBy('name')->get()
                             ->mapWithKeys(function($company){
-                                return [$company->name.' ('.$company->faction->name.')' => $company->slug];
+                                return [$company->slug => $company->name.' ('.$company->faction->name.')'];
                             })
                             ->all()
                     "
