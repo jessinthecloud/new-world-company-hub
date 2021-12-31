@@ -26,7 +26,7 @@
                 :title="'Rosters'"
                 class="min-w-1/3 mb-6"
             >
-                <x-button-link href="{{ route('rosters.index') }}">
+                <x-button-link href="{{-- route('rosters.index') --}}">
                     View All
                 </x-button-link>
             </x-dashboard.section>

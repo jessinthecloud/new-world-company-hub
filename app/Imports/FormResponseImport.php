@@ -4,16 +4,28 @@ namespace App\Imports;
 
 use App\Models\Character;
 use App\Models\CharacterClass;
+use App\Models\Company;
 use App\Models\Loadout;
 use App\Models\User;
 use App\Models\Weapon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class FormResponseImport implements ToCollection, WithHeadingRow, WithCalculatedFormulas
 {
+    /**
+     * @var \App\Models\Company 
+     */
+    private Company $company;
+
+    public function __construct( string $company )
+    {
+        $this->company = Company::find($company);
+    }
+
     /**
     * @param Collection $rows
     */
@@ -34,6 +46,7 @@ class FormResponseImport implements ToCollection, WithHeadingRow, WithCalculated
                 [ 'nickname' => $row['discord_user_name_ex_discord1234'], ],
                 [
                     'name' => $row['in_game_name'],
+                    'slug' => Str::slug($row['in_game_name']),
                     'email' => $row['email'] ?? null, // doesn't exist yet
                     'discord_name' => $row['discord_user_name_ex_discord1234'],
                 ]
@@ -48,9 +61,9 @@ class FormResponseImport implements ToCollection, WithHeadingRow, WithCalculated
                 ],
                 [
                     'name' => $row['in_game_name'],
+                    'slug' => Str::slug($row['in_game_name']),
                     'user_id' => $user->id,
-                // TODO: choose / pass in
-                    'company_id' => 1, // Breakpoint hardcode
+                    'company_id' => $this->company->id,
                     'character_class_id' => $class->id,
                      'level' => $row['level'] ?? null, // on the other sheet
                      'rank_id' => $row['rank'] ?? null, // on the other sheet

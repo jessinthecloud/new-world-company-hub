@@ -19,6 +19,11 @@
                     :method="$method ?? null"
                     enctype="multipart/form-data"
                 >
+                    <x-forms.field :name="'company'">
+                        <x-forms.label for="company" :required="true">For Company:</x-forms.label>
+                        <x-forms.select id="company" type="text" name="company" class="" :required="true" :values="$companies"/>
+                    </x-forms.field>
+                    
                     <x-forms.field 
                         :name="'import'" 
                         class="flex flex-wrap justify-start items-center pr-4"
