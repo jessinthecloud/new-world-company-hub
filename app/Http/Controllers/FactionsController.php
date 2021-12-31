@@ -6,6 +6,7 @@ use App\Http\Requests\FactionUpsertRequest;
 use App\Models\Faction;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class FactionsController extends Controller
 {
@@ -63,6 +64,7 @@ class FactionsController extends Controller
 
         Faction::create([
             'name' => $validated['name'],
+            'slug' => Str::slug($validated['name']),
         ]);
 
         return redirect(route('dashboard'))->with([
@@ -107,6 +109,7 @@ class FactionsController extends Controller
         $validated = $request->validated();
 
         $faction->name = $validated['name'];
+        $faction->slug = isset($validated['slug']) ? Str::slug($validated['slug']) : Str::slug($validated['name']);
         $faction->save();
 
         return redirect(route('dashboard'))->with([

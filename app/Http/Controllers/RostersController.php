@@ -10,6 +10,26 @@ class RostersController extends Controller
 {
     public function index()
     {
+        //
+    }
+    
+    public function choose()
+    {
+        $rosters = Roster::with('roster')->orderBy('name')->get()->mapWithKeys(function($roster){
+            return [$roster->name.' ('.$roster->faction->name.')' => $roster->id];
+        })->all();
+        $form_action = route('rosters.find');
+
+        return view(
+            'dashboard.roster.choose',
+            compact('rosters', 'form_action')
+        );
+    }
+
+    public function find(Request $request)
+    {
+//    ddd($request);
+        return redirect(route('rosters.'.$request->action, ['roster'=>$request->roster]));
     }
 
     public function create()

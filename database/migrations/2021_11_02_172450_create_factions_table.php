@@ -11,6 +11,7 @@ class CreateFactionsTable extends Migration
         Schema::create( 'factions', function ( Blueprint $table ) {
             $table->bigIncrements( 'id' );
             $table->string('name');
+            $table->string('slug')->unique();
             $table->timestamps();
         } );
     }

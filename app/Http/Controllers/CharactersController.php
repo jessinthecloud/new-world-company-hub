@@ -11,6 +11,7 @@ use App\Models\Skill;
 use App\Models\SkillType;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class CharactersController extends Controller
 {
@@ -81,6 +82,7 @@ class CharactersController extends Controller
 //dump($validated, $character, $character->skills->pluck('pivot')->pluck('level')/*, $request*/);
         $character = Character::create([
             'name' => $validated['name'],
+            'slug' => Str::slug($validated['name']),
             'level' => $validated['level'],
             // relations
             'character_class_id' => $validated['class'],
@@ -181,6 +183,7 @@ class CharactersController extends Controller
         $validated = $request->validated();
 //dump($validated, $character, $character->skills->pluck('pivot')->pluck('level')/*, $request*/);
         $character->name = $validated['name'];
+        $character->slug = isset($validated['slug']) ? Str::slug($validated['slug']) : Str::slug($validated['name']);
         $character->level = $validated['level'];
         // relations
         $character->rank()->associate($validated['rank']);

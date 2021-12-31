@@ -15,6 +15,7 @@ class CharacterUpsertRequest extends FormRequest
     
         $rules = [
            'name' => ['required', 'string', 'max:255'], 
+           'slug' => ['nullable', 'string', 'max:255'],
            'level' => ['required', 'numeric', 'max:255'], 
            'rank' => ['required', 'numeric', 'exists:ranks,id'], 
            'class' => ['required', 'numeric', 'exists:character_classes,id'],

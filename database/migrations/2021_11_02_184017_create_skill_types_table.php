@@ -12,7 +12,8 @@ class CreateSkillTypesTable extends Migration
             $table->bigIncrements( 'id' );
 
             $table->string('name');
-            $table->string('description');
+            $table->string('slug')->unique();
+            $table->string('description')->nullable();
             $table->smallInteger('order')->default(9999);
 
             $table->timestamps();

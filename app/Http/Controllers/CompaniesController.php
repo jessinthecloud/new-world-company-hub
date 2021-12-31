@@ -7,6 +7,7 @@ use App\Models\Company;
 use App\Models\Faction;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class CompaniesController extends Controller
 {
@@ -64,6 +65,7 @@ class CompaniesController extends Controller
 
         Company::create([
             'name' => $validated['name'],
+            'slug' => Str::slug($validated['name']),
             // relations
             'faction_id' => $validated['faction'],
         ]);
@@ -76,9 +78,23 @@ class CompaniesController extends Controller
         ]);
     }
 
-    public function show( Company $company )
+    /**
+     * Company roster (entire list of company members)
+     * 
+     * @return void
+     */
+    public function show(Company $company)
     {
-        //
+        $company->load([
+            'faction', 
+            'characters', 
+            'characters.loadouts', 
+            'characters.class', 
+            'characters.rank', 
+            'characters.user',
+        ]);
+        
+        dump($company);
     }
 
     /**
@@ -122,6 +138,7 @@ class CompaniesController extends Controller
         $validated = $request->validated();
 
         $company->name = $validated['name'];
+        $company->slug = isset($validated['slug']) ? Str::slug($validated['slug']) : Str::slug($validated['name']);
         // relations
         $company->faction()->associate($validated['faction']);
         $company->save();

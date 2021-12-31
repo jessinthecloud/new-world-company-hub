@@ -12,6 +12,7 @@ class CreateEventTypesTable extends Migration
             $table->bigIncrements( 'id' );
 
             $table->string('name');
+            $table->string('slug')->unique();
             $table->string('description')->nullable();
 
             $table->timestamps();

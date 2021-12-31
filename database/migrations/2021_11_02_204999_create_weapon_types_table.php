@@ -12,7 +12,8 @@ class CreateWeaponTypesTable extends Migration
             $table->bigIncrements( 'id' );
 
             $table->string('name');
-            $table->string('description');
+            $table->string('slug')->unique();
+            $table->string('description')->nullable();
             // related mastery
             $table->foreignId('skill_id')->constrained();
 
