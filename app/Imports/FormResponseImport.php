@@ -5,6 +5,7 @@ namespace App\Imports;
 use App\Models\Character;
 use App\Models\CharacterClass;
 use App\Models\Company;
+use App\Models\DiscordData;
 use App\Models\Loadout;
 use App\Models\User;
 use App\Models\Weapon;
@@ -40,10 +41,9 @@ class FormResponseImport implements ToCollection, WithHeadingRow, WithCalculated
         {
 //        dump($row);
             // find or create eloquent user
-            // account may exist and should be tied to discord data
             $user = User::updateOrCreate(
                 // full discord username
-                [ 'nickname' => $row['discord_user_name_ex_discord1234'], ],
+                [ 'discord_name' => $row['discord_user_name_ex_discord1234'], ],
                 [
                     'name' => $row['in_game_name'],
                     'slug' => Str::slug($row['in_game_name']),
@@ -51,6 +51,11 @@ class FormResponseImport implements ToCollection, WithHeadingRow, WithCalculated
                     'discord_name' => $row['discord_user_name_ex_discord1234'],
                 ]
             );
+            
+            // if existing account, it should be tied to any matching discord data
+            $discord = DiscordData::where('name', $user->discord_name)->first();
+            $discord?->user()?->associate($user);
+            $discord?->save();
             
             $class = CharacterClass::firstWhere('name', $row['class_you_play']);
             

@@ -25,12 +25,12 @@ class ImportRosterController extends Controller
             'company' => ['required', 'exists:companies,id', 'max:100'],
             'import' => ['required', 'file', 'max:1000', 'mimes:xlsx,xls,csv'],
         ]);
-        
+
         $rosterImport = new RosterImport($validated['company']);
-//        $rosterImport->onlySheets(1);
-        
-        Excel::import($rosterImport, $validated['import']);
-      
+//        $rosterImport->onlySheets(2);
+
+        $e = Excel::import($rosterImport, $validated['import']);
+
         return redirect(route('dashboard'))->with([
             'status'=> [
                 'type'=>'success',
