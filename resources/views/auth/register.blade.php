@@ -18,12 +18,12 @@
                 </div>
             </x-utils.card>
 
-            {{--<div class="flex flex-wrap items-center justify-center mt-6">
+            <div class="flex flex-wrap items-center justify-center mt-6">
                 - OR -
-            </div>--}}
+            </div>
         @endif
 
-        {{--<x-utils.card>    
+        <x-utils.card>
             <form method="POST" action="{{ route('register') }}">
                 @csrf
     
@@ -70,6 +70,6 @@
                     </x-button>
                 </div>
             </form>
-        </x-utils.card>--}}
+        </x-utils.card>
     </x-auth-card>
 </x-guest-layout>
