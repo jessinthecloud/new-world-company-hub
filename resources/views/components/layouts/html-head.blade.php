@@ -34,6 +34,13 @@
     @endisset
     
     @stack('styles')
+    
+    @livewireStyles
+    
+    {{-- Required for Livewire Datatables --}}
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
 
     @isset($scripts)
         {{-- Add passed in scripts to @stack('scripts') --}}
@@ -41,6 +48,7 @@
     @endisset
 
     <!-- Scripts -->
+    <script src="//unpkg.com/alpinejs" defer></script>
     <script src="{{ asset('js/app.js') }}" defer></script>
     
     {{-- Scripts that should be loaded first --}}

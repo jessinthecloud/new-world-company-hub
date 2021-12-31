@@ -6,6 +6,8 @@
     
     {{--  Javascript  --}}
     @stack('scripts')
+    
+    @livewireScripts
 
 </body>
 

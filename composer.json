@@ -12,6 +12,7 @@
         "laravel/sanctum": "^2.11",
         "laravel/socialite": "^5.2",
         "laravel/tinker": "^2.5",
+        "livewire/livewire": "^2.8",
         "maatwebsite/excel": "^3.1",
         "rappasoft/laravel-livewire-tables": "^1.21",
         "socialiteproviders/discord": "^4.1",
