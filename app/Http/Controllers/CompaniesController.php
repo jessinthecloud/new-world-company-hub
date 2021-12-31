@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Livewire\CompanyTable;
 use App\Http\Requests\CompanyUpsertRequest;
 use App\Models\Company;
 use App\Models\Faction;
@@ -81,20 +82,12 @@ class CompaniesController extends Controller
     /**
      * Company roster (entire list of company members)
      * 
-     * @return void
      */
     public function show(Company $company)
     {
-        $company->load([
-            'faction', 
-            'characters', 
-            'characters.loadouts', 
-            'characters.class', 
-            'characters.rank', 
-            'characters.user',
-        ]);
+//        $table = new CompanyTable(company: $company);
         
-        dump($company);
+        return view('company.show', compact('company'));
     }
 
     /**

@@ -46,9 +46,9 @@ class Character extends Model
         return $this->belongsToMany(Skill::class)->withPivot('level');
     }
 
-    public function loadouts()
+    public function loadout()
     {
-        return $this->hasMany(Loadout::class);
+        return $this->hasOne(Loadout::class);
     }
 
     public function positions()
