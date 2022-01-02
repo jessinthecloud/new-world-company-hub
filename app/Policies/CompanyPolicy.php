@@ -17,13 +17,35 @@ class CompanyPolicy
 
     /**
      * To check specific permissions via this policy:
-     * Gate::allows('view', App\Models\Company::class);
+     *
+     * Gate::allows('viewAny', App\Models\Company::class);
+     *
+     * OR in a blade template:
+     * @can('viewAny', App\Models\Company::class) <elements/> @endcan
+     *
+     * OR in a controller method:
+     * $this->authorize('viewAny', App\Models\Company::class);
      * 
      * @param \App\Models\User $user
      *
      * @return bool
      */
     public function viewAny( User $user ) : bool
+    {
+        return $user->can([
+            'view companies', 
+            'view own company', 
+            'view faction companies',
+        ]);
+    }
+    
+    /**
+     * 
+     * @param \App\Models\User $user
+     *
+     * @return bool
+     */
+    public function viewAll( User $user ) : bool
     {
         return $user->can(['view companies']);
     }
