@@ -59,4 +59,60 @@ class User extends Authenticatable
     {
         return $this->hasOne( DiscordData::class);
     }
+    
+// -- MISC - NOT relationships
+
+    /**
+     * Get the current primary character that we are logged in with
+     *
+     * @return \App\Models\Character|null
+     */
+    public function character() : ?Character
+    {
+        return session('character') ?? null;
+    }
+    
+    public function rank()
+    {
+        return $this->character()->rank;
+    }
+
+    public function company()
+    {
+        return $this->character()->company;
+    }
+    
+    public function faction()
+    {
+        return $this->character()->company->faction;
+    }
+    
+// -- DISTANT RELATIONSHIPS
+
+    /*
+    public function factions()
+    {
+        return $this->hasManyThrough(Faction::class, Company::class);
+    }
+    
+    public function companies()
+    {
+        return $this->hasManyThrough(Company::class, Character::class, 'user_id', 'company_id', 'id');
+    }
+    
+    public function ranks()
+    {
+        return $this->hasManyThrough(Rank::class, Character::class);
+    }
+    
+    public function rosters()
+    {
+        return $this->hasManyThrough(Roster::class, Character::class);
+    }
+    
+    public function events()
+    {
+        return $this->hasManyThrough(Event::class, Character::class);
+    } 
+    */
 }

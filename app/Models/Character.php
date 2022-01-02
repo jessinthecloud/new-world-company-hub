@@ -12,6 +12,13 @@ class Character extends Model
     protected $guarded = [];
     
     /**
+     * The relationships that should always be loaded.
+     *
+     * @var array
+     */
+    protected $with = ['company', 'rank'];
+    
+    /**
      * Get the route key for the model.
      *
      * @return string
@@ -20,6 +27,8 @@ class Character extends Model
     {
         return 'slug';
     }
+    
+// -- RELATIONSHIPS
 
     public function user()
     {
@@ -55,4 +64,12 @@ class Character extends Model
     {
         return $this->hasMany(Position::class);
     }
+    
+// -- DISTANT RELATIONSHIPS
+
+    public function faction()
+    {
+        // hasOneThrough() was not working
+        return $this->hasOneThrough(Faction::class, Company::class);
+    }    
 }

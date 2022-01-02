@@ -16,8 +16,7 @@
             
             <x-slot name="button">
                 <div class="flex flex-wrap justify-between lg:max-w-1/2">
-                    <x-button name="action" value="edit">Edit</x-button>
-                    <x-button name="action" value="destroy" class="bg-red-800">Delete</x-button>
+                    <x-button name="action" value="{{ Str::slug($action) }}">{{ Str::title($action) }}</x-button>
                 </div>
             </x-slot>
             

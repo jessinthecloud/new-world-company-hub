@@ -31,8 +31,9 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
-
-        return redirect()->intended(RouteServiceProvider::HOME);
+        
+        // send to character choice page to set character for this login
+        return redirect(route('characters.choose', ['action'=>'login']));
     }
 
     /**

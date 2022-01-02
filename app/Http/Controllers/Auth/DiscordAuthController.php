@@ -112,6 +112,7 @@ class DiscordAuthController extends Controller
                 ]
             );
 
+            // TODO: only fire these events if the user is completely new
             event(new Registered($user));
 
             if ($discordUser->user['verified'] && $user->markEmailAsVerified()) {
@@ -119,8 +120,9 @@ class DiscordAuthController extends Controller
             }
 
             Auth::login($user, true);
-
-            return redirect(RouteServiceProvider::DASHBOARD);
+            
+            // send to character choice page to set character for this login
+            return redirect(route('characters.choose', ['action'=>'login']));
            
         } catch ( ClientException $e ) {
         

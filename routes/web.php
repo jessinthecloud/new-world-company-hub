@@ -56,7 +56,7 @@ Route::middleware(['auth'])->group(function(){
     
         
         // choose from drop down
-        Route::get( '/characters/choose', [\App\Http\Controllers\CharactersController::class, 'choose'] )
+        Route::get( '/characters/choose/{action?}', [\App\Http\Controllers\CharactersController::class, 'choose'] )
             ->name( 'characters.choose' );
         Route::get( '/companies/choose', [\App\Http\Controllers\CompaniesController::class, 'choose'] )
             ->name( 'companies.choose' );
@@ -78,6 +78,10 @@ Route::middleware(['auth'])->group(function(){
             ->name( 'loadouts.find' );
         Route::post( '/weapons/find', [\App\Http\Controllers\WeaponsController::class, 'find'] )
             ->name( 'weapons.find' );
+        
+        // where to go after character is chosen on login
+        Route::get( '/characters/{character}/login', [\App\Http\Controllers\CharactersController::class, 'login'] )
+            ->name( 'characters.login' );
 
         /*Route::get('/characters/edit', [\App\Http\Controllers\CharactersController::class, 'edit'])
             ->name('characters.edit.select');

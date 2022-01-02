@@ -9,6 +9,7 @@ use App\Models\Company;
 use App\Models\Rank;
 use App\Models\Skill;
 use App\Models\SkillType;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -24,8 +25,14 @@ class CharactersController extends Controller
         dump($characters);
     }
 
-    public function choose()
+    /**
+     * @param string $action
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function choose(string $action = 'Submit')
     {
+    
         $characters = Character::orderBy('name')->orderBy('level')->get()->mapWithKeys(function($character){
             return [$character->slug => $character->name.' (Level '.$character->level.')'];
         })->all();
@@ -33,13 +40,32 @@ class CharactersController extends Controller
         
         return view(
             'dashboard.character.choose', 
-            compact('characters', 'form_action')
+            compact('characters', 'form_action', 'action')
         );
     }
 
+    /**
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function find(Request $request)
     {
         return redirect(route('characters.'.$request->action, ['character'=>$request->character]));
+    }
+
+    /**
+     * Set this as primary character for logged-in user
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Character    $character
+     *
+     */
+    public function login( Request $request, Character $character )
+    {
+        $request->session()->put('character', $character);
+
+        return redirect(RouteServiceProvider::DASHBOARD);
     }
 
     /**
