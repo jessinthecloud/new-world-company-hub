@@ -25,6 +25,22 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'edit own faction']);
         Permission::create(['name' => 'delete own faction']);
         
+// -- companies --
+        // all
+        Permission::create(['name' => 'view companies']);
+        Permission::create(['name' => 'create companies']);
+        Permission::create(['name' => 'edit companies']);
+        Permission::create(['name' => 'delete companies']);
+        // their own
+        Permission::create(['name' => 'view own companies']);
+        Permission::create(['name' => 'edit own companies']);
+        Permission::create(['name' => 'delete own companies']);
+        // their factions'
+        Permission::create(['name' => 'view own faction companies']);
+        Permission::create(['name' => 'create own faction companies']);
+        Permission::create(['name' => 'edit own faction companies']);
+        Permission::create(['name' => 'delete own faction companies']);
+        
     // -- characters --
         // all
         Permission::create(['name' => 'view characters']);
@@ -68,22 +84,6 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'create own faction loadouts']);
         Permission::create(['name' => 'edit own faction loadouts']);
         Permission::create(['name' => 'delete own faction loadouts']);
-        
-    // -- companies --
-        // all
-        Permission::create(['name' => 'view companies']);
-        Permission::create(['name' => 'create companies']);
-        Permission::create(['name' => 'edit companies']);
-        Permission::create(['name' => 'delete companies']);
-        // their own
-        Permission::create(['name' => 'view own companies']);
-        Permission::create(['name' => 'edit own companies']);
-        Permission::create(['name' => 'delete own companies']);
-        // their factions'
-        Permission::create(['name' => 'view own faction companies']);
-        Permission::create(['name' => 'create own faction companies']);
-        Permission::create(['name' => 'edit own faction companies']);
-        Permission::create(['name' => 'delete own faction companies']);
         
     // -- rosters --
         // all

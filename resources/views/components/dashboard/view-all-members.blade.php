@@ -1,4 +1,4 @@
-@if( Gate::allows('viewAny', \App\Models\Company::class) )
+@can('view', $class)
     <x-forms.form
         {{-- send as plain html attribute --}}
         action="{{ route('companies.find') }}"
@@ -30,4 +30,4 @@
             </div>
         </x-slot>
     </x-forms.form>
-@endif
+@endcan
