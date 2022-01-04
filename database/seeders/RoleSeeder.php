@@ -58,13 +58,21 @@ class RoleSeeder extends Seeder
 
         // -- company permissions
             'view own company users',
+            'view own company characters',
+            
             'view own company rosters',
             'create own company rosters',
             'edit own company rosters',
-            'view own company characters',
+            
             'view own company loadouts',
-            'view own company events', 'create own company events', 'edit own company events',
-            'view own company positions', 'create own company positions', 'edit own company positions',
+            
+            'view own company events', 
+            'create own company events', 
+            'edit own company events',
+            
+            'view own company positions', 
+            'create own company positions', 
+            'edit own company positions',
 
         // -- faction permissions
             'view own faction companies',

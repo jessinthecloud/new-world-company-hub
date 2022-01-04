@@ -1,5 +1,7 @@
-@if( Gate::allows('create', \App\Models\Company::class) )
-    <x-button-link href="{{ route('companies.create') }}">
+@props(['class', 'route'])
+
+@can('create', $class)
+    <x-button-link href="{{ $route }}">
         Create
     </x-button-link>
 @endif

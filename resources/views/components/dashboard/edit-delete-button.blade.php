@@ -1,5 +1,7 @@
-@if( Auth::user()->can('edit companies') )
-    <x-button-link href="{{ route('companies.choose') }}">
+@props(['class', 'route', 'instance'])
+
+@can('update', $instance)
+    <x-button-link href="{{ $route }}">
         Edit / Delete
     </x-button-link>
 @endif

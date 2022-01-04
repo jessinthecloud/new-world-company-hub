@@ -1,7 +1,7 @@
-@props(['class', 'route', 'company'])
+@props(['class', 'route', 'instance'])
 
-@can('view', $company)
+@can('view', $instance)
     <x-button-link href="{{ $route }}">
-        View My Company
+        View
     </x-button-link>
 @endcan

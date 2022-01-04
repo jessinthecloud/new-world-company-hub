@@ -56,10 +56,11 @@ class CharactersController extends Controller
 
     /**
      * Set this as primary character for logged-in user
-     * 
+     *
      * @param \Illuminate\Http\Request $request
      * @param \App\Models\Character    $character
      *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function login( Request $request, Character $character )
     {

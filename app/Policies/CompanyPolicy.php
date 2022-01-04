@@ -32,10 +32,10 @@ class CompanyPolicy
      */
     public function viewAny( User $user ) : bool
     {
-        return $user->can([
+        return $user->canAny([
             'view companies', 
-            'view own company', 
-            'view faction companies',
+            'view own companies', 
+            'view faction companies'
         ]);
     }
     
@@ -59,15 +59,13 @@ class CompanyPolicy
                 (
                     $user->can('view own companies')
                     &&
-                    $user->load('characters.company')
-                        ->where('characters.company.id', $company->id)
+                    $user->where('characters.company.id', $company->id)
                 )
                 ||
                 (
                     $user->can('view own faction companies') 
                     && 
-                    $user->load('characters.company')
-                        ->where('characters.company.faction.id', $company->faction->id)
+                    $user->where('characters.company.faction.id', $company->faction->id)
                 )
             ) 
         );
@@ -75,7 +73,7 @@ class CompanyPolicy
 
     public function create( User $user ) : bool
     {
-        return $user->hasAnyPermission(['create companies', 'create faction companies']);
+        return $user->canAny(['create companies', 'create faction companies']);
     }
 
     public function update( User $user, Company $company ) : bool
@@ -86,15 +84,13 @@ class CompanyPolicy
                 (
                     $user->can('edit own companies') 
                     &&
-                    $user->load('characters.company')
-                        ->where('characters.company.id', $company->id) 
+                    $user->where('characters.company.id', $company->id) 
                 ) 
                 &&
                 (
                     $user->can('edit own faction companies') 
                     && 
-                    $user->load('characters.company')
-                        ->where('characters.company.faction.id', $company->faction->id)
+                    $user->where('characters.company.faction.id', $company->faction->id)
                 )
             )
         );
@@ -108,8 +104,7 @@ class CompanyPolicy
             (
                 $user->can('delete own companies')
                 && 
-                $user->load('characters.company')
-                    ->where('characters.company.id', $company->id)
+                $user->where('characters.company.id', $company->id)
             )
         );
     }
@@ -122,8 +117,7 @@ class CompanyPolicy
             (
                 $user->can('delete own companies')
                 && 
-                $user->load('characters.company')
-                    ->where('characters.company.id', $company->id)
+                $user->where('characters.company.id', $company->id)
             )
         );
     }

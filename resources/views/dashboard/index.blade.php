@@ -1,5 +1,11 @@
 <x-layouts.dashboard>
     
+    {{-- Faction --}}
+    @include('dashboard.faction.index')
+    
+    {{-- Company --}}
+    @include('dashboard.company.index')
+    
     <x-dashboard.section 
         :title="'Import'"
         class="min-w-1/3 mb-6 lg:mr-6"
@@ -10,7 +16,7 @@
     </x-dashboard.section>
     
     <x-dashboard.section 
-        :title="'Rosters'"
+        :title="'Roster'"
         class="min-w-1/3 mb-6"
     >
         <x-button-link href="{{-- route('rosters.index') --}}">
@@ -19,7 +25,7 @@
     </x-dashboard.section>
 
     <x-dashboard.section 
-        :title="'Characters'"
+        :title="'Character'"
         class="min-w-1/3 mb-6 lg:mr-6"
     >
         <x-button-link href="{{ route('characters.index') }}">
@@ -36,7 +42,7 @@
     </x-dashboard.section>
 
     <x-dashboard.section
-        :title="'Loadouts'"
+        :title="'Loadout'"
         class="min-w-1/3 mb-6"
     >
         <x-button-link href="{{ route('loadouts.index') }}">
@@ -52,28 +58,8 @@
         </x-button-link>
     </x-dashboard.section>
     
-    {{-- Companies --}}
-    @include('dashboard.company.index')
-
     <x-dashboard.section
-        :title="'Factions'"
-        class="min-w-1/3  mb-6"
-    >
-        <x-button-link href="{{ route('factions.index') }}">
-            View All
-        </x-button-link>
-        
-        <x-button-link href="{{ route('factions.create') }}">
-            Create
-        </x-button-link>
-
-        <x-button-link href="{{ route('factions.choose') }}">
-            Edit / Delete
-        </x-button-link>
-    </x-dashboard.section>
-    
-    <x-dashboard.section
-        :title="'Weapons'"
+        :title="'Weapon'"
         class="min-w-1/3  mb-6"
     >
         <x-button-link href="{{ route('weapons.index') }}">
