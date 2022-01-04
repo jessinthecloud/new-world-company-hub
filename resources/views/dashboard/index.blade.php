@@ -10,6 +10,9 @@
         {{-- Company --}}
         @include('dashboard.company.index')
         
+        {{-- Roster --}}
+        @include('dashboard.roster.index')
+        
         {{-- Character --}}
         @include('dashboard.character.index')
         
@@ -18,14 +21,5 @@
         
         {{-- Weapon --}}
         @include('dashboard.weapon.index')
-        
-        <x-dashboard.section 
-            :title="'Import'"
-            class=""
-        >
-            <x-button-link href="{{ route('import.create') }}">
-                Import Roster
-            </x-button-link>
-        </x-dashboard.section>
     </div>
 </x-layouts.dashboard>

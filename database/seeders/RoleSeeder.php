@@ -19,7 +19,7 @@ class RoleSeeder extends Seeder
             'view characters', 'create characters', 'edit characters', 'delete characters', 
             'view loadouts', 'create loadouts', 'edit loadouts', 'delete loadouts',
             'view companies', 'create companies', 'edit companies', 'delete companies', 
-            'view rosters', 'create rosters', 'edit rosters', 'delete rosters',
+            'view rosters', 'create rosters', 'edit rosters', 'delete rosters', 'import rosters',
             'view events', 'create events', 'edit events', 'delete events',
             'view positions', 'create positions', 'edit positions', 'delete positions',
             'view users', 'create users', 'edit users', 'delete users'
@@ -30,7 +30,7 @@ class RoleSeeder extends Seeder
             'view characters', 'create characters', 'edit characters', 
             'view loadouts', 'create loadouts', 'edit loadouts', 
             'view companies', 'create companies', 'edit companies', 
-            'view rosters', 'create rosters', 'edit rosters',
+            'view rosters', 'create rosters', 'edit rosters', 'import rosters',
             'view events', 'create events', 'edit events',
             'view positions', 'create positions', 'edit positions',
             'view users', 'edit users cosmetic info'
@@ -62,6 +62,7 @@ class RoleSeeder extends Seeder
             
             'view own company rosters',
             'create own company rosters',
+            'import own company rosters',
             'edit own company rosters',
             
             'view own company loadouts',
@@ -108,11 +109,19 @@ class RoleSeeder extends Seeder
             'view own company users',
             'view own company rosters',
             'create own company rosters',
+            'import own company rosters',
             'edit own company rosters',
+            
             'view own company characters',
             'view own company loadouts',
-            'view own company events', 'create own company events', 'edit own company events',
-            'view own company positions', 'create own company positions', 'edit own company positions',
+            
+            'view own company events', 
+            'create own company events', 
+            'edit own company events',
+            
+            'view own company positions', 
+            'create own company positions', 
+            'edit own company positions',
 
         // -- faction permissions
             'view own faction companies',
@@ -136,23 +145,27 @@ class RoleSeeder extends Seeder
     
             'view own companies',
             'view own rosters',
-            
-            'view own company rosters', 'create own company rosters', 'edit own company rosters',
-            'view own company events', 'create own company events', 'edit own company events',
-            'view own company positions', 'create own company positions', 'edit own company positions',
-            
-            'view own faction companies',
     
-        // -- company permissions
-            'view own company users',
-            'view own company rosters',
-            'create own company rosters',
+    // -- company permissions
+            'view own company rosters', 
+            'create own company rosters', 
             'edit own company rosters',
+            'import own company rosters',
+            
+            'view own company users',
             'view own company characters',
             'view own company loadouts',
-    
-        // -- faction permissions
+            
+            'view own company events', 
+            'create own company events', 
+            'edit own company events',
+            
+            'view own company positions', 
+            'create own company positions', 
+            'edit own company positions',
 
+    // -- faction permissions
+            'view own faction companies',
         );
         
         $settler = Role::create(['name' => 'settler']);
@@ -191,43 +204,5 @@ class RoleSeeder extends Seeder
             'view own companies',
             'view own rosters',
         );
-        
-        /*DB::table('roles')->insert([
-            [
-                'name' => 'Super Admin',
-                'guard_name' => 'Super Admin',
-                'team_id' => 0,
-                'created_at' => now(), 
-                'updated_at' => now(),
-            ],
-            [
-                'name' => 'Company Governor',
-                'guard_name' => 'Company Governor',
-                'team_id' => 1, //Company::where('id', 1)->first(),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'name' => 'Company Officer',
-                'guard_name' => 'Company Officer',
-                'team_id' => 1, //Company::where('id', 1)->first(),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'name' => 'Company Settler',
-                'guard_name' => 'Company Settler',
-                'team_id' => 1, //Company::where('id', 1)->first(),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'name' => 'Player',
-                'guard_name' => 'Player',
-                'team_id' => 0,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-        ]);*/
     }
 }

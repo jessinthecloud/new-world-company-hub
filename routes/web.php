@@ -31,29 +31,14 @@ Route::middleware(['guest'])->group(function() {
 Route::middleware(['auth'])->group(function(){
 
     // import rosters
-    Route::get(
-        '/import', 
-        [\App\Http\Controllers\ImportRosterController::class, 'create'] 
-    )
-    ->name( 'import.create' );
-    Route::post(
-        '/import', 
-        [\App\Http\Controllers\ImportRosterController::class, 'store'] 
-    )
-    ->name( 'import.store' );
+    Route::get('/import', [\App\Http\Controllers\ImportRosterController::class, 'create'])
+        ->name( 'rosters.import.create' );
+    Route::post('/import',[\App\Http\Controllers\ImportRosterController::class, 'store'])
+        ->name( 'rosters.import.store' );
     
-
+    // dashboard
     Route::get( '/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])
-            ->name( 'dashboard' );
-            
-    // temp roster show
-        Route::get( '/roster', [\App\Http\Controllers\RostersController::class, 'show'] )
-            ->name('rosters.show');
-        Route::get( '/rosters/choose', [\App\Http\Controllers\RostersController::class, 'choose'] )
-            ->name( 'rosters.choose' );
-        Route::get( '/rosters/find', [\App\Http\Controllers\RostersController::class, 'choose'] )
-            ->name( 'rosters.find' );
-    
+            ->name( 'dashboard' );    
         
         // choose from drop down
         Route::get( '/characters/choose/{action?}', [\App\Http\Controllers\CharactersController::class, 'choose'] )
@@ -66,6 +51,9 @@ Route::middleware(['auth'])->group(function(){
             ->name( 'loadouts.choose' );
         Route::get( '/weapons/choose', [\App\Http\Controllers\WeaponsController::class, 'choose'] )
             ->name( 'weapons.choose' );
+        Route::get( '/rosters/choose', [\App\Http\Controllers\RostersController::class, 'choose'] )
+            ->name( 'rosters.choose' );
+        
 
         // find char chosen from drop down
         Route::post( '/characters/find', [\App\Http\Controllers\CharactersController::class, 'find'] )
@@ -78,6 +66,8 @@ Route::middleware(['auth'])->group(function(){
             ->name( 'loadouts.find' );
         Route::post( '/weapons/find', [\App\Http\Controllers\WeaponsController::class, 'find'] )
             ->name( 'weapons.find' );
+        Route::get( '/rosters/find', [\App\Http\Controllers\RostersController::class, 'choose'] )
+            ->name( 'rosters.find' );
         
         // where to go after character is chosen on login
         Route::get( '/characters/{character}/login', [\App\Http\Controllers\CharactersController::class, 'login'] )
@@ -97,6 +87,8 @@ Route::middleware(['auth'])->group(function(){
         Route::resource( 'factions', \App\Http\Controllers\FactionsController::class )
             ->except( ['index', 'show'] );
         Route::resource( 'weapons', \App\Http\Controllers\WeaponsController::class )
+            ->except( ['index', 'show'] );
+        Route::resource( 'rosters', \App\Http\Controllers\RostersController::class )
             ->except( ['index', 'show'] );
             
 // ###################################
@@ -146,28 +138,12 @@ Route::middleware(['auth'])->group(function(){
         ->only(['index', 'show']);
     Route::resource('weapons', \App\Http\Controllers\WeaponsController::class)
         ->only(['index', 'show']);
+    Route::resource('rosters', \App\Http\Controllers\RostersController::class)
+        ->only(['index', 'show']);
 }); // end auth
 // ##
 // ## END AUTH
 // ################################
 
-
-
-
-/* 
-Route::middleware('admin')->group(function(){
-    Route::resources([
-        'users' => \App\Http\Controllers\UserController::class,
-        'factions' => \App\Http\Controllers\FactionsController::class,
-        'companies' => \App\Http\Controllers\CompaniesController::class,
-        'skills' => \App\Http\Controllers\SkillsController::class,
-        'skill-types' => \App\Http\Controllers\SkillTypesController::class,
-        'classes' => \App\Http\Controllers\ClassesController::class,
-        'class-types' => \App\Http\Controllers\ClassTypesController::class,
-        'weapons' => \App\Http\Controllers\WeaponController::class,
-        'weapon-types' => \App\Http\Controllers\WeaponTypeController::class,
-    ]);
-}); 
-*/
-
+// authentication related routes
 require __DIR__.'/auth.php';

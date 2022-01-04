@@ -4,7 +4,7 @@
     >
         <x-forms.form
             {{-- send as plain html attribute --}}
-            action="{{ route('import.store') }}"
+            action="{{ route('rosters.import.store') }}"
             {{-- set the custom $method variable --}}
             {{-- (not the form method attribute) --}}
             :method="$method ?? null"

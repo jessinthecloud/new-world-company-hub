@@ -91,9 +91,9 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'create rosters']);
         Permission::create(['name' => 'edit rosters']);
         Permission::create(['name' => 'delete rosters']);
+        Permission::create(['name' => 'import rosters']);
         // their own
         Permission::create(['name' => 'view own rosters']);
-        Permission::create(['name' => 'create own rosters']);
         Permission::create(['name' => 'edit own rosters']);
         Permission::create(['name' => 'delete own rosters']);
         // their companies'
@@ -101,12 +101,13 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'create own company rosters']);
         Permission::create(['name' => 'edit own company rosters']);
         Permission::create(['name' => 'delete own company rosters']);
+        Permission::create(['name' => 'import own company rosters']);
         // their factions'
         Permission::create(['name' => 'view own faction rosters']);
         Permission::create(['name' => 'create own faction rosters']);
         Permission::create(['name' => 'edit own faction rosters']);
         Permission::create(['name' => 'delete own faction rosters']);
-        
+        Permission::create(['name' => 'import own faction rosters']);
     // -- events --
         // all
         Permission::create(['name' => 'view events']);
@@ -161,5 +162,9 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'view own faction users']);
         Permission::create(['name' => 'view own company users']);
         Permission::create(['name' => 'edit users cosmetic info']);
+        
+    // -- miscellaneous
+        
+
     }
 }

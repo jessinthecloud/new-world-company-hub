@@ -16,7 +16,7 @@ class RostersController extends Controller
     public function choose()
     {
         $rosters = Roster::with('roster')->orderBy('name')->get()->mapWithKeys(function($roster){
-            return [$roster->name.' ('.$roster->faction->name.')' => $roster->id];
+            return [$roster->id => $roster->name.' ('.$roster->faction->name.')'];
         })->all();
         $form_action = route('rosters.find');
 

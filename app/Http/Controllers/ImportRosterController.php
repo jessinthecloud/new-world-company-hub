@@ -12,7 +12,7 @@ class ImportRosterController extends Controller
     public function create()
     {
         $companies = Company::with('faction')->orderBy('name')->get()->mapWithKeys(function($company){
-            return [$company->name.' ('.$company->faction->name.')' => $company->id];
+            return [$company->id => $company->name.' ('.$company->faction->name.')'];
         })->all();
         return view('dashboard.import', [
             'companies' => $companies
