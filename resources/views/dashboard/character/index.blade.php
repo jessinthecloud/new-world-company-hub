@@ -1,25 +1,26 @@
-<x-layouts.dashboard>
+@can('viewAny', \App\Models\Character::class)
     <x-dashboard.section
         :title="'Character'"
+        class=""
     >
-        <x-forms.form
-            {{-- send as plain html attribute --}}
-            action="{{ $form_action ?? '' }}"
-            {{-- set the custom $method variable --}}
-            {{-- (not the form method attribute) --}}
-            :method="$method ?? null"
-        >
-            <x-forms.field :name="'character'">
-                <x-forms.label for="character" :required="true">Choose:</x-forms.label>
-                <x-forms.select id="character" type="text" name="character" class="" :required="true" :values="$characters"/>
-            </x-forms.field>
-            
-            <x-slot name="button">
-                <div class="flex flex-wrap justify-between lg:max-w-1/2">
-                    <x-button name="action" value="edit">Edit</x-button>
-                    <x-button name="action" value="destroy" class="bg-red-800">Delete</x-button>
-                </div>
-            </x-slot>
-        </x-forms.form>
+        <x-dashboard.view-all-button 
+            :class="\App\Models\Character::class" 
+            :route="route('characters.index')"
+        />
+        <x-dashboard.view-own-button 
+            :class="\App\Models\Character::class" 
+            :route="route('characters.show', ['character'=>$character])"
+            :instance="$character"
+        />
+        <x-dashboard.create-button 
+            :class="\App\Models\Character::class" 
+            :route="route('characters.create')"
+            :instance="$character"
+        />
+        <x-dashboard.edit-delete-button 
+            :class="\App\Models\Character::class" 
+            :route="route('characters.choose')"
+            :instance="$character"
+        />
     </x-dashboard.section>
-</x-layouts.dashboard>
+@endcan

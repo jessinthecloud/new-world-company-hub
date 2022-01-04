@@ -23,6 +23,7 @@ class DashboardController extends Controller
             'company'     => $user->company(),
             'rank'        => $user->rank(),
             'characters'  => $user->characters,
+            'loadout'     => $user->character()->loadout,
             // import
             // rosters
             // events

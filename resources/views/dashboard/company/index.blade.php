@@ -1,7 +1,7 @@
 @can('viewAny', \App\Models\Company::class)
     <x-dashboard.section
         :title="'Company'"
-        class="min-w-1/3 mb-6 lg:mr-6"
+        class=""
     >
         <x-dashboard.view-all-button 
             :class="\App\Models\Company::class" 

@@ -1,26 +1,30 @@
-<x-layouts.dashboard>
-    <x-dashboard.section
-        :title="'Loadout'"
-    >
-        <x-forms.form
-            {{-- send as plain html attribute --}}
-            action="{{ $form_action ?? '' }}"
-            {{-- set the custom $method variable --}}
-            {{-- (not the form method attribute) --}}
-            :method="$method ?? null"
+    @can('viewAny', \App\Models\Loadout::class)
+        <x-dashboard.section
+            :title="'Loadout'"
+            class=""
         >
-            <x-forms.field :name="'loadout'">
-                <x-forms.label for="loadout" :required="true">Choose:</x-forms.label>
-                <x-forms.select id="loadout" type="text" name="loadout" class="" :required="true" :values="$loadouts"/>
-            </x-forms.field>
-            
-            <x-slot name="button">
-                <div class="flex flex-wrap justify-between lg:max-w-1/2">
-                    <x-button name="action" value="edit">Edit</x-button>
-                    <x-button name="action" value="destroy" class="bg-red-800">Delete</x-button>
-                </div>
-            </x-slot>
-            
-        </x-forms.form>
-    </x-dashboard.section>
-</x-layouts.dashboard>
+            <x-dashboard.view-all-button 
+                :class="\App\Models\Loadout::class" 
+                :route="route('loadouts.index')"
+            />
+            @isset($loadout)
+                <x-dashboard.view-own-button 
+                    :class="\App\Models\Loadout::class" 
+                    :route="route('loadouts.show', ['loadout'=>$loadout])"
+                    :instance="$loadout"
+                />
+            @endcan
+            <x-dashboard.create-button 
+                :class="\App\Models\Loadout::class" 
+                :route="route('loadouts.create')"
+                :instance="$loadout"
+            />
+            @isset($loadout)
+                <x-dashboard.edit-delete-button 
+                    :class="\App\Models\Loadout::class" 
+                    :route="route('loadouts.choose')"
+                    :instance="$loadout"
+                />
+            @endisset
+        </x-dashboard.section>
+@endisset
