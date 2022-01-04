@@ -32,6 +32,9 @@ class LoadoutPolicy
      */
     public function viewAny( User $user ) : bool
     {
+        // temp disable
+        return false;
+        
         return $user->canAny([
             'view loadouts', 
             'view own loadouts', 
