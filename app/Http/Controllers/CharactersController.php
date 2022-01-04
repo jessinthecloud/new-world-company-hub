@@ -28,14 +28,26 @@ class CharactersController extends Controller
     /**
      * @param string $action
      *
-     * @return \Illuminate\Contracts\View\View
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
      */
-    public function choose(string $action = 'Submit')
+    public function choose(Request $request, string $action = 'Submit')
     {
-    
-        $characters = Character::orderBy('name')->orderBy('level')->get()->mapWithKeys(function($character){
+        $characters = Character::query();
+        if($action == 'login'){
+            // restrict to own characters when choosing for login
+            $characters = $characters->where('user_id', $request->user()->id);
+        }
+        $characters = $characters->orderBy('name')->orderBy('level')->get()->mapWithKeys(function($character){
             return [$character->slug => $character->name.' (Level '.$character->level.')'];
         })->all();
+        
+        // if only one, then choose it automatically 
+        if(count($characters) === 1){
+            return redirect(route('characters.login', [
+                'character'=>array_key_first($characters)
+            ]));
+        }
+        
         $form_action = route('characters.find');
         
         return view(
@@ -132,7 +144,7 @@ class CharactersController extends Controller
 
     public function show( Character $character )
     {
-        //
+        dump($character);
     }
 
     /**
