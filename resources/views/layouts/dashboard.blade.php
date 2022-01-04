@@ -13,10 +13,9 @@
     </x-slot>
     
     <div class="py-12">
-        <div id="wrapper-inner" class="max-w-7xl mx-auto grid grid-cols-1 auto-rows-min gap-4 
+        <div id="wrapper-inner" class="max-w-7xl mx-auto
             sm:px-6 
-            md:grid-cols-2
-            lg:px-8 lg:gap-6 lg:grid-cols-3
+            lg:px-8
         ">
         
             {{ $slot }}
