@@ -16,7 +16,8 @@
         "maatwebsite/excel": "^3.1",
         "rappasoft/laravel-livewire-tables": "^1.21",
         "socialiteproviders/discord": "^4.1",
-        "spatie/laravel-permission": "^5.3"
+        "spatie/laravel-permission": "^5.3",
+        "team-reflex/discord-php": "dev-master"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.6",
