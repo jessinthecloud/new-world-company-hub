@@ -53,6 +53,7 @@ require __DIR__ . '/../../vendor/autoload.php';
  * 
  * curl --location --request GET 'https://discord.com/api/guilds/926272067488350269/scheduled-events' \ 
  *      --header 'Authorization: Bot <Token>>'
+ *                User-Agent: DiscordBot ($url, $versionNumber)
  */
 
 // Create a $discord BOT
