@@ -65,7 +65,6 @@ class DatabaseSeeder extends Seeder
             SkillSeeder::class,
             RankSeeder::class,
 //            CharacterSeeder::class,
-            WeaponTypeSeeder::class,
             WeaponSeeder::class,
             ArmorSeeder::class,
 //            LoadoutSeeder::class,

@@ -11,7 +11,7 @@ class Weapon extends Model
     
     public function type()
     {
-        return $this->belongsTo(WeaponType::class, 'weapon_type_id');
+        
     }
 
     public function mainLoadout()
