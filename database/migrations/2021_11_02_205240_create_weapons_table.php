@@ -12,9 +12,17 @@ class CreateWeaponsTable extends Migration
             $table->bigIncrements( 'id' );
 
             $table->string('name');
+            $table->string('long_name')->nullable();
             $table->string('slug')->unique();
             $table->string('description')->nullable();
-            $table->foreignId('weapon_type_id')->constrained();
+            $table->string('weapon_type'); // PHP enum
+            $table->string('tier')->nullable(); // PHP enum
+            $table->string('rarity')->nullable(); // PHP enum
+            $table->string('gear_score_override')->nullable();
+            $table->string('min_gear_score')->nullable(); 
+            $table->string('max_gear_score')->nullable();
+            $table->string('cdn_asset_path')->nullable();
+//            $table->foreignId('weapon_type_id')->constrained();
 
 
             $table->timestamps();
