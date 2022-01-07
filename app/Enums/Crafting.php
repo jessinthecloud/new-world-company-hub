@@ -4,10 +4,10 @@ namespace App\Enums;
 
 enum Crafting
 {
-    case WEAPONSMITHING;
-    case JEWELCRAFTING;
-    case ARMORING;
-    case ENGINEERING;
     case ARCANA;
+    case ARMORING;
     case COOKING;
+    case ENGINEERING;
+    case JEWELCRAFTING;
+    case WEAPONSMITHING;
 }

@@ -4,9 +4,9 @@ namespace App\Enums;
 
 enum Refining
 {
-    case SMELTING;
-    case WOODWORKING;
     case LEATHERWORKING;
-    case WEAVING;
+    case SMELTING;
     case STONECUTTING;
+    case WEAVING;
+    case WOODWORKING;
 }
