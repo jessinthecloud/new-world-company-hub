@@ -141,6 +141,10 @@ Route::middleware(['auth'])->group(function(){
         ->only(['index', 'show']);
     Route::resource('rosters', \App\Http\Controllers\RostersController::class)
         ->only(['index', 'show']);
+    Route::resource('armors', \App\Http\Controllers\ArmorsController::class)
+        ->only(['index', 'show']);
+    Route::resource('weapons', \App\Http\Controllers\WeaponsController::class)
+        ->only(['index', 'show']);
 }); // end auth
 // ##
 // ## END AUTH

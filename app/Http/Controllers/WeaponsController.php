@@ -9,11 +9,7 @@ class WeaponsController extends Controller
 {
     public function index()
     {
-        $weapons = Weapon::orderBy('name')->get()->mapWithKeys(function($weapon){
-            return [$weapon->id => $weapon->name];
-        })->all();
-        
-        dump($weapons);
+        return view('weapon.index');
     }
 
     public function create()
@@ -27,7 +23,7 @@ class WeaponsController extends Controller
     }
 
     public function show( Weapon $weapon )
-    {
+    {        
         //
     }
 
