@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Armor;
 use App\Models\CharacterClass;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -19,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 })
-    ->name('home');
+->name('home');
 
 Route::middleware(['guest'])->group(function() {
 
