@@ -1,0 +1,77 @@
+<?php
+
+namespace App\Enums;
+
+enum StatusEffectType
+{
+    case AFFLICTION;
+    case AI_NEUTRAL;
+    case ATTRIBUTES;
+    case AZOTHSTAFF;
+    case BLEED;
+    case BOOST;
+    case BOSSDEBUFF;
+    case BUFF;
+    case BURN;
+    case CC;
+    case CLEANSE;
+    case DEBILITATE;
+    case DEBUFF;
+    case DEFBOOST;
+    case DISEASE;
+    case DOT;
+    case EMPOWER;
+    case ESSENCERUPTURE;
+    case ESSENCERUPTURET1;
+    case ESSENCERUPTURET2;
+    case ESSENCERUPTURET3;
+    case EXHAUST;
+    case FAMILY;
+    case FOCUS;
+    case FOODINITIALRECOVERY;
+    case FORTIFY;
+    case FREEZE;
+    case FROST;
+    case FROSTBITE;
+    case FROSTBUFF;
+    case GATHERBOOST;
+    case HARVESTHP;
+    case HARVESTMANA;
+    case HASTE;
+    case HEAL;
+    case HUNTERVISION;
+    case ICEROOT;
+    case IMMORTAL;
+    case INSMOKE;
+    case LASTSTAND;
+    case LIFESTAFFBUFF;
+    case NONDISPELLABLEDEBUFF;
+    case NULLCHAMBERBUFF;
+    case POISON;
+    case POWDERBURN;
+    case RECOVERY;
+    case REMOVAL;
+    case REND;
+    case RESISTBOOST;
+    case RESISTTINCTURE;
+    case ROOT;
+    case SHOCK;
+    case SHOWERROOT;
+    case SIEGEONLY;
+    case SILENCE;
+    case SLOW;
+    case SLOWANDSTUN;
+    case SPEAR;
+    case STAMINA;
+    case STUN;
+    case THREAT;
+    case THROWINGAXE;
+    case TIMER;
+    case TRADESKILL;
+    case TRAPPER;
+    case TRAVERSALHASTE;
+    case UNINTERRUPTIBLE;
+    case VOIDGAUNTLET;
+    case WARHAMMER;
+    case WEAKEN;
+}
