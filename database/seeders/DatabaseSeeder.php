@@ -67,6 +67,7 @@ class DatabaseSeeder extends Seeder
 //            CharacterSeeder::class,
             WeaponSeeder::class,
             ArmorSeeder::class,
+            ConsumableSeeder::class,
 //            LoadoutSeeder::class,
         ]);
         

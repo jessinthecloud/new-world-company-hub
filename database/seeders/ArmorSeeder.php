@@ -44,6 +44,7 @@ class ArmorSeeder extends Seeder
                     'weight_class'        => $weight_class,
                     'tier'                => $armor->tier,
                     'rarity'              => $armor->rarity,
+                    'required_level'      => $armor->required_level ?? null,
                     'gear_score_override' => $armor->gear_score_override ?? null,
                     'min_gear_score'      => $armor->min_gear_score ?? null,
                     'max_gear_score'      => $armor->max_gear_score ?? null,

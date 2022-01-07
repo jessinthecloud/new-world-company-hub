@@ -35,6 +35,7 @@ class WeaponSeeder extends Seeder
                     'weapon_type'         => $weapon->item_class_en ?? $weapon->item_class,
                     'tier'                => $weapon->tier,
                     'rarity'              => $weapon->rarity,
+                    'required_level'      => $weapon->required_level ?? null,
                     'gear_score_override' => $weapon->gear_score_override ?? null,
                     'min_gear_score'      => $weapon->min_gear_score ?? null,
                     'max_gear_score'      => $weapon->max_gear_score ?? null,

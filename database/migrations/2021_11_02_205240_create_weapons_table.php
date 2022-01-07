@@ -18,6 +18,7 @@ class CreateWeaponsTable extends Migration
             $table->string('weapon_type'); // PHP enum
             $table->string('tier')->nullable(); // PHP enum
             $table->string('rarity')->nullable(); // PHP enum
+            $table->string('required_level')->nullable();
             $table->string('gear_score_override')->nullable();
             $table->string('min_gear_score')->nullable(); 
             $table->string('max_gear_score')->nullable();

@@ -4,21 +4,21 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateArmorsTable extends Migration
+class CreateConsumablesTable extends Migration
 {
     public function up()
     {
-        Schema::create( 'armors', function ( Blueprint $table ) {
+        Schema::create( 'consumables', function ( Blueprint $table ) {
             $table->bigIncrements( 'id' );
 
             $table->string('name');
             $table->string('long_name')->nullable();
             $table->string('slug')->unique();
             $table->string('description')->nullable();
-            $table->string('armor_type'); // PHP enum
+            $table->string('consumable_type'); // PHP enum
             $table->string('tier')->nullable(); // PHP enum
             $table->string('rarity')->nullable(); // PHP enum
-            $table->string('weight_class')->nullable(); // PHP enum
+            $table->string('source')->nullable(); // PHP enum
             $table->string('required_level')->nullable();
             $table->string('gear_score_override')->nullable();
             $table->string('min_gear_score')->nullable(); 
@@ -31,6 +31,6 @@ class CreateArmorsTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists( 'armors' );
+        Schema::dropIfExists( 'consumables' );
     }
 }
