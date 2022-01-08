@@ -7,11 +7,9 @@ use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
-
-
     public function index( Request $request )
     {
-//        dump( $request->user(), $request->user()->character() );
+        dump( $request->user(), $request->user()->character() );
 
         // determine what user is allowed to see on the dashboard
         $user = $request->user();
@@ -23,7 +21,7 @@ class DashboardController extends Controller
             'company'     => $user->company(),
             'rank'        => $user->rank(),
             'characters'  => $user->characters,
-            'loadout'     => $user->character()->loadout,
+            'loadout'     => $user->character()?->loadout,
             // import
             // rosters
             // events

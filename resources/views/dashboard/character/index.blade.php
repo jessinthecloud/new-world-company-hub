@@ -7,11 +7,13 @@
             :class="\App\Models\Character::class" 
             :route="route('characters.index')"
         />
+        @isset($character)
         <x-dashboard.view-own-button 
             :class="\App\Models\Character::class" 
             :route="route('characters.show', ['character'=>$character])"
             :instance="$character"
         />
+        @endisset
         <x-dashboard.create-button 
             :class="\App\Models\Character::class" 
             :route="route('characters.create')"

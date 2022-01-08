@@ -74,17 +74,17 @@ class User extends Authenticatable
     
     public function rank()
     {
-        return $this->character()->rank;
+        return $this->character()?->rank;
     }
 
     public function company()
     {
-        return $this->character()->company;
+        return $this->character()?->company;
     }
     
     public function faction()
     {
-        return $this->character()->company->faction;
+        return $this->character()?->company?->faction;
     }
     
 // -- DISTANT RELATIONSHIPS

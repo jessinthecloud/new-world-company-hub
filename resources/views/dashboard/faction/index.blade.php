@@ -7,11 +7,13 @@
             :class="\App\Models\Faction::class" 
             :route="route('factions.index')"
         />
+        @isset($faction)
         <x-dashboard.view-own-button 
             :class="\App\Models\Faction::class" 
             :route="route('factions.show', ['faction'=>$faction])"
             :instance="$faction"
         />
+        @endisset
         <x-dashboard.create-button 
             :class="\App\Models\Faction::class" 
             :route="route('factions.create')"

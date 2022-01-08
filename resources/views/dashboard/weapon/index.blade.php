@@ -7,20 +7,22 @@
             :class="\App\Models\BaseWeapon::class" 
             :route="route('weapons.index')"
         />
+        @isset($weapon)
         <x-dashboard.view-own-button 
             :class="\App\Models\BaseWeapon::class" 
             :route="route('weapons.show', ['weapon'=>$weapon])"
             :instance="$weapon"
         />
+        @endisset
         <x-dashboard.create-button 
             :class="\App\Models\BaseWeapon::class" 
             :route="route('weapons.create')"
-            :instance="$weapon"
+            :instance="$weapon ?? null"
         />
         <x-dashboard.edit-delete-button 
             :class="\App\Models\BaseWeapon::class" 
             :route="route('weapons.choose')"
-            :instance="$weapon"
+            :instance="$weapon ?? null"
         />
     </x-dashboard.section>
 @endcan

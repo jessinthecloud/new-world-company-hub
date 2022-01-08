@@ -7,11 +7,13 @@
             :class="\App\Models\Company::class" 
             :route="route('companies.index')"
         />
+        @isset($company)
         <x-dashboard.view-own-button 
             :class="\App\Models\Company::class" 
             :route="route('companies.show', ['company'=>$company])"
             :instance="$company"
         />
+        @endisset
         <x-dashboard.create-button 
             :class="\App\Models\Company::class" 
             :route="route('companies.create')"
