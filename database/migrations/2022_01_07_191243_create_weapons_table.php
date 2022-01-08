@@ -17,7 +17,8 @@ class CreateWeaponsTable extends Migration
             $table->string('description')->nullable();
             $table->string('tier'); // PHP enum
             $table->string('rarity'); // PHP enum
-            $table->string('gear_score')->nullable();
+            $table->integer('gear_score')->nullable();
+            $table->string('required_level')->nullable();
             $table->string('cdn_asset_path')->nullable();
             
             $table->foreignId('base_weapon_id')->nullable()->constrained();

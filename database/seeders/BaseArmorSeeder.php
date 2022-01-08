@@ -9,7 +9,7 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RecursiveTreeIterator;
 
-class ArmorSeeder extends Seeder
+class BaseArmorSeeder extends Seeder
 {
     public function run()
     {
@@ -52,7 +52,7 @@ class ArmorSeeder extends Seeder
                 ];
             }
 
-            DB::table( 'armors' )->upsert( $insert, ['slug'] );
+            DB::table( 'base_armors' )->upsert( $insert, ['slug'] );
         }
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Armor;
+use App\Models\BaseArmor;
 use App\Models\CharacterClass;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -141,7 +141,7 @@ Route::middleware(['auth'])->group(function(){
         ->only(['index', 'show']);
     Route::resource('rosters', \App\Http\Controllers\RostersController::class)
         ->only(['index', 'show']);
-    Route::resource('armors', \App\Http\Controllers\ArmorsController::class)
+    Route::resource('armors', \App\Http\Controllers\BaseArmorsController::class)
         ->only(['index', 'show']);
     Route::resource('weapons', \App\Http\Controllers\WeaponsController::class)
         ->only(['index', 'show']);
