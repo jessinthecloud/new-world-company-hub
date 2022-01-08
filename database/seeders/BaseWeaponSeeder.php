@@ -12,7 +12,7 @@ class BaseWeaponSeeder extends Seeder
 {
     public function run()
     {
-        $dir = __DIR__ . '/../../storage/app/data/weapons';
+        $dir = __DIR__ . '/../../storage/app/json/weapons';
         $files = new RecursiveIteratorIterator(
             new RecursiveDirectoryIterator( $dir, RecursiveDirectoryIterator::SKIP_DOTS )
         );
@@ -33,9 +33,9 @@ class BaseWeaponSeeder extends Seeder
                     'slug'                => $slug, //$weapon->slug,
                     'description'         => $weapon->description,
                     'type'                => $weapon->itemClass[0] ?? null,
-                    'tier'                => $weapon->tier,
-                    'rarity'              => $weapon->rarity,
-                    'required_level'      => $weapon->level ?? null,
+                    'tier'                  => empty($weapon->tier) ? null : $weapon->tier,
+                    'rarity'                => empty($weapon->rarity) ? null : $weapon->rarity,
+                    'required_level'      => empty($weapon->level) ? null : $weapon->level,
                     'gear_score'        => $weapon->gearScore ?? null,
                     'min_gear_score'      => $weapon->gearScoreMin ?? null,
                     'max_gear_score'      => $weapon->gearScoreMax ?? null,

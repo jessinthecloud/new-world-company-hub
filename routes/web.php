@@ -122,20 +122,6 @@ Route::get('/data/{thing}', function (string $thing) {
 
 
 Route::get('/', function () {
-$dir = __DIR__ . '/../storage/app/data/armors';
-        $files = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator( $dir, RecursiveDirectoryIterator::SKIP_DOTS )
-        );
-        foreach ( $files as $file ) {
-            $data = json_decode( file_get_contents( $file->getPathname() ) );
-            dd( $data[0] );
-            $weapons = collect( $data->subjects->data )->pluck( 'attributes' );
-
-
-            foreach ( $weapons as $weapon ) {
-                dump( $weapon );
-            }
-        }
     return view( 'welcome' );
 })
 ->name('home');

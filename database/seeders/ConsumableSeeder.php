@@ -12,14 +12,12 @@ class ConsumableSeeder extends Seeder
 {
     public function run()
     {
-        $dir = __DIR__ . '/../../storage/app/json/consumable';
+        $dir = __DIR__ . '/../../storage/app/json/consumables';
         $files = new RecursiveIteratorIterator(
             new RecursiveDirectoryIterator( $dir, RecursiveDirectoryIterator::SKIP_DOTS )
         );
         foreach ( $files as $file ) {
-            $data = json_decode( file_get_contents( $file->getPathname() ) );
-
-            $consumables = collect( $data->subjects->data )->pluck( 'attributes' );
+            $consumables = json_decode( file_get_contents( $file->getPathname() ) );
 
             $insert = [];
             foreach ( $consumables as $consumable ) {

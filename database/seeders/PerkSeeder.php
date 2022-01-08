@@ -31,8 +31,8 @@ class PerkSeeder extends Seeder
                     'slug'                => $slug,
                     'description'         => $perk->description,
                     'perk_type'           => $perk->PerkType ?? null,
-                    'tier'                  => $perk->tier ?? null,
-                    'rarity'                => $perk->rarity ?? null,
+                    'tier'                  => empty($perk->tier) ? null : $perk->tier,
+                    'rarity'                => empty($perk->rarity) ? null : $perk->rarity,
                     'icon'              => $perk->icon ?? null,
                     'image'             => $perk->iconHiRes ?? null,
                     
