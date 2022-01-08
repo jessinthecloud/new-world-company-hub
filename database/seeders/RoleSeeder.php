@@ -22,7 +22,9 @@ class RoleSeeder extends Seeder
             'view rosters', 'create rosters', 'edit rosters', 'delete rosters', 'import rosters',
             'view events', 'create events', 'edit events', 'delete events',
             'view positions', 'create positions', 'edit positions', 'delete positions',
-            'view users', 'create users', 'edit users', 'delete users'
+            'view users', 'create users', 'edit users', 'delete users',
+            'view guildbanks', 'create guildbanks', 'edit guildbanks', 'delete guildbanks',
+            
         );
 
         $admin = Role::create(['name' => 'admin']);
@@ -33,7 +35,8 @@ class RoleSeeder extends Seeder
             'view rosters', 'create rosters', 'edit rosters', 'import rosters',
             'view events', 'create events', 'edit events',
             'view positions', 'create positions', 'edit positions',
-            'view users', 'edit users cosmetic info'
+            'view users', 'edit users cosmetic info',
+            'view guildbanks', 'create guildbanks', 'edit guildbanks',
         );
 
         $governor = Role::create(['name' => 'governor']);
@@ -59,6 +62,10 @@ class RoleSeeder extends Seeder
         // -- company permissions
             'view own company users',
             'view own company characters',
+            
+            'view own company guildbanks',
+            'edit own company guildbanks',
+            'delete own company guildbanks',
             
             'view own company rosters',
             'create own company rosters',
@@ -115,6 +122,9 @@ class RoleSeeder extends Seeder
             'view own company characters',
             'view own company loadouts',
             
+            'view own company guildbanks',
+            'edit own company guildbanks',
+            
             'view own company events', 
             'create own company events', 
             'edit own company events',
@@ -155,6 +165,7 @@ class RoleSeeder extends Seeder
             'view own company users',
             'view own company characters',
             'view own company loadouts',
+            'view own company guildbanks',
             
             'view own company events', 
             'create own company events', 
@@ -185,6 +196,7 @@ class RoleSeeder extends Seeder
     
             'view own faction companies',
             'view own company rosters',
+            'view own company guildbanks',
             'view own rosters',
         );
         
