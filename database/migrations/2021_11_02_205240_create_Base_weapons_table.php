@@ -14,7 +14,8 @@ class CreateBaseWeaponsTable extends Migration
             $table->string('name');
             $table->string('json_id');
             $table->string('slug')->unique();
-            $table->string('type'); // PHP enum
+            $table->string('equip_type')->nullable(); // PHP enum
+            $table->string('type')->nullable(); // PHP enum
 //            $table->string('long_name')->nullable();
             $table->text('description')->nullable();
             $table->string('tier')->nullable(); // PHP enum

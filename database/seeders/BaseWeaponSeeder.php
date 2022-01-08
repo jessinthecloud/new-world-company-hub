@@ -25,6 +25,10 @@ class BaseWeaponSeeder extends Seeder
                 // create unique slug
                 $slug = $weapon->name . ( !empty( $weapon->rarity ) ? ' ' . $weapon->rarity : '' ) . ( !empty( $weapon->tier ) ? ' t' . $weapon->tier : '' );
                 $slug = Str::slug( $slug );
+               
+                $type = $weapon->itemClass[2] ?? null;
+                $type = (isset($type) && $type == '2HHammer') ? 'WarHammer' : $type; 
+                $type = (isset($type) && $type == '2HAxe') ? 'GreatAxe' : $type; 
 
                 $insert [] = [
                     'name'                => $weapon->name,
@@ -32,7 +36,8 @@ class BaseWeaponSeeder extends Seeder
 //                    'long_name'           => $weapon->name_with_affixes,
                     'slug'                => $slug, //$weapon->slug,
                     'description'         => $weapon->description,
-                    'type'                => $weapon->itemClass[0] ?? null,
+                    'type'                => $type ?? null,
+                    'equip_type'          => $weapon->itemClass[1] ?? null,
                     'tier'                  => empty($weapon->tier) ? null : $weapon->tier,
                     'rarity'                => empty($weapon->rarity) ? null : $weapon->rarity,
                     'required_level'      => empty($weapon->level) ? null : $weapon->level,

@@ -39,7 +39,7 @@ class GuildBanksController extends Controller
         }
         
         $armor = BaseArmor::orderBy('name')->distinct()->get()->mapWithKeys(function($armor){
-            return [$armor->slug => $armor->long_name ?? $armor->name];
+            return [$armor->slug => $armor->name . " (".ArmorType::from($armor->type)->name.") {$armor->weight_class}"];
         })->all();
 
         $armor_options = '<option value=""></option>';
@@ -48,7 +48,9 @@ class GuildBanksController extends Controller
         }
         
         $weapons = BaseWeapon::orderBy('name')->distinct()->get()->mapWithKeys(function($weapon){
-            return [$weapon->slug => $weapon->long_name ?? $weapon->name];
+        $wtype = $weapon->type;
+        $type = !empty($wtype) ? constant("App\Enums\WeaponType::$wtype")->value : null;
+            return [$weapon->slug => $weapon->name . " (".$type.")"];
         })->all();
 
         $weapon_options = '<option value=""></option>';
@@ -72,7 +74,7 @@ class GuildBanksController extends Controller
         
         $armor_type_options = '';
         foreach(ArmorType::cases() as $type) {
-            $armor_type_options .= '<option value="'.$type->name.'">'.$type->value.'</option>';
+            $armor_type_options .= '<option value="'.$type->value.'">'.$type->name.'</option>';
         }
         
         $perk_type_options = '<option value=""></option>';
