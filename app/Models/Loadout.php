@@ -18,11 +18,11 @@ class Loadout extends Model
 
     public function main()
     {
-        return $this->belongsTo(Weapon::class, 'main_hand_id');
+        return $this->belongsTo( BaseWeapon::class, 'main_hand_id');
     }
 
     public function offhand()
     {
-        return $this->belongsTo(Weapon::class, 'offhand_id');
+        return $this->belongsTo( BaseWeapon::class, 'offhand_id');
     }
 }

@@ -8,7 +8,7 @@ use App\Models\Company;
 use App\Models\DiscordData;
 use App\Models\Loadout;
 use App\Models\User;
-use App\Models\Weapon;
+use App\Models\BaseWeapon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Concerns\ToCollection;
@@ -75,8 +75,8 @@ class FormResponseImport implements ToCollection, WithHeadingRow, WithCalculated
                 ]
             );
                          
-            $mainhand = Weapon::firstWhere('name', 'like', $row['main_hand_weapon']);
-            $offhand = Weapon::firstWhere('name', 'like', $row['offhand_weapon']);
+            $mainhand = BaseWeapon::firstWhere( 'name', 'like', $row['main_hand_weapon']);
+            $offhand = BaseWeapon::firstWhere( 'name', 'like', $row['offhand_weapon']);
             
             $loadout = Loadout::updateOrCreate(
                 [

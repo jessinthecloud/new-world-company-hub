@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoadoutUpsertRequest;
 use App\Models\Character;
 use App\Models\Loadout;
-use App\Models\Weapon;
+use App\Models\BaseWeapon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
@@ -50,7 +50,7 @@ class LoadoutsController extends Controller
             return [$class->id => $class->name];
         })->all();
 
-        $weapons = Weapon::orderBy('name')->get()->mapWithKeys(function($weapon){
+        $weapons = BaseWeapon::orderBy( 'name')->get()->mapWithKeys(function($weapon){
             return [$weapon->id => $weapon->name.' ('.$weapon->type->name.')'];
         })->all();
         
@@ -104,7 +104,7 @@ class LoadoutsController extends Controller
 
         $loadout = $loadout->load('main', 'offhand', 'character');
 
-        $weapons = Weapon::orderBy('name')->get()->mapWithKeys(function($weapon){
+        $weapons = BaseWeapon::orderBy( 'name')->get()->mapWithKeys(function($weapon){
             return [$weapon->id => $weapon->name.' ('.$weapon->type->name.')'];
         })->all();
 

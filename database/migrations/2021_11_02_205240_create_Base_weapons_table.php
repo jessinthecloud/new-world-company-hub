@@ -4,18 +4,18 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateWeaponsTable extends Migration
+class CreateBaseWeaponsTable extends Migration
 {
     public function up()
     {
-        Schema::create( 'weapons', function ( Blueprint $table ) {
+        Schema::create( 'base_weapons', function ( Blueprint $table ) {
             $table->bigIncrements( 'id' );
 
             $table->string('name');
-            $table->string('long_name')->nullable();
             $table->string('slug')->unique();
-            $table->string('description')->nullable();
             $table->string('weapon_type'); // PHP enum
+            $table->string('long_name')->nullable();
+            $table->string('description')->nullable();
             $table->string('tier')->nullable(); // PHP enum
             $table->string('rarity')->nullable(); // PHP enum
             $table->string('required_level')->nullable();
@@ -32,6 +32,6 @@ class CreateWeaponsTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists( 'weapons' );
+        Schema::dropIfExists( 'base_weapons' );
     }
 }

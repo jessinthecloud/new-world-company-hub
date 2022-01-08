@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Weapon;
+use App\Models\BaseWeapon;
 use Illuminate\Http\Request;
 
-class WeaponsController extends Controller
+class BaseWeaponsController extends Controller
 {
     public function index()
     {
@@ -22,22 +22,22 @@ class WeaponsController extends Controller
         //
     }
 
-    public function show( Weapon $weapon )
+    public function show( BaseWeapon $weapon )
     {        
         //
     }
 
-    public function edit( Weapon $weapon )
+    public function edit( BaseWeapon $weapon )
     {
         //
     }
 
-    public function update( Request $request, Weapon $weapon )
+    public function update( Request $request, BaseWeapon $weapon )
     {
         //
     }
 
-    public function destroy( Weapon $weapon )
+    public function destroy( BaseWeapon $weapon )
     {
         //
     }

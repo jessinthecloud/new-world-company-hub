@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
-class WeaponSeeder extends Seeder
+class BaseWeaponSeeder extends Seeder
 {
     public function run()
     {
@@ -43,7 +43,7 @@ class WeaponSeeder extends Seeder
                 ];
             }
 
-            DB::table( 'weapons' )->upsert( $insert, ['slug'] );
+            DB::table( 'base_weapons' )->upsert( $insert, ['slug'] );
         } // end foreach
     }
 }

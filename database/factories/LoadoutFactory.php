@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Character;
 use App\Models\Loadout;
-use App\Models\Weapon;
+use App\Models\BaseWeapon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class LoadoutFactory extends Factory
@@ -17,8 +17,8 @@ class LoadoutFactory extends Factory
             'name' => $this->faker->text(20),
             'weight' => $this->faker->numberBetween(1, 1000),
             'character_id' => Character::all()->random()->id,
-            'main_hand_id' => Weapon::all()->random()->id,
-            'offhand_id' => Weapon::all()->random()->id,
+            'main_hand_id' => BaseWeapon::all()->random()->id,
+            'offhand_id' => BaseWeapon::all()->random()->id,
         ];
     }
 }

@@ -3,10 +3,10 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\Weapon;
+use App\Models\BaseWeapon;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class WeaponPolicy
+class BaseWeaponPolicy
 {
     use HandlesAuthorization;
 
@@ -20,7 +20,7 @@ class WeaponPolicy
         return false;
     }
 
-    public function view( User $user, Weapon $weapon ) : bool
+    public function view( User $user, BaseWeapon $weapon ) : bool
     {
         return false;
     }
@@ -30,22 +30,22 @@ class WeaponPolicy
         return false;
     }
 
-    public function update( User $user, Weapon $weapon ) : bool
+    public function update( User $user, BaseWeapon $weapon ) : bool
     {
         return false;
     }
 
-    public function delete( User $user, Weapon $weapon ) : bool
+    public function delete( User $user, BaseWeapon $weapon ) : bool
     {
         return false;
     }
 
-    public function restore( User $user, Weapon $weapon ) : bool
+    public function restore( User $user, BaseWeapon $weapon ) : bool
     {
         return false;
     }
 
-    public function forceDelete( User $user, Weapon $weapon ) : bool
+    public function forceDelete( User $user, BaseWeapon $weapon ) : bool
     {
         return false;
     }
