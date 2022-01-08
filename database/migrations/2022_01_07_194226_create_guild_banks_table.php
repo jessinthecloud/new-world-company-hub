@@ -11,7 +11,7 @@ class CreateGuildBanksTable extends Migration
         Schema::create( 'guild_banks', function ( Blueprint $table ) {
             $table->bigIncrements( 'id' );
 
-            $table->foreignId('company_id')->constrained()->onDelete('SET NULL');
+            $table->foreignId('company_id')->nullable()->constrained()->onDelete('SET NULL');
             // polymorphic: could be armor or weapon
             $table->foreignId('bankable_id');
             // class name of model
