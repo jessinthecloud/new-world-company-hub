@@ -6,6 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Weapon extends Model
 {
+
+    /**
+     * The relationships that should always be loaded.
+     *
+     * @var array
+     */
+    protected $with = ['base'];
+    
     public function base()
     {
         return $this->hasOne(BaseWeapon::class);

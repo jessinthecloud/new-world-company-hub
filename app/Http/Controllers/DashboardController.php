@@ -9,7 +9,7 @@ class DashboardController extends Controller
 {
     public function index( Request $request )
     {
-        dump( $request->user(), $request->user()->character() );
+//        dump( $request->user(), $request->user()->character() );
 
         // determine what user is allowed to see on the dashboard
         $user = $request->user();

@@ -2,10 +2,10 @@
 
 namespace App\Enums;
 
-enum Source
+enum Source : string
 {
-    case CRAFTING;
-    case QUEST;
-    case SHOP;
-    case OTHER;
+    case CRAFTING = "Crafting";
+    case QUEST = "Quest";
+    case SHOP = "Shop";
+    case OTHER = "Other";
 }

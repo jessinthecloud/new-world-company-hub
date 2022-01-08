@@ -2,11 +2,11 @@
 
 namespace App\Enums;
 
-enum Rarity
+enum Rarity : string
 {
-    case COMMON;
-    case UNCOMMON;
-    case RARE;
-    case EPIC;
-    case LEGENDARY;
+    case COMMON = "Common";
+    case UNCOMMON = "Uncommon";
+    case RARE = "Rare";
+    case EPIC = "Epic";
+    case LEGENDARY = "Legendary";
 }

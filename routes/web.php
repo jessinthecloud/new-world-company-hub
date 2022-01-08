@@ -1,9 +1,5 @@
 <?php
 
-use App\Models\BaseArmor;
-use App\Models\CharacterClass;
-use App\Models\User;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -40,8 +36,6 @@ Route::middleware(['auth'])->group(function(){
             ->name( 'characters.login' );
     
 // ## RESOURCES
-    // GUILD BANK
-    Route::resource('guild-banks', \App\Http\Controllers\GuildBanksController::class);
     // FACTION
     Route::resource('factions',\App\Http\Controllers\FactionsController::class)
         ->only(['index', 'show']);
@@ -71,6 +65,8 @@ Route::middleware(['auth'])->group(function(){
         ->name( 'weapons.choose' );
     Route::get( '/rosters/choose', [\App\Http\Controllers\RostersController::class, 'choose'] )
         ->name( 'rosters.choose' );
+    Route::get( '/guild-banks/choose', [\App\Http\Controllers\GuildBanksController::class, 'choose'] )
+        ->name( 'guild-banks.choose' );
     
 // ## FIND
     // find model chosen from drop down
@@ -84,8 +80,10 @@ Route::middleware(['auth'])->group(function(){
         ->name( 'loadouts.find' );
     Route::post( '/weapons/find', [\App\Http\Controllers\BaseWeaponsController::class, 'find'] )
         ->name( 'weapons.find' );
-    Route::get( '/rosters/find', [\App\Http\Controllers\RostersController::class, 'find'] )
+    Route::post( '/rosters/find', [\App\Http\Controllers\RostersController::class, 'find'] )
         ->name( 'rosters.find' );
+    Route::post( '/guild-banks/find', [\App\Http\Controllers\GuildBanksController::class, 'find'] )
+        ->name( 'guild-banks.find' );
                 
             
 // ###################################
@@ -121,6 +119,9 @@ Route::middleware(['auth'])->group(function(){
     Route::middleware(['role:super-admin|admin|governor'])->group(function() {
         Route::resource( 'companies', \App\Http\Controllers\CompaniesController::class )
             ->only( ['edit', 'update'] );
+        
+        Route::resource('guild-banks', \App\Http\Controllers\GuildBanksController::class)
+            ->only(['destroy']);
     });
 // ##
 // ## END GOVERNOR
@@ -149,6 +150,9 @@ Route::middleware(['auth'])->group(function(){
         
         Route::resource( 'rosters', \App\Http\Controllers\RostersController::class )
             ->except( ['index', 'show'] );
+            
+        Route::resource('guild-banks', \App\Http\Controllers\GuildBanksController::class)
+            ->except(['index', 'show', 'destroy']);
     });
 // ##
 // ## END OFFICER
@@ -161,6 +165,10 @@ Route::middleware(['auth'])->group(function(){
         
         Route::resource('rosters', \App\Http\Controllers\RostersController::class)
         ->only(['index', 'show']);
+        
+        // GUILD BANK
+        Route::resource('guild-banks', \App\Http\Controllers\GuildBanksController::class)
+            ->only(['index', 'show']);
         
     });
 // ##

@@ -2,9 +2,9 @@
 
 namespace App\Enums;
 
-enum PerkSource
+enum PerkSource : string
 {
-    case GEM;
-    case GENERATED;
-    case ATTRIBUTE;
+    case GEM = "Gem";
+    case GENERATED = "Generated";
+    case ATTRIBUTE = "Attribute";
 }

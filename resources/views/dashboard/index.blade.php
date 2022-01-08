@@ -13,6 +13,9 @@
         {{-- Roster --}}
         @include('dashboard.roster.index')
         
+        {{-- Guild Bank --}}
+        @include('dashboard.guild-bank.index')
+        
         {{-- Character --}}
         @include('dashboard.character.index')
         

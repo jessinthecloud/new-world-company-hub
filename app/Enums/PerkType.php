@@ -2,13 +2,13 @@
 
 namespace App\Enums;
 
-enum PerkType
+enum PerkType : string
 {
-    case BLOCK;
-    case CRITICAL;
-    case HEALTH;
-    case LUCK;
-    case MANA;
-    case STAMINA;
-    case TOOL;
+    case BLOCK = "Block";
+    case CRITICAL = "Critical";
+    case HEALTH = "Health";
+    case LUCK = "Luck";
+    case MANA = "Mana";
+    case STAMINA = "Stamina";
+    case TOOL = "Tool";
 }

@@ -2,10 +2,10 @@
 
 namespace App\Enums;
 
-enum AttributeType
+enum AttributeType : string
 {
-    case CONSTITUTION;
-    case DEXTERITY;
-    case FOCUS;
-    case STRENGTH;
+    case CONSTITUTION = "Constitution";
+    case DEXTERITY = "Dexterity";
+    case FOCUS = "Focus";
+    case STRENGTH = "Strength";
 }

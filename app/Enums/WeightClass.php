@@ -2,9 +2,9 @@
 
 namespace App\Enums;
 
-enum WeightClass
+enum WeightClass : string
 {
-    case LIGHT;
-    case MEDIUM;
-    case HEAVY;
+    case LIGHT = "Light";
+    case MEDIUM = "Medium";
+    case HEAVY = "Heavy";
 }
