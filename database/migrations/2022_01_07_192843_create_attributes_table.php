@@ -36,6 +36,16 @@ class CreateAttributesTable extends Migration
             $table->timestamps();
         } );
         
+        Schema::create( 'attribute_armor', function ( Blueprint $table ) {
+            $table->bigIncrements( 'id' );
+
+            $table->foreignId('attribute_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('armor_id')->constrained()->cascadeOnDelete();
+            $table->integer('amount');
+            
+            $table->timestamps();
+        } );
+        
         Schema::create( 'attribute_weapon', function ( Blueprint $table ) {
             $table->bigIncrements( 'id' );
 
@@ -50,6 +60,7 @@ class CreateAttributesTable extends Migration
     public function down()
     {
         Schema::dropIfExists( 'attribute_attribute_type' );
+        Schema::dropIfExists( 'attribute_armor' );
         Schema::dropIfExists( 'attribute_weapon' );
         Schema::dropIfExists( 'attributes' );
 //        Schema::dropIfExists( 'attribute_types' );
