@@ -69,6 +69,7 @@ class DatabaseSeeder extends Seeder
             BaseArmorSeeder::class,
             ConsumableSeeder::class,
             PerkSeeder::class,
+            GuildBankSeeder::class,
 //            LoadoutSeeder::class,
         ]);
         

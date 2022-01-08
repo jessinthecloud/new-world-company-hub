@@ -13,10 +13,10 @@ class CreateGuildBanksTable extends Migration
 
             $table->foreignId('company_id')->nullable()->constrained()->onDelete('SET NULL');
             // polymorphic: could be armor or weapon
-            $table->foreignId('bankable_id');
+            $table->foreignId('bankable_id')->nullable();
             // class name of model
-            $table->string('bankable_type');
-            $table->integer('amount');
+            $table->string('bankable_type')->nullable();
+            $table->integer('amount')->nullable();
 
             $table->timestamps();
         } );
