@@ -14,7 +14,7 @@ class CreateArmorsTable extends Migration
             $table->string('name');
             $table->string('slug')->unique();
             $table->string('description')->nullable();
-            $table->string('armor_type'); // PHP enum
+            $table->string('type'); // PHP enum
             $table->string('tier')->nullable(); // PHP enum
             $table->string('rarity')->nullable(); // PHP enum
             $table->string('weight_class')->nullable(); // PHP enum

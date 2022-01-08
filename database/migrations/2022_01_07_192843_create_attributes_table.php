@@ -13,6 +13,8 @@ class CreateAttributesTable extends Migration
 
             $table->string('name');
             $table->string('slug')->unique();
+            $table->string('attribute_type'); // php enum
+
 
             $table->timestamps();
         } );
@@ -26,7 +28,7 @@ class CreateAttributesTable extends Migration
             $table->timestamps();
         } );*/
         
-        Schema::create( 'attribute_attribute_type', function ( Blueprint $table ) {
+        /*Schema::create( 'attribute_attribute_type', function ( Blueprint $table ) {
             $table->bigIncrements( 'id' );
 
             $table->foreignId('attribute_id')->constrained()->cascadeOnDelete();
@@ -34,7 +36,7 @@ class CreateAttributesTable extends Migration
             $table->string('attribute_type'); // php enum
             
             $table->timestamps();
-        } );
+        } );*/
         
         Schema::create( 'attribute_armor', function ( Blueprint $table ) {
             $table->bigIncrements( 'id' );
@@ -59,7 +61,7 @@ class CreateAttributesTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists( 'attribute_attribute_type' );
+//        Schema::dropIfExists( 'attribute_attribute_type' );
         Schema::dropIfExists( 'attribute_armor' );
         Schema::dropIfExists( 'attribute_weapon' );
         Schema::dropIfExists( 'attributes' );

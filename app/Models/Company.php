@@ -39,4 +39,9 @@ class Company extends Model
     {
         $this->hasMany(Event::class);
     }
+    
+    public function bank()
+    {
+        return $this->hasOne(GuildBank::class)->withPivot('amount');
+    }
 }

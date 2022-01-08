@@ -9,9 +9,9 @@ class BaseWeapon extends Model
 {
     use HasFactory;
     
-    public function type()
+    public function instances()
     {
-        
+        return $this->hasMany(Weapon::class);
     }
 
     public function mainLoadout()

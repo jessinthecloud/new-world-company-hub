@@ -40,7 +40,7 @@ class BaseArmorSeeder extends Seeder
                     'long_name'           => $armor->name_with_affixes,
                     'slug'                => $slug, //$armor->slug,
                     'description'         => $armor->parsed_description,
-                    'armor_type'          => isset($armor->item_class_en) ? Str::before( $armor->item_class_en, '(' ) : $armor->item_class,
+                    'type'                => isset($armor->item_class_en) ? Str::before( $armor->item_class_en, '(' ) : $armor->item_class,
                     'weight_class'        => $weight_class,
                     'tier'                => $armor->tier,
                     'rarity'              => $armor->rarity,

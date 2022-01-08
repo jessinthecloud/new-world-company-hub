@@ -32,7 +32,7 @@ class BaseWeaponSeeder extends Seeder
                     'long_name'           => $weapon->name_with_affixes,
                     'slug'                => $slug, //$weapon->slug,
                     'description'         => $weapon->parsed_description,
-                    'weapon_type'         => $weapon->item_class_en ?? $weapon->item_class,
+                    'type'                => $weapon->item_class_en ?? $weapon->item_class,
                     'tier'                => $weapon->tier,
                     'rarity'              => $weapon->rarity,
                     'required_level'      => $weapon->required_level ?? null,
