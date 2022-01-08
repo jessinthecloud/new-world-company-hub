@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum Attribute
+enum AttributeType
 {
     case CONSTITUTION;
     case DEXTERITY;
