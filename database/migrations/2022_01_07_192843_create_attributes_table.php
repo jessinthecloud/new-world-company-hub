@@ -29,7 +29,7 @@ class CreateAttributesTable extends Migration
         Schema::create( 'attribute_attribute_type', function ( Blueprint $table ) {
             $table->bigIncrements( 'id' );
 
-            $table->foreignId('attribute_id')->constrained();
+            $table->foreignId('attribute_id')->constrained()->cascadeOnDelete();
             $table->integer('amount');
             $table->string('attribute_type'); // php enum
             
@@ -39,8 +39,8 @@ class CreateAttributesTable extends Migration
         Schema::create( 'attribute_weapon', function ( Blueprint $table ) {
             $table->bigIncrements( 'id' );
 
-            $table->foreignId('attribute_id')->constrained();
-            $table->foreignId('weapon_id')->constrained();
+            $table->foreignId('attribute_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('weapon_id')->constrained()->cascadeOnDelete();
             $table->integer('amount');
             
             $table->timestamps();

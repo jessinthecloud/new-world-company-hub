@@ -28,8 +28,8 @@ class CreateWeaponsTable extends Migration
         Schema::create( 'perk_weapon', function ( Blueprint $table ) {
             $table->bigIncrements( 'id' );
             
-            $table->foreignId('perk_id')->constrained();
-            $table->foreignId('weapon_id')->constrained();
+            $table->foreignId('perk_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('weapon_id')->constrained()->cascadeOnDelete();
             $table->integer('amount');
             
             $table->timestamps();
