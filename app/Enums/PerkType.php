@@ -4,7 +4,11 @@ namespace App\Enums;
 
 enum PerkType
 {
-    case GEM;
-    case GENERATED;
-    case ATTRIBUTE;
+    case BLOCK;
+    case CRITICAL;
+    case HEALTH;
+    case LUCK;
+    case MANA;
+    case STAMINA;
+    case TOOL;
 }
