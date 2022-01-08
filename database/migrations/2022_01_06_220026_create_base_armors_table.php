@@ -19,6 +19,7 @@ class CreateBaseArmorsTable extends Migration
             $table->string('tier')->nullable(); // PHP enum
             $table->string('rarity')->nullable(); // PHP enum
             $table->string('weight_class')->nullable(); // PHP enum
+            $table->string('source')->nullable(); // PHP enum
             $table->string('required_level')->nullable();
             $table->integer('gear_score_override')->nullable();
             $table->integer('min_gear_score')->nullable(); 

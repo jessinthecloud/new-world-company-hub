@@ -18,6 +18,7 @@ class CreateBaseWeaponsTable extends Migration
             $table->string('description')->nullable();
             $table->string('tier')->nullable(); // PHP enum
             $table->string('rarity')->nullable(); // PHP enum
+            $table->string('source')->nullable(); // PHP enum
             $table->string('required_level')->nullable();
             $table->integer('gear_score_override')->nullable();
             $table->integer('min_gear_score')->nullable(); 
