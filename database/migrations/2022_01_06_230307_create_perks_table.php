@@ -12,12 +12,20 @@ class CreatePerksTable extends Migration
             $table->bigIncrements( 'id' );
 
             $table->string('name');
-            $table->integer('json_id');
+            $table->string('json_id')->unique();
             $table->string('slug')->unique();
-            $table->string('description')->nullable();
+            $table->text('description')->nullable();
             $table->string('perk_type'); // PHP enum
-            $table->string('item_class')->nullable(); // PHP enum
-            $table->string('cdn_asset_path')->nullable();
+//            $table->string('item_class')->nullable(); // PHP enum
+            $table->string('tier')->nullable();
+            $table->string('rarity')->nullable();
+            $table->string('icon')->nullable();
+            $table->string('image')->nullable();
+
+            $table->string('ScalingPerGearScore')->nullable();
+            $table->string('min_gear_score')->nullable();
+            $table->string('max_gear_score')->nullable();
+            $table->string('condition')->nullable();
 
             $table->timestamps();
         } );

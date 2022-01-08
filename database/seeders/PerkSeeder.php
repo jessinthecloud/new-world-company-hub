@@ -17,24 +17,29 @@ class PerkSeeder extends Seeder
             new RecursiveDirectoryIterator( $dir, RecursiveDirectoryIterator::SKIP_DOTS )
         );
         foreach ( $files as $file ) {
-            $data = json_decode( file_get_contents( $file->getPathname() ) );
-
-            $perks = collect( $data->subjects->data );
+            $perks = json_decode( file_get_contents( $file->getPathname() ) );
 
             $insert = [];
             foreach ( $perks as $perk ) {
                 // create unique slug
-                $slug = $perk->attributes->name;
+                $slug = $perk->name;
                 $slug = Str::slug( $slug );
 
                 $insert [] = [
-                    'name'                => $perk->attributes->name,
-                    'json_id'                => $perk->id,
-                    'slug'                => $slug, //$perk->attributes->slug,
-                    'description'         => $perk->attributes->parsed_description,
-                    'perk_type'           => $perk->attributes->perk_type,
-                    'item_class'           => $perk->attributes->item_class_en ?? $perk->attributes->item_class,
-                    'cdn_asset_path'      => $perk->attributes->asset_path ?? null,
+                    'name'                => $perk->name,
+                    'json_id'             => $perk->id,
+                    'slug'                => $slug,
+                    'description'         => $perk->description,
+                    'perk_type'           => $perk->PerkType ?? null,
+                    'tier'                  => $perk->tier ?? null,
+                    'rarity'                => $perk->rarity ?? null,
+                    'icon'              => $perk->icon ?? null,
+                    'image'             => $perk->iconHiRes ?? null,
+                    
+                    'ScalingPerGearScore'      => $perk->ScalingPerGearScore ?? null,
+                    'min_gear_score'      => $perk->gearScoreMin ?? null,
+                    'max_gear_score'      => $perk->gearScoreMax ?? null,
+                    'condition'      => $perk->condition ?? null,
                 ];
             }
 
