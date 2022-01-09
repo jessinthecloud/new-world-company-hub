@@ -4,13 +4,13 @@ namespace App\Enums;
 
 enum ArmorType : string
 {
-    case CHEST = "EquippableChest";
-    case HELMET = "EquippableHead";
-    case GLOVES = "EquippableHands";
-    case PANTS = "EquippableLegs";
-    case SHOES = "EquippableFeet";
-    case AMULET = "EquippableAmulet";
-    case EARRING = "EquippableToken";
-    case RING = "EquippableRing";
-    case BAG = "Bag";
+    case Chest = "EquippableChest";
+    case Helmet = "EquippableHead";
+    case Gloves = "EquippableHands";
+    case Pants = "EquippableLegs";
+    case Shoes = "EquippableFeet";
+    case Amulet = "EquippableAmulet";
+    case Earring = "EquippableToken";
+    case Ring = "EquippableRing";
+    case Bag = "Bag";
 }
