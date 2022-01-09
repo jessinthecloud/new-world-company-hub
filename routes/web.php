@@ -140,11 +140,7 @@ Route::middleware(['auth'])->group(function(){
     
     // dashboard
     Route::get( '/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])
-            ->name( 'dashboard' ); 
-            
-    // where to go after character is chosen on login
-        Route::get( '/characters/{character}/login', [\App\Http\Controllers\CharactersController::class, 'login'] )
-            ->name( 'characters.login' );
+            ->name( 'dashboard' );
     
 // ## RESOURCES
 
@@ -184,6 +180,10 @@ Route::get( '/base-weapons/{baseWeapon}', function(BaseWeapon $baseWeapon){
         ->name( 'rosters.choose' );
     Route::get( '/guild-banks/choose', [\App\Http\Controllers\GuildBanksController::class, 'choose'] )
         ->name( 'guild-banks.choose' );
+        
+    // where to go after character is chosen on login
+        Route::get( '/characters/{character}/login', [\App\Http\Controllers\CharactersController::class, 'login'] )
+            ->name( 'characters.login' );
     
 // ## FIND
     // find model chosen from drop down
