@@ -57,7 +57,7 @@
                 <x-forms.field :name="'weight_class'" class="mb-6">
                     <x-forms.label for="weight_class" :required="false">Weight Class:</x-forms.label>
                     <x-forms.select name="weight_class" id="weight_class"
-                        :values="$weight_classs ?? null"
+                        :values="$weight_classes ?? null"
                         :required="false"
                     >{!! $weight_class_options ?? '' !!}</x-forms.select>
                 </x-forms.field>

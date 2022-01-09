@@ -1,5 +1,9 @@
 <?php
 
+use App\Models\BaseArmor;
+use App\Models\BaseWeapon;
+use App\Models\Perk;
+use App\Models\Weapon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
@@ -119,7 +123,6 @@ Route::get('/data/{thing}', function (string $thing) {
         }
 //    return view( 'welcome' );
 });
-
 
 Route::get('/', function () {
     return view( 'welcome' );

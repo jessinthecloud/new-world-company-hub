@@ -25,11 +25,22 @@ class CreateWeaponSetsTable extends Migration
 
             $table->timestamps();
         } );
+        
+        Schema::create( 'base_weapon_perk', function ( Blueprint $table ) {
+            $table->bigIncrements( 'id' );
+            
+            $table->foreignId('perk_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('base_weapon_id')->constrained()->cascadeOnDelete();
+            $table->integer('amount')->nullable();
+            
+            $table->timestamps();
+        } );
     }
 
     public function down()
     {
         Schema::dropIfExists( 'weapon_weapon_set' );
         Schema::dropIfExists( 'weapon_sets' );
+        Schema::dropIfExists( 'base_weapon_perk' );
     }
 }

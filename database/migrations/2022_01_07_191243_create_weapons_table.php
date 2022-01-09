@@ -31,7 +31,7 @@ class CreateWeaponsTable extends Migration
             
             $table->foreignId('perk_id')->constrained()->cascadeOnDelete();
             $table->foreignId('weapon_id')->constrained()->cascadeOnDelete();
-            $table->integer('amount');
+            $table->integer('amount')->nullable();
             
             $table->timestamps();
         } );

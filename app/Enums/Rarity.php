@@ -4,9 +4,9 @@ namespace App\Enums;
 
 enum Rarity : string
 {
-    case COMMON = "Common";
-    case UNCOMMON = "Uncommon";
-    case RARE = "Rare";
-    case EPIC = "Epic";
-    case LEGENDARY = "Legendary";
+    case R1 = "Common";
+    case R2 = "Uncommon";
+    case R3 = "Rare";
+    case R4 = "Epic";
+    case R5 = "Legendary";
 }

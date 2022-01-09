@@ -31,7 +31,17 @@ class CreateArmorSetsTable extends Migration
             
             $table->foreignId('perk_id')->constrained()->cascadeOnDelete();
             $table->foreignId('armor_id')->constrained()->cascadeOnDelete();
-            $table->integer('amount');
+            $table->integer('amount')->nullable();
+            
+            $table->timestamps();
+        } );
+        
+        Schema::create( 'base_armor_perk', function ( Blueprint $table ) {
+            $table->bigIncrements( 'id' );
+            
+            $table->foreignId('perk_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('base_armor_id')->constrained()->cascadeOnDelete();
+            $table->integer('amount')->nullable();
             
             $table->timestamps();
         } );
@@ -41,6 +51,7 @@ class CreateArmorSetsTable extends Migration
     {
         Schema::dropIfExists( 'armor_armor_set' );
         Schema::dropIfExists( 'armor_sets' );
+        Schema::dropIfExists( 'base_armor_perk' );
         Schema::dropIfExists( 'armor_perk' );
     }
 }

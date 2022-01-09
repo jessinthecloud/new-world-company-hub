@@ -4,8 +4,9 @@ namespace App\Enums;
 
 enum AttributeType : string
 {
-    case CONSTITUTION = "Constitution";
-    case DEXTERITY = "Dexterity";
-    case FOCUS = "Focus";
-    case STRENGTH = "Strength";
+    case CON = "Constitution";
+    case DEX = "Dexterity";
+    case FOC = "Focus";
+    case STR = "Strength";
+    case INT = "Intelligence";
 }

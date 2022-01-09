@@ -32,4 +32,14 @@ class Perk extends Model
     {
         return $this->belongsToMany(Armor::class)->withPivot('amount');
     }
+    
+    public function baseWeapons()
+    {
+        return $this->belongsToMany(BaseWeapon::class,)->withPivot('amount');
+    }
+    
+    public function baseArmor()
+    {
+        return $this->belongsToMany(BaseArmor::class)->withPivot('amount');
+    }
 }

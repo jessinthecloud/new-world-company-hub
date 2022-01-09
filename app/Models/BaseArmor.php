@@ -27,4 +27,19 @@ class BaseArmor extends Model
     {
         return $this->hasMany(Armor::class);
     }
+    
+    public function sets()
+    {
+        return $this->belongsToMany(ArmorSet::class);
+    }
+    
+    public function perks()
+    {
+        return $this->belongsToMany(Perk::class)->withPivot('amount');
+    }
+    
+    public function attributes()
+    {
+        return $this->belongsToMany(Attribute::class)->withPivot('amount');
+    }
 }
