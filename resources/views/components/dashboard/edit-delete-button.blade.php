@@ -2,6 +2,6 @@
 
 @can('update', $instance)
     <x-button-link href="{{ $route }}">
-        Edit / Delete
+        {{ empty($slot->toHtml()) ? 'Edit / Delete' : $slot}}
     </x-button-link>
 @endif

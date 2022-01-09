@@ -42,6 +42,6 @@ class Company extends Model
     
     public function bank()
     {
-        return $this->hasOne(GuildBank::class)->withPivot('amount');
+        return $this->hasOne(GuildBank::class)->withDefault('amount');
     }
 }

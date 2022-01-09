@@ -2,6 +2,6 @@
 
 @can('view', $instance)
     <x-button-link href="{{ $route }}">
-        View
+        {{ empty($slot->toHtml()) ? 'View' : $slot}}
     </x-button-link>
 @endcan

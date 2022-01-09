@@ -10,9 +10,11 @@
         @isset($guildBank)
         <x-dashboard.view-own-button 
             :class="\App\Models\GuildBank::class" 
-            :route="route('guild-banks.show', ['guildBank'=>$guildBank])"
+            :route="route('guild-banks.show', ['guild_bank'=>$guildBank])"
             :instance="$guildBank"
-        />
+        >
+            View Inventory
+        </x-dashboard.view-own-button>
         @endisset
         <x-dashboard.create-button 
             :class="\App\Models\GuildBank::class" 
@@ -21,8 +23,10 @@
         />
         <x-dashboard.edit-delete-button 
             :class="\App\Models\GuildBank::class" 
-            :route="route('guild-banks.choose')"
+            :route="isset($guildBank) ? route('guild-banks.edit', ['guild_bank'=>$guildBank]) : route('guild-banks.choose')"
             :instance="$guildBank ?? null"
-        />
+        >
+            Edit Inventory
+        </x-dashboard.edit-delete-button>
     </x-dashboard.section>
 @endcan
