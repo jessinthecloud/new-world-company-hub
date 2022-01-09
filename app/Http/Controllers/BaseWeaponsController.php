@@ -23,8 +23,8 @@ class BaseWeaponsController extends Controller
     }
 
     public function show( BaseWeapon $weapon )
-    {        
-        //
+    {
+        return $weapon->load('perks')->toJson();
     }
 
     public function edit( BaseWeapon $weapon )

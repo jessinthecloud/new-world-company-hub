@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BaseArmor;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class BaseArmorsController extends Controller
 {
@@ -24,7 +25,7 @@ class BaseArmorsController extends Controller
 
     public function show( BaseArmor $armor )
     {
-        //
+        return $armor->load('perks')->toJson();
     }
 
     public function edit( BaseArmor $armor )

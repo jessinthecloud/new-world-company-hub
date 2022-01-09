@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ArmorType;
+use App\Enums\AttributeType;
 use App\Enums\PerkType;
 use App\Enums\Rarity;
 use App\Enums\Tier;
@@ -38,7 +39,7 @@ class GuildBanksController extends Controller
             $company_options .= '<option value="'.$value.'">'.$text.'</option>';
         }
         
-        $armor = BaseArmor::orderBy('name')->distinct()->get()->mapWithKeys(function($armor){
+        $armor = BaseArmor::with('perks')->orderBy('name')->distinct()->get()->mapWithKeys(function($armor){
             return [$armor->slug => $armor->name . " (".ArmorType::from($armor->type)->name.") {$armor->weight_class}"];
         })->all();
 
@@ -47,10 +48,11 @@ class GuildBanksController extends Controller
             $armor_options .= '<option value="'.$value.'">'.$text.'</option>';
         }
         
-        $weapons = BaseWeapon::orderBy('name')->distinct()->get()->mapWithKeys(function($weapon){
+        $weapons = BaseWeapon::with('perks')->orderBy('name')->orderBy('tier')->distinct()->get()->mapWithKeys(function($weapon){
         $wtype = $weapon->type;
         $type = !empty($wtype) ? constant("App\Enums\WeaponType::$wtype")->value : null;
-            return [$weapon->slug => $weapon->name . " (".$type.")"];
+        
+            return [$weapon->slug => $weapon->name . " ($type) Tier ".$weapon->tier];
         })->all();
 
         $weapon_options = '<option value=""></option>';
@@ -62,7 +64,7 @@ class GuildBanksController extends Controller
             return [$perk->slug => $perk->name];
         })->all();
 
-        $perk_options = '<option value="">None</option>';
+        $perk_options = '<option value=""></option>';
         foreach($perks as $value => $text) {
             $perk_options .= '<option value="'.$value.'">'.$text.'</option>';
         }
@@ -96,6 +98,11 @@ class GuildBanksController extends Controller
         foreach(WeightClass::cases() as $type) {
             $weight_class_options .= '<option value="'.$type->name.'">'.$type->value.'</option>';
         }
+        
+        $attribute_options = '<option value=""></option>';
+        foreach(AttributeType::cases() as $type) {
+            $attribute_options .= '<option value="'.$type->name.'">'.$type->value.'</option>';
+        }
 
         return view(
             'dashboard.guild-bank.create-edit',
@@ -109,6 +116,7 @@ class GuildBanksController extends Controller
                 'rarity_options' => $rarity_options,
                 'tier_options' => $tier_options,
                 'weight_class_options' => $weight_class_options,
+                'attribute_options' => $attribute_options,
                 'company_options' => $company_options,
                 'method' => 'PUT',
                 'form_action' => route('guild-banks.update', ['guild_bank'=>$guildBank]),
@@ -119,7 +127,12 @@ class GuildBanksController extends Controller
 
     public function update( Request $request, GuildBank $guildBank )
     {
-        //
+        ddd($guildBank, $request->all());
+        
+        // create instanced weapon
+        // attach perks
+        // attach attributes
+        // 
     }
     
     public function choose()
