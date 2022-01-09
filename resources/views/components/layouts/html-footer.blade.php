@@ -18,33 +18,54 @@
                 $('#appended-perks').append($('#perk-sample').clone());
             });
             
-            $('#add-armor').click(function(){
+            /*$('#add-armor').click(function(){
                 $(this).parent().hide();
                 $('#armor-field').removeClass('hidden');
                 $('#name-field').removeClass('hidden');
+                $('#add-new-entry').removeClass('hidden');
+                $('#perks-attr-wrapper').removeClass('hidden');
+                $('#submit-button').removeClass('hidden');
             });
             
             $('#add-weapon').click(function(){
                 $(this).parent().hide();
-                $('#weapon-field').removeClass('hidden');
-                $('#name-field').removeClass('hidden');
-            });
+                // $('#weapon-field').removeClass('hidden');
+                // $('#name-field').removeClass('hidden');
+                $('#add-new-entry').removeClass('hidden');
+                $('#perks-attr-wrapper').removeClass('hidden');
+                $('#submit-button').removeClass('hidden');
+            });*/
         });
         
         function getName(item){
             return item.name;
         }
         
-        async function getWeapon(slug) {
-console.log('fetching: '+slug);        
-            let response = await fetch('/base-weapons/'+slug);
-            const weapon = await response.json();
-            let perks = weapon.data.perks;
+        async function getItems(type) {
+
+console.log('fetching all: ' + type);
+
+            let response = await fetch('/' + type);
+            let json = await response.json();
+console.log('response: ',json);
+            return await json;
+        }
+        
+        async function getItem(type, slug) {
+        
+console.log('fetching: '+type+': '+slug);        
+            
+            let response = await fetch('/'+type+'/'+slug);
+console.log('response: '+response);            
+            return response.json();
+            
+            
+            /*let perks = weapon.data.perks;
             let perkNames = [...new Set(perks.map(getName))];
             // let perkName = (perks, name) => perks.map(x=>x[name]);
 console.log('weapon response:',weapon.data, 'perks:',perks, 'perk names:',perkNames);
             
-            return perkNames.join(', ');
+            return perkNames.join(', ');*/
         }
     </script>
 

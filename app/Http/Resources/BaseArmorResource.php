@@ -5,8 +5,8 @@ namespace App\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Request;
 
-/** @mixin \App\Models\BaseWeapon */
-class BaseWeaponResource extends JsonResource
+/** @mixin \App\Models\BaseArmor */
+class BaseArmorResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

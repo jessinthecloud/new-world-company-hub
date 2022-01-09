@@ -39,8 +39,8 @@ class GuildBanksController extends Controller
             $company_options .= '<option value="'.$value.'">'.$text.'</option>';
         }
         
-        $armor = BaseArmor::with('perks')->orderBy('name')->distinct()->get()->mapWithKeys(function($armor){
-            return [$armor->slug => $armor->name . " (".ArmorType::from($armor->type)->name.") {$armor->weight_class}"];
+        $armor = BaseArmor::distinct()->with('perks')->where('named', 0)->orderBy('name')->get()->mapWithKeys(function($armor){
+            return [$armor->slug => $armor->name . " (".(!empty($armor->weight_class) ? $armor->weight_class.' ' : '').ArmorType::from($armor->type)->name.") Tier ".$armor->tier];
         })->all();
 
         $armor_options = '<option value=""></option>';
@@ -48,7 +48,7 @@ class GuildBanksController extends Controller
             $armor_options .= '<option value="'.$value.'">'.$text.'</option>';
         }
         
-        $weapons = BaseWeapon::with('perks')->orderBy('name')->orderBy('tier')->distinct()->get()->mapWithKeys(function($weapon){
+        $weapons = BaseWeapon::with('perks')->where('named', 0)->orderBy('name')->orderBy('tier')->distinct()->get()->mapWithKeys(function($weapon){
         $wtype = $weapon->type;
         $type = !empty($wtype) ? constant("App\Enums\WeaponType::$wtype")->value : null;
         
@@ -70,18 +70,13 @@ class GuildBanksController extends Controller
         }
 
         $weapon_type_options = '';
-        foreach(WeaponType::cases() as $type) {
+        foreach(collect(WeaponType::cases())->sortBy('value')->all() as $type) {
             $weapon_type_options .= '<option value="'.$type->name.'">'.$type->value.'</option>';
         }
         
         $armor_type_options = '';
-        foreach(ArmorType::cases() as $type) {
+        foreach(collect(ArmorType::cases())->sortBy('name')->all() as $type) {
             $armor_type_options .= '<option value="'.$type->value.'">'.$type->name.'</option>';
-        }
-        
-        $perk_type_options = '<option value=""></option>';
-        foreach(PerkType::cases() as $type) {
-            $perk_type_options .= '<option value="'.$type->name.'">'.$type->value.'</option>';
         }
         
         $rarity_options = '';
@@ -100,7 +95,7 @@ class GuildBanksController extends Controller
         }
         
         $attribute_options = '<option value=""></option>';
-        foreach(AttributeType::cases() as $type) {
+        foreach(collect(AttributeType::cases())->sortBy('value')->all() as $type) {
             $attribute_options .= '<option value="'.$type->name.'">'.$type->value.'</option>';
         }
 
@@ -112,7 +107,6 @@ class GuildBanksController extends Controller
                 'armor_type_options' => $armor_type_options,
                 'weapon_type_options' => $weapon_type_options,
                 'perk_options' => $perk_options,
-                'perk_type_options' => $perk_type_options,
                 'rarity_options' => $rarity_options,
                 'tier_options' => $tier_options,
                 'weight_class_options' => $weight_class_options,

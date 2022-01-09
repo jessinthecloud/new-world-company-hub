@@ -149,6 +149,27 @@ Route::get( '/base-weapons/{baseWeapon}', function(BaseWeapon $baseWeapon){
 } )
 ->name( 'base-weapons.show' );
 
+Route::get( '/base-weapons', function(){
+
+    $weapons = BaseWeapon::with('perks')->orderBy('name')->orderBy('tier')->distinct()->get();
+        
+    return new \App\Http\Resources\BaseWeaponCollection($weapons);
+} )
+->name( 'base-weapons.index' );
+
+Route::get( '/base-armors/{baseArmor}', function(BaseArmor $baseArmor){
+    return new \App\Http\Resources\BaseArmorResource($baseArmor->load('perks'));
+} )
+->name( 'base-armors.show' );
+
+Route::get( '/base-armors', function(){
+
+    $armors = BaseArmor::with('perks')->orderBy('name')->orderBy('tier')->distinct()->get();
+        
+    return new \App\Http\Resources\BaseArmorCollection($armors);
+} )
+->name( 'base-armors.index' );
+
     // FACTION
     Route::resource('factions',\App\Http\Controllers\FactionsController::class)
         ->only(['index', 'show']);
