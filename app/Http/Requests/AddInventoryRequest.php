@@ -13,7 +13,6 @@ class AddInventoryRequest extends FormRequest
 {
     public function rules() : array
     {
-    dump($this->all());
         return [
             'is_armor'           => ['boolean'],
             'is_weapon'          => ['boolean'],
@@ -40,8 +39,11 @@ class AddInventoryRequest extends FormRequest
             // custom 
             'name'               => ['required_without_all:armor,weapon', 'string', 'nullable'],
             'gear_score'         => ['required_with:name', 'numeric', 'nullable'],
-            'armor_type'         => ['required_if:is_armor,true', /*new Enum(ArmorType::class)*/],
-            'weapon_type'        => ['required_if:is_weapon,true', /*new Enum(WeaponType::class)*/],
+            'armor_type'         => ['required_if:is_armor,true', /*new Enum(ArmorType::class),*/],
+            'weapon_type'        => ['required_if:is_weapon,true', /*new Enum(WeaponType::class),*/],
+            'rarity'             => ['required_with:name', /*new Enum(Rarity::class)*/],
+            'tier'               => ['required_with:name', /*new Enum(Tier::class),*/ 'nullable'],
+            'weight_class'       => ['nullable', /*new Enum(WeightClass::class)*/],
         ];
     }
 

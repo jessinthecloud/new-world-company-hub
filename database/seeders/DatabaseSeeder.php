@@ -70,6 +70,7 @@ class DatabaseSeeder extends Seeder
 //            ConsumableSeeder::class,
 //            PerkSeeder::class,
             GuildBankSeeder::class,
+            AttributeSeeder::class,
 //            LoadoutSeeder::class,
         ]);
         

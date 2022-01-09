@@ -11,12 +11,12 @@ class CreateWeaponsTable extends Migration
         Schema::create( 'weapons', function ( Blueprint $table ) {
             $table->bigIncrements( 'id' );
 
-            $table->string('name');
+            $table->string('name')->nullable();
             $table->string('slug')->unique();
-            $table->string('type'); // PHP enum
+            $table->string('type')->nullable(); // PHP enum
             $table->string('description')->nullable();
-            $table->string('tier'); // PHP enum
-            $table->string('rarity'); // PHP enum
+            $table->string('tier')->nullable(); // PHP enum
+            $table->string('rarity')->nullable(); // PHP enum
             $table->integer('gear_score')->nullable();
             $table->string('required_level')->nullable();
             $table->string('cdn_asset_path')->nullable();

@@ -43,7 +43,7 @@
                 />
             </x-forms.field>
             <x-forms.field :name="'weapon'" class="mb-6" x-show="isWeapon && !newEntry">
-                <x-forms.label for="weapon" :required="false">Armor:</x-forms.label>
+                <x-forms.label for="weapon" :required="false">Weapon:</x-forms.label>
                 <x-forms.select name="weapon" id="weapon"
                     :values="$weapons ?? null"
                     :required="false"

@@ -13,8 +13,7 @@ class CreateAttributesTable extends Migration
 
             $table->string('name');
             $table->string('slug')->unique();
-            $table->string('attribute_type'); // php enum
-
+//            $table->string('attribute_type'); // php enum
 
             $table->timestamps();
         } );

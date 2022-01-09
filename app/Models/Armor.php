@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Armor extends Model
 {
+    protected $guarded = ['id'];
+    
     /**
      * The relationships that should always be loaded.
      *
@@ -15,7 +17,7 @@ class Armor extends Model
 
     public function base()
     {
-        return $this->hasOne(BaseArmor::class);
+        return $this->belongsTo(BaseArmor::class);
     }
     
     public function sets()

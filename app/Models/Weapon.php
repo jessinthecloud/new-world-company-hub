@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Weapon extends Model
 {
-
+    protected $guarded = ['id'];
+    
     /**
      * The relationships that should always be loaded.
      *
@@ -16,7 +17,7 @@ class Weapon extends Model
     
     public function base()
     {
-        return $this->hasOne(BaseWeapon::class);
+        return $this->belongsTo(BaseWeapon::class);
     }
     
     public function sets()
