@@ -25,7 +25,7 @@ class BaseArmorsController extends Controller
 
     public function show( BaseArmor $armor )
     {
-        return $armor->load('perks')->toJson();
+        //
     }
 
     public function edit( BaseArmor $armor )

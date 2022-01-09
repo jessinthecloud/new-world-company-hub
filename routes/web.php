@@ -147,6 +147,12 @@ Route::middleware(['auth'])->group(function(){
             ->name( 'characters.login' );
     
 // ## RESOURCES
+
+Route::get( '/base-weapons/{baseWeapon}', function(BaseWeapon $baseWeapon){
+    return new \App\Http\Resources\BaseWeaponResource($baseWeapon->load('perks'));
+} )
+->name( 'base-weapons.show' );
+
     // FACTION
     Route::resource('factions',\App\Http\Controllers\FactionsController::class)
         ->only(['index', 'show']);

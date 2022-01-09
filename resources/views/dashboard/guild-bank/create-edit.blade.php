@@ -64,14 +64,14 @@
                 </x-forms.field>--}}
             </div>
             
-            <div x-data="{weapon: '', fetch:false}" id="weapon-field" class="w-full flex flex-wrap justify-start hidden">
+            <div x-data="{perks:{}, weapon: '', fetch:false}" id="weapon-field" class="w-full flex flex-wrap justify-start hidden">
                 <x-forms.field :name="'weapon'" class="mb-6">
                     <x-forms.label for="weapon" :required="false">Weapon:</x-forms.label>
                     <x-forms.select name="weapon" id="weapon"
                         :values="$weapons ?? null"
                         :required="false"
                         x-model="weapon"
-                        x-on:change="console.log(weapon)"
+                        x-on:change="fetch=true,console.log(fetch,weapon)"
                     >{!! $weapon_options ?? '' !!}</x-forms.select>
                 </x-forms.field>
                 
@@ -82,11 +82,15 @@
                         :required="true"
                     >{!! $weapon_type_options ?? '' !!}</x-forms.select>
                 </x-forms.field>--}}
-{{--                <template x-if="fetch">--}}
-{{--                    <div id="weapon-test" x-html="await getWeapon(weapon)"></div>--}}
-{{--                </template>--}}
+                <template x-if="fetch">
+                    <x-forms.field :name="'weapon-perks'" class="w-full mb-6" id="weapon-perks-field">
+                        <h3>Perks:</h3>
+                        <div id="weapon-perks" x-html="await getWeapon(weapon)"></div>
+                    </x-forms.field>
+                </template>
             </div>
             
+            <h2 class="w-full mt-8 mb-6">Additional Info</h2>
             
             <x-forms.field :name="'name'" class="w-full mb-6 hidden" id="name-field">
                 <x-forms.label for="name" :required="false">Name (if missing from drop down):</x-forms.label>

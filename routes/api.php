@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\BaseWeapon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+/*Route::get( '/base-weapons/{baseWeapon}', function(BaseWeapon $baseWeapon){
+    return new \App\Http\Resources\BaseWeaponResource($baseWeapon->load('perks'));
+} )
+->name( 'base-weapons.show' );*/
+
+/*Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
-});
+});*/

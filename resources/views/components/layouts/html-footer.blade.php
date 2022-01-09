@@ -31,10 +31,20 @@
             });
         });
         
-        async function getWeapon(weapon) {
-            let response = await fetch('/weapons/'+weapon);
-console.log('response:',response);         
-            return await response.text();
+        function getName(item){
+            return item.name;
+        }
+        
+        async function getWeapon(slug) {
+console.log('fetching: '+slug);        
+            let response = await fetch('/base-weapons/'+slug);
+            const weapon = await response.json();
+            let perks = weapon.data.perks;
+            let perkNames = [...new Set(perks.map(getName))];
+            // let perkName = (perks, name) => perks.map(x=>x[name]);
+console.log('weapon response:',weapon.data, 'perks:',perks, 'perk names:',perkNames);
+            
+            return perkNames.join(', ');
         }
     </script>
 
