@@ -48,7 +48,6 @@
     @endisset
 
     <!-- Scripts -->
-    <script src="//unpkg.com/alpinejs" defer></script>
     <script src="{{ asset('js/app.js') }}" defer></script>
     
     {{-- Scripts that should be loaded first --}}
