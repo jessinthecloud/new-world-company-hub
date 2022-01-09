@@ -12,19 +12,19 @@
             :button-text="$button_text"
             class="flex flex-wrap justify-start"
             
-             x-data="{weapons: {}, armors: {}, isWeapon:false, isArmor:false, newEntry:false, fetch:false}"
+             x-data="{weapons: {}, armors: {}, isWeapon:0, isArmor:0, newEntry:false, fetch:false}"
         >
             
             <div class="buttons w-full flex flex-wrap justify-start items-center mt-4 mb-4" x-show="!isWeapon && !isArmor">
                 <x-button 
                     id="add-weapon" type="button" class="mb-4 mr-4"
-                    @click="isWeapon=true, console.log(isWeapon) {{--, weapons = await getItems('base-weapons')--}}"
+                    @click="isWeapon=1, console.log(isWeapon) {{--, weapons = await getItems('base-weapons')--}}"
                 >
                     Add Weapon
                 </x-button>
                 <x-button 
                     id="add-armor" type="button" class="mb-4"
-                    @click="isArmor=true"
+                    @click="isArmor=1"
                 >
                     Add Armor
                 </x-button>
@@ -205,6 +205,8 @@
             </div> 
             <!-- end perks-attr-wrapper -->
 
+            <x-forms.input type="hidden" name="is_weapon" x-bind:value="isWeapon"/>
+            <x-forms.input type="hidden" name="is_armor" x-bind:value="isArmor"/>
 
             <x-slot name="button">
                 <x-button id="submit-button" class="mt-8" x-cloak x-show="isWeapon || isArmor">{{ $button_text }}</x-button>

@@ -9,6 +9,7 @@ use App\Enums\Rarity;
 use App\Enums\Tier;
 use App\Enums\WeaponType;
 use App\Enums\WeightClass;
+use App\Http\Requests\AddInventoryRequest;
 use App\Models\Armor;
 use App\Models\BaseArmor;
 use App\Models\BaseWeapon;
@@ -119,14 +120,24 @@ class GuildBanksController extends Controller
         );
     }
 
-    public function update( Request $request, GuildBank $guildBank )
+    public function update( AddInventoryRequest $request, GuildBank $guildBank )
     {
-        ddd($guildBank, $request->all());
+
+        // Retrieve the validated input data...
+        $validated = $request->validated();
         
-        // create instanced weapon
+        ddd($guildBank, $request->all(), $validated);
+
+        // create instanced item
+        $create = [
+            
+        ];
+        if($validated->is_weapon){
+            $item = Weapon::create($create);
+        }
         // attach perks
         // attach attributes
-        // 
+        // attach to bank
     }
     
     public function choose()

@@ -12,10 +12,10 @@
     <script>
         $(document).ready(function(){
             $('#add-attr').click(function(){
-                $('#appended-attrs').append($('#attr-sample').clone());
+                $('#appended-attrs').append($('#attr-wrapper').clone());
             });
             $('#add-perk').click(function(){
-                $('#appended-perks').append($('#perk-sample').clone());
+                $('#appended-perks').append($('#perks-wrapper').clone());
             });
             
             /*$('#add-armor').click(function(){
