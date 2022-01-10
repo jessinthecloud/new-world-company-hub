@@ -76,6 +76,9 @@ class GuildBankTable extends DataTableComponent
                 ->sortable()
                 ->searchable()
                 ->hideIf( !isset($this->guildBank->armor) || count($this->guildBank->armor) == 0),
+            Column::make( 'Perks', 'perks' )
+                ->sortable()
+                ->searchable(),
         ];
     }
     

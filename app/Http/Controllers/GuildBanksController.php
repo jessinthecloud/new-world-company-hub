@@ -197,10 +197,10 @@ $base,
                 'name' => $validated['name'] ?? $base->name,
                 'slug' => isset($validated['name']) ? Str::slug($validated['name']) : $base->slug,
                 'type' => $type ?? $base->type,
-                'description' => $validated['description'] ?? $base->description,
-                'tier' => $tier ?? $base->tier ?? null,
-                'rarity' => $rarity ?? $base->rarity ?? null,
-                'gear_score' => $validated['gear_score'] ?? $validated['weapon_gear_score'] ?? $base->gear_score ?? null,
+                'description' => $validated['description'] ?? $base?->description ?? null,
+                'tier' => $tier ?? $base?->tier ?? null,
+                'rarity' => $rarity ?? $base?->rarity ?? null,
+                'gear_score' => $validated['gear_score'] ?? $validated['weapon_gear_score'] ?? $base?->gear_score ?? null,
            ]);
 
         }
@@ -219,14 +219,14 @@ $base,
 'gear score: '.($validated['gear_score'] ?? $validated['armor_gear_score'] ?? null)
 ); */           
             $item = Armor::create([
-                'name' => $validated['name'] ?? $base->name ?? null,
+                'name' => $validated['name'] ?? $base?->name ?? null,
                 'slug' => isset($validated['name']) ? Str::slug($validated['name']) : $base->slug,
                 'type' => $type ?? $base->type,
-                'description' => $validated['description'] ?? $base->description,
-                'tier' => $tier ?? $base->tier ?? null,
-                'rarity' => $rarity ?? $base->rarity ?? null,
-                'weight_class' => $weight_class ?? $base->weight_class ?? null,
-                'gear_score' => $validated['gear_score'] ?? $validated['armor_gear_score'] ?? $base->gear_score ?? null,
+                'description' => $validated['description'] ?? $base?->description ?? null,
+                'tier' => $tier ?? $base?->tier ?? null,
+                'rarity' => $rarity ?? $base?->rarity ?? null,
+                'weight_class' => $weight_class ?? $base?->weight_class ?? null,
+                'gear_score' => $validated['gear_score'] ?? $validated['armor_gear_score'] ?? $base?->gear_score ?? null,
            ]);
         }
         

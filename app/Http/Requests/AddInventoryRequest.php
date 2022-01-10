@@ -21,13 +21,13 @@ class AddInventoryRequest extends FormRequest
                     return empty($this->name) && $this->is_weapon == true;
                 }),
             ],
-            'weapon_gear_score'   => ['required_with:weapon', 'numeric', 'nullable'],
+            'weapon_gear_score'   => [/*'required_with:weapon',*/ 'numeric', 'nullable'],
             'armor'               => [
                 Rule::requiredIf(function () {
                     return empty($this->name) && $this->is_armor == true;
                 }),
             ],
-            'armor_gear_score'    => ['required_with:armor', 'numeric', 'nullable'],
+            'armor_gear_score'    => [/*'required_with:armor',*/ 'numeric', 'nullable'],
             
             // perks
             'perks'               => ['array', 'nullable'],
