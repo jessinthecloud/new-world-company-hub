@@ -13,7 +13,7 @@ class Weapon extends Model
      *
      * @var array
      */
-    protected $with = ['base'];
+    protected $with = ['base', 'perks','attributes'];
     
     public function base()
     {
@@ -35,9 +35,9 @@ class Weapon extends Model
         return $this->belongsToMany(Attribute::class)->withPivot('amount');
     }
     
-    public function bank()
+    public function banks()
     {
-        return $this->morphTo(GuildBank::class, 'bankable')->withPivot('amount');
+        return $this->belongsToMany(GuildBank::class, 'weapon_inventory', 'weapon_id', 'guild_bank_id');
     }
 
     public function mainLoadout()

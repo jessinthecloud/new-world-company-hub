@@ -13,7 +13,7 @@ class Armor extends Model
      *
      * @var array
      */
-    protected $with = ['base'];
+    protected $with = ['base', 'perks','attributes'];
 
     public function base()
     {
@@ -32,11 +32,11 @@ class Armor extends Model
     
     public function attributes()
     {
-        return $this->belongsToMany(Attribute::class)->withPivot('amount');
+        return $this->belongsToMany(Attribute::class, 'attribute_armor')->withPivot('amount');
     }
     
-    public function bank()
+    public function banks()
     {
-        return $this->morphTo(GuildBank::class, 'bankable')->withPivot('amount');
+        return $this->belongsToMany(GuildBank::class, 'armor_inventory');
     }
 }

@@ -11,19 +11,37 @@ class CreateGuildBanksTable extends Migration
         Schema::create( 'guild_banks', function ( Blueprint $table ) {
             $table->bigIncrements( 'id' );
 
-            $table->foreignId('company_id')->nullable()->constrained()->onDelete('SET NULL');
-            // polymorphic: could be armor or weapon
-            $table->foreignId('bankable_id')->nullable();
-            // class name of model
-            $table->string('bankable_type')->nullable();
+            $table->foreignId('company_id')->constrained();
+
+            $table->timestamps();
+        } );
+        
+        Schema::create( 'weapon_inventory', function ( Blueprint $table ) {
+            $table->bigIncrements( 'id' );
+
+            $table->foreignId('guild_bank_id')->nullable()->constrained()->onDelete('SET NULL');
+            $table->foreignId('weapon_id')->constrained()->cascadeOnDelete();
             $table->integer('amount')->nullable();
 
             $table->timestamps();
         } );
+        
+        Schema::create( 'armor_inventory', function ( Blueprint $table ) {
+            $table->bigIncrements( 'id' );
+
+            $table->foreignId('guild_bank_id')->nullable()->constrained()->onDelete('SET NULL');
+            $table->foreignId('armor_id')->constrained()->cascadeOnDelete();
+            $table->integer('amount')->nullable();
+
+            $table->timestamps();
+        } );
+        
     }
 
     public function down()
     {
+        Schema::dropIfExists( 'weapon_inventory' );
+        Schema::dropIfExists( 'armor_inventory' );
         Schema::dropIfExists( 'guild_banks' );
     }
 }

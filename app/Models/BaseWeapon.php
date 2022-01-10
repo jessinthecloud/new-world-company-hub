@@ -14,7 +14,7 @@ class BaseWeapon extends Model
      *
      * @var array
      */
-    protected $with = [];
+    protected $with = ['perks'];
     
     /**
      * Get the route key for the model.
@@ -41,11 +41,6 @@ class BaseWeapon extends Model
         return $this->belongsToMany(Perk::class)->withPivot('amount');
     }
     
-    public function attributes()
-    {
-        return $this->belongsToMany(Attribute::class)->withPivot('amount');
-    }
-
     public function mainLoadout()
     {
         return $this->hasMany(Loadout::class, 'main_hand_id');

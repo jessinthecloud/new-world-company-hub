@@ -11,7 +11,7 @@ class BaseArmor extends Model
      *
      * @var array
      */
-    protected $with = [];
+    protected $with = ['perks'];
     
     /**
      * Get the route key for the model.
@@ -36,10 +36,5 @@ class BaseArmor extends Model
     public function perks()
     {
         return $this->belongsToMany(Perk::class)->withPivot('amount');
-    }
-    
-    public function attributes()
-    {
-        return $this->belongsToMany(Attribute::class)->withPivot('amount');
     }
 }

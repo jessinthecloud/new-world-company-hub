@@ -24,8 +24,40 @@ use Illuminate\Support\Str;
 class GuildBanksController extends Controller
 {
     public function show( GuildBank $guildBank )
-    {
-        // Guild Bank Livewire Table?
+    {        
+        /*$weapons = Weapon::whereRelation('banks', 'guild_banks.id', $guildBank->id)->get()->mapWithKeys(function($weapon){
+            return [$weapon->id => $weapon->name ?? $weapon->base->name];
+        });
+        
+        $armors = Armor::whereRelation('banks', 'guild_banks.id', $guildBank->id)->get()->mapWithKeys(function($armor){
+            return [$armor->id => $armor->name ?? $armor->base->name];
+        });*/
+        
+        $armors = array_map(
+            fn(ArmorType $type) => $type->value, 
+            ArmorType::cases()
+        );
+        
+        $weapons = array_map(
+            fn(WeaponType $type) => $type->value, 
+            WeaponType::cases()
+        );
+        
+        $weight_class = array_map(
+            fn(WeightClass $type) => $type->value, 
+            WeightClass::cases()
+        );
+        
+        // add "Any" to the front of the filter arrays
+        array_unshift($armors, 'Any');
+        array_unshift($weapons, 'Any');
+        array_unshift($weight_class, 'Any');
+
+        $types = ['Any', 'Weapon', 'Armor'];
+
+        return view('guild-bank.show', 
+            compact('guildBank', 'armors', 'weapons', 'types', 'weight_class')
+        );
     }
 
     public function edit( GuildBank $guildBank )
@@ -43,7 +75,11 @@ class GuildBanksController extends Controller
         }
         
         $armor = BaseArmor::distinct()->with('perks')->where('named', 0)->orderBy('name')->get()->mapWithKeys(function($armor){
-            return [$armor->slug => $armor->name . " (".(!empty($armor->weight_class) ? $armor->weight_class.' ' : '').ArmorType::from($armor->type)->name.") Tier ".$armor->tier];
+        
+            $wtype = $armor->type;
+            $type = !empty($wtype) ? constant("App\Enums\ArmorType::$wtype")->value : null;
+        
+            return [$armor->slug => $armor->name . " (".(!empty($armor->weight_class) ? $armor->weight_class.' ' : '').$type.") Tier ".$armor->tier];
         })->all();
 
         $armor_options = '<option value=""></option>';
@@ -158,13 +194,13 @@ $base,
 'gear score: '.($validated['gear_score'] ?? $validated['weapon_gear_score'] ?? null)
 );*/            
             $item = Weapon::create([
-                'name' => $validated['name'] ?? null,
+                'name' => $validated['name'] ?? $base->name,
                 'slug' => isset($validated['name']) ? Str::slug($validated['name']) : $base->slug,
-                'type' => $type ?? null,
-                'description' => $validated['description'] ?? null,
-                'tier' => $tier,
-                'rarity' => $rarity ?? null,
-                'gear_score' => $validated['gear_score'] ?? $validated['weapon_gear_score'] ?? null,
+                'type' => $type ?? $base->type,
+                'description' => $validated['description'] ?? $base->description,
+                'tier' => $tier ?? $base->tier ?? null,
+                'rarity' => $rarity ?? $base->rarity ?? null,
+                'gear_score' => $validated['gear_score'] ?? $validated['weapon_gear_score'] ?? $base->gear_score ?? null,
            ]);
 
         }
@@ -183,14 +219,14 @@ $base,
 'gear score: '.($validated['gear_score'] ?? $validated['armor_gear_score'] ?? null)
 ); */           
             $item = Armor::create([
-                'name' => $validated['name'] ?? null,
+                'name' => $validated['name'] ?? $base->name ?? null,
                 'slug' => isset($validated['name']) ? Str::slug($validated['name']) : $base->slug,
-                'type' => $type ?? null,
-                'description' => $validated['description'] ?? null,
-                'tier' => $tier ?? null,
-                'rarity' => $rarity ?? null,
-                'weight_class' => $weight_class ?? null,
-                'gear_score' => $validated['gear_score'] ?? $validated['armor_gear_score'] ?? null,
+                'type' => $type ?? $base->type,
+                'description' => $validated['description'] ?? $base->description,
+                'tier' => $tier ?? $base->tier ?? null,
+                'rarity' => $rarity ?? $base->rarity ?? null,
+                'weight_class' => $weight_class ?? $base->weight_class ?? null,
+                'gear_score' => $validated['gear_score'] ?? $validated['armor_gear_score'] ?? $base->gear_score ?? null,
            ]);
         }
         
@@ -235,7 +271,7 @@ $attributes->pluck( 'id' )->all(),
         }
         
         // attach to bank
-        $item->bank()->attach($guildBank->id);
+        $item->banks()->attach($guildBank->id);
         
         return redirect(route('dashboard'))->with([
             'status'=> [

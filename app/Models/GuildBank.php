@@ -13,12 +13,17 @@ class GuildBank extends Model
      *
      * @var array
      */
-    protected $with = ['company'];
+    protected $with = [];
 
-    public function bankable()
+    public function weapons()
     {
-        return $this->morphTo()->withPivot('amount');
+        return $this->belongsToMany(Weapon::class, 'weapon_inventory', 'guild_bank_id', 'weapon_id');
     }
+    
+    public function armor()
+    {
+        return $this->belongsToMany(Armor::class, 'armor_inventory', 'guild_bank_id', 'armor_id');
+    }   
 
     public function company()
     {

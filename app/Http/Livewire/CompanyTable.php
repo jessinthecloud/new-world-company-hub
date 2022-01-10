@@ -18,8 +18,7 @@ class CompanyTable extends DataTableComponent
     
     // passed in as Collections and then made arrays
     public $classes;
-    public $weapons;
-    
+    public $weapons;    
      
     /**
      * constructor is called before company can be set,
