@@ -37,6 +37,6 @@ class Armor extends Model
     
     public function companies()
     {
-        return $this->morphToMany(GuildBank::class, 'guild_bank');
+        return $this->morphToMany(Company::class, 'item', 'guild_banks', 'item_id', 'company_id');
     }
 }
