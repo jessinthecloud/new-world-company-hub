@@ -35,9 +35,9 @@ class Weapon extends Model
         return $this->belongsToMany(Attribute::class)->withPivot('amount');
     }
     
-    public function banks()
+    public function companies()
     {
-        return $this->belongsToMany(GuildBank::class, 'weapon_inventory', 'weapon_id', 'guild_bank_id');
+        return $this->morphToMany(GuildBank::class, 'guild_bank');
     }
 
     public function mainLoadout()

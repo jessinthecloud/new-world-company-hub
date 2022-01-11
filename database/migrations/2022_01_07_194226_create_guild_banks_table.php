@@ -20,32 +20,11 @@ class CreateGuildBanksTable extends Migration
             $table->timestamps();
         } );
         
-        Schema::create( 'weapon_inventory', function ( Blueprint $table ) {
-            $table->bigIncrements( 'id' );
-
-            $table->foreignId('guild_bank_id')->nullable()->constrained()->onDelete('SET NULL');
-            $table->foreignId('weapon_id')->constrained()->cascadeOnDelete();
-            $table->integer('amount')->nullable();
-
-            $table->timestamps();
-        } );
-        
-        Schema::create( 'armor_inventory', function ( Blueprint $table ) {
-            $table->bigIncrements( 'id' );
-
-            $table->foreignId('guild_bank_id')->nullable()->constrained()->onDelete('SET NULL');
-            $table->foreignId('armor_id')->constrained()->cascadeOnDelete();
-            $table->integer('amount')->nullable();
-
-            $table->timestamps();
-        } );
         
     }
 
     public function down()
     {
-        Schema::dropIfExists( 'weapon_inventory' );
-        Schema::dropIfExists( 'armor_inventory' );
         Schema::dropIfExists( 'guild_banks' );
     }
 }

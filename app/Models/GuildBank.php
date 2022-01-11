@@ -17,12 +17,12 @@ class GuildBank extends Model
 
     public function weapons()
     {
-        return $this->belongsToMany(Weapon::class, 'weapon_inventory', 'guild_bank_id', 'weapon_id');
+        return $this->morphedByMany(Weapon::class, 'guild_bank');
     }
     
     public function armor()
     {
-        return $this->belongsToMany(Armor::class, 'armor_inventory', 'guild_bank_id', 'armor_id');
+        return $this->morphedByMany(Armor::class, 'guild_bank');
     }   
 
     public function company()

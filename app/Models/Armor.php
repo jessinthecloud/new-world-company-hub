@@ -35,8 +35,8 @@ class Armor extends Model
         return $this->belongsToMany(Attribute::class, 'attribute_armor')->withPivot('amount');
     }
     
-    public function banks()
+    public function companies()
     {
-        return $this->belongsToMany(GuildBank::class, 'armor_inventory');
+        return $this->morphToMany(GuildBank::class, 'guild_bank');
     }
 }

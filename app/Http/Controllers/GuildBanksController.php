@@ -271,7 +271,7 @@ $attributes->pluck( 'id' )->all(),
         }
         
         // attach to bank
-        $item->banks()->attach($guildBank->id);
+        $item->companies()->attach($guildBank->company->id);
         
         return redirect(route('dashboard'))->with([
             'status'=> [
