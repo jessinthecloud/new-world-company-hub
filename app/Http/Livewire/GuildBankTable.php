@@ -11,13 +11,13 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
-use App\Models\GuildBank;
+use App\Models\Company;
 use Rappasoft\LaravelLivewireTables\Views\Filter;
 
 class GuildBankTable extends DataTableComponent
 {
     
-    public GuildBank $guildBank;
+    public Company $company;
     
     // passed in as Collections and then made arrays
     /**
@@ -37,16 +37,16 @@ class GuildBankTable extends DataTableComponent
      * constructor is called before company can be set,
      * so use livewire mount() to load the params sent
      *
-     * @param \App\Models\GuildBank $guildBank
+     * @param \App\Models\Company company
      * @param array                 $armors
      * @param array                 $weapons
      * @param array                 $types
      *
      * @return void
      */
-    public function mount(GuildBank $guildBank, array $armors, array $weapons, array $types)
+    public function mount(Company $company, array $armors, array $weapons, array $types)
     {
-        $this->guildBank = $guildBank;
+        $this->company = $company;
         $this->armor_types = $armors;
         $this->weapon_types = $weapons;
         $this->itemTypes = $types;
@@ -75,7 +75,7 @@ class GuildBankTable extends DataTableComponent
             Column::make( 'Weight Class', 'weight_class' )
                 ->sortable()
                 ->searchable()
-                ->hideIf( !isset($this->guildBank->armor) || count($this->guildBank->armor) == 0),
+                ->hideIf( !isset($this->company->armor) || count($this->company->armor) == 0),
             Column::make( 'Perks', 'perks' )
                 ->sortable()
                 ->searchable(),
@@ -97,9 +97,9 @@ class GuildBankTable extends DataTableComponent
     public function query(): Builder
     {
         return Weapon::select(DB::raw('id, name, type, rarity, gear_score, null as weight_class'))
-            ->whereRelation( 'banks', 'guild_banks.id', $this->guildBank->id )
+            ->whereRelation( 'companies', 'guild_banks.company_id', $this->company->id )
         ->union(Armor::select('id', 'name', 'type', 'rarity', 'gear_score', 'weight_class')
-            ->whereRelation( 'banks', 'guild_banks.id', $this->guildBank->id ))
+            ->whereRelation( 'companies', 'guild_banks.company_id', $this->company->id ))
         
         // -- item type filter -- find based on subtypes of weapons or armor
         ->when($this->getFilter('item_type'), fn ($query, $item_type) => 

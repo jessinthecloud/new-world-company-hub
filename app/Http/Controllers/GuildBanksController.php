@@ -23,7 +23,7 @@ use Illuminate\Support\Str;
 
 class GuildBanksController extends Controller
 {
-    public function show( GuildBank $guildBank )
+    public function index(Request $request)
     {        
         /*$weapons = Weapon::whereRelation('banks', 'guild_banks.id', $guildBank->id)->get()->mapWithKeys(function($weapon){
             return [$weapon->id => $weapon->name ?? $weapon->base->name];
@@ -54,9 +54,11 @@ class GuildBanksController extends Controller
         array_unshift($weight_class, 'Any');
 
         $types = ['Any', 'Weapon', 'Armor'];
+        
+        $company = $request->user()->company();
 
         return view('guild-bank.show', 
-            compact('guildBank', 'armors', 'weapons', 'types', 'weight_class')
+            compact('company', 'armors', 'weapons', 'types', 'weight_class')
         );
     }
 
@@ -304,10 +306,10 @@ $attributes->pluck( 'id' )->all(),
         );
     }
 
-    public function index()
+   /* public function index()
     {
         // (super-admin)
-    }
+    }*/
 
     public function create()
     {
