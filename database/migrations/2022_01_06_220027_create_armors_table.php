@@ -22,7 +22,7 @@ class CreateArmorsTable extends Migration
             $table->string('required_level')->nullable();
             $table->string('cdn_asset_path')->nullable();
             
-            $table->foreignId('base_id')->nullable()->constrained();
+            $table->foreignId('base_id')->nullable()->constrained('base_armors');
 
             $table->timestamps();
         } );

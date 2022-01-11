@@ -15,7 +15,7 @@ class AttributeSeeder extends Seeder
         $insert = [];
         foreach($types as $type){
             $insert []= [
-                'name' => $type,
+                'name' => $type->name,
                 'slug' => Str::slug($type->value),
             ];
         }

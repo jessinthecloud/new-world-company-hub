@@ -11,7 +11,11 @@ class CreateGuildBanksTable extends Migration
         Schema::create( 'guild_banks', function ( Blueprint $table ) {
             $table->bigIncrements( 'id' );
 
-            $table->foreignId('company_id')->constrained();
+            $table->foreignId('company_id')->nullable()->constrained()->onDelete('SET NULL');
+            // weapon or armor
+            $table->unsignedBigInteger('item_id')->nullable();
+            // weapon or armor model
+            $table->string('item_type')->nullable();
 
             $table->timestamps();
         } );
