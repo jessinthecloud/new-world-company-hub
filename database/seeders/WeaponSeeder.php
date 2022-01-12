@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Company;
 use App\Models\Weapon;
 use Illuminate\Database\Seeder;
 
@@ -12,13 +13,17 @@ class WeaponSeeder extends Seeder
         // create from weapons
         // adding ->count(10) does not query for baseweapon again
         // and I dont feel like figuring that out with sequences 
-        for($i=0;$i<=10;$i++){
-            Weapon::factory()->fromBase()->create();
+        for($i=0;$i<=20;$i++){
+            Weapon::factory()
+                ->fromBase()
+                ->hasAttached(Company::all()->random())
+                ->create();
         }
         
         // custom
         Weapon::factory()
             ->count(5)
+            ->hasAttached(Company::all()->random())
             ->create();
     }
 }

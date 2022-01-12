@@ -57,7 +57,8 @@ class DatabaseSeeder extends Seeder
 //            LoadoutSeeder::class,
             CharacterSeeder::class,
             UserSeeder::class,
-            GuildBankSeeder::class,
+            WeaponSeeder::class,
+            ArmorSeeder::class,
         ]);
     }
 }
