@@ -2,8 +2,12 @@
 
 namespace App\Enums;
 
+use App\Traits\HasClassConstants;
+
 enum StatusEffectType : string
 {
+    use HasClassConstants;
+    
     case AFFLICTION = "Affliction";
     case AI_NEUTRAL = "Ai_neutral";
     case ATTRIBUTES = "Attributes";

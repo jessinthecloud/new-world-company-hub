@@ -2,8 +2,12 @@
 
 namespace App\Enums;
 
+use App\Traits\HasClassConstants;
+
 enum WeaponType : string
 {
+    use HasClassConstants;
+    
     case Bow = "Bow";
     case FireStaff = "Fire Staff";
     case GreatAxe = "Great Axe";

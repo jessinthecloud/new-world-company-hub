@@ -2,8 +2,12 @@
 
 namespace App\Enums;
 
+use App\Traits\HasClassConstants;
+
 enum ArmorType : string
 {
+    use HasClassConstants; 
+    
     case EquippableChest = "Chest";
     case EquippableHead = "Helmet";
     case EquippableHands = "Gloves";
