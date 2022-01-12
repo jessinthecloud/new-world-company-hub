@@ -21,5 +21,10 @@ class CharacterSeeder extends Seeder
                 ['level' => abs(rand(0,100))],
             )
             ->create();
+            
+        Character::factory()->rank(1, 'governor')->create();
+        Character::factory()->rank(2, 'consul')->create();
+        Character::factory()->rank(3, 'officer')->create();
+        Character::factory()->rank(4, 'settler')->create();
     }
 }

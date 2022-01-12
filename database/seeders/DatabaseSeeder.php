@@ -23,23 +23,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-
-        $this->call([
-            PermissionSeeder::class,
-            RoleSeeder::class,
-        ]);
-        
-        // create Faction entries and override with default values
-        $user = \App\Models\User::factory()
-            ->create([
-                'name' => 'Jess',
-                'email' => 'epwnaz@gmail.com',
-                'password' => Hash::make('password'),
-                'remember_token' => null,
-            ]);
-            
-        $user->assignRole('super-admin');
-        
+    
         // event types 
         EventType::create([
             'name' => 'War',
@@ -54,53 +38,26 @@ class DatabaseSeeder extends Seeder
             'slug' => 'chest-run',
             'description' => '',
         ]);
-        
-        // run other seeders
+
         $this->call([
+            PermissionSeeder::class,
+            RoleSeeder::class,
             FactionSeeder::class,
             CompanySeeder::class,
             ClassTypeSeeder::class,
             SkillTypeSeeder::class,
+            RankSeeder::class,
             ClassSeeder::class,
             SkillSeeder::class,
-            RankSeeder::class,
-//            CharacterSeeder::class,
-//            BaseWeaponSeeder::class,
-//            BaseArmorSeeder::class,
-//            ConsumableSeeder::class,
-//            PerkSeeder::class,
-            GuildBankSeeder::class,
             AttributeSeeder::class,
+            BaseWeaponSeeder::class,
+            BaseArmorSeeder::class,
+            PerkSeeder::class,
+//            ConsumableSeeder::class,
 //            LoadoutSeeder::class,
+            CharacterSeeder::class,
+            UserSeeder::class,
+            GuildBankSeeder::class,
         ]);
-        
-        // create Faction entries and override with default values
-        $governor = \App\Models\User::factory()
-            ->create([
-                'name' => 'Govna',
-                'email' => 'test@test.com',
-                'password' => Hash::make('password'),
-                'remember_token' => null,
-            ]);
-            
-        $govchar = Character::factory()
-            // don't need state because seeder has these set
-            ->state(new Sequence(
-                    fn ($sequence) => [
-                        'character_class_id' => CharacterClass::all()->random(),
-                        'rank_id' => 1,
-                        'company_id' => 1,
-                    ],
-                )
-            )
-            ->hasAttached(
-                Skill::all()->random(Skill::count()),
-                ['level' => abs(rand(0,100))],
-            )
-            ->create();
-            
-        $govchar->user()->associate($governor);
-        $govchar->save();
-        $governor->assignRole('governor');
     }
 }

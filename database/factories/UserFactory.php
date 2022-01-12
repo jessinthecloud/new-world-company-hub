@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -33,6 +34,16 @@ class UserFactory extends Factory
         return $this->state(function (array $attributes) {
             return [
                 'email_verified_at' => null,
+            ];
+        });
+    }
+
+    public function rank(string $rank)
+    {
+        return $this->state(function (array $attributes) use ($rank) {
+            return [
+                'email' => $rank.'@test.com',
+                'remember_token' => null,
             ];
         });
     }

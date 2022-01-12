@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Skill extends Model
 {
+    use HasFactory;
+    
     public function type()
     {
         return $this->belongsTo(SkillType::class, 'skill_type_id');
