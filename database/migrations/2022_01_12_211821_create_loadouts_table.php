@@ -15,8 +15,8 @@ class CreateLoadoutsTable extends Migration
             $table->unsignedFloat('weight')->nullable();
             // class via character
             $table->foreignId('character_id')->constrained();
-            $table->foreignId('main_hand_id')->constrained('weapons');
-            $table->foreignId('offhand_id')->constrained('weapons');
+//            $table->foreignId('main_hand_id')->constrained('weapons');
+//            $table->foreignId('offhand_id')->constrained('weapons');
 
             $table->timestamps();
         } );

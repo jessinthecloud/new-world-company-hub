@@ -78,7 +78,7 @@ class FormResponseImport implements ToCollection, WithHeadingRow, WithCalculated
             $mainhand = BaseWeapon::firstWhere( 'name', 'like', $row['main_hand_weapon']);
             $offhand = BaseWeapon::firstWhere( 'name', 'like', $row['offhand_weapon']);
             
-            $loadout = Loadout::updateOrCreate(
+            /*$loadout = Loadout::updateOrCreate(
                 [
                     'character_id' => $character->id,
                     'main_hand_id' => $mainhand->id,
@@ -90,7 +90,7 @@ class FormResponseImport implements ToCollection, WithHeadingRow, WithCalculated
                     'main_hand_id' => $mainhand->id,
                     'offhand_id' => $offhand->id,
                 ],
-            );
+            );*/
             
         }
         
