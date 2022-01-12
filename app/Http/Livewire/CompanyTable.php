@@ -13,7 +13,9 @@ use Rappasoft\LaravelLivewireTables\Views\Filter;
 
 class CompanyTable extends DataTableComponent
 {
-
+    // debugging
+    public bool $dumpFilters = true;
+    
     public Company $company;
     
     // passed in as Collections and then made arrays
@@ -75,19 +77,19 @@ class CompanyTable extends DataTableComponent
 
     public function query() : Builder
     {
-        return Character::with('loadout')
-            ->whereRelation( 'company', 'id', $this->company->id )
+        return Character::whereRelation( 'company', 'id', $this->company->id )
             
             // -- class filter --
             ->when($this->getFilter('class'), fn ($query, $class) => $query->whereRelation('class', 'id', $class))
             
             // -- weapon filter -- match the weapon filter to main hand or offhand
-            ->when($this->getFilter('weapon'), fn ($query, $weapon) => 
+            /*->when($this->getFilter('weapon'), fn ($query, $weapon) => 
                 $query->where(function($query) use ($weapon){
                     return $query
                         ->whereRelation('loadout.main', 'id', $weapon)
                         ->orWhereRelation('loadout.offhand', 'id', $weapon);
                 })
-            );
+            )*/
+            ;
     }
 }

@@ -33,27 +33,26 @@ class GuildBanksController extends Controller
             return [$armor->id => $armor->name ?? $armor->base->name];
         });*/
         
-        $armors = array_map(
-            fn(ArmorType $type) => $type->value, 
-            ArmorType::cases()
-        );
+        $armors = [];
+        foreach(ArmorType::cases() as $type){
+            $armors[$type->value]= $type->value;
+        }
+        $weapons = [];
+        foreach(WeaponType::cases() as $type){
+            $weapons[$type->value]= $type->value;
+        }
         
-        $weapons = array_map(
-            fn(WeaponType $type) => $type->value, 
-            WeaponType::cases()
-        );
-        
-        $weight_class = array_map(
-            fn(WeightClass $type) => $type->value, 
-            WeightClass::cases()
-        );
-        
+        $weight_class = [];
+        foreach(WeightClass::cases() as $type){
+            $weight_class[$type->value]= $type->value;
+        }
+
         // add "Any" to the front of the filter arrays
         array_unshift($armors, 'Any');
         array_unshift($weapons, 'Any');
         array_unshift($weight_class, 'Any');
 
-        $types = ['Any', 'Weapon', 'Armor'];
+        $types = ['Any'=>'', 'weapon'=>'Weapon', 'armor'=>'Armor'];
         
         $company = $request->user()->company();
 

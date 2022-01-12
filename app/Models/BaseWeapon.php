@@ -14,7 +14,7 @@ class BaseWeapon extends Model
      *
      * @var array
      */
-    protected $with = ['perks'];
+    protected $with = [];
     
     /**
      * Get the route key for the model.

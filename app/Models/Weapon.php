@@ -16,7 +16,7 @@ class Weapon extends Model
      *
      * @var array
      */
-    protected $with = ['base', 'perks','attributes'];
+    protected $with = [];
     
     public function base()
     {
