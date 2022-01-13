@@ -40,6 +40,11 @@ class Armor extends Model
     
     public function company()
     {
-        return $this->morphOne(Company::class, 'ownable');
+        return $this->belongsTo(Company::class);
+    }
+    
+    public function character()
+    {
+        return $this->belongsTo(Character::class);
     }
 }

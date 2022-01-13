@@ -16,12 +16,14 @@ class WeaponSeeder extends Seeder
         for($i=0;$i<=20;$i++){
             Weapon::factory()
                 ->fromBase()
+                ->for(Company::all()->random())
                 ->create();
         }
         
         // custom
         Weapon::factory()
             ->count(5)
+            ->for(Company::all()->random())
             ->create();
     }
 }

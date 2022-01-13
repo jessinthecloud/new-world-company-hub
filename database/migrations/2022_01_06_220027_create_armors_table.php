@@ -24,8 +24,8 @@ class CreateArmorsTable extends Migration
             
             $table->foreignId('base_id')->nullable()->constrained('base_armors');
             // character or company
-            $table->bigInteger('owner_id')->nullable();
-            $table->string('owner_type')->nullable();
+            $table->foreignId('company_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignId('character_id')->nullable()->constrained()->nullOnDelete();
 
             $table->timestamps();
         } );

@@ -25,8 +25,6 @@ class ArmorFactory extends Factory
             'rarity' => collect(Rarity::cases())->random()->value, 
             'gear_score' => $this->faker->numberBetween(100, 600),
             'required_level' => $this->faker->numberBetween(1, 100),
-            'owner_id' => 1,
-            'owner_type' => "App\Models\Company",
         ];
     }
 

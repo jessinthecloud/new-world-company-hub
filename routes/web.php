@@ -125,7 +125,7 @@ Route::get('/data/{thing}', function (string $thing) {
 });
 
 Route::get('/', function () {
-
+dump(Weapon::with('company')->first());
     return view( 'welcome' );
 })
 ->name('home');
