@@ -37,6 +37,7 @@ class GuildBanksController extends Controller
         foreach(ArmorType::cases() as $type){
             $armors[$type->value]= $type->value;
         }
+
         $weapons = [];
         foreach(WeaponType::cases() as $type){
             $weapons[$type->value]= $type->value;
@@ -48,9 +49,9 @@ class GuildBanksController extends Controller
         }
 
         // add "Any" to the front of the filter arrays
-        array_unshift($armors, 'Any');
-        array_unshift($weapons, 'Any');
-        array_unshift($weight_class, 'Any');
+        collect($armors)->prepend('Any', '');
+        collect($weapons)->prepend('Any', '');
+        collect($weight_class)->prepend('Any', '');
 
         $types = ['Any'=>'', 'weapon'=>'Weapon', 'armor'=>'Armor'];
         

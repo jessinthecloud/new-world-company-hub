@@ -17,6 +17,7 @@
                 :company="$company"
                 :weapons="$weapons"
                 :armors="$armors"
+                :weight_class="$weight_class"
                 :types="$types"
             />
             {{--<livewire:weapon-bank-table 

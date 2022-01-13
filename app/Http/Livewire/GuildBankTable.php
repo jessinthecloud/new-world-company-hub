@@ -32,9 +32,10 @@ class GuildBankTable extends DataTableComponent
      * @var string[]
      */
     public array $itemTypes;
-    
-    // debugging
-    public bool $dumpFilters = true;
+    public array $weight_class;
+    public array $types;
+
+    private array $bindings = [];
 
     /**
      * constructor is called before company can be set,
@@ -47,18 +48,22 @@ class GuildBankTable extends DataTableComponent
      *
      * @return void
      */
-    public function mount(Company $company, array $armors, array $weapons, array $types)
+    public function mount(Company $company, array $armors, array $weapons, array $weight_class, array $types)
     {
         $this->company = $company;
         $this->armor_types = $armors;
         $this->weapon_types = $weapons;
+        $this->weight_class = $weight_class;
         $this->itemTypes = $types;
-        $this->types = ['weapon'=>$this->weapon_types, 'armor'=>$this->armor_types];
+        $this->types = [
+            ''=>'Any',
+            'weapon'=>$this->weapon_types, 
+            'armor'=>$this->armor_types
+        ];
     }
     
     public function columns(): array
     {
-    
         return [
             Column::make( 'Name', 'name' )
                 ->sortable()
@@ -94,66 +99,56 @@ class GuildBankTable extends DataTableComponent
                 ->select($this->weapon_types),
             'armor_type' => Filter::make('Armor Type')
                 ->select($this->armor_types),
-            'gear_score' => Filter::make('Gear Score')
-                ->select(['Any','221'=>221,'341'=>341]),
+            'weight_class' => Filter::make('Weight Class')
+                ->select($this->weight_class),
         ];
     }
 
     public function query()
     {
-//    dump($this->getFilter('weapon_type'));
         $weapons_query = Weapon::select(DB::raw('weapons.id as id, name, type, rarity, gear_score, null as weight_class'))
-        ->join('guild_banks', function ($join) {
-            $join->on('weapons.id', '=', 'guild_banks.item_id')
-                 ->where('guild_banks.item_type', '=', 'App\Models\Weapon')
-                 ->where('guild_banks.company_id', '=', $this->company->id)
-                 ;
-        });
+        ->whereRelation('company', 'id', $this->company->id);
         
         $union = Armor::select(DB::raw('armors.id as id, name, type, rarity, gear_score, weight_class'))
-        ->join('guild_banks', function ($join) {
-            $join->on('armors.id', '=', 'guild_banks.item_id')
-                 ->where('guild_banks.item_type', '=', 'App\Models\Armor')
-                 ->where('guild_banks.company_id', '=', $this->company->id)
-                 ;
-        })
+        ->whereRelation('company', 'id', $this->company->id)
         ->union($weapons_query);
-        // create derived table so we can filter on the union as a whole
+        
+        // create derived table so that we can filter on the union as a whole
         $query = DB::table(DB::raw("({$union->toSql()}) as items"));
-        $union_bindings = $union->getBindings();
-
-        $query = $query->when($this->getFilter('gear_score'), function ($query, $gear_score) use ($union_bindings, $union) {
-            $query = $query->whereRaw(
-                'items.gear_score = ?'
-            );
-            
-//            dump($query->toSql(), $query->getBindings(), $union_bindings);
-            $union_bindings[] = $gear_score;
-//            $query->setBindings($union_bindings);
-//            ddd($query->toSql(), $query->getBindings(), $union_bindings);
-            // TODO: need to pass bindings back out
-            return $query;
-        });
-        
-        
+        $this->bindings = $union->getBindings();
     
         // -- item type filter -- find based on subtypes of weapons or armor
-        /*->when($this->getFilter('item_type'), fn ($query, $item_type) => 
-            $query->whereIn('type', $this->types[strtolower($this->itemTypes[$item_type])])        
-        )
-        
+        $query->when($this->getFilter('item_type'), function ($query, $item_type) {
+            // use item type subtypes to filter the query
+            $subtypes = $this->types[strtolower($this->itemTypes[$item_type])];
+            // save bindings so we can attach at the end
+            $this->bindings = array_merge($this->bindings, $subtypes);
+
+            return $query->whereRaw('items.type IN ('.
+                implode(',', 
+                    array_fill(0, count($subtypes), '?')
+                ).
+            ')');
+        })
+
         // -- weapon filter
         ->when($this->getFilter('weapon_type'), function ($query, $weapon_type) {
-            return $query->where( 'type', 'like', $weapon_type );
+            // save bindings so we can attach at the end
+            $this->bindings[]= '%'.$weapon_type.'%';
+            
+            return $query->whereRaw( 'items.type like ?');
         })
-        
+
         // -- armor filter
-        ->when($this->getFilter('armor_type'), fn ($query, $armor_type) => 
-            $query->where('type', 'like', $armor_type)
-        )
-        */
-        ddd($query->toSql(), $union_bindings);
-        return $query->setBindings($union_bindings)
+        ->when($this->getFilter('armor_type'), function ($query, $armor_type) {
+            // save bindings so we can attach at the end
+            $this->bindings[]= '%'.$armor_type.'%';
+            return $query->whereRaw('items.type like ?');
+        });
+        
+//        ddd($query->toSql(), $this->bindings);
+        // manually attach bindings because mergeBindings() does not order them properly
+        return $query->setBindings($this->bindings)
         ;
     }
 }
