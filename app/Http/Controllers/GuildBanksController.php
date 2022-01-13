@@ -47,18 +47,24 @@ class GuildBanksController extends Controller
         foreach(WeightClass::cases() as $type){
             $weight_class[$type->value]= $type->value;
         }
+        
+        $rarity = [];
+        foreach(Rarity::cases() as $type){
+            $rarity[$type->value]= $type->value;
+        }
 
         // add "Any" to the front of the filter arrays
-        collect($armors)->prepend('Any', '');
-        collect($weapons)->prepend('Any', '');
-        collect($weight_class)->prepend('Any', '');
+        $armors = collect($armors)->prepend('Any', '')->all();
+        $weapons = collect($weapons)->prepend('Any', '')->all();
+        $weight_class = collect($weight_class)->prepend('Any', '')->all();
+        $rarity = collect($rarity)->prepend('Any', '')->all();
 
-        $types = ['Any'=>'', 'weapon'=>'Weapon', 'armor'=>'Armor'];
+        $types = [''=>'Any', 'Weapon'=>'Weapon', 'Armor'=>'Armor'];
         
         $company = $request->user()->company();
 
         return view('guild-bank.show', 
-            compact('company', 'armors', 'weapons', 'types', 'weight_class')
+            compact('company', 'armors', 'weapons', 'types', 'weight_class', 'rarity')
         );
     }
 

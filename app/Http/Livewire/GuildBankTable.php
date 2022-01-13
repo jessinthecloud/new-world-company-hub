@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Enums\ArmorType;
+use App\Enums\Rarity;
 use App\Enums\WeaponType;
 use App\Models\Armor;
 use App\Models\Weapon;
@@ -34,6 +35,10 @@ class GuildBankTable extends DataTableComponent
     public array $itemTypes;
     public array $weight_class;
     public array $types;
+    public array $rarity;
+    
+    public string $defaultSortColumn = 'name';
+    public string $defaultSortDirection = 'asc';
 
     private array $bindings = [];
 
@@ -42,24 +47,22 @@ class GuildBankTable extends DataTableComponent
      * so use livewire mount() to load the params sent
      *
      * @param \App\Models\Company company
-     * @param array                 $armors
-     * @param array                 $weapons
-     * @param array                 $types
+     * @param array $armors
+     * @param array $weapons
+     * @param array $weight_class
+     * @param array $types
+     * @param array $rarity
      *
      * @return void
      */
-    public function mount(Company $company, array $armors, array $weapons, array $weight_class, array $types)
+    public function mount(Company $company, array $armors, array $weapons, array $weight_class, array $types, array $rarity)
     {
         $this->company = $company;
         $this->armor_types = $armors;
         $this->weapon_types = $weapons;
         $this->weight_class = $weight_class;
+        $this->rarity = $rarity;
         $this->itemTypes = $types;
-        $this->types = [
-            ''=>'Any',
-            'weapon'=>$this->weapon_types, 
-            'armor'=>$this->armor_types
-        ];
     }
     
     public function columns(): array
@@ -68,10 +71,12 @@ class GuildBankTable extends DataTableComponent
             Column::make( 'Name', 'name' )
                 ->sortable()
                 ->searchable(),
-            Column::make( 'Type', 'type' )
+            // type of item
+            Column::make( 'Item Type', 'type' )
                 ->sortable()
                 ->searchable(),
-            Column::make( 'Type', 'type' )
+            // kind of weapon/armor
+            Column::make( 'Type', 'subtype' )
                 ->sortable()
                 ->searchable(),
             Column::make( 'Rarity', 'rarity' )
@@ -84,9 +89,9 @@ class GuildBankTable extends DataTableComponent
                 ->sortable()
                 ->searchable()
                 ->hideIf( !isset($this->company->armor) || count($this->company->armor) == 0),
-            Column::make( 'Perks', 'perks' )
+            /*Column::make( 'Perks', 'items.perks' )
                 ->sortable()
-                ->searchable(),
+                ->searchable(),*/
         ];
     }
     
@@ -101,15 +106,17 @@ class GuildBankTable extends DataTableComponent
                 ->select($this->armor_types),
             'weight_class' => Filter::make('Weight Class')
                 ->select($this->weight_class),
+            'rarity' => Filter::make('Rarity')
+                ->select($this->rarity),
         ];
     }
 
     public function query()
     {
-        $weapons_query = Weapon::select(DB::raw('weapons.id as id, name, type, rarity, gear_score, null as weight_class'))
+        $weapons_query = Weapon::select(DB::raw('weapons.id as id, name, type as subtype, rarity, gear_score, null as weight_class, "Weapon" as type'))
         ->whereRelation('company', 'id', $this->company->id);
         
-        $union = Armor::select(DB::raw('armors.id as id, name, type, rarity, gear_score, weight_class'))
+        $union = Armor::select(DB::raw('armors.id as id, name, type as subtype, rarity, gear_score, weight_class, "Armor" as type'))
         ->whereRelation('company', 'id', $this->company->id)
         ->union($weapons_query);
         
@@ -119,16 +126,10 @@ class GuildBankTable extends DataTableComponent
     
         // -- item type filter -- find based on subtypes of weapons or armor
         $query->when($this->getFilter('item_type'), function ($query, $item_type) {
-            // use item type subtypes to filter the query
-            $subtypes = $this->types[strtolower($this->itemTypes[$item_type])];
             // save bindings so we can attach at the end
-            $this->bindings = array_merge($this->bindings, $subtypes);
+            $this->bindings []= '%'.$item_type.'%';
 
-            return $query->whereRaw('items.type IN ('.
-                implode(',', 
-                    array_fill(0, count($subtypes), '?')
-                ).
-            ')');
+            return $query->whereRaw('items.type like ?');
         })
 
         // -- weapon filter
@@ -136,14 +137,28 @@ class GuildBankTable extends DataTableComponent
             // save bindings so we can attach at the end
             $this->bindings[]= '%'.$weapon_type.'%';
             
-            return $query->whereRaw( 'items.type like ?');
+            return $query->whereRaw( 'items.subtype like ?');
         })
 
         // -- armor filter
         ->when($this->getFilter('armor_type'), function ($query, $armor_type) {
             // save bindings so we can attach at the end
             $this->bindings[]= '%'.$armor_type.'%';
-            return $query->whereRaw('items.type like ?');
+            return $query->whereRaw('items.subtype like ?');
+        })
+        
+        // -- weight class filter
+        ->when($this->getFilter('weight_class'), function ($query, $weight_class) {
+            // save bindings so we can attach at the end
+            $this->bindings[]= '%'.$weight_class.'%';
+            return $query->whereRaw('items.weight_class like ?');
+        })
+        
+        // -- rarity filter
+        ->when($this->getFilter('rarity'), function ($query, $rarity) {
+            // save bindings so we can attach at the end
+            $this->bindings[]= '%'.$rarity.'%';
+            return $query->whereRaw('items.rarity like ?');
         });
         
 //        ddd($query->toSql(), $this->bindings);

@@ -18,6 +18,7 @@
                 :weapons="$weapons"
                 :armors="$armors"
                 :weight_class="$weight_class"
+                :rarity="$rarity"
                 :types="$types"
             />
             {{--<livewire:weapon-bank-table 
