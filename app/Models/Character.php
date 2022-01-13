@@ -65,6 +65,11 @@ class Character extends Model
         return $this->hasMany(Position::class);
     }
     
+    public function ownable()
+    {
+        return $this->morphTo('ownable');
+    }
+    
 // -- DISTANT RELATIONSHIPS
 
     public function faction()

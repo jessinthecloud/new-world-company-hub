@@ -125,6 +125,7 @@ Route::get('/data/{thing}', function (string $thing) {
 });
 
 Route::get('/', function () {
+
     return view( 'welcome' );
 })
 ->name('home');

@@ -16,14 +16,12 @@ class ArmorSeeder extends Seeder
         for($i=0;$i<=20;$i++){
             Armor::factory()
                 ->fromBase()
-                ->hasAttached(Company::all()->random())
                 ->create();
         }
         
         // custom
         Armor::factory()
             ->count(5)
-            ->hasAttached(Company::all()->random())
             ->create();
     }
 }

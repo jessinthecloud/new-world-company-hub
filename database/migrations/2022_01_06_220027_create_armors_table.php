@@ -23,6 +23,9 @@ class CreateArmorsTable extends Migration
             $table->string('cdn_asset_path')->nullable();
             
             $table->foreignId('base_id')->nullable()->constrained('base_armors');
+            // character or company
+            $table->bigInteger('owner_id')->nullable();
+            $table->string('owner_type')->nullable();
 
             $table->timestamps();
         } );

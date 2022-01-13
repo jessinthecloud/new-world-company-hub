@@ -40,18 +40,18 @@ class Company extends Model
         $this->hasMany(Event::class);
     }
     
-    public function weapons()
+    public function ownable()
     {
-        return $this->morphedByMany(Weapon::class, 'item', 'guild_banks', 'company_id', 'item_id');
+        return $this->morphTo('ownable');
     }
     
-    public function armor()
+/*    public function armor()
     {
-        return $this->morphedByMany(Armor::class, 'item', 'guild_banks', 'company_id', 'item_id');
+        return $this->morphedBy(Armor::class, 'item', 'guild_banks', 'company_id', 'item_id');
     }
     
     public function bank()
     {
         return $this->hasOne(GuildBank::class)->withDefault('amount');
-    }
+    }*/
 }

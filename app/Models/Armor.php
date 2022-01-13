@@ -38,8 +38,8 @@ class Armor extends Model
         return $this->belongsToMany(Attribute::class, 'attribute_armor')->withPivot('amount');
     }
     
-    public function companies()
+    public function company()
     {
-        return $this->morphToMany(Company::class, 'item', 'guild_banks', 'item_id', 'company_id');
+        return $this->morphOne(Company::class, 'ownable');
     }
 }
