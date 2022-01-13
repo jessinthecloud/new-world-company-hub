@@ -67,13 +67,13 @@ class Character extends Model
     
     public function weapons()
     {
-        return $this->morphMany(Weapon::class, 'ownerable');
+        return $this->hasMany(Weapon::class);
     }
     
-   /* public function armor()
+    public function armor()
     {
-        return $this->morphMany(Armor::class, 'ownerable');
-    }*/
+        return $this->hasMany(Armor::class);
+    }
     
 // -- DISTANT RELATIONSHIPS
 
