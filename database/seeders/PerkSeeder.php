@@ -22,8 +22,7 @@ class PerkSeeder extends Seeder
             $insert = [];
             foreach ( $perks as $perk ) {
                 // create unique slug
-                $slug = $perk->name;
-                $slug = Str::slug( $slug );
+                $slug = Str::slug( $perk->name );
 
                 $insert [] = [
                     'name'                => $perk->name,
@@ -41,9 +40,9 @@ class PerkSeeder extends Seeder
                     'max_gear_score'      => $perk->gearScoreMax ?? null,
                     'condition'      => $perk->condition ?? null,
                 ];
-            }
-
-            DB::table( 'perks' )->upsert( $insert, ['slug'] );
+//dump($perk->name, $perk->id);
+            } // end each perks
+            DB::table( 'perks' )->upsert( $insert, ['json_id','slug'] );
         } // end foreach
     }
 }
