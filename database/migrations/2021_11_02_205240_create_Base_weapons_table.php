@@ -12,7 +12,7 @@ class CreateBaseWeaponsTable extends Migration
             $table->bigIncrements( 'id' );
 
             $table->string('name');
-            $table->string('json_id');
+            $table->string('json_id')->unique();
             $table->string('slug')->unique();
             $table->string('equip_type')->nullable(); // PHP enum
             $table->string('type')->nullable(); // PHP enum

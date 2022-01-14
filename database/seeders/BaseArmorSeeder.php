@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\BaseArmor;
+use App\Models\Perk;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -23,11 +25,34 @@ class BaseArmorSeeder extends Seeder
             $armors = json_decode( file_get_contents( $file->getPathname() ) );
 
             $insert = [];
+            $bucket_perk_ids = [];
             foreach ( $armors as $armor ) {
-                
+            
+
+/*$b = collect($armor->perkBuckets)->first()->perks;
+dd(
+$b,
+'perk',collect($b)->pluck('perk'), 
+'chance', collect($b)->pluck('chance')
+);*/                
                 // create unique slug
-                $slug = $armor->name . (!empty($armor->rarity) ? ' '.$armor->rarity : '') . (!empty($armor->tier) ? ' t'.$armor->tier : '') . (!empty($armor->weightClass) ? ' '.$armor->weightClass : '');
+                $slug = $armor->name 
+                    . ( str_contains($armor->id, 'cast') ? ' cast' : '' )
+                    . ( str_contains($armor->id, 'drop') ? ' drop' : '' )
+                    . ( str_contains($armor->id, 'dynasty') ? ' dynasty' : '' )
+                    . ( str_contains($armor->id, 'corrupted') ? ' corrupted' : '' )
+                    . (!empty($armor->rarity) ? ' '.$armor->rarity : '') 
+                    . (!empty($armor->tier) ? ' t'.$armor->tier : '') 
+                    . (!empty($armor->weightClass) ? ' '.$armor->weightClass : '');
+                    
                 $slug = Str::slug($slug);
+                
+                // save for batch query later
+                foreach ( $armor->perkBuckets as $bucket ) {
+                    foreach ( $bucket->perks as $bucket_perk ) {
+                        $bucket_perk_ids [$bucket_perk->perk->id]= $bucket_perk->chance;
+                    } // end each perk
+                } // end each bucket 
             
                 $insert [] = [
                     'name'                => $armor->name,
@@ -57,7 +82,26 @@ class BaseArmorSeeder extends Seeder
                 ];
             }
 
-            DB::table( 'base_armors' )->upsert( $insert, ['slug'] );
+            DB::table( 'base_armors' )->upsert( $insert, ['json_id', 'slug'] );
+            
+            // attach perks
+            foreach($insert as $armor) {
+
+                $baseArmor = BaseArmor::where('json_id', '=', $armor['json_id'])->first();
+/*if(!isset($baseArmor)){
+    dd('BASE WEAPON NOT DEFINED',$armor['slug'],$armor['json_id']);
+}*/                
+//dump('attach perks');
+                
+                $db_perks = Perk::whereIn( 'json_id', array_keys($bucket_perk_ids) )->get();
+                $perks = [];
+                foreach ( $db_perks as $perk ) {
+                    $perks [$perk->id]= ['chance'=>$bucket_perk_ids[$perk->json_id]]; 
+                } // end each perk
+                
+                // batch attach via array of ids and pivot column
+                $baseArmor->perks()->attach( $perks );
+            } // end each armor
         }
     }
 }

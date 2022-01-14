@@ -31,7 +31,7 @@ class CreateArmorSetsTable extends Migration
             
             $table->foreignId('perk_id')->constrained()->cascadeOnDelete();
             $table->foreignId('armor_id')->constrained()->cascadeOnDelete();
-            $table->integer('amount')->nullable();
+            $table->float('amount')->nullable();
             
             $table->timestamps();
         } );
@@ -41,7 +41,7 @@ class CreateArmorSetsTable extends Migration
             
             $table->foreignId('perk_id')->constrained()->cascadeOnDelete();
             $table->foreignId('base_armor_id')->constrained()->cascadeOnDelete();
-            $table->integer('amount')->nullable();
+            $table->integer('chance')->nullable();
             
             $table->timestamps();
         } );

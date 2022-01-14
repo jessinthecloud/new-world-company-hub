@@ -12,7 +12,7 @@ class CreateBaseArmorsTable extends Migration
             $table->bigIncrements( 'id' );
 
             $table->string('name');
-            $table->string('json_id');
+            $table->string('json_id')->unique();
 //            $table->string('long_name')->nullable();
             $table->string('slug')->unique();
             $table->text('description')->nullable();

@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\BaseWeapon;
+use App\Models\Perk;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -21,16 +23,31 @@ class BaseWeaponSeeder extends Seeder
 //dd($data);
            
             $insert = [];
+            $bucket_perk_ids = [];
             foreach ( $weapons as $weapon ) {
                 // create unique slug
-                $slug = $weapon->name . ( !empty( $weapon->rarity ) ? ' ' . $weapon->rarity : '' ) . ( !empty( $weapon->tier ) ? ' t' . $weapon->tier : '' );
+                $slug = $weapon->name
+                    . ( str_contains($weapon->id, 'cast') ? ' cast' : '' )
+                    . ( str_contains($weapon->id, 'drop') ? ' drop' : '' )
+                    . ( str_contains($weapon->id, 'dynasty') ? ' dynasty' : '' )
+                    . ( str_contains($weapon->id, 'corrupted') ? ' corrupted' : '' )
+                    . ( !empty( $weapon->rarity ) ? ' ' . $weapon->rarity : '' ) 
+                    . ( !empty( $weapon->tier ) ? ' t' . $weapon->tier : '' );
+                
                 $slug = Str::slug( $slug );
                
                 $type = $weapon->itemClass[2] ?? null;
                 $type = (isset($type) && $type == '2HHammer') ? 'WarHammer' : $type; 
-                $type = (isset($type) && $type == '2HAxe') ? 'GreatAxe' : $type; 
+                $type = (isset($type) && $type == '2HAxe') ? 'GreatAxe' : $type;
+                
+                // save for batch query later
+                foreach ( $weapon->perkBuckets as $bucket ) {
+                    foreach ( $bucket->perks as $bucket_perk ) {
+                        $bucket_perk_ids [$bucket_perk->perk->id]= $bucket_perk->chance;
+                    } // end each perk
+                } // end each bucket 
 
-                $insert [] = [
+                $insert []= [
                     'name'                => $weapon->name,
                     'json_id'             => $weapon->id,
 //                    'long_name'           => $weapon->name_with_affixes,
@@ -61,9 +78,37 @@ class BaseWeaponSeeder extends Seeder
                     'crit_chance'      => $weapon->CritChance ?? null,
                     'crit_multiplier'      => $weapon->CritDamageMultipler ?? null,                    
                 ];
-            }
+/*    if($slug == "defiled-hatchet-t5"){
+        dump("
+        -- SLUG FOUND --
+        ", $slug, $weapon->id, $weapon->name);
+    }*/
+            } // end foreach weapon
+            DB::table( 'base_weapons' )->upsert( $insert, ['json_id', 'slug'] );
 
-            DB::table( 'base_weapons' )->upsert( $insert, ['slug'] );
-        } // end foreach
+            // attach perks
+            foreach($insert as $weapon) {
+
+                $baseWeapon = BaseWeapon::where('json_id', '=', $weapon['json_id'])->first();
+/*if(!isset($baseWeapon)){
+    dd('BASE WEAPON NOT DEFINED',$weapon['slug'],$weapon['json_id']);
+}*/                
+//dump('attach perks');
+                
+                $db_perks = Perk::whereIn( 'json_id', array_keys($bucket_perk_ids) )->get();
+                $perks = [];
+                foreach ( $db_perks as $perk ) {
+                    $perks [$perk->id]= ['chance'=>$bucket_perk_ids[$perk->json_id]]; 
+                } // end each perk
+                
+                // batch attach via array of ids and pivot column
+                $baseWeapon->perks()->attach( $perks );
+            } // end each weapon
+            
+//            dd(
+//                reset(collect($weapon->perkBuckets)->first()->perks)
+//                );
+            
+        } // end foreach file
     }
 }
