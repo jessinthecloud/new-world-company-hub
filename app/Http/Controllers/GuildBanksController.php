@@ -24,15 +24,7 @@ use Illuminate\Support\Str;
 class GuildBanksController extends Controller
 {
     public function index(Request $request)
-    {        
-        /*$weapons = Weapon::whereRelation('banks', 'guild_banks.id', $guildBank->id)->get()->mapWithKeys(function($weapon){
-            return [$weapon->id => $weapon->name ?? $weapon->base->name];
-        });
-        
-        $armors = Armor::whereRelation('banks', 'guild_banks.id', $guildBank->id)->get()->mapWithKeys(function($armor){
-            return [$armor->id => $armor->name ?? $armor->base->name];
-        });*/
-        
+    {
         $armors = [];
         foreach(ArmorType::cases() as $type){
             $armors[$type->value]= $type->value;
@@ -52,19 +44,24 @@ class GuildBanksController extends Controller
         foreach(Rarity::cases() as $type){
             $rarity[$type->value]= $type->value;
         }
+        
+        $perks = Perk::orderBy('name')->get()->mapWithKeys(function($perk){
+            return [$perk->slug => $perk->name];
+        });
 
         // add "Any" to the front of the filter arrays
         $armors = collect($armors)->prepend('Any', '')->all();
         $weapons = collect($weapons)->prepend('Any', '')->all();
         $weight_class = collect($weight_class)->prepend('Any', '')->all();
         $rarity = collect($rarity)->prepend('Any', '')->all();
+        $perks = $perks->prepend('Any', '')->all();
 
         $types = [''=>'Any', 'Weapon'=>'Weapon', 'Armor'=>'Armor'];
         
         $company = $request->user()->company();
 
         return view('guild-bank.show', 
-            compact('company', 'armors', 'weapons', 'types', 'weight_class', 'rarity')
+            compact('company', 'armors', 'weapons', 'types', 'weight_class', 'rarity', 'perks')
         );
     }
 

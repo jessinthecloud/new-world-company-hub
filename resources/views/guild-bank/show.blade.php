@@ -20,6 +20,7 @@
                 :weight_class="$weight_class"
                 :rarity="$rarity"
                 :types="$types"
+                :perks="$perks"
             />
             {{--<livewire:weapon-bank-table 
                 :id="null"

@@ -49,6 +49,8 @@ class ArmorFactory extends Factory
                 'gear_score' => $baseWeapon->gear_score ?? $this->faker->numberBetween(100, 600),
                 'required_level' => $baseWeapon->required_level ?? $this->faker->numberBetween(1, 100),
             ];
-        });
+        })
+        ->hasAttached($baseArmor->perks)
+        ;
     }
 }

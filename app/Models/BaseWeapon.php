@@ -38,7 +38,7 @@ class BaseWeapon extends Model
     
     public function perks()
     {
-        return $this->belongsToMany(Perk::class)->withPivot('amount');
+        return $this->belongsToMany(Perk::class)->withPivot('chance');
     }
     
     public function mainLoadout()

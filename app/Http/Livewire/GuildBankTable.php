@@ -36,10 +36,11 @@ class GuildBankTable extends DataTableComponent
     public array $weight_class;
     public array $types;
     public array $rarity;
-    
-    public string $defaultSortColumn = 'name';
-    public string $defaultSortDirection = 'asc';
+    public array $perks;
 
+    public string $defaultSortColumn = 'items.name';
+
+    public string $defaultSortDirection = 'asc';
     private array $bindings = [];
 
     /**
@@ -55,7 +56,7 @@ class GuildBankTable extends DataTableComponent
      *
      * @return void
      */
-    public function mount(Company $company, array $armors, array $weapons, array $weight_class, array $types, array $rarity)
+    public function mount(Company $company, array $armors, array $weapons, array $weight_class, array $types, array $rarity, array $perks)
     {
         $this->company = $company;
         $this->armor_types = $armors;
@@ -63,6 +64,7 @@ class GuildBankTable extends DataTableComponent
         $this->weight_class = $weight_class;
         $this->rarity = $rarity;
         $this->itemTypes = $types;
+        $this->perks = $perks;
     }
     
     public function columns(): array
@@ -89,9 +91,6 @@ class GuildBankTable extends DataTableComponent
                 ->sortable()
                 ->searchable()
                 ->hideIf( !isset($this->company->armor) || count($this->company->armor) == 0),
-            /*Column::make( 'Perks', 'items.perks' )
-                ->sortable()
-                ->searchable(),*/
         ];
     }
     
@@ -108,15 +107,17 @@ class GuildBankTable extends DataTableComponent
                 ->select($this->weight_class),
             'rarity' => Filter::make('Rarity')
                 ->select($this->rarity),
+            'perks' => Filter::make('Perk')
+                ->multiSelect($this->perks),
         ];
     }
 
     public function query()
     {
-        $weapons_query = Weapon::select(DB::raw('weapons.id as id, name, type as subtype, rarity, gear_score, null as weight_class, "Weapon" as type'))
+        $weapons_query = Weapon::select(DB::raw('weapons.id as id, weapons.name as name, weapons.type as subtype, weapons.rarity, weapons.gear_score, null as weight_class, "Weapon" as type'))
         ->whereRelation('company', 'id', $this->company->id);
         
-        $union = Armor::select(DB::raw('armors.id as id, name, type as subtype, rarity, gear_score, weight_class, "Armor" as type'))
+        $union = Armor::select(DB::raw('armors.id as id, armors.name as name, armors.type as subtype, armors.rarity, armors.gear_score, armors.weight_class, "Armor" as type'))
         ->whereRelation('company', 'id', $this->company->id)
         ->union($weapons_query);
         
@@ -159,6 +160,27 @@ class GuildBankTable extends DataTableComponent
             // save bindings so we can attach at the end
             $this->bindings[]= '%'.$rarity.'%';
             return $query->whereRaw('items.rarity like ?');
+        })
+        
+        // -- perk filter
+        ->when($this->getFilter('perks'), function ($query, $perks) {
+            
+            // save bindings so we can attach at the end
+            $this->bindings[]= '%'.implode('%, %',$perks).'%';
+            
+            return $query->leftJoin('perk_weapon', function($join){
+                return $join->on('items.id', '=', 'perk_weapon.weapon_id');
+            }) 
+                ->leftJoin('armor_perk', function($join){
+                    return $join->on('items.id', '=', 'armor_perk.armor_id');
+                }) 
+                ->join('perks', function($join) use ($perks) {
+                    return $join->on('perks.id', '=', 'perk_weapon.perk_id')
+                        ->orOn('perks.id', '=', 'armor_perk.perk_id')
+                        ->whereRaw('perks.slug IN 
+                            ('.implode(',', 
+                                array_fill(0, count($perks), '?')).')');
+                });                
         });
         
 //        ddd($query->toSql(), $this->bindings);
