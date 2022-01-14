@@ -168,10 +168,10 @@ class GuildBankTable extends DataTableComponent
             // save bindings so we can attach at the end
             $this->bindings[]= '%'.implode('%, %',$perks).'%';
             
-            return $query->leftJoin('perk_weapon', function($join){
+            return $query->join('perk_weapon', function($join){
                 return $join->on('items.id', '=', 'perk_weapon.weapon_id');
             }) 
-                ->leftJoin('armor_perk', function($join){
+                ->join('armor_perk', function($join){
                     return $join->on('items.id', '=', 'armor_perk.armor_id');
                 }) 
                 ->join('perks', function($join) use ($perks) {
@@ -180,10 +180,10 @@ class GuildBankTable extends DataTableComponent
                         ->whereRaw('perks.slug IN 
                             ('.implode(',', 
                                 array_fill(0, count($perks), '?')).')');
-                });                
+                })
+                ;             
         });
         
-//        ddd($query->toSql(), $this->bindings);
         // manually attach bindings because mergeBindings() does not order them properly
         return $query->setBindings($this->bindings)
         ;
