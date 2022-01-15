@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Companies;
 
 use App\Enums\ArmorType;
 use App\Enums\AttributeType;
@@ -9,6 +9,7 @@ use App\Enums\Tier;
 use App\Enums\WeaponType;
 use App\Enums\WeightClass;
 use App\GuildBank;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\AddInventoryRequest;
 use App\Models\Armor;
 use App\Models\Attribute;
@@ -19,6 +20,11 @@ use App\Models\Perk;
 use App\Models\Weapon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+
+use function collect;
+use function redirect;
+use function route;
+use function view;
 
 class GuildBanksController extends Controller
 {

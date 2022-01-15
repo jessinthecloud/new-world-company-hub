@@ -1,11 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Companies;
 
+use App\Http\Controllers\Controller;
 use App\Imports\RosterImport;
 use App\Models\Company;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+
+use function redirect;
+use function view;
 
 class ImportRosterController extends Controller
 {

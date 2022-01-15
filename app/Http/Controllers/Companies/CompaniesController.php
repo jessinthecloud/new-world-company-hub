@@ -1,16 +1,21 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Companies;
 
-use App\Http\Livewire\CompanyTable;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\CompanyUpsertRequest;
+use App\Models\BaseWeapon;
 use App\Models\CharacterClass;
 use App\Models\Company;
 use App\Models\Faction;
-use App\Models\BaseWeapon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+
+use function dump;
+use function redirect;
+use function route;
+use function view;
 
 class CompaniesController extends Controller
 {

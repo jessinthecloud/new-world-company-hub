@@ -1,10 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Companies;
 
-use App\Models\Character;
+use App\Http\Controllers\Controller;
 use App\Models\Roster;
 use Illuminate\Http\Request;
+
+use function redirect;
+use function route;
+use function view;
 
 class RostersController extends Controller
 {
