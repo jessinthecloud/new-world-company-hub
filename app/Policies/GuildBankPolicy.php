@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\GuildBank;
+use App\GuildBank;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 

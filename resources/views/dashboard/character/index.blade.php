@@ -3,26 +3,40 @@
         :title="'Character'"
         class=""
     >
-        <x-dashboard.view-all-button 
-            :class="\App\Models\Character::class" 
+        <x-dashboard.gated-button 
+            :class="\App\Models\Character::class"
+            :can="'viewAll'" 
             :route="route('characters.index')"
-        />
+        >
+            View All
+        </x-dashboard.gated-button>
+        
         @isset($character)
-        <x-dashboard.view-own-button 
-            :class="\App\Models\Character::class" 
-            :route="route('characters.show', ['character'=>$character])"
-            :instance="$character"
-        />
+            <x-dashboard.gated-button 
+                :class="\App\Models\Character::class" 
+                :can="'view'"
+                :route="route('characters.show', ['character'=>$character])"
+                :instance="$character"
+            >
+                View
+            </x-dashboard.gated-button>
         @endisset
-        <x-dashboard.create-button 
+        
+        <x-dashboard.gated-button 
             :class="\App\Models\Character::class" 
+            :can="'create'"
             :route="route('characters.create')"
-            :instance="$character"
-        />
-        <x-dashboard.edit-delete-button 
+        >
+            Create
+        </x-dashboard.gated-button>
+        
+        <x-dashboard.gated-button 
             :class="\App\Models\Character::class" 
+            :can="'update'"
             :route="route('characters.choose')"
-            :instance="$character"
-        />
+            :instance="$character ?? null"
+        >
+            Edit / Delete
+        </x-dashboard.gated-button>
     </x-dashboard.section>
 @endcan

@@ -22,11 +22,6 @@
                 :types="$types"
                 :perks="$perks"
             />
-            {{--<livewire:weapon-bank-table 
-                :id="null"
-                :guildBank="$guildBank"
-                :weapons="$weapons"
-            />--}}
         </div>
     </div>
 

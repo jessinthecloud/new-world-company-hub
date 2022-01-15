@@ -1,30 +1,42 @@
-    @can('viewAny', \App\Models\Loadout::class)
-        <x-dashboard.section
-            :title="'Loadout'"
-            class=""
+@can('viewAny', \App\Models\Loadout::class)
+    <x-dashboard.section
+        :title="'Loadout'"
+        class=""
+    >
+        <x-dashboard.gated-button 
+            :class="\App\Models\Loadout::class"
+            :can="'viewAll'" 
+            :route="route('loadouts.index')"
         >
-            <x-dashboard.view-all-button 
+            View All
+        </x-dashboard.gated-button>
+        
+        @isset($loadout)
+            <x-dashboard.gated-button 
                 :class="\App\Models\Loadout::class" 
-                :route="route('loadouts.index')"
-            />
-            @isset($loadout)
-                <x-dashboard.view-own-button 
-                    :class="\App\Models\Loadout::class" 
-                    :route="route('loadouts.show', ['loadout'=>$loadout])"
-                    :instance="$loadout"
-                />
-            @endcan
-            <x-dashboard.create-button 
-                :class="\App\Models\Loadout::class" 
-                :route="route('loadouts.create')"
+                :can="'view'"
+                :route="route('loadouts.show', ['loadout'=>$loadout])"
                 :instance="$loadout"
-            />
-            @isset($loadout)
-                <x-dashboard.edit-delete-button 
-                    :class="\App\Models\Loadout::class" 
-                    :route="route('loadouts.choose')"
-                    :instance="$loadout"
-                />
-            @endisset
-        </x-dashboard.section>
-@endisset
+            >
+                View
+            </x-dashboard.gated-button>
+        @endisset
+        
+        <x-dashboard.gated-button 
+            :class="\App\Models\Loadout::class" 
+            :can="'create'"
+            :route="route('loadouts.create')"
+        >
+            Create
+        </x-dashboard.gated-button>
+        
+        <x-dashboard.gated-button 
+            :class="\App\Models\Loadout::class" 
+            :can="'update'"
+            :route="route('loadouts.choose')"
+            :instance="$loadout ?? null"
+        >
+            Edit / Delete
+        </x-dashboard.gated-button>
+    </x-dashboard.section>
+@endcan

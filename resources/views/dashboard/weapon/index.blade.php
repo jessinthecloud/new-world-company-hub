@@ -3,26 +3,41 @@
         :title="'Weapon'"
         class=""
     >
-        <x-dashboard.view-all-button 
-            :class="\App\Models\BaseWeapon::class" 
+        <x-dashboard.gated-button 
+            :class="\App\Models\BaseWeapon::class"
+            :can="'viewAll'" 
             :route="route('weapons.index')"
-        />
+        >
+            View All
+        </x-dashboard.gated-button>
+        
         @isset($weapon)
-        <x-dashboard.view-own-button 
-            :class="\App\Models\BaseWeapon::class" 
-            :route="route('weapons.show', ['weapon'=>$weapon])"
-            :instance="$weapon"
-        />
+            <x-dashboard.gated-button 
+                :class="\App\Models\BaseWeapon::class" 
+                :can="'view'"
+                :route="route('weapons.show', ['weapon'=>$weapon])"
+                :instance="$weapon"
+            >
+                View
+            </x-dashboard.gated-button>
         @endisset
-        <x-dashboard.create-button 
+        
+        <x-dashboard.gated-button 
             :class="\App\Models\BaseWeapon::class" 
+            :can="'create'"
             :route="route('weapons.create')"
-            :instance="$weapon ?? null"
-        />
-        <x-dashboard.edit-delete-button 
+        >
+            Create
+        </x-dashboard.gated-button>
+        
+        <x-dashboard.gated-button 
             :class="\App\Models\BaseWeapon::class" 
+            :can="'update'"
             :route="route('weapons.choose')"
             :instance="$weapon ?? null"
-        />
+        >
+            Edit / Delete
+        </x-dashboard.gated-button>
+        
     </x-dashboard.section>
 @endcan

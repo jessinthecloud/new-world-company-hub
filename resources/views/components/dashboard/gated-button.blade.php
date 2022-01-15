@@ -1,6 +1,6 @@
-@props(['class', 'route', 'instance'])
+@props(['class', 'route', 'can', 'instance'=>null])
 
-@can('view', $instance)
+@can($can, $instance)
     <x-button-link href="{{ $route }}">
         {{ empty($slot->toHtml()) ? 'View' : $slot}}
     </x-button-link>

@@ -8,13 +8,13 @@ use App\Enums\Rarity;
 use App\Enums\Tier;
 use App\Enums\WeaponType;
 use App\Enums\WeightClass;
+use App\GuildBank;
 use App\Http\Requests\AddInventoryRequest;
 use App\Models\Armor;
 use App\Models\Attribute;
 use App\Models\BaseArmor;
 use App\Models\BaseWeapon;
 use App\Models\Company;
-use App\Models\GuildBank;
 use App\Models\Perk;
 use App\Models\Weapon;
 use Illuminate\Http\Request;
@@ -78,7 +78,8 @@ class GuildBanksController extends Controller
             $company_options .= '<option value="'.$value.'">'.$text.'</option>';
         }
         
-        $armor = BaseArmor::distinct()->with('perks')->where('named', 0)->orderBy('name')->get()->mapWithKeys(function($armor){
+        $armor = BaseArmor::distinct()->with('perks')
+            ->where('named', 0)->orderBy('name')->get()->mapWithKeys(function($armor){
         
             $wtype = $armor->type;
             $type = !empty($wtype) ? constant("App\Enums\ArmorType::$wtype")->value : null;
