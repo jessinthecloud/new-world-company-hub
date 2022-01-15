@@ -19,7 +19,7 @@ class DashboardController extends Controller
             'character'   => $user->character(),
             'faction'     => $user->faction(),
             'company'     => $user->company(),
-            'guildBank'     => $user->company()->bank,
+            'guildBank'     => $user->company()?->bank,
             'rank'        => $user->rank(),
             'characters'  => $user->characters,
             'loadout'     => $user->character()?->loadout,

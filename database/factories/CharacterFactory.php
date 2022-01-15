@@ -45,8 +45,8 @@ class CharacterFactory extends Factory
             'name' => $this->faker->name(),
             'slug' => $this->faker->slug(),
             'level' => $this->faker->numberBetween(1, 100),
-            'character_class_id' => CharacterClass::all()->random()->id,
-            'company_id' => Company::all()->random(),
+            'character_class_id' => CharacterClass::inRandomOrder()->take(1)->id,
+            'company_id' => Company::inRandomOrder()->take(1)->id,
             'user_id' => User::factory(),
             'rank_id' => 4, //Rank::all()->random()->id,
         ];

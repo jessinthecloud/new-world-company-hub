@@ -17,7 +17,7 @@ class CharacterSeeder extends Seeder
         Character::factory()
             ->count(10)
             ->hasAttached(
-                Skill::all()->random(Skill::count()),
+                Skill::inRandomOrder()->take(1)->get(),
                 ['level' => abs(rand(0,100))],
             )
             ->create();

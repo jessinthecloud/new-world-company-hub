@@ -18,8 +18,15 @@ class CharactersController extends Controller
 {
     public function index()
     {
-        $characters = Character::with('class.type')->orderBy('name')->orderBy('level')->get()->mapWithKeys(function($character){
-            return [$character->slug => $character->name.' (Level '.$character->level.') '.$character->class->name.' '.$character->class->type->name];
+        $characters = Character::with('class.type')
+            ->orderBy('name')
+            ->orderBy('level')
+            ->get()->mapWithKeys(function($character){
+                return [$character->slug => $character->name 
+                    .' (Level '.$character->level.') ' 
+                    . $character->class->name.' ' 
+                    . $character->class->type->name
+                ];
         })->all();
         
         dump($characters);
@@ -33,19 +40,31 @@ class CharactersController extends Controller
     public function choose(Request $request, string $action = 'Submit')
     {
         $characters = Character::query();
+        
         if($action == 'login'){
             // restrict to own characters when choosing for login
             $characters = $characters->where('user_id', $request->user()->id);
         }
-        $characters = $characters->orderBy('name')->orderBy('level')->get()->mapWithKeys(function($character){
-            return [$character->slug => $character->name.' (Level '.$character->level.')'];
+        
+        $characters = $characters->orderBy('name')
+            ->orderBy('level')->get()
+            ->mapWithKeys(function($character){
+                return [
+                    $character->slug => $character->name 
+                        . ' (Level '.$character->level.')'
+                ];
         })->all();
         
-        // if only one, then choose it automatically 
         if(count($characters) === 1){
+            // only one, then choose it automatically 
             return redirect(route('characters.login', [
                 'character'=>array_key_first($characters)
             ]));
+        }
+
+        if(count($characters) < 1){
+            // no characters
+            return redirect(RouteServiceProvider::DASHBOARD);
         }
         
         $form_action = route('characters.find');
@@ -63,7 +82,9 @@ class CharactersController extends Controller
      */
     public function find(Request $request)
     {
-        return redirect(route('characters.'.$request->action, ['character'=>$request->character]));
+        return redirect(route('characters.'.$request->action, [
+            'character'=>$request->character
+        ]));
     }
 
     /**
@@ -92,12 +113,16 @@ class CharactersController extends Controller
             return [$rank->id => $rank->name];
         })->all();
 
-        $classes = CharacterClass::with('type')->get()->mapWithKeys(function($class){
+        $classes = CharacterClass::with('type')->get()
+            ->mapWithKeys(function($class){
             return [$class->id => $class->name.' ('.$class->type->name.')'];
         })->all();
 
-        $companies = Company::with('faction')->get()->mapWithKeys(function($company){
-            return [$company->slug => $company->name.' ('.$company->faction->name.')'];
+        $companies = Company::with('faction')->get()
+            ->mapWithKeys(function($company){
+            return [
+                $company->slug => $company->name . ' ('.$company->faction->name.')'
+            ];
         })->all();
 
         $skillTypes = SkillType::with(['skills' => function ($query) {
@@ -110,7 +135,8 @@ class CharactersController extends Controller
     
         return view(
             'dashboard.character.create-edit', 
-            compact('ranks', 'skillTypes', 'classes', 'companies', 'form_action', 'button_text')
+            compact('ranks', 'skillTypes', 'classes', 
+                'companies', 'form_action', 'button_text')
         );
     }
 
@@ -127,6 +153,7 @@ class CharactersController extends Controller
             'rank_id' => $validated['rank'],
             'company_id' => $validated['company'],
         ]);
+        
         // update skills levels related to this character on pivot table
         foreach($validated['skills'] as $skill_id => $level){
             // don't need to ->save()
@@ -164,7 +191,8 @@ class CharactersController extends Controller
             return [$class->id => $class->name.' ('.$class->type->name.')'];
         })->all();
 
-        $companies = Company::with('faction')->get()->mapWithKeys(function($company){
+        $companies = Company::with('faction')->get()
+            ->mapWithKeys(function($company){
             return [$company->slug => $company->name.' ('.$company->faction->name.')'];
         })->all();
 
