@@ -13,7 +13,7 @@ class ArmorSeeder extends Seeder
     {        
         $baseArmors = BaseArmor::whereNotIn('slug', 
             Armor::all()->pluck('slug')->all() 
-        )->has('perks')->inRandomOrder()->take(10)->get();
+        )->has('perks')->inRandomOrder()->take(25)->get();
         
         $companies = Company::inRandomOrder()->take(5)->get();
        

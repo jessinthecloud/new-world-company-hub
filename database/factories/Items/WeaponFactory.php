@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\Items;
 
 use App\Enums\Rarity;
 use App\Enums\Tier;
@@ -8,6 +8,8 @@ use App\Enums\WeaponType;
 use App\Models\Items\BaseWeapon;
 use App\Models\Items\Weapon;
 use Illuminate\Database\Eloquent\Factories\Factory;
+
+use function collect;
 
 class WeaponFactory extends Factory
 {

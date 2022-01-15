@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\Items;
 
 use App\Enums\ArmorType;
 use App\Enums\Rarity;
@@ -9,6 +9,8 @@ use App\Enums\WeightClass;
 use App\Models\Items\Armor;
 use App\Models\Items\BaseArmor;
 use Illuminate\Database\Eloquent\Factories\Factory;
+
+use function collect;
 
 class ArmorFactory extends Factory
 {
@@ -35,7 +37,8 @@ class ArmorFactory extends Factory
         $baseArmor ??= BaseArmor::whereNotIn('slug', 
             Armor::all()->pluck('slug')->all() 
         )->has('perks')->inRandomOrder()->take(1)->get();
- 
+// dump($baseArmor->id);
+// dump($baseArmor->perks);
         return $this->state(function (array $attributes) use ($baseArmor) {
             return [
                 'base_id' => $baseArmor->id,
