@@ -1,13 +1,19 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Characters;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\LoadoutUpsertRequest;
+use App\Models\BaseWeapon;
 use App\Models\Character;
 use App\Models\Loadout;
-use App\Models\BaseWeapon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+
+use function dump;
+use function redirect;
+use function route;
+use function view;
 
 class LoadoutsController extends Controller
 {

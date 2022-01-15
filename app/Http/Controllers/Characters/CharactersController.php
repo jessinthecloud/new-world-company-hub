@@ -1,18 +1,23 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Characters;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\CharacterUpsertRequest;
 use App\Models\Character;
 use App\Models\CharacterClass;
 use App\Models\Company;
 use App\Models\Rank;
-use App\Models\Skill;
 use App\Models\SkillType;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+
+use function dump;
+use function redirect;
+use function route;
+use function view;
 
 class CharactersController extends Controller
 {

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Characters;
 
+use App\Http\Controllers\Controller;
 use App\Models\ClassType;
 use Illuminate\Http\Request;
 

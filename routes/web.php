@@ -70,9 +70,9 @@ Route::get( '/base-armors', function(){
     Route::resource( 'companies', \App\Http\Controllers\Companies\CompaniesController::class)
         ->only(['index', 'show']);
     // CHARACTER
-    Route::resource( 'characters', \App\Http\Controllers\CharactersController::class);
+    Route::resource( 'characters', \App\Http\Controllers\Characters\CharactersController::class);
     // LOADOUT
-    Route::resource( 'loadouts', \App\Http\Controllers\LoadoutsController::class);
+    Route::resource( 'loadouts', \App\Http\Controllers\Characters\LoadoutsController::class);
     // BASE ARMOR
     Route::resource( 'armors', \App\Http\Controllers\Items\BaseArmorsController::class);
     // BASE WEAPON
@@ -80,13 +80,13 @@ Route::get( '/base-armors', function(){
     
 // ## CHOOSE
     // choose from drop down
-    Route::get( '/characters/choose/{action?}', [\App\Http\Controllers\CharactersController::class, 'choose'] )
+    Route::get( '/characters/choose/{action?}', [\App\Http\Controllers\Characters\CharactersController::class, 'choose'] )
         ->name( 'characters.choose' );
     Route::get( '/companies/choose', [\App\Http\Controllers\Companies\CompaniesController::class, 'choose'] )
         ->name( 'companies.choose' );
     Route::get( '/factions/choose', [\App\Http\Controllers\FactionsController::class, 'choose'] )
         ->name( 'factions.choose' );
-    Route::get( '/loadouts/choose', [\App\Http\Controllers\LoadoutsController::class, 'choose'] )
+    Route::get( '/loadouts/choose', [\App\Http\Controllers\Characters\LoadoutsController::class, 'choose'] )
         ->name( 'loadouts.choose' );
     Route::get( '/weapons/choose', [\App\Http\Controllers\Items\BaseWeaponsController::class, 'choose'] )
         ->name( 'weapons.choose' );
@@ -96,18 +96,18 @@ Route::get( '/base-armors', function(){
         ->name( 'guild-banks.choose' );
         
     // where to go after character is chosen on login
-        Route::get( '/characters/{character}/login', [\App\Http\Controllers\CharactersController::class, 'login'] )
+        Route::get( '/characters/{character}/login', [\App\Http\Controllers\Characters\CharactersController::class, 'login'] )
             ->name( 'characters.login' );
     
 // ## FIND
     // find model chosen from drop down
-    Route::post( '/characters/find', [\App\Http\Controllers\CharactersController::class, 'find'] )
+    Route::post( '/characters/find', [\App\Http\Controllers\Characters\CharactersController::class, 'find'] )
         ->name( 'characters.find' );
     Route::post( '/companies/find', [\App\Http\Controllers\Companies\CompaniesController::class, 'find'] )
         ->name( 'companies.find' );
     Route::post( '/factions/find', [\App\Http\Controllers\FactionsController::class, 'find'] )
         ->name( 'factions.find' );
-    Route::post( '/loadouts/find', [\App\Http\Controllers\LoadoutsController::class, 'find'] )
+    Route::post( '/loadouts/find', [\App\Http\Controllers\Characters\LoadoutsController::class, 'find'] )
         ->name( 'loadouts.find' );
     Route::post( '/weapons/find', [\App\Http\Controllers\Items\BaseWeaponsController::class, 'find'] )
         ->name( 'weapons.find' );
