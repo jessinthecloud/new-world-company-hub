@@ -2,6 +2,7 @@
 
 use App\Models\Items\BaseArmor;
 use App\Models\Items\BaseWeapon;
+use App\Models\Items\Weapon;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -40,28 +41,33 @@ Route::middleware(['auth'])->group(function(){
 Route::get( '/base-weapons/{baseWeapon}', function(BaseWeapon $baseWeapon){
     return new \App\Http\Resources\BaseWeaponResource($baseWeapon->load('perks'));
 } )
-->name( 'base-weapons.show' );
-
-Route::get( '/base-weapons', function(){
-
-    $weapons = BaseWeapon::with('perks')->orderBy('name')->orderBy('tier')->distinct()->get();
-        
-    return new \App\Http\Resources\BaseWeaponCollection($weapons);
-} )
-->name( 'base-weapons.index' );
-
-Route::get( '/base-armors/{baseArmor}', function(BaseArmor $baseArmor){
-    return new \App\Http\Resources\BaseArmorResource($baseArmor->load('perks'));
-} )
-->name( 'base-armors.show' );
-
-Route::get( '/base-armors', function(){
-
-    $armors = BaseArmor::with('perks')->orderBy('name')->orderBy('tier')->distinct()->get();
-        
-    return new \App\Http\Resources\BaseArmorCollection($armors);
-} )
-->name( 'base-armors.index' );
+    ->name( 'base-weapons.show' );
+    
+    Route::get( '/base-weapons', function(){
+    
+        $weapons = BaseWeapon::with('perks')->orderBy('name')->orderBy('tier')->distinct()->get();
+            
+        return new \App\Http\Resources\BaseWeaponCollection($weapons);
+    } )
+    ->name( 'base-weapons.index' );
+    
+    Route::get( '/base-armors/{baseArmor}', function(BaseArmor $baseArmor){
+        return new \App\Http\Resources\BaseArmorResource($baseArmor->load('perks'));
+    } )
+        ->name( 'base-armors.show' );
+    
+    Route::get( '/base-armors', function(){
+    
+        $armors = BaseArmor::with('perks')->orderBy('name')->orderBy('tier')->distinct()->get();
+            
+        return new \App\Http\Resources\BaseArmorCollection($armors);
+    } )
+    ->name( 'base-armors.index' );
+    
+    Route::get( '/weapons/{weapon}', function(Weapon $weapon){
+        return view('weapons.show', ['weapon' => $weapon]);
+    } )
+    ->name( 'weapons.show' );
 
     // FACTION
     Route::resource( 'factions', \App\Http\Controllers\FactionsController::class)
@@ -74,9 +80,9 @@ Route::get( '/base-armors', function(){
     // LOADOUT
     Route::resource( 'loadouts', \App\Http\Controllers\Characters\LoadoutsController::class);
     // BASE ARMOR
-    Route::resource( 'armors', \App\Http\Controllers\Items\BaseArmorsController::class);
+    Route::resource( 'base-armors', \App\Http\Controllers\Items\BaseArmorsController::class);
     // BASE WEAPON
-    Route::resource( 'weapons', \App\Http\Controllers\Items\BaseWeaponsController::class);
+    Route::resource( 'base-weapons', \App\Http\Controllers\Items\BaseWeaponsController::class);
     
 // ## CHOOSE
     // choose from drop down
@@ -88,8 +94,8 @@ Route::get( '/base-armors', function(){
         ->name( 'factions.choose' );
     Route::get( '/loadouts/choose', [\App\Http\Controllers\Characters\LoadoutsController::class, 'choose'] )
         ->name( 'loadouts.choose' );
-    Route::get( '/weapons/choose', [\App\Http\Controllers\Items\BaseWeaponsController::class, 'choose'] )
-        ->name( 'weapons.choose' );
+    Route::get( '/base-weapons/choose', [\App\Http\Controllers\Items\BaseWeaponsController::class, 'choose'] )
+        ->name( 'base-weapons.choose' );
     Route::get( '/rosters/choose', [\App\Http\Controllers\Companies\RostersController::class, 'choose'] )
         ->name( 'rosters.choose' );
     Route::get( '/guild-banks/choose', [\App\Http\Controllers\Companies\CompaniesController::class, 'choose'] )
@@ -109,8 +115,8 @@ Route::get( '/base-armors', function(){
         ->name( 'factions.find' );
     Route::post( '/loadouts/find', [\App\Http\Controllers\Characters\LoadoutsController::class, 'find'] )
         ->name( 'loadouts.find' );
-    Route::post( '/weapons/find', [\App\Http\Controllers\Items\BaseWeaponsController::class, 'find'] )
-        ->name( 'weapons.find' );
+    Route::post( '/base-weapons/find', [\App\Http\Controllers\Items\BaseWeaponsController::class, 'find'] )
+        ->name( 'base-weapons.find' );
     Route::post( '/rosters/find', [\App\Http\Controllers\Companies\RostersController::class, 'find'] )
         ->name( 'rosters.find' );
     Route::post( '/guild-banks/find', [\App\Http\Controllers\Companies\CompaniesController::class, 'find'] )

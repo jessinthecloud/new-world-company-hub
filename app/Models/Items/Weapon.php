@@ -22,6 +22,16 @@ class Weapon extends Model
      */
     protected $with = [];
     
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+    
     public function base()
     {
         return $this->belongsTo(BaseWeapon::class);
@@ -65,7 +75,7 @@ class Weapon extends Model
 // SCOPES ---
     public function scopeRawForCompany($query, Company $company)
     {
-        return $this->select(DB::raw('weapons.id as id, weapons.name as name, weapons.type as subtype, weapons.rarity, weapons.gear_score, null as weight_class, "Weapon" as type'))
+        return $this->select(DB::raw('weapons.id as id, weapons.slug as slug, weapons.name as name, weapons.type as subtype, weapons.rarity, weapons.gear_score, null as weight_class, "Weapon" as type'))
             ->whereRelation('company', 'id', $company->id);
     }
 }

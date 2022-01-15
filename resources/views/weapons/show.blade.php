@@ -12,7 +12,7 @@
     
     <div class="py-12">
         <div id="wrapper-inner" class="max-w-7xl mx-auto flex flex-wrap sm:px-6 lg:px-8">
-            <livewire:weapons-table/>
+            <?php dump($weapon); ?>
         </div>
     </div>
 

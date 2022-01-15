@@ -8,6 +8,7 @@ use App\Models\Items\Armor;
 use App\Models\Items\Weapon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filter;
@@ -175,5 +176,15 @@ class GuildBankTable extends DataTableComponent
         // manually attach bindings because mergeBindings() does not order them properly
         return $query->setBindings($this->bindings)
         ;
+    }
+    
+    public function getTableRowUrl($row): string
+    {
+/*    dd($row,Str::plural(strtolower($row->type)).'.show', [
+            strtolower($row->type)=>$row->slug
+        ]);*/
+        return route(Str::plural(strtolower($row->type)).'.show', [
+            strtolower($row->type)=>$row->slug
+        ]);
     }
 }

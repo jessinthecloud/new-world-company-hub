@@ -54,7 +54,7 @@ class Armor extends Model
 // SCOPES ---
     public function scopeRawForCompany($query, Company $company)
     {
-        return $this->select(DB::raw('armors.id as id, armors.name as name, armors.type as subtype, armors.rarity, armors.gear_score, armors.weight_class, "Armor" as type'))
+        return $this->select(DB::raw('armors.id as id, armors.slug as slug, armors.name as name, armors.type as subtype, armors.rarity, armors.gear_score, armors.weight_class, "Armor" as type'))
             ->whereRelation('company', 'id', $company->id);
     }
 }
