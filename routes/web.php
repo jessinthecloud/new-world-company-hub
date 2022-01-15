@@ -195,8 +195,10 @@ Route::get( '/base-armors', function(){
         ->only(['index', 'show']);
         
         // GUILD BANK
+        Route::get( 'guild-banks/{guildBank}', [\App\Http\Controllers\Companies\GuildBanksController::class, 'show'])
+            ->name('guild-banks.show');
         // if guildbank (company slug) is not in URL, defaults to current logged-in user's selected company to create one
-        Route::get( 'guild-banks/{guildBank?}', [\App\Http\Controllers\Companies\GuildBanksController::class, 'show'])
+        Route::get( 'guild-bank/', [\App\Http\Controllers\Companies\GuildBanksController::class, 'show'])
             ->name('guild-banks.show');
         
     });
