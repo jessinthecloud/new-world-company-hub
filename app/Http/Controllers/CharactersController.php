@@ -55,14 +55,14 @@ class CharactersController extends Controller
                 ];
         })->all();
         
-        if(count($characters) === 1){
+        if($action == 'login' && count($characters) === 1){
             // only one, then choose it automatically 
             return redirect(route('characters.login', [
                 'character'=>array_key_first($characters)
             ]));
         }
 
-        if(count($characters) < 1){
+        if($action == 'login' && count($characters) < 1){
             // no characters
             return redirect(RouteServiceProvider::DASHBOARD);
         }
@@ -71,7 +71,11 @@ class CharactersController extends Controller
         
         return view(
             'dashboard.character.choose', 
-            compact('characters', 'form_action', 'action')
+            compact(
+                'characters', 
+                'form_action', 
+                'action'
+            )
         );
     }
 
