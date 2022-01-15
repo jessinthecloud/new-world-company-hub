@@ -284,13 +284,15 @@ $attributes->pluck( 'id' )->all(),
     }
     
     // if guildbank is not in URL, defaults to current logged-in user's selected company to create one 
-    public function show(Request $request, GuildBank $guildBank)
+    public function show(Request $request, GuildBank $guildBank=null)
     {
-        if(!isset($guildBank->company()->id)){
+        if(!isset($guildBank?->company()->id)){
             $company = $request->user()->company();
             $guildBank = new GuildBank($company);
         }
-    
+        
+        $company = $guildBank->company();
+
         $armors = ArmorType::valueToAssociative();
         $weapons = WeaponType::valueToAssociative();
         $weight_class = WeightClass::valueToAssociative();
@@ -308,11 +310,11 @@ $attributes->pluck( 'id' )->all(),
         $perks = $perks->prepend('Any', '')->all();
 
         $types = [''=>'Any', 'Weapon'=>'Weapon', 'Armor'=>'Armor'];
-        
-//        $company = $request->user()->company();
 
         return view('guild-bank.show', 
-            compact('guildBank',
+            compact(
+                'guildBank',
+                'company',
                 'armors',
                 'weapons',
                 'types',

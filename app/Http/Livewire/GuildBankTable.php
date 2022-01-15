@@ -6,6 +6,7 @@ use App\GuildBank;
 use App\Models\Companies\Company;
 use App\Models\Items\Armor;
 use App\Models\Items\Weapon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
@@ -43,21 +44,26 @@ class GuildBankTable extends DataTableComponent
     /**
      * constructor is called before company can be set,
      * so use livewire mount() to load the params sent
+     * 
+     * -- livewire is no longer calling mount() first, so ????
+     *      have it create a GuildBank as needed with static constructor
+     *      I can't be bothered with the JS BS right now tbh
      *
-     * @param \App\GuildBank $guildBank
-     * @param array          $armors
-     * @param array          $weapons
-     * @param array          $weight_class
-     * @param array          $types
-     * @param array          $rarity
-     * @param array          $perks
+     * @param \App\GuildBank                     $guildBank
+     * @param array                              $armors
+     * @param array                              $weapons
+     * @param array                              $weight_class
+     * @param array                              $types
+     * @param array                              $rarity
+     * @param array                              $perks
+     * @param \App\Models\Companies\Company|null $company
      *
      * @return void
      */
-    public function mount(GuildBank $guildBank, array $armors, array $weapons, array $weight_class, array $types, array $rarity, array $perks)
+    public function mount(GuildBank $guildBank, array $armors, array $weapons, array $weight_class, array $types, array $rarity, array $perks, Company $company=null)
     {
         $this->guildBank = $guildBank;
-        $this->company = $guildBank->company();
+        $this->company = $company ?? $this->guildBank->company();
         $this->armor_types = $armors;
         $this->weapon_types = $weapons;
         $this->weight_class = $weight_class;
@@ -111,6 +117,9 @@ class GuildBankTable extends DataTableComponent
 
     public function query()
     {
+        // livewire is no longer respecting mount()...???? so this
+        $this->guildBank ??= GuildBank::make(Auth::user()->company());
+        
         $query = $this->guildBank->unionQuery();
         $this->bindings = $query->getBindings();
     
@@ -149,30 +158,23 @@ class GuildBankTable extends DataTableComponent
             // save bindings so we can attach at the end
             $this->bindings[]= '%'.$rarity.'%';
             return $query->whereRaw('items.rarity like ?');
-        })
-        
-        // -- perk filter
-        ->when($this->getFilter('perks'), function ($query, $perks) {
-            
-            // save bindings so we can attach at the end
-            $this->bindings[]= '%'.implode('%, %',$perks).'%';
-            
-            return $query->join('perk_weapon', function($join){
-                return $join->on('items.id', '=', 'perk_weapon.weapon_id');
-            }) 
-                ->join('armor_perk', function($join){
-                    return $join->on('items.id', '=', 'armor_perk.armor_id');
-                }) 
-                ->join('perks', function($join) use ($perks) {
-                    return $join->on('perks.id', '=', 'perk_weapon.perk_id')
-                        ->orOn('perks.id', '=', 'armor_perk.perk_id')
-                        ->whereRaw('perks.slug IN 
-                            ('.implode(',', 
-                                array_fill(0, count($perks), '?')).')');
-                })
-                ;             
         });
         
+        // -- perk filter
+        $query = $query->when($this->getFilter('perks'), 
+            function ($query, $perks) {                
+                // add wildcard 
+               /* $perks = array_map(function($perk){
+                    return $perk.'%';
+                }, $perks);*/
+
+                // save bindings so we can attach at the end
+                $this->bindings = array_merge($this->bindings, $perks);
+                
+                
+                return $this->guildBank->joinPerkQuery($query, $this->bindings, $perks);
+        });
+//ddd($query->toSql(),$this->bindings);     
         // manually attach bindings because mergeBindings() does not order them properly
         return $query->setBindings($this->bindings)
         ;
