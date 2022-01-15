@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Characters\Character;
+use App\Models\Characters\CharacterClassType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

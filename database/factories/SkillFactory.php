@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\Skill;
-use App\Models\SkillType;
+use App\Models\Characters\Skill;
+use App\Models\Characters\SkillType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class SkillFactory extends Factory

@@ -2,9 +2,8 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Skill;
+use App\Models\Characters\Skill;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Str;
 
 class CharacterUpsertRequest extends FormRequest
 {

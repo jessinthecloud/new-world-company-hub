@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Characters\Character;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -65,7 +65,7 @@ class User extends Authenticatable
     /**
      * Get the current primary character that we are logged in with
      *
-     * @return \App\Models\Character|null
+     * @return \App\Models\Characters\Character|null
      */
     public function character() : ?Character
     {

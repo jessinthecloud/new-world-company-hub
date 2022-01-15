@@ -2,8 +2,7 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Character;
-use App\Models\CharacterClass;
+use App\Models\Characters\Character;
 use App\Models\Company;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;

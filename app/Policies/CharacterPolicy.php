@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\Character;
+use App\Models\Characters\Character;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -18,13 +18,13 @@ class CharacterPolicy
     /**
      * To check specific permissions via this policy:
      *
-     * Gate::allows('viewAny', App\Models\Character::character);
+     * Gate::allows('viewAny', App\Models\Characters\Character::character);
      *
      * OR in a blade template:
-     * @can('viewAny', App\Models\Character::character) <elements/> @endcan
+     * @can('viewAny', App\Models\Characters\Character::character) <elements/> @endcan
      *
      * OR in a controller method:
-     * $this->authorize('viewAny', App\Models\Character::character);
+     * $this->authorize('viewAny', App\Models\Characters\Character::character);
      * 
      * @param \App\Models\User $user
      *

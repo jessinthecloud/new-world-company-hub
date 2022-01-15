@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\Loadout;
+use App\Models\Characters\Loadout;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -18,13 +18,13 @@ class LoadoutPolicy
     /**
      * To check specific permissions via this policy:
      *
-     * Gate::allows('viewAny', App\Models\\App\Models\Loadout::character);
+     * Gate::allows('viewAny', App\Models\\App\Models\Characters\Loadout::character);
      *
      * OR in a blade template:
-     * @can('viewAny', App\Models\\App\Models\Loadout::character) <elements/> @endcan
+     * @can('viewAny', App\Models\\App\Models\Characters\Loadout::character) <elements/> @endcan
      *
      * OR in a controller method:
-     * $this->authorize('viewAny', App\Models\\App\Models\Loadout::character);
+     * $this->authorize('viewAny', App\Models\\App\Models\Characters\Loadout::character);
      * 
      * @param \App\Models\User $user
      *

@@ -3,16 +3,8 @@
 namespace Database\Seeders;
 
 
-use App\Models\Character;
-use App\Models\CharacterClass;
-use App\Models\Company;
 use App\Models\EventType;
-use App\Models\Rank;
-use App\Models\Skill;
-use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {

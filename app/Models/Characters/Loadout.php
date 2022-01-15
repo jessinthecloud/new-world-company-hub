@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Characters;
 
 use App\Models\Items\BaseWeapon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

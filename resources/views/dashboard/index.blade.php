@@ -51,7 +51,7 @@
         {{-- Character --}}
         <x-dashboard.resource-index
             :title="'Character'"
-            :class="\App\Models\Character::class" 
+            :class="\App\Models\Characters\Character::class" 
             :entity_name="'character'"
             :pluralEntityName="'characters'"
             :instance="$character ?? null"
@@ -60,7 +60,7 @@
         {{-- Loadout --}}
         <x-dashboard.resource-index
             :title="'Loadout'"
-            :class="\App\Models\Loadout::class" 
+            :class="\App\Models\Characters\Loadout::class" 
             :entity_name="'loadout'"
             :pluralEntityName="'loadouts'"
             :instance="$loadout ?? null"

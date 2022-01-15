@@ -2,9 +2,9 @@
 
 namespace Database\Factories;
 
-use App\Models\Character;
+use App\Models\Characters\Character;
+use App\Models\Characters\Loadout;
 use App\Models\Items\BaseWeapon;
-use App\Models\Loadout;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class LoadoutFactory extends Factory

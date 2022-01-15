@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Loadout;
+use App\Models\Characters\Loadout;
 use Illuminate\Database\Seeder;
 
 class LoadoutSeeder extends Seeder

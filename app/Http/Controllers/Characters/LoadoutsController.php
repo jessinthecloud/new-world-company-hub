@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Characters;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoadoutUpsertRequest;
-use App\Models\Character;
+use App\Models\Characters\Character;
+use App\Models\Characters\Loadout;
 use App\Models\Items\BaseWeapon;
-use App\Models\Loadout;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
@@ -98,7 +98,7 @@ class LoadoutsController extends Controller
     /**
      * Loadout edit form
      *
-     * @param \App\Models\Loadout $loadout
+     * @param \App\Models\Characters\Loadout $loadout
      *
      * @return \Illuminate\Contracts\View\View
      */

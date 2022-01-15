@@ -2,13 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Company;
-use App\Models\Skill;
+use App\Models\Characters\Character;
+use App\Models\Characters\Skill;
 use Illuminate\Database\Seeder;
-use App\Models\Character;
-use App\Models\CharacterClass;
-use App\Models\Rank;
-use Illuminate\Database\Eloquent\Factories\Sequence;
 
 class CharacterSeeder extends Seeder
 {

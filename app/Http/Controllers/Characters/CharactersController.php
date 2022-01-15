@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Characters;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CharacterUpsertRequest;
-use App\Models\Character;
-use App\Models\CharacterClass;
+use App\Models\Characters\Character;
+use App\Models\Characters\CharacterClass;
+use App\Models\Characters\SkillType;
 use App\Models\Company;
 use App\Models\Rank;
-use App\Models\SkillType;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -99,8 +99,8 @@ class CharactersController extends Controller
     /**
      * Set this as primary character for logged-in user
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Character    $character
+     * @param \Illuminate\Http\Request         $request
+     * @param \App\Models\Characters\Character $character
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
@@ -186,7 +186,7 @@ class CharactersController extends Controller
     /**
      * Character edit form 
      * 
-     * @param \App\Models\Character $character
+     * @param \App\Models\Characters\Character $character
      *
      * @return \Illuminate\Contracts\View\View
      */

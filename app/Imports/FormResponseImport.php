@@ -2,8 +2,8 @@
 
 namespace App\Imports;
 
-use App\Models\Character;
-use App\Models\CharacterClass;
+use App\Models\Characters\Character;
+use App\Models\Characters\CharacterClass;
 use App\Models\Company;
 use App\Models\DiscordData;
 use App\Models\Items\BaseWeapon;

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Characters;
 
 use App\Http\Controllers\Controller;
-use App\Models\SkillType;
+use App\Models\Characters\SkillType;
 use Illuminate\Http\Request;
 
 class SkillTypesController extends Controller

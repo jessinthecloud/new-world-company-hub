@@ -2,13 +2,11 @@
 
 namespace Database\Factories;
 
-use App\Models\Character;
-use App\Models\CharacterClass;
+use App\Models\Characters\Character;
+use App\Models\Characters\CharacterClass;
 use App\Models\Company;
-use App\Models\Rank;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use JetBrains\PhpStorm\ArrayShape;
 
 class CharacterFactory extends Factory
 {

@@ -2,12 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Character;
-use App\Models\CharacterClass;
-use App\Models\Skill;
-use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
