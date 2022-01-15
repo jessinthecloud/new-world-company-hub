@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Enums\ArmorType;
 use App\Enums\AttributeType;
-use App\Enums\PerkType;
 use App\Enums\Rarity;
 use App\Enums\Tier;
 use App\Enums\WeaponType;
