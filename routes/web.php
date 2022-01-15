@@ -20,7 +20,6 @@ use Illuminate\Support\Str;
 */
 
 
-
 Route::get('/', function () {
 //dump(Weapon::with('company')->first());
     return view( 'welcome' );
@@ -69,19 +68,19 @@ Route::get( '/base-armors', function(){
 ->name( 'base-armors.index' );
 
     // FACTION
-    Route::resource('factions',\App\Http\Controllers\FactionsController::class)
+    Route::resource( 'factions', \App\Http\Controllers\FactionsController::class)
         ->only(['index', 'show']);
     // COMPANY
-    Route::resource('companies', \App\Http\Controllers\CompaniesController::class)
+    Route::resource( 'companies', \App\Http\Controllers\CompaniesController::class)
         ->only(['index', 'show']);
     // CHARACTER
-    Route::resource('characters', \App\Http\Controllers\CharactersController::class);
+    Route::resource( 'characters', \App\Http\Controllers\CharactersController::class);
     // LOADOUT
-    Route::resource('loadouts', \App\Http\Controllers\LoadoutsController::class);
+    Route::resource( 'loadouts', \App\Http\Controllers\LoadoutsController::class);
     // BASE ARMOR
-    Route::resource('armors', \App\Http\Controllers\BaseArmorsController::class);
+    Route::resource( 'armors', \App\Http\Controllers\Items\BaseArmorsController::class);
     // BASE WEAPON
-    Route::resource('weapons',\App\Http\Controllers\BaseWeaponsController::class);
+    Route::resource( 'weapons', \App\Http\Controllers\Items\BaseWeaponsController::class);
     
 // ## CHOOSE
     // choose from drop down
@@ -93,7 +92,7 @@ Route::get( '/base-armors', function(){
         ->name( 'factions.choose' );
     Route::get( '/loadouts/choose', [\App\Http\Controllers\LoadoutsController::class, 'choose'] )
         ->name( 'loadouts.choose' );
-    Route::get( '/weapons/choose', [\App\Http\Controllers\BaseWeaponsController::class, 'choose'] )
+    Route::get( '/weapons/choose', [\App\Http\Controllers\Items\BaseWeaponsController::class, 'choose'] )
         ->name( 'weapons.choose' );
     Route::get( '/rosters/choose', [\App\Http\Controllers\RostersController::class, 'choose'] )
         ->name( 'rosters.choose' );
@@ -114,9 +113,9 @@ Route::get( '/base-armors', function(){
         ->name( 'factions.find' );
     Route::post( '/loadouts/find', [\App\Http\Controllers\LoadoutsController::class, 'find'] )
         ->name( 'loadouts.find' );
-    Route::post( '/weapons/find', [\App\Http\Controllers\BaseWeaponsController::class, 'find'] )
+    Route::post( '/weapons/find', [\App\Http\Controllers\Items\BaseWeaponsController::class, 'find'] )
         ->name( 'weapons.find' );
-    Route::post( '/rosters/find', [\App\Http\Controllers\RostersController::class, 'find'] )
+    Route::post( '/rosters/find', [\App\Http\Controllers\Items\RostersController::class, 'find'] )
         ->name( 'rosters.find' );
     Route::post( '/guild-banks/find', [\App\Http\Controllers\GuildBanksController::class, 'find'] )
         ->name( 'guild-banks.find' );
@@ -156,7 +155,7 @@ Route::get( '/base-armors', function(){
         Route::resource( 'companies', \App\Http\Controllers\CompaniesController::class )
             ->only( ['edit', 'update'] );
         
-        Route::resource('guild-banks', \App\Http\Controllers\GuildBanksController::class)
+        Route::resource( 'guild-banks', \App\Http\Controllers\GuildBanksController::class)
             ->only(['destroy']);
     });
 // ##
@@ -187,7 +186,7 @@ Route::get( '/base-armors', function(){
         Route::resource( 'rosters', \App\Http\Controllers\RostersController::class )
             ->except( ['index', 'show'] );
             
-        Route::resource('guild-banks', \App\Http\Controllers\GuildBanksController::class)
+        Route::resource( 'guild-banks', \App\Http\Controllers\GuildBanksController::class)
             ->except(['index', 'show', 'destroy']);
     });
 // ##
@@ -199,11 +198,11 @@ Route::get( '/base-armors', function(){
 // #
     Route::middleware(['role:super-admin|admin|governor|consul|officer|settler'])->group(function() {
         
-        Route::resource('rosters', \App\Http\Controllers\RostersController::class)
+        Route::resource( 'rosters', \App\Http\Controllers\RostersController::class)
         ->only(['index', 'show']);
         
         // GUILD BANK
-        Route::resource('guild-banks', \App\Http\Controllers\GuildBanksController::class)
+        Route::resource( 'guild-banks', \App\Http\Controllers\GuildBanksController::class)
             ->only(['index', 'show']);
         
     });

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Items;
 
+use App\Http\Controllers\Controller;
 use App\Models\BaseArmor;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;

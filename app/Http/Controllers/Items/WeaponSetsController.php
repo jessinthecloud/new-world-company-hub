@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Items;
 
+use App\Http\Controllers\Controller;
 use App\Models\WeaponSet;
 use Illuminate\Http\Request;
 
