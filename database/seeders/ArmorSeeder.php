@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Armor;
-use App\Models\BaseArmor;
 use App\Models\Company;
+use App\Models\Items\Armor;
+use App\Models\Items\BaseArmor;
 use Illuminate\Database\Seeder;
 
 class ArmorSeeder extends Seeder

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Items;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Attribute extends Model
+class Perk extends Model
 {
     /**
      * The relationships that should always be loaded.
@@ -31,5 +31,15 @@ class Attribute extends Model
     public function armor()
     {
         return $this->belongsToMany(Armor::class)->withPivot('amount');
+    }
+    
+    public function baseWeapons()
+    {
+        return $this->belongsToMany(BaseWeapon::class,)->withPivot('amount');
+    }
+    
+    public function baseArmor()
+    {
+        return $this->belongsToMany(BaseArmor::class)->withPivot('amount');
     }
 }

@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\BaseArmor;
-use App\Models\BaseWeapon;
-use App\Models\Perk;
+use App\Models\Items\BaseArmor;
+use App\Models\Items\BaseWeapon;
+use App\Models\Items\Perk;
 use Illuminate\Database\Seeder;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;

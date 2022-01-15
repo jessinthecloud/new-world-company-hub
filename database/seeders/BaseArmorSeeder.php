@@ -2,14 +2,13 @@
 
 namespace Database\Seeders;
 
-use App\Models\BaseArmor;
-use App\Models\Perk;
+use App\Models\Items\BaseArmor;
+use App\Models\Items\Perk;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
-use RecursiveTreeIterator;
 
 class BaseArmorSeeder extends Seeder
 {

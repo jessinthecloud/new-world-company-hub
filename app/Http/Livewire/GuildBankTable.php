@@ -2,17 +2,12 @@
 
 namespace App\Http\Livewire;
 
-use App\Enums\ArmorType;
-use App\Enums\Rarity;
-use App\Enums\WeaponType;
-use App\Models\Armor;
-use App\Models\Weapon;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Collection;
+use App\Models\Company;
+use App\Models\Items\Armor;
+use App\Models\Items\Weapon;
 use Illuminate\Support\Facades\DB;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
-use App\Models\Company;
 use Rappasoft\LaravelLivewireTables\Views\Filter;
 
 class GuildBankTable extends DataTableComponent

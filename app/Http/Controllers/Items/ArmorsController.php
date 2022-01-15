@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Items;
 
 use App\Http\Controllers\Controller;
-use App\Models\Armor;
+use App\Models\Items\Armor;
 use Illuminate\Http\Request;
 
 class ArmorsController extends Controller

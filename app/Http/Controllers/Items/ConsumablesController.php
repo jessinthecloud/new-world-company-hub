@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Items;
 
 use App\Http\Controllers\Controller;
-use App\Models\Consumable;
+use App\Models\Items\Consumable;
 use Illuminate\Http\Request;
 
 class ConsumablesController extends Controller

@@ -3,9 +3,8 @@
 namespace App\Http\Controllers\Items;
 
 use App\Http\Controllers\Controller;
-use App\Models\BaseArmor;
+use App\Models\Items\BaseArmor;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
 
 class BaseArmorsController extends Controller
 {

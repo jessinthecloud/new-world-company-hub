@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Items;
 
 use App\Http\Controllers\Controller;
-use App\Models\Perk;
+use App\Models\Items\Perk;
 use Illuminate\Http\Request;
 
 class PerksController extends Controller

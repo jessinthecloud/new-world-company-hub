@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Items;
 
 use App\Http\Controllers\Controller;
-use App\Models\Weapon;
+use App\Models\Items\Weapon;
 use Illuminate\Http\Request;
 
 class WeaponsController extends Controller

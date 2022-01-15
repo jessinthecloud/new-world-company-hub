@@ -3,9 +3,8 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Http\Request;
 
-/** @mixin \App\Models\BaseArmor */
+/** @mixin \App\Models\Items\BaseArmor */
 class BaseArmorResource extends JsonResource
 {
     /**

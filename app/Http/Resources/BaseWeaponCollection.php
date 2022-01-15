@@ -2,10 +2,10 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
-/** @see \App\Models\BaseWeapon */
+/** @see \App\Models\Items\BaseWeapon */
 class BaseWeaponCollection extends ResourceCollection
 {
     /**

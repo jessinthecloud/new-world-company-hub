@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\BaseWeapon;
-use App\Models\Perk;
+use App\Models\Items\BaseWeapon;
+use App\Models\Items\Perk;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;

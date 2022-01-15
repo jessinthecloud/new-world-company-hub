@@ -5,9 +5,8 @@ namespace Database\Factories;
 use App\Enums\Rarity;
 use App\Enums\Tier;
 use App\Enums\WeaponType;
-use App\Enums\WeightClass;
-use App\Models\BaseWeapon;
-use App\Models\Weapon;
+use App\Models\Items\BaseWeapon;
+use App\Models\Items\Weapon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class WeaponFactory extends Factory

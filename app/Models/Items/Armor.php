@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Items;
 
+use App\Models\Character;
+use App\Models\Company;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

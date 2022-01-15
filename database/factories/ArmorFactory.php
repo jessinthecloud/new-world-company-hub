@@ -2,12 +2,12 @@
 
 namespace Database\Factories;
 
+use App\Enums\ArmorType;
 use App\Enums\Rarity;
 use App\Enums\Tier;
-use App\Enums\ArmorType;
 use App\Enums\WeightClass;
-use App\Models\BaseArmor;
-use App\Models\Armor;
+use App\Models\Items\Armor;
+use App\Models\Items\BaseArmor;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ArmorFactory extends Factory

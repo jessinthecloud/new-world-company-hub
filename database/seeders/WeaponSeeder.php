@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\BaseWeapon;
 use App\Models\Company;
-use App\Models\Weapon;
+use App\Models\Items\BaseWeapon;
+use App\Models\Items\Weapon;
 use Illuminate\Database\Seeder;
 
 class WeaponSeeder extends Seeder

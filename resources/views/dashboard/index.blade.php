@@ -69,7 +69,7 @@
         {{-- Weapon --}}
         <x-dashboard.resource-index
             :title="'Weapon'"
-            :class="\App\Models\Weapon::class" 
+            :class="\App\Models\Items\Weapon::class" 
             :entity_name="'weapon'"
             :pluralEntityName="'weapons'"
             :instance="$weapon ?? null"

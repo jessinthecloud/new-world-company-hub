@@ -1,13 +1,18 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Items;
 
+use App\Models\Character;
+use App\Models\Company;
+use App\Models\Loadout;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class BaseWeapon extends Model
+class Weapon extends Model
 {
     use HasFactory;
+
+    protected $guarded = ['id'];
     
     /**
      * The relationships that should always be loaded.
@@ -16,19 +21,9 @@ class BaseWeapon extends Model
      */
     protected $with = [];
     
-    /**
-     * Get the route key for the model.
-     *
-     * @return string
-     */
-    public function getRouteKeyName()
+    public function base()
     {
-        return 'slug';
-    }
-    
-    public function instances()
-    {
-        return $this->hasMany(Weapon::class);
+        return $this->belongsTo(BaseWeapon::class);
     }
     
     public function sets()
@@ -38,9 +33,24 @@ class BaseWeapon extends Model
     
     public function perks()
     {
-        return $this->belongsToMany(Perk::class)->withPivot('chance');
+        return $this->belongsToMany(Perk::class);
     }
     
+    public function attributes()
+    {
+        return $this->belongsToMany(Attribute::class)->withPivot('amount');
+    }
+    
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
+    
+    public function character()
+    {
+        return $this->belongsTo(Character::class);
+    }
+
     public function mainLoadout()
     {
         return $this->hasMany(Loadout::class, 'main_hand_id');

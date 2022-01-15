@@ -2,10 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Character;
 use App\Models\Loadout;
-use App\Models\BaseWeapon;
-use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
 
 class LoadoutSeeder extends Seeder

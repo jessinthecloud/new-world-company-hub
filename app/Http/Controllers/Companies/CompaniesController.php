@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Companies;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CompanyUpsertRequest;
-use App\Models\BaseWeapon;
 use App\Models\CharacterClass;
 use App\Models\Company;
 use App\Models\Faction;
+use App\Models\Items\BaseWeapon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;

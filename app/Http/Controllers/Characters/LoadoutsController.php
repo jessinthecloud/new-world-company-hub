@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Characters;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoadoutUpsertRequest;
-use App\Models\BaseWeapon;
 use App\Models\Character;
+use App\Models\Items\BaseWeapon;
 use App\Models\Loadout;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;

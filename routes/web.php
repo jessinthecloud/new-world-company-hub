@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\BaseArmor;
-use App\Models\BaseWeapon;
+use App\Models\Items\BaseArmor;
+use App\Models\Items\BaseWeapon;
 use Illuminate\Support\Facades\Route;
 
 /*
