@@ -15,6 +15,7 @@
             <livewire:guild-bank-table 
                 :id="null"
                 :guildBank="$guildBank"
+                :company="$company"
                 :weapons="$weapons"
                 :armors="$armors"
                 :weight_class="$weight_class"

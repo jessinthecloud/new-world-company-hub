@@ -8,7 +8,7 @@
         <x-dashboard.resource-index
             :title="'Faction'"
             :class="\App\Models\Faction::class" 
-            :entity_name="'faction'"
+            :entityName="'faction'"
             :pluralEntityName="'factions'"
             :instance="$faction ?? null"
         />
@@ -17,7 +17,7 @@
         <x-dashboard.resource-index
             :title="'Company'"
             :class="\App\Models\Companies\Company::class" 
-            :entity_name="'company'"
+            :entityName="'company'"
             :pluralEntityName="'companies'"
             :instance="$company ?? null"
         />
@@ -26,7 +26,7 @@
         <x-dashboard.resource-index
             :title="'Roster'"
             :class="\App\Models\Companies\Roster::class" 
-            :entity_name="'roster'"
+            :entityName="'roster'"
             :pluralEntityName="'rosters'"
             :instance="$roster ?? null"
         >
@@ -43,7 +43,7 @@
         <x-dashboard.resource-index
             :title="'Guild Bank'"
             :class="\App\GuildBank::class" 
-            :entity_name="'guild_bank'"
+            :entityName="'guild_bank'"
             :pluralEntityName="'guild-banks'"
             :instance="$guildBank ?? null"
         />
@@ -52,7 +52,7 @@
         <x-dashboard.resource-index
             :title="'Character'"
             :class="\App\Models\Characters\Character::class" 
-            :entity_name="'character'"
+            :entityName="'character'"
             :pluralEntityName="'characters'"
             :instance="$character ?? null"
         />
@@ -61,7 +61,7 @@
         <x-dashboard.resource-index
             :title="'Loadout'"
             :class="\App\Models\Characters\Loadout::class" 
-            :entity_name="'loadout'"
+            :entityName="'loadout'"
             :pluralEntityName="'loadouts'"
             :instance="$loadout ?? null"
         />
@@ -70,7 +70,7 @@
         <x-dashboard.resource-index
             :title="'Weapon'"
             :class="\App\Models\Items\Weapon::class" 
-            :entity_name="'weapon'"
+            :entityName="'weapon'"
             :pluralEntityName="'weapons'"
             :instance="$weapon ?? null"
         />
