@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Items\Armor;
 use App\Models\Items\BaseArmor;
 use App\Models\Items\BaseWeapon;
 use App\Models\Items\Weapon;
@@ -68,6 +69,11 @@ Route::get( '/base-weapons/{baseWeapon}', function(BaseWeapon $baseWeapon){
         return view('weapons.show', ['weapon' => $weapon]);
     } )
     ->name( 'weapons.show' );
+    
+    Route::get( '/armors/{armor}', function(Armor $armor){
+        return view('armors.show', ['armor' => $armor]);
+    } )
+    ->name( 'armors.show' );
 
     // FACTION
     Route::resource( 'factions', \App\Http\Controllers\FactionsController::class)

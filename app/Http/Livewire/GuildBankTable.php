@@ -180,9 +180,6 @@ class GuildBankTable extends DataTableComponent
     
     public function getTableRowUrl($row): string
     {
-/*    dd($row,Str::plural(strtolower($row->type)).'.show', [
-            strtolower($row->type)=>$row->slug
-        ]);*/
         return route(Str::plural(strtolower($row->type)).'.show', [
             strtolower($row->type)=>$row->slug
         ]);

@@ -20,6 +20,16 @@ class Armor extends Model
      * @var array
      */
     protected $with = [];
+    
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 
     public function base()
     {
