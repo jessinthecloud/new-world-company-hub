@@ -28,13 +28,13 @@ class ArmorFactory extends Factory
         ];
     }
 
-    public function fromBase()
+    public function fromBase($baseArmor=null)
     {        
-        // get base weapon
+        // get base armor
         // make sure isn't already used (slug must be unique)
-        $baseArmor = BaseArmor::whereNotIn('slug', 
+        $baseArmor ??= BaseArmor::whereNotIn('slug', 
             Armor::all()->pluck('slug')->all() 
-        )->get()->random();
+        )->has('perks')->inRandomOrder()->take(1)->get();
  
         return $this->state(function (array $attributes) use ($baseArmor) {
             return [
