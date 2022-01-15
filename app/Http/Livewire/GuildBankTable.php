@@ -162,14 +162,11 @@ class GuildBankTable extends DataTableComponent
         
         // -- perk filter
         $query = $query->when($this->getFilter('perks'), 
-            function ($query, $perks) {                
-                // add wildcard 
-               /* $perks = array_map(function($perk){
-                    return $perk.'%';
-                }, $perks);*/
+            function ($query, $perks) {
 
-                // save bindings so we can attach at the end
-                $this->bindings = array_merge($this->bindings, $perks);
+                // save bindings so that we can attach at the end
+                // perks are used twice in the query
+                $this->bindings = array_merge($this->bindings, $perks, $perks);
                 
                 
                 return $this->guildBank->joinPerkQuery($query, $this->bindings, $perks);

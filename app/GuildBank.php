@@ -115,23 +115,16 @@ class GuildBank implements InventoryContract
             }) 
             ->join('perks', function($join) use ($perks) {
                 return $join->on('perks.id', '=', 'perk_weapon.perk_id')
-                    ->orOn('perks.id', '=', 'armor_perk.perk_id')
                     ->whereRaw('perks.slug IN 
-                        ('.implode(',', 
-                            array_fill(0, count($perks), '?')).')')
-                    
+                ('.implode(',', 
+                    array_fill(0, count($perks), '?')).')')
+                    ->orOn('perks.id', '=', 'armor_perk.perk_id') 
+                    ->whereRaw('perks.slug IN 
+                ('.implode(',', 
+                    array_fill(0, count($perks), '?')).')')                   
                 ;
             })
             ;
-            
-        /*$union = Armor::rawForCompany($this->owner) 
-            ->union(Weapon::rawForCompany($this->owner));
-        // create derived table so that we can filter on the union as a whole if needed
-        $this->union_query = DB::table(DB::raw("({$union->toSql()}) as items"));
-        
-        // manually attach bindings because mergeBindings() does not order them properly
-        $bindings = $union->getBindings();
-        $this->union_query->setBindings($bindings);*/
             
         $query = DB::table(DB::raw("({$query->toSql()}) as itemsWithPerks"))
             ->groupBy('id',
