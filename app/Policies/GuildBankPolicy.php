@@ -16,7 +16,7 @@ class GuildBankPolicy
     }
 
     /**
-     * To check specific permissions via this policy:
+     * To check specific permissions via policy:
      *
      * Gate::allows('viewAny', App\Models\Companies\Company::class);
      *

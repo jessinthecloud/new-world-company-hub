@@ -28,46 +28,14 @@ use function view;
 
 class GuildBanksController extends Controller
 {
+    public function __construct() 
+    {
+         
+    }
+
     public function index(Request $request)
     {
-        $armors = [];
-        foreach(ArmorType::cases() as $type){
-            $armors[$type->value]= $type->value;
-        }
-
-        $weapons = [];
-        foreach(WeaponType::cases() as $type){
-            $weapons[$type->value]= $type->value;
-        }
         
-        $weight_class = [];
-        foreach(WeightClass::cases() as $type){
-            $weight_class[$type->value]= $type->value;
-        }
-        
-        $rarity = [];
-        foreach(Rarity::cases() as $type){
-            $rarity[$type->value]= $type->value;
-        }
-        
-        $perks = Perk::orderBy('name')->get()->mapWithKeys(function($perk){
-            return [$perk->slug => $perk->name];
-        });
-
-        // add "Any" to the front of the filter arrays
-        $armors = collect($armors)->prepend('Any', '')->all();
-        $weapons = collect($weapons)->prepend('Any', '')->all();
-        $weight_class = collect($weight_class)->prepend('Any', '')->all();
-        $rarity = collect($rarity)->prepend('Any', '')->all();
-        $perks = $perks->prepend('Any', '')->all();
-
-        $types = [''=>'Any', 'Weapon'=>'Weapon', 'Armor'=>'Armor'];
-        
-        $company = $request->user()->company();
-
-        return view('guild-bank.show', 
-            compact('company', 'armors', 'weapons', 'types', 'weight_class', 'rarity', 'perks')
-        );
     }
 
     public function edit( GuildBank $guildBank )
@@ -314,11 +282,46 @@ $attributes->pluck( 'id' )->all(),
             ])
         );
     }
-
-   /* public function index()
+    
+    // if guildbank is not in URL, defaults to current logged-in user's selected company to create one 
+    public function show(Request $request, GuildBank $guildBank)
     {
-        // (super-admin)
-    }*/
+        if(!isset($guildBank->company()->id)){
+            $company = $request->user()->company();
+            $guildBank = new GuildBank($company);
+        }
+    
+        $armors = ArmorType::valueToAssociative();
+        $weapons = WeaponType::valueToAssociative();
+        $weight_class = WeightClass::valueToAssociative();
+        $rarity = Rarity::valueToAssociative();
+        
+        $perks = Perk::orderBy('name')->get()->mapWithKeys(function($perk){
+            return [$perk->slug => $perk->name];
+        });
+
+        // add "Any" to the front of the filter arrays
+        $armors = collect($armors)->prepend('Any', '')->all();
+        $weapons = collect($weapons)->prepend('Any', '')->all();
+        $weight_class = collect($weight_class)->prepend('Any', '')->all();
+        $rarity = collect($rarity)->prepend('Any', '')->all();
+        $perks = $perks->prepend('Any', '')->all();
+
+        $types = [''=>'Any', 'Weapon'=>'Weapon', 'Armor'=>'Armor'];
+        
+//        $company = $request->user()->company();
+
+        return view('guild-bank.show', 
+            compact('guildBank',
+                'armors',
+                'weapons',
+                'types',
+                'weight_class',
+                'rarity',
+                'perks'
+            )
+        );
+    }
 
     public function create()
     {

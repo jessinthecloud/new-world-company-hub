@@ -7,6 +7,7 @@ use App\Models\Characters\Loadout;
 use App\Models\Companies\Company;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Weapon extends Model
 {
@@ -59,5 +60,12 @@ class Weapon extends Model
     public function offhandLoadout()
     {
         return $this->hasMany(Loadout::class, 'offhand_id');
+    }
+    
+// SCOPES ---
+    public function scopeRawForCompany($query, Company $company)
+    {
+        return $this->select(DB::raw('weapons.id as id, weapons.name as name, weapons.type as subtype, weapons.rarity, weapons.gear_score, null as weight_class, "Weapon" as type'))
+            ->whereRelation('company', 'id', $company->id);
     }
 }

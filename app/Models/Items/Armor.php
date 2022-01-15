@@ -6,6 +6,7 @@ use App\Models\Characters\Character;
 use App\Models\Companies\Company;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Armor extends Model
 {
@@ -48,5 +49,12 @@ class Armor extends Model
     public function character()
     {
         return $this->belongsTo(Character::class);
+    }
+    
+// SCOPES ---
+    public function scopeRawForCompany($query, Company $company)
+    {
+        return $this->select(DB::raw('armors.id as id, armors.name as name, armors.type as subtype, armors.rarity, armors.gear_score, armors.weight_class, "Armor" as type'))
+            ->whereRelation('company', 'id', $company->id);
     }
 }

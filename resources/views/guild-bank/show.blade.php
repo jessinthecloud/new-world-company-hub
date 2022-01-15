@@ -14,7 +14,7 @@
         <div id="wrapper-inner" class="max-w-7xl mx-auto flex flex-wrap sm:px-6 lg:px-8">
             <livewire:guild-bank-table 
                 :id="null"
-                :company="$company"
+                :guildBank="$guildBank"
                 :weapons="$weapons"
                 :armors="$armors"
                 :weight_class="$weight_class"

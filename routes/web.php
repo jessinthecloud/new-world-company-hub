@@ -92,7 +92,7 @@ Route::get( '/base-armors', function(){
         ->name( 'weapons.choose' );
     Route::get( '/rosters/choose', [\App\Http\Controllers\Companies\RostersController::class, 'choose'] )
         ->name( 'rosters.choose' );
-    Route::get( '/guild-banks/choose', [\App\Http\Controllers\Companies\GuildBanksController::class, 'choose'] )
+    Route::get( '/guild-banks/choose', [\App\Http\Controllers\Companies\CompaniesController::class, 'choose'] )
         ->name( 'guild-banks.choose' );
         
     // where to go after character is chosen on login
@@ -111,9 +111,9 @@ Route::get( '/base-armors', function(){
         ->name( 'loadouts.find' );
     Route::post( '/weapons/find', [\App\Http\Controllers\Items\BaseWeaponsController::class, 'find'] )
         ->name( 'weapons.find' );
-    Route::post( '/rosters/find', [\App\Http\Controllers\Items\RostersController::class, 'find'] )
+    Route::post( '/rosters/find', [\App\Http\Controllers\Companies\RostersController::class, 'find'] )
         ->name( 'rosters.find' );
-    Route::post( '/guild-banks/find', [\App\Http\Controllers\Companies\GuildBanksController::class, 'find'] )
+    Route::post( '/guild-banks/find', [\App\Http\Controllers\Companies\CompaniesController::class, 'find'] )
         ->name( 'guild-banks.find' );
                 
             
@@ -150,9 +150,6 @@ Route::get( '/base-armors', function(){
     Route::middleware(['role:super-admin|admin|governor'])->group(function() {
         Route::resource( 'companies', \App\Http\Controllers\Companies\CompaniesController::class )
             ->only( ['edit', 'update'] );
-        
-        Route::resource( 'guild-banks', \App\Http\Controllers\Companies\GuildBanksController::class)
-            ->only(['destroy']);
     });
 // ##
 // ## END GOVERNOR
@@ -198,8 +195,9 @@ Route::get( '/base-armors', function(){
         ->only(['index', 'show']);
         
         // GUILD BANK
-        Route::resource( 'guild-banks', \App\Http\Controllers\Companies\GuildBanksController::class)
-            ->only(['index', 'show']);
+        // if guildbank (company slug) is not in URL, defaults to current logged-in user's selected company to create one
+        Route::get( 'guild-banks/{guildBank?}', [\App\Http\Controllers\Companies\GuildBanksController::class, 'show'])
+            ->name('guild-banks.show');
         
     });
 // ##

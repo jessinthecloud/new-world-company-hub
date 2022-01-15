@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\GuildBank;
 use App\Models\Companies\Company;
 use App\Models\Items\Armor;
 use App\Models\Items\Weapon;
@@ -14,6 +15,7 @@ class GuildBankTable extends DataTableComponent
 {
     
     public Company $company;
+    protected GuildBank $guildBank;
     
     // passed in as Collections and then made arrays
     /**
@@ -42,18 +44,20 @@ class GuildBankTable extends DataTableComponent
      * constructor is called before company can be set,
      * so use livewire mount() to load the params sent
      *
-     * @param \App\Models\Companies\Company company
-     * @param array $armors
-     * @param array $weapons
-     * @param array $weight_class
-     * @param array $types
-     * @param array $rarity
+     * @param \App\GuildBank $guildBank
+     * @param array          $armors
+     * @param array          $weapons
+     * @param array          $weight_class
+     * @param array          $types
+     * @param array          $rarity
+     * @param array          $perks
      *
      * @return void
      */
-    public function mount(Company $company, array $armors, array $weapons, array $weight_class, array $types, array $rarity, array $perks)
+    public function mount(GuildBank $guildBank, array $armors, array $weapons, array $weight_class, array $types, array $rarity, array $perks)
     {
-        $this->company = $company;
+        $this->guildBank = $guildBank;
+        $this->company = $guildBank->company();
         $this->armor_types = $armors;
         $this->weapon_types = $weapons;
         $this->weight_class = $weight_class;
@@ -80,12 +84,10 @@ class GuildBankTable extends DataTableComponent
                 ->sortable()
                 ->searchable(),
             Column::make( 'Gear Score', 'gear_score' )
-                ->sortable()
-                ->searchable(),
+                ->sortable(),
             Column::make( 'Weight Class', 'weight_class' )
                 ->sortable()
                 ->searchable()
-                ->hideIf( !isset($this->company->armor) || count($this->company->armor) == 0),
         ];
     }
     
@@ -109,16 +111,8 @@ class GuildBankTable extends DataTableComponent
 
     public function query()
     {
-        $weapons_query = Weapon::select(DB::raw('weapons.id as id, weapons.name as name, weapons.type as subtype, weapons.rarity, weapons.gear_score, null as weight_class, "Weapon" as type'))
-        ->whereRelation('company', 'id', $this->company->id);
-        
-        $union = Armor::select(DB::raw('armors.id as id, armors.name as name, armors.type as subtype, armors.rarity, armors.gear_score, armors.weight_class, "Armor" as type'))
-        ->whereRelation('company', 'id', $this->company->id)
-        ->union($weapons_query);
-        
-        // create derived table so that we can filter on the union as a whole
-        $query = DB::table(DB::raw("({$union->toSql()}) as items"));
-        $this->bindings = $union->getBindings();
+        $query = $this->guildBank->unionQuery();
+        $this->bindings = $query->getBindings();
     
         // -- item type filter -- find based on subtypes of weapons or armor
         $query->when($this->getFilter('item_type'), function ($query, $item_type) {
