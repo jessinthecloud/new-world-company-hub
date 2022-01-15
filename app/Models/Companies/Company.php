@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Companies;
 
 use App\Models\Characters\Character;
+use App\Models\Faction;
 use App\Models\Items\Armor;
 use App\Models\Items\Weapon;
 use Illuminate\Database\Eloquent\Model;

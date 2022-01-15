@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Companies\Company;
 use Illuminate\Database\Eloquent\Model;
 
 class Faction extends Model

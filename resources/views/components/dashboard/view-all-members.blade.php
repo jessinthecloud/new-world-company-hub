@@ -14,7 +14,7 @@
             <x-forms.select id="company" type="text" name="company" class="inline-block" 
                 :required="true" 
                 :values="
-                    \App\Models\Company::with('faction')
+                    \App\Models\Companies\Company::with('faction')
                         ->orderBy('name')->get()
                         ->mapWithKeys(function($company){
                             return [$company->slug => $company->name.' ('.$company->faction->name.')'];

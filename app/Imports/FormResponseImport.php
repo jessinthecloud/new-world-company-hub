@@ -4,7 +4,7 @@ namespace App\Imports;
 
 use App\Models\Characters\Character;
 use App\Models\Characters\CharacterClass;
-use App\Models\Company;
+use App\Models\Companies\Company;
 use App\Models\DiscordData;
 use App\Models\Items\BaseWeapon;
 use App\Models\User;
@@ -17,7 +17,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 class FormResponseImport implements ToCollection, WithHeadingRow, WithCalculatedFormulas
 {
     /**
-     * @var \App\Models\Company 
+     * @var \App\Models\Companies\Company 
      */
     private Company $company;
 

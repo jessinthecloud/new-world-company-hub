@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\Roster;
+use App\Models\Companies\Roster;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -18,13 +18,13 @@ class RosterPolicy
     /**
      * To check specific permissions via this policy:
      *
-     * Gate::allows('viewAny', App\Models\Roster::character);
+     * Gate::allows('viewAny', App\Models\Companies\Roster::character);
      *
      * OR in a blade template:
-     * @can('viewAny', App\Models\Roster::character) <elements/> @endcan
+     * @can('viewAny', App\Models\Companies\Roster::character) <elements/> @endcan
      *
      * OR in a controller method:
-     * $this->authorize('viewAny', App\Models\Roster::character);
+     * $this->authorize('viewAny', App\Models\Companies\Roster::character);
      * 
      * @param \App\Models\User $user
      *

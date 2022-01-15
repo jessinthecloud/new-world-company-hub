@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\Company;
+use App\Models\Companies\Company;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -18,13 +18,13 @@ class CompanyPolicy
     /**
      * To check specific permissions via this policy:
      *
-     * Gate::allows('viewAny', App\Models\Company::class);
+     * Gate::allows('viewAny', App\Models\Companies\Company::class);
      *
      * OR in a blade template:
-     * @can('viewAny', App\Models\Company::class) <elements/> @endcan
+     * @can('viewAny', App\Models\Companies\Company::class) <elements/> @endcan
      *
      * OR in a controller method:
-     * $this->authorize('viewAny', App\Models\Company::class);
+     * $this->authorize('viewAny', App\Models\Companies\Company::class);
      * 
      * @param \App\Models\User $user
      *

@@ -2,14 +2,8 @@
 
 namespace App\Providers;
 
-use App\Models\Company;
-use App\Models\Event;
-use App\Models\Position;
-use App\Models\Roster;
-use App\Policies\CompanyPolicy;
 use App\Policies\EventPolicy;
 use App\Policies\PositionPolicy;
-use App\Policies\RosterPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 

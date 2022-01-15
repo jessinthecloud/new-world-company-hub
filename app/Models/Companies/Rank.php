@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Companies;
 
 use App\Models\Characters\Character;
 use Illuminate\Database\Eloquent\Model;

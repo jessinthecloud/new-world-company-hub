@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Characters\Character;
 use App\Models\Characters\CharacterClass;
-use App\Models\Company;
+use App\Models\Companies\Company;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

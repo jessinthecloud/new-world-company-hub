@@ -16,7 +16,7 @@
         {{-- Company --}}
         <x-dashboard.resource-index
             :title="'Company'"
-            :class="\App\Models\Company::class" 
+            :class="\App\Models\Companies\Company::class" 
             :entity_name="'company'"
             :pluralEntityName="'companies'"
             :instance="$company ?? null"
@@ -25,13 +25,13 @@
         {{-- Roster --}}
         <x-dashboard.resource-index
             :title="'Roster'"
-            :class="\App\Models\Roster::class" 
+            :class="\App\Models\Companies\Roster::class" 
             :entity_name="'roster'"
             :pluralEntityName="'rosters'"
             :instance="$roster ?? null"
         >
             <x-dashboard.gated-button 
-                :class="\App\Models\Roster::class" 
+                :class="\App\Models\Companies\Roster::class" 
                 :can="'create'"
                 :route="route('rosters.import.create')"
             >

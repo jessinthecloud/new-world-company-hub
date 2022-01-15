@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Companies;
 
 use App\Http\Controllers\Controller;
 use App\Imports\RosterImport;
-use App\Models\Company;
+use App\Models\Companies\Company;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 

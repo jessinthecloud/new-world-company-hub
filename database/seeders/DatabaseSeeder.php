@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 
-use App\Models\EventType;
+use App\Models\Companies\EventType;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder

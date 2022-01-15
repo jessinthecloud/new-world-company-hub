@@ -4,7 +4,7 @@ namespace App\Models\Items;
 
 use App\Models\Characters\Character;
 use App\Models\Characters\Loadout;
-use App\Models\Company;
+use App\Models\Companies\Company;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

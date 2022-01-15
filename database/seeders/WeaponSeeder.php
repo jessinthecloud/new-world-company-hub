@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Company;
+use App\Models\Companies\Company;
 use App\Models\Items\BaseWeapon;
 use App\Models\Items\Weapon;
 use Illuminate\Database\Seeder;

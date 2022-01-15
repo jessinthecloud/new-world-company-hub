@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Companies;
 
 use App\Http\Controllers\Controller;
-use App\Models\Event;
+use App\Models\Companies\Event;
 use Illuminate\Http\Request;
 
 class EventsController extends Controller

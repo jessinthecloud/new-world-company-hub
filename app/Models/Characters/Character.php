@@ -2,12 +2,12 @@
 
 namespace App\Models\Characters;
 
-use App\Models\Company;
+use App\Models\Companies\Company;
+use App\Models\Companies\Position;
+use App\Models\Companies\Rank;
 use App\Models\Faction;
 use App\Models\Items\Armor;
 use App\Models\Items\Weapon;
-use App\Models\Position;
-use App\Models\Rank;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

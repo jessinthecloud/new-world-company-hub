@@ -3,7 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Characters\Character;
-use App\Models\Company;
+use App\Models\Companies\Company;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
@@ -25,7 +25,7 @@ class CompanyTable extends DataTableComponent
      * constructor is called before company can be set,
      * so use livewire mount() to load the params sent
      *
-     * @param \App\Models\Company            $company
+     * @param \App\Models\Companies\Company  $company
      * @param \Illuminate\Support\Collection $classes
      * @param \Illuminate\Support\Collection $weapons
      *

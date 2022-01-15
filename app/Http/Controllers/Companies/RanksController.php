@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Companies;
 
 use App\Http\Controllers\Controller;
-use App\Models\Rank;
+use App\Models\Companies\Rank;
 use Illuminate\Http\Request;
 
 class RanksController extends Controller

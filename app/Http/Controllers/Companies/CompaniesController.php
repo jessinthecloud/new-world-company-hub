@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Companies;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CompanyUpsertRequest;
 use App\Models\Characters\CharacterClass;
-use App\Models\Company;
+use App\Models\Companies\Company;
 use App\Models\Faction;
 use App\Models\Items\BaseWeapon;
 use Illuminate\Contracts\View\View;
@@ -112,7 +112,7 @@ class CompaniesController extends Controller
     /**
      * Company edit form
      *
-     * @param \App\Models\Company $company
+     * @param \App\Models\Companies\Company $company
      *
      * @return \Illuminate\Contracts\View\View
      */

@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Company;
+use App\Models\Companies\Company;
 use App\Models\Items\Armor;
 use App\Models\Items\Weapon;
 use Illuminate\Support\Facades\DB;
@@ -42,7 +42,7 @@ class GuildBankTable extends DataTableComponent
      * constructor is called before company can be set,
      * so use livewire mount() to load the params sent
      *
-     * @param \App\Models\Company company
+     * @param \App\Models\Companies\Company company
      * @param array $armors
      * @param array $weapons
      * @param array $weight_class

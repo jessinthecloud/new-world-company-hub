@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Companies;
 
 use App\Http\Controllers\Controller;
-use App\Models\EventType;
+use App\Models\Companies\EventType;
 use Illuminate\Http\Request;
 
 class EventTypesController extends Controller

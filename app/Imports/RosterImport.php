@@ -2,9 +2,6 @@
 
 namespace App\Imports;
 
-use App\Models\Company;
-use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 use Maatwebsite\Excel\Concerns\WithConditionalSheets;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
@@ -14,7 +11,7 @@ class RosterImport implements WithCalculatedFormulas, WithMultipleSheets
     use WithConditionalSheets;
 
     /**
-     * Should be name of an \App\Models\Company 
+     * Should be name of an \App\Models\Companies\Company 
      */
     private string $company;
 

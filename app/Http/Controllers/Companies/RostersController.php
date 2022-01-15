@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Companies;
 
 use App\Http\Controllers\Controller;
-use App\Models\Roster;
+use App\Models\Companies\Roster;
 use Illuminate\Http\Request;
 
 use function redirect;

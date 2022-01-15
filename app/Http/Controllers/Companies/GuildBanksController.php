@@ -11,7 +11,7 @@ use App\Enums\WeightClass;
 use App\GuildBank;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddInventoryRequest;
-use App\Models\Company;
+use App\Models\Companies\Company;
 use App\Models\Items\Armor;
 use App\Models\Items\Attribute;
 use App\Models\Items\BaseArmor;
