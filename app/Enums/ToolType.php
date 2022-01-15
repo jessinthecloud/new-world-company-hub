@@ -3,10 +3,11 @@
 namespace App\Enums;
 
 use App\Traits\HasClassConstants;
+use App\Traits\IsEnum;
 
 enum ToolType : string
 {
-    use HasClassConstants;
+    use HasClassConstants, IsEnum;
     
     case LOGGING_AXE = "Logging Axe";
     case SKINNING_KNIFE = "Skinning Knife";

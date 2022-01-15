@@ -3,10 +3,11 @@
 namespace App\Enums;
 
 use App\Traits\HasClassConstants;
+use App\Traits\IsEnum;
 
 enum WeaponType : string
 {
-    use HasClassConstants;
+    use HasClassConstants, IsEnum;
     
     case Bow = "Bow";
     case FireStaff = "Fire Staff";

@@ -3,10 +3,11 @@
 namespace App\Enums;
 
 use App\Traits\HasClassConstants;
+use App\Traits\IsEnum;
 
 enum Refining
 {
-    use HasClassConstants;
+    use HasClassConstants, IsEnum;
     
     case LEATHERWORKING;
     case SMELTING;

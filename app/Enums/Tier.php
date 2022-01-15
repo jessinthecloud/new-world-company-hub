@@ -3,10 +3,11 @@
 namespace App\Enums;
 
 use App\Traits\HasClassConstants;
+use App\Traits\IsEnum;
 
 enum Tier : string
 {
-    use HasClassConstants;
+    use HasClassConstants, IsEnum;
     
     case T1 = "Tier I";
     case T2 = "Tier II";
