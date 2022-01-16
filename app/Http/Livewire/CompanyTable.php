@@ -13,7 +13,7 @@ use Rappasoft\LaravelLivewireTables\Views\Filter;
 class CompanyTable extends DataTableComponent
 {
     // debugging
-    public bool $dumpFilters = true;
+//    public bool $dumpFilters = true;
     
     public Company $company;
     

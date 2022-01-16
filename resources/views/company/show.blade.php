@@ -1,8 +1,6 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
+    <x-slot name="title">
+        Companies / {{ Str::title($company->name) }}
     </x-slot>
     
     @if(!empty(session('status')))

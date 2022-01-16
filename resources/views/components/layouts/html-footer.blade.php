@@ -36,7 +36,7 @@
                 $('#appended-perks').append($('#perks-wrapper').clone());
             });
                         
-            $('tr').hover(function(){
+            /*$('tr').hover(function(){
                 let type = $(this).children('td').first().next().text().toLowerCase().trim();
                 let slug = $(this).children('td').last().text().trim();
                 var $this = $(this);
@@ -78,7 +78,7 @@ console.log($this.children('td').first().html());
                 $('.tooltip-wrapper').remove();
             });
             
-        });
+        }); // end tr hover*/
         
         function getName(item){
             return item.name;
