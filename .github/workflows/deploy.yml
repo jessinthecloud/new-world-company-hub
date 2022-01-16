@@ -22,7 +22,9 @@ jobs:
         HOST: ${{ secrets.HOST }}
         USERNAME: ${{ secrets.USERNAME }}
         PORT: ${{ secrets.PORT }}
-        KEY: ${{ secrets.SSHKEY }}
+        KEY: ${{ secrets.SSH_KEY }}        
+        PASSWORD: ${{ secrets.PASSWORD }}
+        PASSPHRASE: ${{ secrets.SSH_PASSPHRASE }}
       with:
         source: "."
         target: "/home/dh_nwbreakpt/breakpoint.company"
@@ -33,5 +35,7 @@ jobs:
         host: ${{ secrets.HOST }}
         USERNAME: ${{ secrets.USERNAME }}
         PORT: ${{ secrets.PORT }}
-        KEY: ${{ secrets.SSHKEY }}
+        KEY: ${{ secrets.SSH_KEY }}
+        PASSWORD: ${{ secrets.PASSWORD }}
+        PASSPHRASE: ${{ secrets.SSH_PASSPHRASE }}
         script: ls
