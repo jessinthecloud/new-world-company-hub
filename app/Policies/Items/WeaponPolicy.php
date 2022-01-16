@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Policies;
+namespace App\Policies\Items;
 
 use App\Models\Items\Weapon;
 use App\Models\User;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Policies;
+namespace App\Policies\Companies;
 
 use App\Models\Companies\Company;
 use App\Models\User;
@@ -32,10 +32,11 @@ class CompanyPolicy
      */
     public function viewAny( User $user ) : bool
     {
+//dump('COMPANY viewAny: '.$user->canAny(['view companies', 'view own companies', 'view faction companies']));    
         return $user->canAny([
             'view companies', 
             'view own companies', 
-            'view faction companies'
+            'view own faction companies'
         ]);
     }
     
@@ -47,6 +48,7 @@ class CompanyPolicy
      */
     public function viewAll( User $user ) : bool
     {
+//    dump('COMPANY viewAll: '.$user->can(['view companies']));
         return $user->can(['view companies']);
     }
 
@@ -59,13 +61,13 @@ class CompanyPolicy
                 (
                     $user->can('view own companies')
                     &&
-                    $user->where('characters.company.id', $company->id)
+                    $user->characters->where('company.id', $company->id)
                 )
                 ||
                 (
                     $user->can('view own faction companies') 
-                    && 
-                    $user->where('characters.company.faction.id', $company->faction->id)
+                    &&
+                    ($user->characters->where('faction.id', $company->faction->id)->count() > 0)
                 )
             ) 
         );
@@ -73,7 +75,8 @@ class CompanyPolicy
 
     public function create( User $user ) : bool
     {
-        return $user->canAny(['create companies', 'create faction companies']);
+//dump('COMPANY create: '.$user->canAny(['create companies', 'create own faction companies']));
+        return $user->canAny(['create companies', 'create own faction companies']);
     }
 
     public function update( User $user, Company $company ) : bool
@@ -84,13 +87,13 @@ class CompanyPolicy
                 (
                     $user->can('edit own companies') 
                     &&
-                    $user->where('characters.company.id', $company->id) 
+                    ($user->characters->where('company.id', $company->id)->count() > 0) 
                 ) 
-                &&
+                ||
                 (
                     $user->can('edit own faction companies') 
-                    && 
-                    $user->where('characters.company.faction.id', $company->faction->id)
+                    &&
+                    ($user->characters->where('faction.id', $company->faction->id)->count() > 0) 
                 )
             )
         );
@@ -103,23 +106,15 @@ class CompanyPolicy
             ||
             (
                 $user->can('delete own companies')
-                && 
-                $user->where('characters.company.id', $company->id)
+                &&
+                ($user->characters->where('company.id', $company->id)->count() > 0) 
             )
         );
     }
 
     public function restore( User $user, Company $company ) : bool
     {
-        return (
-            $user->can('delete companies') 
-            ||
-            (
-                $user->can('delete own companies')
-                && 
-                $user->where('characters.company.id', $company->id)
-            )
-        );
+        return $this->delete($user, $company);
     }
 
     public function forceDelete( User $user, Company $company ) : bool

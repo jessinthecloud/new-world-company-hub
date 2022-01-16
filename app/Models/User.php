@@ -3,6 +3,10 @@
 namespace App\Models;
 
 use App\Models\Characters\Character;
+use App\Models\Companies\Company;
+use App\Models\Companies\Event;
+use App\Models\Companies\Rank;
+use App\Models\Companies\Roster;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -89,30 +93,45 @@ class User extends Authenticatable
     
 // -- DISTANT RELATIONSHIPS
 
-    /*
+    
     public function factions()
     {
-        return $this->hasManyThrough(Faction::class, Company::class);
+        return Faction::join('companies', 'companies.faction_id', '=', 'companies.id')
+            ->join('characters', 'characters.company_id', '=', 'companies.id')
+            ->join('users', 'users.id', '=', 'characters.user_id')
+            ->where('users.id', '=', $this->id)->get()
+        ;
+//        return $this->hasManyThrough(Faction::class, Company::class, 'id', 'id', 'id');
     }
     
     public function companies()
     {
-        return $this->hasManyThrough(Company::class, Character::class, 'user_id', 'company_id', 'id');
+        return Company::join('characters', 'characters.company_id', '=', 'companies.id')
+            ->join('users', 'users.id', '=', 'characters.user_id')
+            ->where('users.id', '=', $this->id)->get();
+//        return $this->hasManyThrough(Company::class, Character::class);
     }
     
     public function ranks()
     {
-        return $this->hasManyThrough(Rank::class, Character::class);
+        return Rank::join('characters', 'characters.rank_id', '=', 'ranks.id')
+            ->join('users', 'users.id', '=', 'characters.user_id')
+            ->where('users.id', '=', $this->id)->get();
+//        return $this->hasManyThrough(Rank::class, Character::class);
     }
     
     public function rosters()
     {
-        return $this->hasManyThrough(Roster::class, Character::class);
+        return Roster::join('companies', 'rosters.company_id', '=', 'companies.id')
+            ->join('characters', 'characters.company_id', '=', 'companies.id')
+            ->join('users', 'users.id', '=', 'characters.user_id')
+            ->where('users.id', '=', $this->id)->get();
+//        return $this->hasManyThrough(Roster::class, Character::class);
     }
     
     public function events()
     {
         return $this->hasManyThrough(Event::class, Character::class);
     } 
-    */
+    
 }

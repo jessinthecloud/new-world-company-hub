@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Policies;
+namespace App\Policies\Items;
 
 use App\Models\Characters\Loadout;
 use App\Models\User;
@@ -83,7 +83,7 @@ class LoadoutPolicy
 
     public function create( User $user ) : bool
     {
-        return $user->canAny(['create loadouts', 'create own loadouts', 'create company loadouts', 'create faction loadouts']);
+        return $user->canAny(['create loadouts', 'create own loadouts', 'create own company loadouts', 'create own faction loadouts']);
     }
 
     public function update( User $user, Loadout $loadout ) : bool

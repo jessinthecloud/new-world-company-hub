@@ -1,14 +1,14 @@
-@props(['title', 'class', 'entityName', 'pluralEntityName', 'instance'=>null])
+@props(['title', 'phpClass', 'entityName', 'pluralEntityName', 'instance'=>null])
 
-@can('viewAny', $class)
+@can('viewAny', $phpClass)
     <x-dashboard.section
         :title="$title"
         class=""
     >
         @if(Route::has($pluralEntityName.'.index'))
-            <x-dashboard.gated-button 
-                :phpClass="$class"
-                :can="'viewAll'" 
+            <x-dashboard.gated-button
+                :can="['viewAll', $phpClass]"
+                :phpClass="$phpClass"
                 :route="route($pluralEntityName.'.index')"
             >
                 View All
@@ -16,11 +16,11 @@
         @endif
 
         @if(Route::has($pluralEntityName.'.show'))
-            <x-dashboard.gated-button 
-                :phpClass="$class" 
-                :can="'view'"
+            <x-dashboard.gated-button
+                :can="['view', $instance]"
+                :phpClass="$phpClass" 
                 :route="isset($instance) 
-                    ? route($pluralEntityName.'.show', [$entityName=>$instance]) 
+                    ? route($pluralEntityName.'.show', [$entityName=>$instance->slug]) 
                     : route($pluralEntityName.'.choose')"
                 :instance="$instance"
             >
@@ -30,8 +30,8 @@
         
         @if(Route::has($pluralEntityName.'.create'))
             <x-dashboard.gated-button 
-                :phpClass="$class" 
-                :can="'create'"
+                :can="['create', $phpClass]"
+                :phpClass="$phpClass"
                 :route="route($pluralEntityName.'.create')"
             >
                 Create
@@ -39,11 +39,11 @@
         @endif
         
         @if(Route::has($pluralEntityName.'.edit'))
-            <x-dashboard.gated-button 
-                :phpClass="$class" 
-                :can="'update'"
+            <x-dashboard.gated-button
+                :can="['update', $instance]"
+                :phpClass="$phpClass" 
                 :route="isset($instance) 
-                    ? route($pluralEntityName.'.edit', [$entityName=>$instance]) 
+                    ? route($pluralEntityName.'.edit', [$entityName=>$instance->slug]) 
                     : route($pluralEntityName.'.choose')"
                 :instance="$instance"
             >
@@ -53,10 +53,10 @@
         
         @if(Route::has($pluralEntityName.'.destroy'))
             <x-dashboard.gated-button 
-                :phpClass="$class" 
-                :can="'delete'"
+                :can="['delete', $instance]"
+                :phpClass="$phpClass"
                 :route="isset($instance) 
-                    ? route($pluralEntityName.'.destroy', [$entityName=>$instance]) 
+                    ? route($pluralEntityName.'.destroy', [$entityName=>$instance->slug]) 
                     : route($pluralEntityName.'.choose')"
                 :instance="$instance"
             >

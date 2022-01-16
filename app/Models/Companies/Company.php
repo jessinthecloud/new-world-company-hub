@@ -2,6 +2,7 @@
 
 namespace App\Models\Companies;
 
+use App\GuildBank;
 use App\Models\Characters\Character;
 use App\Models\Faction;
 use App\Models\Items\Armor;
@@ -52,6 +53,11 @@ class Company extends Model
     public function armor()
     {
         return $this->hasMany(Armor::class);
+    }
+
+    public function bank()
+    {
+        return new GuildBank($this);
     }
 
 }

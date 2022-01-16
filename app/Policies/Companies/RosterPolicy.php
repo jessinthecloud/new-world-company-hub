@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Policies;
+namespace App\Policies\Companies;
 
 use App\Models\Companies\Roster;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+
+use function dump;
 
 class RosterPolicy
 {
@@ -32,11 +34,12 @@ class RosterPolicy
      */
     public function viewAny( User $user ) : bool
     {
+//dump('ROSTER viewAny: '.$user->canAny(['view rosters', 'view own rosters', 'view faction rosters']));    
         return $user->canAny([
             'view rosters', 
             'view own rosters', 
             'view own company rosters',
-            'view own faction rosters'
+            'view own faction rosters',
         ]);
     }
     
@@ -60,19 +63,19 @@ class RosterPolicy
                 (
                     $user->can('view own rosters')
                     &&
-                    $user->where('rosters.id', $roster->id)
+                    ($user->rosters()->where('id', $roster->id)->count() > 0)
                 )
                 ||
                 (
                     $user->can('view own company rosters') 
-                    && 
-                    $user->where('rosters.company.id', $roster->company->id)
+                    &&
+                    ($user->rosters()->where('company.id', $roster->company->id)->count() > 0)
                 )
                 ||
                 (
                     $user->can('view own faction rosters') 
-                    && 
-                    $user->where('rosters.company.faction.id', $roster->faction->id)
+                    &&
+                    ($user->rosters()->where('faction.id', $roster->faction->id)->count() > 0)
                 )
             ) 
         );
@@ -80,81 +83,59 @@ class RosterPolicy
 
     public function create( User $user ) : bool
     {
-        return $user->canAny(['create rosters', 'create company rosters', 'create faction rosters']);
+        return $user->canAny(['create rosters', 'create own rosters', 'create own company rosters', 'create own faction rosters']);
     }
 
     public function update( User $user, Roster $roster ) : bool
     {
         return (
-            $user->can(['edit rosters']) 
-            ||
-            (
+            $user->can('edit rosters') 
+            || ( 
                 (
-                    $user->can('edit own rosters')
+                    $user->can('edit own rosters') 
                     &&
-                    $user->where('rosters.id', $roster->id)
-                )
+                    ($user->rosters()->where('id', $roster->id)->count() > 0) 
+                ) 
                 ||
                 (
                     $user->can('edit own company rosters') 
-                    && 
-                    $user->where('rosters.company.id', $roster->company->id)
+                    &&
+                    ($user->rosters()->where('company.id', $roster->company->id)->count() > 0) 
                 )
                 ||
                 (
                     $user->can('edit own faction rosters') 
-                    && 
-                    $user->where('rosters.company.faction.id', $roster->faction->id)
+                    &&
+                    ($user->rosters()->where('company.faction.id', $roster->faction->id)->count() > 0) 
                 )
-            ) 
-        );
-    }
-    
-    public function import( User $user ) : bool
-    {
-        return (
-            $user->can(['import rosters']) 
-            ||
-            (
-                (
-                    $user->can('import own company rosters') 
-                    && 
-                    $user->where('rosters.company.id', $user->character()->company->id)
-                )
-                ||
-                (
-                    $user->can('import own faction rosters') 
-                    && 
-                    $user->where('rosters.company.faction.id', $user->character()->faction->id)
-                )
-            ) 
+            )
         );
     }
 
     public function delete( User $user, Roster $roster ) : bool
     {
         return (
-            $user->can(['delete rosters']) 
+            $user->can('delete rosters') 
             ||
             (
                 (
                     $user->can('delete own rosters')
                     &&
-                    $user->where('rosters.id', $roster->id)
+                    ($user->characters->where('company.roster.id', $roster->id)->count() > 0)
                 )
                 ||
                 (
                     $user->can('delete own company rosters') 
-                    && 
-                    $user->where('rosters.company.id', $roster->company->id)
+                    &&
+                    ($user->characters->where('company.id', $roster->company->id)->count() > 0) 
                 )
                 ||
                 (
                     $user->can('delete own faction rosters') 
-                    && 
-                    $user->where('rosters.company.faction.id', $roster->faction->id)
-                )
-            ) 
+                    &&
+                    ($user->characters->where('faction.id', $roster->faction->id)->count() > 0) 
+                ) 
+            )
         );
     }
 
@@ -166,5 +147,34 @@ class RosterPolicy
     public function forceDelete( User $user, Roster $roster ) : bool
     {
         return false;
+    }
+    
+    public function import( User $user ) : bool
+    {
+        return (
+            $user->can(['import rosters']) 
+            ||
+            (
+                (
+                    $user->can('import own company rosters')
+                    &&
+                    (
+                        ($user->rosters()->where('company.id', $user->character()->company->id)->count() > 0)
+                    ||
+                        ($user->characters->where('company.id', $user->character()->company->id)->count() > 0)
+                    )
+                )
+                ||
+                (
+                    $user->can('import own faction rosters') 
+                    &&
+                    (
+                        ($user->rosters()->where('company.faction.id', $user->character()->faction->id)->count() > 0)
+                        ||
+                        ($user->characters->where('company.faction.id', $user->character()->faction->id)->count() > 0)
+                    )
+                )
+            ) 
+        );
     }
 }

@@ -7,7 +7,7 @@
         {{-- Faction --}}
         <x-dashboard.resource-index
             :title="'Faction'"
-            :class="\App\Models\Faction::class" 
+            :phpClass="\App\Models\Faction::class" 
             :entityName="'faction'"
             :pluralEntityName="'factions'"
             :instance="$faction ?? null"
@@ -16,7 +16,7 @@
         {{-- Company --}}
         <x-dashboard.resource-index
             :title="'Company'"
-            :class="\App\Models\Companies\Company::class" 
+            :phpClass="\App\Models\Companies\Company::class" 
             :entityName="'company'"
             :pluralEntityName="'companies'"
             :instance="$company ?? null"
@@ -25,14 +25,14 @@
         {{-- Roster --}}
         <x-dashboard.resource-index
             :title="'Roster'"
-            :class="\App\Models\Companies\Roster::class" 
+            :phpClass="\App\Models\Companies\Roster::class" 
             :entityName="'roster'"
             :pluralEntityName="'rosters'"
             :instance="$roster ?? null"
         >
-            <x-dashboard.gated-button 
-                :class="\App\Models\Companies\Roster::class" 
-                :can="'create'"
+            <x-dashboard.gated-button
+                :can="['import', \App\Models\Companies\Roster::class]"
+                :phpClass="\App\Models\Companies\Roster::class" 
                 :route="route('rosters.import.create')"
             >
                 Import
@@ -42,7 +42,7 @@
         {{-- Guild Bank --}}
         <x-dashboard.resource-index
             :title="'Guild Bank'"
-            :class="\App\GuildBank::class" 
+            :phpClass="\App\GuildBank::class" 
             :entityName="'guild_bank'"
             :pluralEntityName="'guild-banks'"
             :instance="$guildBank ?? null"
@@ -51,7 +51,7 @@
         {{-- Character --}}
         <x-dashboard.resource-index
             :title="'Character'"
-            :class="\App\Models\Characters\Character::class" 
+            :phpClass="\App\Models\Characters\Character::class" 
             :entityName="'character'"
             :pluralEntityName="'characters'"
             :instance="$character ?? null"
@@ -60,7 +60,7 @@
         {{-- Loadout --}}
         <x-dashboard.resource-index
             :title="'Loadout'"
-            :class="\App\Models\Characters\Loadout::class" 
+            :phpClass="\App\Models\Characters\Loadout::class" 
             :entityName="'loadout'"
             :pluralEntityName="'loadouts'"
             :instance="$loadout ?? null"
@@ -69,7 +69,7 @@
         {{-- Weapon --}}
         <x-dashboard.resource-index
             :title="'Weapon'"
-            :class="\App\Models\Items\Weapon::class" 
+            :phpClass="\App\Models\Items\Weapon::class" 
             :entityName="'weapon'"
             :pluralEntityName="'weapons'"
             :instance="$weapon ?? null"

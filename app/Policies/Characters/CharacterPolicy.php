@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Policies;
+namespace App\Policies\Characters;
 
 use App\Models\Characters\Character;
 use App\Models\User;
@@ -32,11 +32,12 @@ class CharacterPolicy
      */
     public function viewAny( User $user ) : bool
     {
+//dump('COMPANY viewAny: '.$user->canAny(['view characters', 'view own characters', 'view faction characters']));    
         return $user->canAny([
             'view characters', 
             'view own characters', 
             'view own company characters',
-            'view own faction characters'
+            'view own faction characters',
         ]);
     }
     
@@ -48,6 +49,7 @@ class CharacterPolicy
      */
     public function viewAll( User $user ) : bool
     {
+//    dump('COMPANY viewAll: '.$user->can(['view characters']));
         return $user->can(['view characters']);
     }
 
@@ -60,19 +62,19 @@ class CharacterPolicy
                 (
                     $user->can('view own characters')
                     &&
-                    $user->where('characters.id', $character->id)
+                    $user->characters->where('id', $character->id)
                 )
                 ||
                 (
                     $user->can('view own company characters') 
-                    && 
-                    $user->where('characters.company.id', $character->company->id)
+                    &&
+                    ($user->characters->where('company.id', $character->company->id)->count() > 0)
                 )
                 ||
                 (
                     $user->can('view own faction characters') 
-                    && 
-                    $user->where('characters.company.faction.id', $character->faction->id)
+                    &&
+                    ($user->characters->where('faction.id', $character->faction->id)->count() > 0)
                 )
             ) 
         );
@@ -80,60 +82,60 @@ class CharacterPolicy
 
     public function create( User $user ) : bool
     {
-        return $user->canAny(['create characters', 'create own characters', 'create company characters', 'create faction characters']);
+//dump('COMPANY create: '.$user->canAny(['create characters', 'create own faction characters']));
+        return $user->canAny(['create characters', 'create own characters', 'create own company characters', 'create own faction characters']);
     }
 
     public function update( User $user, Character $character ) : bool
     {
         return (
-            $user->can(['edit characters']) 
-            ||
-            (
+            $user->can('edit characters') 
+            || ( 
                 (
-                    $user->can('edit own characters')
+                    $user->can('edit own characters') 
                     &&
-                    $user->where('characters.id', $character->id)
-                )
+                    ($user->characters->where('company.id', $character->id)->count() > 0) 
+                ) 
                 ||
                 (
                     $user->can('edit own company characters') 
-                    && 
-                    $user->where('characters.company.id', $character->company->id)
+                    &&
+                    ($user->characters->where('company.id', $character->company->id)->count() > 0) 
                 )
                 ||
                 (
                     $user->can('edit own faction characters') 
-                    && 
-                    $user->where('characters.company.faction.id', $character->faction->id)
+                    &&
+                    ($user->characters->where('faction.id', $character->faction->id)->count() > 0) 
                 )
-            ) 
+            )
         );
     }
 
     public function delete( User $user, Character $character ) : bool
     {
         return (
-            $user->can(['delete characters']) 
+            $user->can('delete characters') 
             ||
             (
                 (
                     $user->can('delete own characters')
                     &&
-                    $user->where('characters.id', $character->id)
+                    ($user->characters->where('company.id', $character->id)->count() > 0)
                 )
                 ||
                 (
                     $user->can('delete own company characters') 
-                    && 
-                    $user->where('characters.company.id', $character->company->id)
+                    &&
+                    ($user->characters->where('company.id', $character->company->id)->count() > 0) 
                 )
                 ||
                 (
                     $user->can('delete own faction characters') 
-                    && 
-                    $user->where('characters.company.faction.id', $character->faction->id)
-                )
-            ) 
+                    &&
+                    ($user->characters->where('faction.id', $character->faction->id)->count() > 0) 
+                ) 
+            )
         );
     }
 

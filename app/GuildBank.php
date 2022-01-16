@@ -19,6 +19,7 @@ use Rappasoft\LaravelLivewireTables\DataTableComponent;
 class GuildBank implements InventoryContract
 {
     protected Builder $union_query;
+    public string $slug;
 
     /**
      *
@@ -29,6 +30,7 @@ class GuildBank implements InventoryContract
      */
     public function __construct( protected Company $owner, protected ?Collection $items=null )
     {
+        $this->slug = $this->owner->slug;
 //        $this->items ??= $this->findItems();
     }
 
