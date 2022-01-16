@@ -10,8 +10,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use JetBrains\PhpStorm\Pure;
-use Rappasoft\LaravelLivewireTables\DataTableComponent;
 
 /**
  * Representation of the items tied directly to a company

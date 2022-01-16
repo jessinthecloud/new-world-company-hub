@@ -4,9 +4,13 @@
     <span>{{ $title ?? '' }}</span>
     @if( session('character') !== null )
         <span id="character-heading" class="text-gray-600">
-            {{ session('character')?->company?->name ?? '' }} 
+            @if(session('character')->rank !== null)
+                {{ session('character')->rank->name }} 
+                <span class="text-gray-400">/</span>
+            @endif 
+            {{ session('character')->company?->name ?? '' }} 
             <span class="text-gray-400">/</span> 
-            {{ session('character')?->name ?? '' }}
+            {{ session('character')->name ?? '' }}
         </span>
     @endif
 </h2>
