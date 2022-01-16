@@ -15,7 +15,7 @@
             </x-dashboard.gated-button>
         @endif
 
-        @if(Route::has($pluralEntityName.'.show'))
+        @if(Route::has($pluralEntityName.'.show') && Route::has($pluralEntityName.'.choose'))
             <x-dashboard.gated-button
                 :can="['view', $instance]"
                 :phpClass="$phpClass" 
@@ -38,7 +38,7 @@
             </x-dashboard.gated-button>
         @endif
         
-        @if(Route::has($pluralEntityName.'.edit'))
+        @if(Route::has($pluralEntityName.'.edit') && Route::has($pluralEntityName.'.choose'))
             <x-dashboard.gated-button
                 :can="['update', $instance]"
                 :phpClass="$phpClass" 
@@ -51,7 +51,7 @@
             </x-dashboard.gated-button>
         @endif
         
-        @if(Route::has($pluralEntityName.'.destroy'))
+        @if(Route::has($pluralEntityName.'.destroy') && Route::has($pluralEntityName.'.choose'))
             <x-dashboard.gated-button 
                 :can="['delete', $instance]"
                 :phpClass="$phpClass"
