@@ -65,14 +65,10 @@ Route::get( '/base-weapons/{baseWeapon}', function(BaseWeapon $baseWeapon){
     } )
     ->name( 'base-armors.index' );
     
-    Route::get( '/weapons/{weapon}', function(Weapon $weapon){
-        return view('weapons.show', ['weapon' => $weapon]);
-    } )
+    Route::get( '/weapons/{weapon}', [\App\Http\Controllers\Items\WeaponsController::class, 'show'] )
     ->name( 'weapons.show' );
     
-    Route::get( '/armors/{armor}', function(Armor $armor){
-        return view('armors.show', ['armor' => $armor]);
-    } )
+    Route::get( '/armors/{armor}', [\App\Http\Controllers\Items\ArmorsController::class, 'show'] )
     ->name( 'armors.show' );
 
     // FACTION

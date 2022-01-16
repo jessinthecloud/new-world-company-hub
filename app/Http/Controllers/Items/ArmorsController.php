@@ -23,9 +23,11 @@ class ArmorsController extends Controller
         //
     }
 
-    public function show( Armor $armor )
+    public function show( Request $request, Armor $armor )
     {
-        //
+        return $request->query('popup') == 1
+            ? view('armors.popup', ['armor' => $armor]) 
+            : view('armors.show', ['armor' => $armor]);
     }
 
     public function edit( Armor $armor )

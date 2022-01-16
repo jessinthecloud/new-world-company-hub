@@ -8,7 +8,25 @@
     @stack('scripts')
     
     @livewireScripts
-    
+<style>
+        .tooltip {
+            background-color: #333;
+            border-radius: 5px;
+            box-sizing:border-box;
+            color: #fff;
+            height: auto;
+            padding: 1.5em;
+            position: absolute;
+            top: -15px;
+            width: 25em;
+        }
+        .tooltip-wrapper {
+            position:relative;
+        }
+        .tooltip div {
+            position:relative;
+        }
+    </style>
     <script>
         $(document).ready(function(){
             $('#add-attr').click(function(){
@@ -17,24 +35,49 @@
             $('#add-perk').click(function(){
                 $('#appended-perks').append($('#perks-wrapper').clone());
             });
-            
-            /*$('#add-armor').click(function(){
-                $(this).parent().hide();
-                $('#armor-field').removeClass('hidden');
-                $('#name-field').removeClass('hidden');
-                $('#add-new-entry').removeClass('hidden');
-                $('#perks-attr-wrapper').removeClass('hidden');
-                $('#submit-button').removeClass('hidden');
+                        
+            $('tr').hover(function(){
+                let type = $(this).children('td').first().next().text().toLowerCase().trim();
+                let slug = $(this).children('td').last().text().trim();
+                var $this = $(this);
+                $('.tooltip-wrapper').remove();
+                
+                if(typeof slug != "undefined" && slug != ''){
+                    // go get weapon info
+                    // item = getItem(type, slug);
+                    // console.log(item);
+                    
+                    let itemUrl = '/'+type+'s'+'/'+slug+'?popup=1';
+console.log($this,type+'s', slug, itemUrl);       
+             
+                    $.ajax({
+                        url: itemUrl,
+                        contentType: 'html'
+                    })
+                    .done(function(data){
+                        //success
+                        $('.tooltip-wrapper').remove();
+
+console.log('success: ',$this.children('td').first().html(),data);
+
+                        $this.children('td').first().css('position','relative');
+                        $this.children('td').first().append(data);
+                        
+console.log($this.children('td').first().html());                        
+                    })
+                    .fail(function( jqXHR, textStatus, errorThrown ){
+                        console.log('ERROR: ',jqXHR, textStatus, errorThrown);
+                    })
+                    .always(function(){
+                    })
+                    ;
+                        
+                }
+            }, function(){
+                $this.children('td').first().css('position','');
+                $('.tooltip-wrapper').remove();
             });
             
-            $('#add-weapon').click(function(){
-                $(this).parent().hide();
-                // $('#weapon-field').removeClass('hidden');
-                // $('#name-field').removeClass('hidden');
-                $('#add-new-entry').removeClass('hidden');
-                $('#perks-attr-wrapper').removeClass('hidden');
-                $('#submit-button').removeClass('hidden');
-            });*/
         });
         
         function getName(item){
@@ -57,7 +100,7 @@ console.log('fetching: '+type+': '+slug);
             
             let response = await fetch('/'+type+'/'+slug);
 console.log('response: '+response);            
-            return response.json();
+            return response.html();
             
             
             /*let perks = weapon.data.perks;

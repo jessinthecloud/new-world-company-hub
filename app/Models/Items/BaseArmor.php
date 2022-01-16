@@ -3,6 +3,8 @@
 namespace App\Models\Items;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class BaseArmor extends Model
 {
@@ -36,5 +38,12 @@ class BaseArmor extends Model
     public function perks()
     {
         return $this->belongsToMany(Perk::class)->withPivot('chance');
+    }
+
+    public function iconUrl()
+    {
+        // image that exists: primordial-void-gauntlet-1-t5 (weapon)
+//    dump(storage_path('app/images/'.Str::afterLast(strtolower($this->icon), '/')));
+        Storage::url('app/images/'.Str::afterLast(strtolower($this->icon), '/'));
     }
 }

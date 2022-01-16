@@ -5,6 +5,8 @@ namespace App\Models\Items;
 use App\Models\Characters\Loadout;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class BaseWeapon extends Model
 {
@@ -50,5 +52,12 @@ class BaseWeapon extends Model
     public function offhandLoadout()
     {
         return $this->hasMany(Loadout::class, 'offhand_id');
+    }
+    
+    public function iconUrl()
+    {
+        // image that exists: primordial-void-gauntlet-1-t5 (weapon)
+//    dump(storage_path('app/images/'.Str::afterLast(strtolower($this->icon), '/')));
+        Storage::url('app/images/'.Str::afterLast(strtolower($this->icon), '/'));
     }
 }

@@ -94,8 +94,9 @@ class GuildBankTable extends DataTableComponent
                 ->sortable(),
             Column::make( 'Weight Class', 'weight_class' )
                 ->sortable()
-                ->searchable()
-        ];
+                ->searchable(),
+            Column::make( 'Slug', 'slug' ),
+         ];
     }
     
     public function filters(): array
