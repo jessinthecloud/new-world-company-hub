@@ -32,7 +32,10 @@
             <x-dashboard.gated-button 
                 :can="['create', $phpClass]"
                 :phpClass="$phpClass"
-                :route="route($pluralEntityName.'.create')"
+                {{--:route="route($pluralEntityName.'.create')"--}}
+                :route="isset($instance) 
+                    ? route($pluralEntityName.'.create', [$entityName=>$instance->slug]) 
+                    : route($pluralEntityName.'.choose', ['action'=>'create'])"
             >
                 {{ $buttonTexts['create'] ?? 'Create' }}
             </x-dashboard.gated-button>

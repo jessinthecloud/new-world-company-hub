@@ -100,7 +100,7 @@ Route::get( '/base-weapons/{baseWeapon}', function(BaseWeapon $baseWeapon){
         ->name( 'base-weapons.choose' );
     Route::get( '/rosters/choose', [\App\Http\Controllers\Companies\RostersController::class, 'choose'] )
         ->name( 'rosters.choose' );
-    Route::get( '/guild-banks/choose', [\App\Http\Controllers\Companies\CompaniesController::class, 'choose'] )
+    Route::get( '/guild-banks/choose', [\App\Http\Controllers\Companies\GuildBanksController::class, 'choose'] )
         ->name( 'guild-banks.choose' );
         
     // where to go after character is chosen on login
@@ -121,7 +121,7 @@ Route::get( '/base-weapons/{baseWeapon}', function(BaseWeapon $baseWeapon){
         ->name( 'base-weapons.find' );
     Route::post( '/rosters/find', [\App\Http\Controllers\Companies\RostersController::class, 'find'] )
         ->name( 'rosters.find' );
-    Route::post( '/guild-banks/find', [\App\Http\Controllers\Companies\CompaniesController::class, 'find'] )
+    Route::post( '/guild-banks/find', [\App\Http\Controllers\Companies\GuildBanksController::class, 'find'] )
         ->name( 'guild-banks.find' );
                 
             
@@ -188,10 +188,14 @@ Route::get( '/base-weapons/{baseWeapon}', function(BaseWeapon $baseWeapon){
             ->except( ['create', 'index', 'show'] );
             
         Route::resource( 'guild-banks', \App\Http\Controllers\Companies\GuildBanksController::class)
-            ->except(['index', 'show', 'destroy'])
+            ->except(['create', 'store', 'index', 'show', 'destroy'])
             ->parameters([
                 'guild-banks' => 'guildBank'
             ]);
+        Route::get( 'guild-banks/{guildBank}/create', [\App\Http\Controllers\Companies\GuildBanksController::class, 'create'])
+            ->name('guild-banks.create');
+        Route::post( 'guild-banks/{guildBank}/create', [\App\Http\Controllers\Companies\GuildBanksController::class, 'store'])
+            ->name('guild-banks.store');
     });
 // ##
 // ## END OFFICER
@@ -210,7 +214,7 @@ Route::get( '/base-weapons/{baseWeapon}', function(BaseWeapon $baseWeapon){
             ->name('guild-banks.show');
         // if guildbank (company slug) is not in URL, defaults to current logged-in user's selected company to create one
         Route::get( 'guild-bank/', [\App\Http\Controllers\Companies\GuildBanksController::class, 'show'])
-            ->name('guild-banks.show');
+            ->name('guild-banks.show.single');
         
     });
 // ##
