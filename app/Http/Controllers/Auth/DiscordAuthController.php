@@ -44,7 +44,7 @@ class DiscordAuthController extends Controller
         return Socialite::driver('discord')
             // add additional scopes (stuff we can access)
             // all scopes: https://discord.com/developers/docs/topics/oauth2#shared-resources-oauth2-scopes
-            ->scopes(['guilds'])
+            ->scopes(['guilds','identify','email', 'guilds.members.read'])
             ->redirect();
     }
 
@@ -71,7 +71,7 @@ class DiscordAuthController extends Controller
             $discordUser = Socialite::driver( 'discord' )->user();
             // find or create eloquent user with this discord name
             $user = User::where('discord_name',  $discordUser->nickname)->get();
-          
+dd($discordUser);          
             if($user->isEmpty()){
                 // account may exist prior to logging in with discord
                 // and should be tied to discord data
