@@ -46,7 +46,7 @@
                 :can="['update', $instance]"
                 :phpClass="$phpClass" 
                 :route="isset($instance) 
-                    ? route($pluralEntityName.'.edit', [$entityName=>$instance->slug]) 
+                    ? route($pluralEntityName.'.choose', ['action'=>'edit-item-type', $entityName=>$instance->slug]) 
                     : route($pluralEntityName.'.choose', ['action'=>'edit'])"
                 :instance="$instance"
             >

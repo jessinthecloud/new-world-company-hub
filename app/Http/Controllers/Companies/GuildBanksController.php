@@ -166,12 +166,12 @@ $base,
 'gear score: '.($validated['gear_score'] ?? $validated['weapon_gear_score'] ?? null)
 );*/            
             // TODO: check DB for uniqueness and append numbers if not  
-            $slug = $item->name
+            $slug = $validated['name']
                     . ( !empty( $rarity ) ? ' ' . $rarity : '' ) 
                     . ( !empty( $tier ) ? ' t' . $tier : '' );
             $item = Weapon::create([
                 'name' => $validated['name'] ?? $base->name,
-                'slug' => isset($validated['name']) ? Str::slug($validated['name']) : $base->slug,
+                'slug' => $base->slug ?? $slug,
                 'type' => $type ?? $base->type,
                 'description' => $validated['description'] ?? $base?->description ?? null,
                 'tier' => $tier ?? $base?->tier ?? null,
@@ -197,13 +197,13 @@ $base,
 
             // create unique slug
             // TODO: check DB for uniqueness and append numbers if not  
-            $slug = $item->name 
+            $slug = $validated['name']
                 . (!empty($rarity) ? ' '.$rarity : '') 
                 . (!empty($tier) ? ' t'.$tier : '') 
                 . (!empty($weight_class) ? ' '.$weight_class : '');    
             $item = Armor::create([
                 'name' => $validated['name'] ?? $base?->name ?? null,
-                'slug' => isset($validated['name']) ? Str::slug($validated['name']) : $base->slug,
+                'slug' => $base->slug ?? $slug,
                 'type' => $type ?? $base->type,
                 'description' => $validated['description'] ?? $base?->description ?? null,
                 'tier' => $tier ?? $base?->tier ?? null,
