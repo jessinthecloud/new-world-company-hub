@@ -19,14 +19,5 @@ class UserSeeder extends Seeder
             
         $super->assignRole('super-admin');
         
-        $gov = \App\Models\User::factory()
-            ->create([
-                'name' => 'Magz',
-                'email' => 'magzreloadedtv@gmail.com',
-                'remember_token' => null,
-            ]);
-            
-        $gov->assignRole('governor');
-        
     }
 }
