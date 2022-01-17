@@ -1,4 +1,4 @@
-@props(['title', 'phpClass', 'entityName', 'pluralEntityName', 'instance'=>null])
+@props(['title', 'phpClass', 'entityName', 'pluralEntityName', 'instance'=>null, 'buttonTexts'=>[]])
 
 @can('viewAny', $phpClass)
     <x-dashboard.section
@@ -11,7 +11,7 @@
                 :phpClass="$phpClass"
                 :route="route($pluralEntityName.'.index')"
             >
-                View All
+                {{ $buttonTexts['viewAll'] ?? 'View All' }}
             </x-dashboard.gated-button>
         @endif
 
@@ -24,7 +24,7 @@
                     : route($pluralEntityName.'.choose')"
                 :instance="$instance"
             >
-                View
+                {{ $buttonTexts['view'] ?? 'View' }}
             </x-dashboard.gated-button>
         @endif
         
@@ -34,7 +34,7 @@
                 :phpClass="$phpClass"
                 :route="route($pluralEntityName.'.create')"
             >
-                Create
+                {{ $buttonTexts['create'] ?? 'Create' }}
             </x-dashboard.gated-button>
         @endif
         
@@ -47,7 +47,7 @@
                     : route($pluralEntityName.'.choose')"
                 :instance="$instance"
             >
-                Edit
+                {{ $buttonTexts['edit'] ?? 'Edit' }}
             </x-dashboard.gated-button>
         @endif
         
@@ -60,7 +60,7 @@
                     : route($pluralEntityName.'.choose')"
                 :instance="$instance"
             >
-                Delete
+                {{ $buttonTexts['delete'] ?? 'Delete' }}
             </x-dashboard.gated-button>
         @endif
         

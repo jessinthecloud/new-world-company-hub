@@ -67,6 +67,11 @@
                 :entityName="'guildBank'"
                 :pluralEntityName="'guild-banks'"
                 :instance="$guildBank ?? null"
+                :buttonTexts="[
+                    'view' => 'View Company Inventory',
+                    'create' => 'Add to Inventory',
+                    'edit' => 'Edit Item in Inventory',
+                ]"
             />
             
             {{-- Character --}}
