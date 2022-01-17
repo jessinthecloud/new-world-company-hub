@@ -42,7 +42,8 @@ class FormResponseImport implements ToCollection, WithHeadingRow, WithCalculated
             // find or create eloquent user
             $user = User::updateOrCreate(
                 // full discord username
-                [ 'discord_name' => $row['discord_user_name_ex_discord1234'], ],
+                [ 'discord_name' => $row['discord_user_name_ex_discord1234'],
+                'slug' => Str::slug($row['in_game_name']), ],
                 [
                     'name' => $row['in_game_name'],
                     'slug' => Str::slug($row['in_game_name']),
@@ -61,6 +62,7 @@ class FormResponseImport implements ToCollection, WithHeadingRow, WithCalculated
             $character = Character::updateOrCreate(
                 [ 
                     'name' => $row['in_game_name'],
+                    'slug' => Str::slug($row['in_game_name']),
                     'user_id' => $user->id,
                 ],
                 [
