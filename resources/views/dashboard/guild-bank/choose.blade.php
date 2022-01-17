@@ -35,7 +35,7 @@
             
             <x-slot name="button">
                 <div class="flex flex-wrap justify-between lg:max-w-1/2">
-                    <x-button name="action" value="{{ empty($action) ? 'edit' : $action}}">{{ !empty($action) ? Str::title($action) : 'Submit' }}</x-button>
+                    <x-button name="action" value="{{ empty($action) ? 'submit' : $action}}">{{ !empty($action) ? Str::title($action) : 'Submit' }}</x-button>
                 </div>
             </x-slot>
             
