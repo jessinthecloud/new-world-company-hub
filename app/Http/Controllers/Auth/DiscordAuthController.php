@@ -85,6 +85,7 @@ class DiscordAuthController extends Controller
                 );
             }
             else{
+                // user already exists in some way
                 $user = $user->sole();
                 $user->update([
                         'name' => $discordUser->name,
@@ -92,6 +93,10 @@ class DiscordAuthController extends Controller
                         'discord_name' => $discordUser->nickname,
                     ]);
                 $user->save();
+                if(empty($user->getRoleNames()->all())){
+                    // assign imported users a default settlers role in their company
+                    $user->assignRole('settler');
+                }
             }
 
             // update or save discord data and tie to user
