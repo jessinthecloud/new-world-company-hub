@@ -37,7 +37,7 @@
                     class=""
                     type="text"
                     name="weapon_gear_score" 
-                    value="{{ old('weapon_gear_score') ?? $item?->gear_score ?? '' }}"
+                    value="{{ old('weapon_gear_score') ?? (isset($item) ? $item->gear_score : '') }}"
                     size="10"
                     :required="true" 
                 />
@@ -57,7 +57,7 @@
                     class=""
                     type="text"
                     name="armor_gear_score" 
-                    value="{{ old('armor_gear_score') ?? $item?->gear_score ?? '' }}"
+                    value="{{ old('armor_gear_score') ?? (isset($item) ? $item->gear_score : '') }}"
                     size="10"
                     :required="true" 
                 />
@@ -96,7 +96,7 @@
                         class=""
                         type="text"
                         name="name" 
-                        value="{{ old('name') ?? $item?->name ?? '' }}"
+                        value="{{ old('name') ?? (isset($item) ? $item->name : '') }}"
                         :required="true" 
                     />
                 </x-forms.field>
@@ -108,7 +108,7 @@
                         class=""
                         type="text"
                         name="gear_score" 
-                        value="{{ old('gear_score') ?? $item?->gear_score ?? '' }}"
+                        value="{{ old('gear_score') ?? (isset($item) ? $item->gear_score : '') }}"
                         size="10"
                         :required="true" 
                     />

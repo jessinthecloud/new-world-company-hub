@@ -266,7 +266,7 @@ $attributes->pluck( 'id' )->all(),
         // get item specifics
         $model = 'App\Models\Items\\'.Str::title($itemType);
         $item = $model::with('perks','base','attributes')->where('slug', $itemSlug)->sole();
-dump($itemSlug, $itemType,$item, $item->rarity);        
+//dump($itemSlug, $itemType,$item, $item->rarity);        
         $base_armors = BaseArmor::where('named', 0)->distinct()
             ->orderBy('name')/*->dd()->toSql();*/
             ->get()->mapWithKeys(function($base_armor){
@@ -520,10 +520,11 @@ $attributes->pluck( 'id' )->all(),
     public function choose(Request $request, $action=null )
     {
 //    dump('action: '.$request->action, 'item type: '.$request->itemType, 'item: '.$request->item, 'guildBank: '.$request->guildBank);
+
+        $action = $request->action;
         
         if($request->action == 'edit-item-type'){
-        
-            $action = $request->action;
+
             // already chose guildBank
             $guildBank = $request->guildBank;
             $form_action = route('guild-banks.find', [
@@ -541,7 +542,6 @@ $attributes->pluck( 'id' )->all(),
         
         if($request->action == 'edit-item'){
         
-            $action = $request->action;
             // already chose guildBank and item type
             $guildBank = $request->guildBank;
             $itemType = $request->itemType;
@@ -614,31 +614,11 @@ $attributes->pluck( 'id' )->all(),
         return redirect(
             route('guild-banks.'.$request->action, [
                 'guildBank'=>$request->guildBank->slug ?? $request->guildBank,
-                'action' => 'edit',
+                'action' => $request->action,
             ])
         );
     }
-
-    /**
-     * @param \Illuminate\Http\Request $request
-     * @param                          $itemType
-     * @param                          $item
-     *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
-    public function findItem(Request $request, $itemType, $item)
-    {
-dd($request->action, $request->itemType, $request->item);
-
-//    ddd($request);
-        return redirect(
-            route('guild-banks.'.$request->action, [
-                'guildBank'=>$request->guildBank->slug ?? $request->guildBank,
-                'itemType' => $itemType,
-                'item' => $item,
-            ])
-        );
-    }
+    
     
     // if guildbank is not in URL, defaults to current logged-in user's selected company to create one 
     public function show(Request $request, GuildBank $guildBank=null)
