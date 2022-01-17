@@ -71,7 +71,7 @@ class DiscordAuthController extends Controller
             $discordUser = Socialite::driver( 'discord' )->user();
             // find or create eloquent user with this discord name
             $user = User::where('discord_name',  $discordUser->nickname)->get();
-dd($discordUser);          
+//dd($discordUser);          
             if($user->isEmpty()){
                 // account may exist prior to logging in with discord
                 // and should be tied to discord data
