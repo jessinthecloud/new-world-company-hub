@@ -12,7 +12,7 @@
             :button-text="$button_text"
             class="flex flex-wrap justify-start"
             
-             x-data="{weapons: {}, armors: {}, isWeapon:0, isArmor:0, newEntry:false, fetch:false}"
+             x-data="{weapons: {}, armors: {}, isWeapon:{{ $isWeapon ?? 0 }}, isArmor:{{ $isArmor ?? 0 }}, newEntry:{{ $newEntry ?? 0 }}, fetch:false}"
         >
             
             <div class="buttons w-full flex flex-wrap justify-start items-center mt-4 mb-4" x-show="!isWeapon && !isArmor">
@@ -37,7 +37,7 @@
                     class=""
                     type="text"
                     name="weapon_gear_score" 
-                    value="{{ old('weapon_gear_score') ?? $guildBank->gear_score ?? '' }}"
+                    value="{{ old('weapon_gear_score') ?? $item?->gear_score ?? '' }}"
                     size="10"
                     :required="true" 
                 />
@@ -47,7 +47,7 @@
                 <x-forms.select name="weapon" id="weapon"
                     :values="$weapons ?? null"
                     :required="false"
-                >{!! $weapon_options ?? '' !!}</x-forms.select>
+                >{!! $base_weapon_options ?? '' !!}</x-forms.select>
             </x-forms.field>
             
             <x-forms.field :name="'armor_gear_score'" class="mb-6 mr-4" x-cloak x-show="isArmor && !newEntry">
@@ -57,7 +57,7 @@
                     class=""
                     type="text"
                     name="armor_gear_score" 
-                    value="{{ old('armor_gear_score') ?? $guildBank->gear_score ?? '' }}"
+                    value="{{ old('armor_gear_score') ?? $item?->gear_score ?? '' }}"
                     size="10"
                     :required="true" 
                 />
@@ -67,7 +67,7 @@
                 <x-forms.select name="armor" id="armor"
                     :values="$armors ?? null"
                     :required="false"
-                >{!! $armor_options ?? '' !!}</x-forms.select>
+                >{!! $base_armor_options ?? '' !!}</x-forms.select>
             </x-forms.field>   
             
             <x-forms.field :name="'rarity'" class="mb-6 mr-4" x-cloak x-show="(isArmor || isWeapon) && !newEntry">
@@ -96,7 +96,7 @@
                         class=""
                         type="text"
                         name="name" 
-                        value="{{ old('name') ?? $guildBank->name ?? '' }}"
+                        value="{{ old('name') ?? $item?->name ?? '' }}"
                         :required="true" 
                     />
                 </x-forms.field>
@@ -108,7 +108,7 @@
                         class=""
                         type="text"
                         name="gear_score" 
-                        value="{{ old('gear_score') ?? $guildBank->gear_score ?? '' }}"
+                        value="{{ old('gear_score') ?? $item?->gear_score ?? '' }}"
                         size="10"
                         :required="true" 
                     />
@@ -166,15 +166,11 @@
                             <x-forms.select name="perks[]" id="perks"
                                 :values="$perks ?? null"
                                 :required="false"
+                                :multiple="true"
+                                size="15"
                             >{!! $perk_options ?? '' !!}</x-forms.select>
                         </x-forms.field>
                     </div>
-                    
-                    <div id="appended-perks">
-                        
-                    </div>
-    
-                    <x-button id="add-perk" type="button" class="mb-4">Add Another Perk</x-button>
     
                 </div>
                 

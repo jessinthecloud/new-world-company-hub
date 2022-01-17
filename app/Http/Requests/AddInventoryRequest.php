@@ -46,7 +46,7 @@ class AddInventoryRequest extends FormRequest
             'gear_score'         => ['required_with:name', 'numeric', 'nullable'],
             'armor_type'         => ['required_if:is_armor,true', /*new Enum(ArmorType::class),*/],
             'weapon_type'        => ['required_if:is_weapon,true', /*new Enum(WeaponType::class),*/],
-            'tier'               => ['required_with:name', /*new Enum(Tier::class),*/ 'nullable'],
+            'tier'               => [/*new Enum(Tier::class),*/ 'nullable'],
             'weight_class'       => ['nullable', /*new Enum(WeightClass::class)*/],
         ];
     }

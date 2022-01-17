@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Companies;
 
 use App\Enums\ArmorType;
 use App\Enums\AttributeType;
+use App\Enums\ItemType;
 use App\Enums\Rarity;
 use App\Enums\Tier;
 use App\Enums\WeaponType;
@@ -41,42 +42,33 @@ class GuildBanksController extends Controller
     public function create( GuildBank $guildBank )
     {
         // add items to bank
-        // or edit company attached (super-admin)
-        $companies = Company::orderBy('name')->distinct()->get()->mapWithKeys(function($company){
-            return [$company->slug => $company->name];
-        })->all();
-
-        $company_options = '';
-        foreach($companies as $value => $text) {
-            $company_options .= '<option value="'.$value.'">'.$text.'</option>';
-        }
         
-        $armor = BaseArmor::where('named', 0)->distinct()
+        $base_armor = BaseArmor::where('named', 0)->distinct()
             ->orderBy('name')/*->dd()->toSql();*/
-            ->get()->mapWithKeys(function($armor){
+            ->get()->mapWithKeys(function($base_armor){
         
-            $wtype = $armor->type;
+            $wtype = $base_armor->type;
             $type = !empty($wtype) ? constant("App\Enums\ArmorType::$wtype")->value : null;
         
-            return [$armor->slug => $armor->name . " (".(!empty($armor->weight_class) ? $armor->weight_class.' ' : '').$type.") Tier ".$armor->tier];
+            return [$base_armor->slug => $base_armor->name . " (".(!empty($base_armor->weight_class) ? $base_armor->weight_class.' ' : '').$type.") Tier ".$base_armor->tier];
         })->all();
-//        ddd($guildBank, $companies, $armor);
+//        ddd($guildBank, $companies, $base_armor);
 
-        $armor_options = '<option value=""></option>';
-        foreach($armor as $value => $text) {
-            $armor_options .= '<option value="'.$value.'">'.$text.'</option>';
+        $base_armor_options = '<option value=""></option>';
+        foreach($base_armor as $value => $text) {
+            $base_armor_options .= '<option value="'.$value.'">'.$text.'</option>';
         }
         
-        $weapons = BaseWeapon::/*with('perks')->*/where('named', 0)->orderBy('name')->orderBy('tier')->distinct()->get()->mapWithKeys(function($weapon){
-        $wtype = $weapon->type;
+        $base_weapons = BaseWeapon::/*with('perks')->*/where('named', 0)->orderBy('name')->orderBy('tier')->distinct()->get()->mapWithKeys(function($base_weapon){
+        $wtype = $base_weapon->type;
         $type = !empty($wtype) ? constant("App\Enums\WeaponType::$wtype")->value : null;
         
-            return [$weapon->slug => $weapon->name . " ($type) Tier ".$weapon->tier];
+            return [$base_weapon->slug => $base_weapon->name . " ($type) Tier ".$base_weapon->tier];
         })->all();
 
-        $weapon_options = '<option value=""></option>';
-        foreach($weapons as $value => $text) {
-            $weapon_options .= '<option value="'.$value.'">'.$text.'</option>';
+        $base_weapon_options = '<option value=""></option>';
+        foreach($base_weapons as $value => $text) {
+            $base_weapon_options .= '<option value="'.$value.'">'.$text.'</option>';
         }
         
         $perks = Perk::orderBy('name')->distinct()->get()->mapWithKeys(function($perk){
@@ -121,8 +113,8 @@ class GuildBanksController extends Controller
         return view(
             'dashboard.guild-bank.create-edit',
             [
-                'armor_options' => $armor_options,
-                'weapon_options' => $weapon_options,
+                'base_armor_options' => $base_armor_options,
+                'base_weapon_options' => $base_weapon_options,
                 'armor_type_options' => $armor_type_options,
                 'weapon_type_options' => $weapon_type_options,
                 'perk_options' => $perk_options,
@@ -130,7 +122,6 @@ class GuildBanksController extends Controller
                 'tier_options' => $tier_options,
                 'weight_class_options' => $weight_class_options,
                 'attribute_options' => $attribute_options,
-                'company_options' => $company_options,
                 'method' => 'POST',
                 'form_action' => route('guild-banks.store', ['guildBank'=>$guildBank->slug]),
                 'button_text' => 'Add Item',
@@ -261,45 +252,55 @@ $attributes->pluck( 'id' )->all(),
         ]);    
     } // end store()
 
-    public function edit( GuildBank $guildBank )
+    /** 
+     * @param \App\GuildBank $guildBank
+     * @param                $itemType // Weapon/Armor/Material
+     * @param                $item // slug of specific item
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function edit( Request $request, GuildBank $guildBank )
     {
-        // add items to bank
-        // or edit company attached (super-admin)
-        $companies = Company::orderBy('name')->distinct()->get()->mapWithKeys(function($company){
-            return [$company->slug => $company->name];
-        })->all();
-
-        $company_options = '';
-        foreach($companies as $value => $text) {
-            $company_options .= '<option value="'.$value.'">'.$text.'</option>';
-        }
-        
-        $armor = BaseArmor::where('named', 0)->distinct()
+        $itemSlug = $request->item;
+        $itemType = $request->itemType;
+        // get item specifics
+        $model = 'App\Models\Items\\'.Str::title($itemType);
+        $item = $model::with('perks','base','attributes')->where('slug', $itemSlug)->sole();
+dump($itemSlug, $itemType,$item, $item->rarity);        
+        $base_armors = BaseArmor::where('named', 0)->distinct()
             ->orderBy('name')/*->dd()->toSql();*/
-            ->get()->mapWithKeys(function($armor){
+            ->get()->mapWithKeys(function($base_armor){
         
-            $wtype = $armor->type;
+            $wtype = $base_armor->type;
             $type = !empty($wtype) ? constant("App\Enums\ArmorType::$wtype")->value : null;
         
-            return [$armor->slug => $armor->name . " (".(!empty($armor->weight_class) ? $armor->weight_class.' ' : '').$type.") Tier ".$armor->tier];
+            return [$base_armor->slug => $base_armor->name . " (".(!empty($base_armor->weight_class) ? $base_armor->weight_class.' ' : '').$type.") Tier ".$base_armor->tier];
         })->all();
-//        ddd($guildBank, $companies, $armor);
+//        ddd($guildBank, $companies, $base_armor);
 
-        $armor_options = '<option value=""></option>';
-        foreach($armor as $value => $text) {
-            $armor_options .= '<option value="'.$value.'">'.$text.'</option>';
+        $base_armor_options = '<option value=""></option>';
+        foreach($base_armors as $value => $text) {
+            $base_armor_options .= '<option value="'.$value.'"';
+                if($value == $item->slug){
+                    $base_armor_options .= ' SELECTED ';
+                }
+            $base_armor_options .= '>'.$text.'</option>';
         }
         
-        $weapons = BaseWeapon::/*with('perks')->*/where('named', 0)->orderBy('name')->orderBy('tier')->distinct()->get()->mapWithKeys(function($weapon){
-        $wtype = $weapon->type;
+        $base_weapons = BaseWeapon::/*with('perks')->*/where('named', 0)->orderBy('name')->orderBy('tier')->distinct()->get()->mapWithKeys(function($base_weapon){
+        $wtype = $base_weapon->type;
         $type = !empty($wtype) ? constant("App\Enums\WeaponType::$wtype")->value : null;
         
-            return [$weapon->slug => $weapon->name . " ($type) Tier ".$weapon->tier];
+            return [$base_weapon->slug => $base_weapon->name . " ($type) Tier ".$base_weapon->tier];
         })->all();
 
-        $weapon_options = '<option value=""></option>';
-        foreach($weapons as $value => $text) {
-            $weapon_options .= '<option value="'.$value.'">'.$text.'</option>';
+        $base_weapon_options = '<option value=""></option>';
+        foreach($base_weapons as $value => $text) {
+            $base_weapon_options .= '<option value="'.$value.'"';
+                if($value == $item->slug){
+                    $base_weapon_options .= ' SELECTED ';
+                }
+            $base_weapon_options .= '>'.$text.'</option>';
         }
         
         $perks = Perk::orderBy('name')->distinct()->get()->mapWithKeys(function($perk){
@@ -308,44 +309,77 @@ $attributes->pluck( 'id' )->all(),
 
         $perk_options = '<option value=""></option>';
         foreach($perks as $value => $text) {
-            $perk_options .= '<option value="'.$value.'">'.$text.'</option>';
+            $perk_options .= '<option value="'.$value.'"';
+                if(in_array($value, $item->perks->pluck('slug')->all())){
+                    $perk_options .= ' selected="selected" ';
+                }
+            $perk_options .= '>'.$text.'</option>';
         }
 
         $weapon_type_options = '';
         foreach(collect(WeaponType::cases())->sortBy('value')->all() as $type) {
-            $weapon_type_options .= '<option value="'.$type->name.'">'.$type->value.'</option>';
+            $weapon_type_options .= '<option value="'.$type->name.'"';
+                if(strtolower($value) == strtolower($itemType)){
+                    $weapon_type_options .= ' SELECTED ';
+                }
+            $weapon_type_options .= '>'.$type->value.'</option>';
         }
         
         $armor_type_options = '';
         foreach(collect(ArmorType::cases())->sortBy('value')->all() as $type) {
-            $armor_type_options .= '<option value="'.$type->name.'">'.$type->value.'</option>';
+            $armor_type_options .= '<option value="'.$type->name.'"';
+                if(strtolower($value) == strtolower($itemType)){
+                    $armor_type_options .= ' SELECTED ';
+                }
+            $armor_type_options .= '>'.$type->value.'</option>';
         }
         
         $rarity_options = '<option value=""></option>';
         foreach(Rarity::cases() as $type) {
-            $rarity_options .= '<option value="'.$type->name.'">'.$type->value.'</option>';
+             $rarity_options .= '<option value="'.$type->name.'"';
+                if(strtolower($type->value) == strtolower($item->rarity)){
+                    $rarity_options .= ' SELECTED ';
+                }
+            $rarity_options .= '>'.$type->value.'</option>';
         }
         
         $tier_options = '<option value=""></option>';
         foreach(Tier::cases() as $type) {
-            $tier_options .= '<option value="'.$type->name.'">'.$type->value.'</option>';
+            $tier_options .= '<option value="'.$type->name.'"';
+                if(strtolower($type->value) == strtolower($item->tier)){
+                    $tier_options .= ' SELECTED ';
+                }
+            $tier_options .= '>'.$type->value.'</option>';
         }
         
         $weight_class_options = '<option value="">None</option>';
         foreach(WeightClass::cases() as $type) {
-            $weight_class_options .= '<option value="'.$type->name.'">'.$type->value.'</option>';
+            $weight_class_options .= '<option value="'.$type->name.'"';
+                if(strtolower($type->value) == strtolower($item->weight_class)){
+                    $weight_class_options .= ' SELECTED ';
+                }
+            $weight_class_options .= '>'.$type->value.'</option>';
         }
         
         $attribute_options = '<option value=""></option>';
         foreach(collect(AttributeType::cases())->sortBy('value')->all() as $type) {
-            $attribute_options .= '<option value="'.$type->name.'">'.$type->value.'</option>';
+            $attribute_options .= '<option value="'.$type->name.'"';
+                if(strtolower($type->value) == strtolower($item->attribute)){
+                    $attribute_options .= ' SELECTED ';
+                }
+            $attribute_options .= '>'.$type->value.'</option>';
         }
 
         return view(
             'dashboard.guild-bank.create-edit',
             [
-                'armor_options' => $armor_options,
-                'weapon_options' => $weapon_options,
+                'base_armor_options' => $base_armor_options,
+                'base_weapon_options' => $base_weapon_options,
+                'item' => $item,
+                'itemType' => $itemType,
+                'isWeapon' => strtolower($itemType) == 'weapon' ? 1 : 0,
+                'isArmor' => strtolower($itemType) == 'armor' ? 1 : 0,
+                'newEntry' => isset($item?->base?->id) ? 0 : 1,
                 'armor_type_options' => $armor_type_options,
                 'weapon_type_options' => $weapon_type_options,
                 'perk_options' => $perk_options,
@@ -353,10 +387,9 @@ $attributes->pluck( 'id' )->all(),
                 'tier_options' => $tier_options,
                 'weight_class_options' => $weight_class_options,
                 'attribute_options' => $attribute_options,
-                'company_options' => $company_options,
                 'method' => 'PUT',
                 'form_action' => route('guild-banks.update', ['guildBank'=>$guildBank->slug]),
-                'button_text' => 'Add Item',
+                'button_text' => 'Edit Item',
             ]
         );
     }
@@ -403,7 +436,7 @@ $base,
                 'description' => $validated['description'] ?? $base?->description ?? null,
                 'tier' => $tier ?? $base?->tier ?? null,
                 'rarity' => $rarity ?? $base?->rarity ?? null,
-                'gear_score' => $validated['gear_score'] ?? $validated['weapon_gear_score'] ?? $base?->gear_score ?? null,
+                'gear_score' => $validated['gear_score'] ?? $validated['weapon_gear_score'] ?? $validated['armor_gear_score'] ?? $base?->gear_score ?? null,
            ]);
 
         }
@@ -479,31 +512,130 @@ $attributes->pluck( 'id' )->all(),
         return redirect(route('dashboard'))->with([
             'status'=> [
                 'type'=>'success',
-                'message' => 'Inventory added successfully: '.($item->name ?? $base->name)
+                'message' => 'Inventory edited successfully: '.($item->name ?? $base->name)
             ]
         ]);    
     }
     
-    public function choose(Request $request)
+    public function choose(Request $request, $action=null )
     {
-    dump($request->action);
+//    dump('action: '.$request->action, 'item type: '.$request->itemType, 'item: '.$request->item, 'guildBank: '.$request->guildBank);
+        
+        if($request->action == 'edit-item-type'){
+        
+            $action = $request->action;
+            // already chose guildBank
+            $guildBank = $request->guildBank;
+            $form_action = route('guild-banks.find', [
+                'action'=>$request->action,
+                'guildBank'=>$request->guildBank
+            ]);
+            
+            $itemTypes = ItemType::toAssociative();
+
+            return view(
+                'dashboard.guild-bank.choose',
+                compact('guildBank', 'action', 'form_action', 'itemTypes')
+            );
+        }
+        
+        if($request->action == 'edit-item'){
+        
+            $action = $request->action;
+            // already chose guildBank and item type
+            $guildBank = $request->guildBank;
+            $itemType = $request->itemType;
+            $form_action = route('guild-banks.find', [
+                'action'=>$request->action,
+                'guildBank'=>$request->guildBank
+            ]);
+            
+            $model = 'App\Models\Items\\'.Str::title($itemType);
+//            dump('App\Models\Items\\'.Str::title($itemType), $request->guildBank,'company: ',$guildBank);
+            $items = $model::whereRelation('company', 'slug', $guildBank?->slug ?? $guildBank)->get()->mapWithKeys(function($item){
+                return [$item->slug => $item->name];
+            })->all();
+
+            return view(
+                'dashboard.guild-bank.choose',
+                compact('guildBank', 'action', 'form_action', 'itemType', 'items')
+            );
+        }
+        
         $guildBanks = Company::orderBy('name')->get()->mapWithKeys(function($guildBank){
             return [$guildBank->slug => $guildBank->name.' Guild Bank'];
         })->all();
         $form_action = route('guild-banks.find', ['action'=>$request->action]);
-dump('FORM ACTION: '.$form_action);
+        
+//dump('FORM ACTION: '.$form_action);
+
         return view(
             'dashboard.guild-bank.choose',
-            compact('guildBanks', 'form_action')
+            compact('guildBanks', 'action', 'form_action')
         );
     }
 
     public function find(Request $request)
     {
+//    dd('action: '.$request->action, 'item type: '.$request->itemType, 'item: '.$request->item, 'guildBank: '.$request->guildBank);
+
+//    ddd($request);
+        // if editing and already chose a company,send back to choose an item to edit
+        if($request->action == 'edit' && empty($request->item)){
+            return redirect(
+                route('guild-banks.choose', [
+                    'guildBank'=>$request->guildBank,
+                    'action' => 'edit-item-type'
+                ])
+            );
+        } 
+        
+        if($request->action == 'edit-item-type' && empty($request->item)){
+            return redirect(
+                route('guild-banks.choose', [
+                    'guildBank'=>$request->guildBank,
+                    'itemType'=>$request->itemType,
+                    'action' => 'edit-item'
+                ])
+            );
+        } 
+        
+        if($request->action == 'edit-item'){
+            return redirect(
+                route('guild-banks.edit', [
+                    'guildBank'=>$request->guildBank,
+                    'itemType'=>$request->itemType,
+                    'item'=>$request->item,
+                    'action' => 'edit'
+                ])
+            );
+        } 
+        
+        return redirect(
+            route('guild-banks.'.$request->action, [
+                'guildBank'=>$request->guildBank->slug ?? $request->guildBank,
+                'action' => 'edit',
+            ])
+        );
+    }
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @param                          $itemType
+     * @param                          $item
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function findItem(Request $request, $itemType, $item)
+    {
+dd($request->action, $request->itemType, $request->item);
+
 //    ddd($request);
         return redirect(
             route('guild-banks.'.$request->action, [
-                'guildBank'=>$request->guildBank->slug ?? $request->guildBank
+                'guildBank'=>$request->guildBank->slug ?? $request->guildBank,
+                'itemType' => $itemType,
+                'item' => $item,
             ])
         );
     }
