@@ -21,7 +21,7 @@
                 :phpClass="$phpClass" 
                 :route="isset($instance) 
                     ? route($pluralEntityName.'.show', [$entityName=>$instance->slug]) 
-                    : route($pluralEntityName.'.choose')"
+                    : route($pluralEntityName.'.choose', ['action'=>'show'])"
                 :instance="$instance"
             >
                 {{ $buttonTexts['view'] ?? 'View' }}
@@ -47,7 +47,7 @@
                 :phpClass="$phpClass" 
                 :route="isset($instance) 
                     ? route($pluralEntityName.'.edit', [$entityName=>$instance->slug]) 
-                    : route($pluralEntityName.'.choose')"
+                    : route($pluralEntityName.'.choose', ['action'=>'edit'])"
                 :instance="$instance"
             >
                 {{ $buttonTexts['edit'] ?? 'Edit' }}
@@ -60,7 +60,7 @@
                 :phpClass="$phpClass"
                 :route="isset($instance) 
                     ? route($pluralEntityName.'.destroy', [$entityName=>$instance->slug]) 
-                    : route($pluralEntityName.'.choose')"
+                    : route($pluralEntityName.'.choose', ['action'=>'destroy'])"
                 :instance="$instance"
             >
                 {{ $buttonTexts['delete'] ?? 'Delete' }}
