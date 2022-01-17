@@ -185,7 +185,7 @@ Route::get( '/base-weapons/{baseWeapon}', function(BaseWeapon $baseWeapon){
             ->name( 'rosters.import.store' );
         
         Route::resource( 'rosters', \App\Http\Controllers\Companies\RostersController::class )
-            ->except( ['index', 'show'] );
+            ->except( ['create', 'index', 'show'] );
             
         Route::resource( 'guild-banks', \App\Http\Controllers\Companies\GuildBanksController::class)
             ->except(['index', 'show', 'destroy'])
