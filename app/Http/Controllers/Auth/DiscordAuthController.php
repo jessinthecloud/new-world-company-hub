@@ -69,7 +69,6 @@ class DiscordAuthController extends Controller
     {
         try {
             $discordUser = Socialite::driver( 'discord' )->user();
-//dump($discordUser);
             // find or create eloquent user with this discord name
             $user = User::where('discord_name',  $discordUser->nickname)->get();
           
@@ -87,9 +86,7 @@ class DiscordAuthController extends Controller
             }
             else{
                 $user = $user->sole();
-                $user->update(
-                    ['discord_name' => $discordUser->nickname,],
-                    [
+                $user->update([
                         'name' => $discordUser->name,
                         'email' => $discordUser->email,
                         'discord_name' => $discordUser->nickname,
