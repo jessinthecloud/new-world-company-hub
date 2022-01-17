@@ -11,9 +11,28 @@
     {{-- additional header content --}}
     {!! $header_slot ?? '' !!}
 </x-layouts.html-head>
-    <div class="font-sans text-gray-900 antialiased">
+    
+    <!-- Page Heading -->
+    <header class="bg-white shadow">
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            @empty($header)
+                <x-header-title :title="$title ?? 'Welcome'"/>
+            @else
+                {{ $header ?? '' }}
+            @endempty
+        </div>
+    </header>
+    
+    @if(!empty(session('status')))
+    <!-- Session Status -->
+        <x-auth-session-status class="mb-6" :status="session('status')" />
+    @endif
+
+    <!-- Page Content -->
+    <main>
         {{ $slot }}
-    </div>
+    </main>
+    
 <x-layouts.html-footer>
     {{-- additional footer content --}}
     {!! $footer_slot ?? '' !!}

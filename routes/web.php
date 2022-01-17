@@ -19,8 +19,8 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', function () {
-//dump(Weapon::with('company')->first());
-    return view( 'welcome' );
+
+    return view( 'auth.login' );
 })
 ->name('home');
 
