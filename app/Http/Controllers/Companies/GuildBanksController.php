@@ -12,6 +12,7 @@ use App\Enums\WeightClass;
 use App\GuildBank;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddInventoryRequest;
+use App\Http\Requests\EditInventoryRequest;
 use App\Models\Companies\Company;
 use App\Models\Items\Armor;
 use App\Models\Items\Attribute;
@@ -164,6 +165,10 @@ $base,
 'type: '.$type,
 'gear score: '.($validated['gear_score'] ?? $validated['weapon_gear_score'] ?? null)
 );*/            
+            // TODO: check DB for uniqueness and append numbers if not  
+            $slug = $item->name
+                    . ( !empty( $rarity ) ? ' ' . $rarity : '' ) 
+                    . ( !empty( $tier ) ? ' t' . $tier : '' );
             $item = Weapon::create([
                 'name' => $validated['name'] ?? $base->name,
                 'slug' => isset($validated['name']) ? Str::slug($validated['name']) : $base->slug,
@@ -188,7 +193,14 @@ $base,
 'weight class: '.$weight_class, 
 'type: '.$type,
 'gear score: '.($validated['gear_score'] ?? $validated['armor_gear_score'] ?? null)
-); */           
+); */       
+
+            // create unique slug
+            // TODO: check DB for uniqueness and append numbers if not  
+            $slug = $item->name 
+                . (!empty($rarity) ? ' '.$rarity : '') 
+                . (!empty($tier) ? ' t'.$tier : '') 
+                . (!empty($weight_class) ? ' '.$weight_class : '');    
             $item = Armor::create([
                 'name' => $validated['name'] ?? $base?->name ?? null,
                 'slug' => isset($validated['name']) ? Str::slug($validated['name']) : $base->slug,
@@ -266,7 +278,7 @@ $attributes->pluck( 'id' )->all(),
         // get item specifics
         $model = 'App\Models\Items\\'.Str::title($itemType);
         $item = $model::with('perks','base','attributes')->where('slug', $itemSlug)->sole();
-//dump($itemSlug, $itemType,$item, $item->rarity);        
+dump($itemSlug, $itemType, $item->slug);        
         $base_armors = BaseArmor::where('named', 0)->distinct()
             ->orderBy('name')/*->dd()->toSql();*/
             ->get()->mapWithKeys(function($base_armor){
@@ -394,7 +406,7 @@ $attributes->pluck( 'id' )->all(),
         );
     }
 
-    public function update( AddInventoryRequest $request, GuildBank $guildBank )
+    public function update( EditInventoryRequest $request, GuildBank $guildBank )
     {
 
         // Retrieve the validated input data...
@@ -415,7 +427,10 @@ $validated
 'tier: '.$tier,
 'rarity: '.$rarity
 ); */ 
-        
+
+        $model = 'App\Models\Items\\'.Str::title($validated['itemType']);
+        $item = $model::where('slug', $validated['slug'])->first();
+dump($item,$model,$validated['slug']);        
         // create instanced item
         if($validated['is_weapon']){
             
@@ -428,17 +443,21 @@ $validated
 $base,
 'type: '.$type,
 'gear score: '.($validated['gear_score'] ?? $validated['weapon_gear_score'] ?? null)
-);*/            
-            $item = Weapon::create([
+);*/          
+            // TODO: check DB for uniqueness and append numbers if not  
+            $slug = $item->name
+                    . ( !empty( $rarity ) ? ' ' . $rarity : '' ) 
+                    . ( !empty( $tier ) ? ' t' . $tier : '' );
+            
+            $item->update([
                 'name' => $validated['name'] ?? $base->name,
-                'slug' => isset($validated['name']) ? Str::slug($validated['name']) : $base->slug,
+                'slug' => $base->slug ?? $slug,
                 'type' => $type ?? $base->type,
                 'description' => $validated['description'] ?? $base?->description ?? null,
                 'tier' => $tier ?? $base?->tier ?? null,
                 'rarity' => $rarity ?? $base?->rarity ?? null,
                 'gear_score' => $validated['gear_score'] ?? $validated['weapon_gear_score'] ?? $validated['armor_gear_score'] ?? $base?->gear_score ?? null,
            ]);
-
         }
         else{
             // get base armor
@@ -453,10 +472,17 @@ $base,
 'weight class: '.$weight_class, 
 'type: '.$type,
 'gear score: '.($validated['gear_score'] ?? $validated['armor_gear_score'] ?? null)
-); */           
-            $item = Armor::create([
+); */       
+            // create unique slug
+            // TODO: check DB for uniqueness and append numbers if not  
+            $slug = $item->name 
+                . (!empty($rarity) ? ' '.$rarity : '') 
+                . (!empty($tier) ? ' t'.$tier : '') 
+                . (!empty($weight_class) ? ' '.$weight_class : '');
+            
+            $item->update([
                 'name' => $validated['name'] ?? $base?->name ?? null,
-                'slug' => isset($validated['name']) ? Str::slug($validated['name']) : $base->slug,
+                'slug' => $base->slug ?? $slug,
                 'type' => $type ?? $base->type,
                 'description' => $validated['description'] ?? $base?->description ?? null,
                 'tier' => $tier ?? $base?->tier ?? null,
@@ -519,7 +545,7 @@ $attributes->pluck( 'id' )->all(),
     
     public function choose(Request $request, $action=null )
     {
-//    dump('action: '.$request->action, 'item type: '.$request->itemType, 'item: '.$request->item, 'guildBank: '.$request->guildBank);
+    dump('action: '.$request->action, 'item type: '.$request->itemType, 'item: '.$request->item, 'guildBank: '.$request->guildBank);
 
         $action = $request->action;
         

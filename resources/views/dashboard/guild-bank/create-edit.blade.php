@@ -14,7 +14,6 @@
             
              x-data="{weapons: {}, armors: {}, isWeapon:{{ $isWeapon ?? 0 }}, isArmor:{{ $isArmor ?? 0 }}, newEntry:{{ $newEntry ?? 0 }}, fetch:false}"
         >
-            
             <div class="buttons w-full flex flex-wrap justify-start items-center mt-4 mb-4" x-show="!isWeapon && !isArmor">
                 <x-button 
                     id="add-weapon" type="button" class="mb-4 mr-4"
@@ -211,6 +210,8 @@
 
             <x-forms.input type="hidden" name="is_weapon" x-bind:value="isWeapon"/>
             <x-forms.input type="hidden" name="is_armor" x-bind:value="isArmor"/>
+            <input type="hidden" name="slug" value="{{isset($item) ? $item->slug : ''}}"/>
+            <input type="hidden" name="itemType" value="{{$itemType ?? ''}}"/>
 
             <x-slot name="button">
                 <x-button id="submit-button" class="mt-8" x-cloak x-show="isWeapon || isArmor">{{ $button_text }}</x-button>
