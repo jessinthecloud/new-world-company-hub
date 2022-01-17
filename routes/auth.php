@@ -23,12 +23,12 @@ Route::get('/auth/discord/callback', [\App\Http\Controllers\Auth\DiscordAuthCont
 /**
  * Breeze Routes
  */
-Route::get('/register', [RegisteredUserController::class, 'create'])
+/*Route::get('/register', [RegisteredUserController::class, 'create'])
                 ->middleware('guest')
                 ->name('register');
 
 Route::post('/register', [RegisteredUserController::class, 'store'])
-                ->middleware('guest');
+                ->middleware('guest');*/
 
 Route::get('/login', [AuthenticatedSessionController::class, 'create'])
                 ->middleware('guest')
