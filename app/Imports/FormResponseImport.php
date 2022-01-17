@@ -34,10 +34,20 @@ class FormResponseImport implements ToCollection, WithHeadingRow, WithCalculated
 //        dump('Form Response Import Class');
 //        dump($rows);
 
+        // remove duplicates, keeping newest
+        // check uniqueness via in game name and discord name
+        $rows = $rows->sortByDesc('timestamp')->unique(function ($item) {
+                return $item['in_game_name'];
+            })->filter();
+
+        
         //  heading keys are formatted with the Laravel str_slug() helper.
         // E.g. this means all spaces are converted to _
         foreach ($rows as $row) 
         {
+            if(!isset($row['in_game_name'])){
+                continue;
+            }    
 //        dump($row);
             // find or create eloquent user
             $user = User::updateOrCreate(
