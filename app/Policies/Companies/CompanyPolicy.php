@@ -58,16 +58,20 @@ class CompanyPolicy
             $user->can(['view companies']) 
             ||
             (
+                !empty($user->characters->all())
+                &&
                 (
-                    $user->can('view own companies')
-                    &&
-                    $user->characters->where('company.id', $company->id)
-                )
-                ||
-                (
-                    $user->can('view own faction companies') 
-                    &&
-                    ($user->characters->where('faction.id', $company->faction->id)->count() > 0)
+                    (
+                        $user->can('view own companies')
+                        &&
+                        $user->characters->where('company.id', $company->id)
+                    )
+                    ||
+                    (
+                        $user->can('view own faction companies') 
+                        &&
+                        ($user->characters->where('faction.id', $company->faction->id)->count() > 0)
+                    )
                 )
             ) 
         );
@@ -83,17 +87,21 @@ class CompanyPolicy
     {
         return (
             $user->can('edit companies') 
-            || ( 
-                (
-                    $user->can('edit own companies') 
-                    &&
-                    ($user->characters->where('company.id', $company->id)->count() > 0) 
-                ) 
-                ||
-                (
-                    $user->can('edit own faction companies') 
-                    &&
-                    ($user->characters->where('faction.id', $company->faction->id)->count() > 0) 
+            || (
+                !empty($user->characters->all())
+                &&
+                ( 
+                    (
+                        $user->can('edit own companies') 
+                        &&
+                        ($user->characters->where('company.id', $company->id)->count() > 0) 
+                    ) 
+                    ||
+                    (
+                        $user->can('edit own faction companies') 
+                        &&
+                        ($user->characters->where('faction.id', $company->faction->id)->count() > 0) 
+                    )
                 )
             )
         );
@@ -106,6 +114,8 @@ class CompanyPolicy
             ||
             (
                 $user->can('delete own companies')
+                &&
+                !empty($user->characters->all())
                 &&
                 ($user->characters->where('company.id', $company->id)->count() > 0) 
             )

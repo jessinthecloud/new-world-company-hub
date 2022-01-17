@@ -60,22 +60,26 @@ class RosterPolicy
             $user->can(['view rosters']) 
             ||
             (
-                (
-                    $user->can('view own rosters')
-                    &&
-                    ($user->rosters()->where('id', $roster->id)->count() > 0)
-                )
-                ||
-                (
-                    $user->can('view own company rosters') 
-                    &&
-                    ($user->rosters()->where('company.id', $roster->company->id)->count() > 0)
-                )
-                ||
-                (
-                    $user->can('view own faction rosters') 
-                    &&
-                    ($user->rosters()->where('faction.id', $roster->faction->id)->count() > 0)
+                !empty($user->rosters())
+                &&
+                (    
+                    (
+                        $user->can('view own rosters')
+                        &&
+                        ($user->rosters()->where('id', $roster->id)->count() > 0)
+                    )
+                    ||
+                    (
+                        $user->can('view own company rosters') 
+                        &&
+                        ($user->rosters()->where('company.id', $roster->company->id)->count() > 0)
+                    )
+                    ||
+                    (
+                        $user->can('view own faction rosters') 
+                        &&
+                        ($user->rosters()->where('faction.id', $roster->faction->id)->count() > 0)
+                    )
                 )
             ) 
         );
@@ -90,23 +94,27 @@ class RosterPolicy
     {
         return (
             $user->can('edit rosters') 
-            || ( 
-                (
-                    $user->can('edit own rosters') 
-                    &&
-                    ($user->rosters()->where('id', $roster->id)->count() > 0) 
-                ) 
-                ||
-                (
-                    $user->can('edit own company rosters') 
-                    &&
-                    ($user->rosters()->where('company.id', $roster->company->id)->count() > 0) 
-                )
-                ||
-                (
-                    $user->can('edit own faction rosters') 
-                    &&
-                    ($user->rosters()->where('company.faction.id', $roster->faction->id)->count() > 0) 
+            || (
+                !empty($user->rosters())
+                &&
+                    ( 
+                    (
+                        $user->can('edit own rosters') 
+                        &&
+                        ($user->rosters()->where('id', $roster->id)->count() > 0) 
+                    ) 
+                    ||
+                    (
+                        $user->can('edit own company rosters') 
+                        &&
+                        ($user->rosters()->where('company.id', $roster->company->id)->count() > 0) 
+                    )
+                    ||
+                    (
+                        $user->can('edit own faction rosters') 
+                        &&
+                        ($user->rosters()->where('company.faction.id', $roster->faction->id)->count() > 0) 
+                    )
                 )
             )
         );
@@ -118,23 +126,27 @@ class RosterPolicy
             $user->can('delete rosters') 
             ||
             (
+                !empty($user->characters->all())
+                &&
                 (
-                    $user->can('delete own rosters')
-                    &&
-                    ($user->characters->where('company.roster.id', $roster->id)->count() > 0)
+                    (
+                        $user->can('delete own rosters')
+                        &&
+                        ($user->characters->where('company.roster.id', $roster->id)->count() > 0)
+                    )
+                    ||
+                    (
+                        $user->can('delete own company rosters') 
+                        &&
+                        ($user->characters->where('company.id', $roster->company->id)->count() > 0) 
+                    )
+                    ||
+                    (
+                        $user->can('delete own faction rosters') 
+                        &&
+                        ($user->characters->where('faction.id', $roster->faction->id)->count() > 0) 
+                    )
                 )
-                ||
-                (
-                    $user->can('delete own company rosters') 
-                    &&
-                    ($user->characters->where('company.id', $roster->company->id)->count() > 0) 
-                )
-                ||
-                (
-                    $user->can('delete own faction rosters') 
-                    &&
-                    ($user->characters->where('faction.id', $roster->faction->id)->count() > 0) 
-                ) 
             )
         );
     }
@@ -155,23 +167,27 @@ class RosterPolicy
             $user->can(['import rosters']) 
             ||
             (
+                !empty($user->characters->all())
+                &&
                 (
-                    $user->can('import own company rosters')
-                    &&
                     (
-                        ($user->rosters()->where('company.id', $user->character()->company->id)->count() > 0)
-                    ||
-                        ($user->characters->where('company.id', $user->character()->company->id)->count() > 0)
-                    )
-                )
-                ||
-                (
-                    $user->can('import own faction rosters') 
-                    &&
-                    (
-                        ($user->rosters()->where('company.faction.id', $user->character()->faction->id)->count() > 0)
+                        $user->can('import own company rosters')
+                        &&
+                        (
+                            ($user->rosters()->where('company.id', $user->character()->company->id)->count() > 0)
                         ||
-                        ($user->characters->where('company.faction.id', $user->character()->faction->id)->count() > 0)
+                            ($user->characters->where('company.id', $user->character()->company->id)->count() > 0)
+                        )
+                    )
+                    ||
+                    (
+                        $user->can('import own faction rosters') 
+                        &&
+                        (
+                            ($user->rosters()->where('company.faction.id', $user->character()->faction->id)->count() > 0)
+                            ||
+                            ($user->characters->where('company.faction.id', $user->character()->faction->id)->count() > 0)
+                        )
                     )
                 )
             ) 

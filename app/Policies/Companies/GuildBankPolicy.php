@@ -57,22 +57,26 @@ class GuildBankPolicy
             $user->can(['view guildbanks']) 
             ||
             (
+                !empty($user->characters->all())
+                &&
                 (
-                    $user->can('view own guildbanks')
-                    &&
-                    ($user->characters->where('company.id', $guildBank->company()->id)->count() > 0)
-                )
-                ||
-                (
-                    $user->can('view own company guildbanks') 
-                    &&
-                    ($user->characters->where('company.id', $guildBank->company()->id)->count() > 0)
-                )
-                ||
-                (
-                    $user->can('view own faction guildbanks') 
-                    &&
-                    ($user->characters->where('faction.id', $guildBank->company()->faction->id)->count() > 0)
+                    (
+                        $user->can('view own guildbanks')
+                        &&
+                        ($user->characters->where('company.id', $guildBank->company()->id)->count() > 0)
+                    )
+                    ||
+                    (
+                        $user->can('view own company guildbanks') 
+                        &&
+                        ($user->characters->where('company.id', $guildBank->company()->id)->count() > 0)
+                    )
+                    ||
+                    (
+                        $user->can('view own faction guildbanks') 
+                        &&
+                        ($user->characters->where('faction.id', $guildBank->company()->faction->id)->count() > 0)
+                    )
                 )
             ) 
         );
@@ -89,22 +93,27 @@ class GuildBankPolicy
         return (
             $user->can('edit guildbanks') 
             || ( 
+            !empty($user->characters->all())
+                &&
                 (
-                    $user->can('edit own guildbanks') 
-                    &&
-                    ($user->characters->where('company.id', $guildBank->company()->id)->count() > 0) 
-                )
-                ||
-                (
-                    $user->can('edit own company guildbanks') 
-                    &&
-                    ($user->characters->where('company.id', $guildBank->company()->id)->count() > 0) 
-                )
-                ||
-                (
-                    $user->can('edit own faction guildbanks') 
-                    &&
-                    ($user->characters->where('faction.id', $guildBank->company()->faction->id)->count() > 0) 
+                    
+                    (
+                        $user->can('edit own guildbanks') 
+                        &&
+                        ($user->characters->where('company.id', $guildBank->company()->id)->count() > 0) 
+                    )
+                    ||
+                    (
+                        $user->can('edit own company guildbanks') 
+                        &&
+                        ($user->characters->where('company.id', $guildBank->company()->id)->count() > 0) 
+                    )
+                    ||
+                    (
+                        $user->can('edit own faction guildbanks') 
+                        &&
+                        ($user->characters->where('faction.id', $guildBank->company()->faction->id)->count() > 0) 
+                    )
                 )
             )
         );
@@ -117,6 +126,8 @@ class GuildBankPolicy
             ||
             (
                 $user->can('delete own guildbanks')
+                &&
+                !empty($user->characters->all())
                 &&
                 ($user->characters->where('company.id', $guildBank->company()->id)->count() > 0) 
             )
