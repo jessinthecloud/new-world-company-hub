@@ -13,7 +13,7 @@ class BaseArmor extends Model
      *
      * @var array
      */
-    protected $with = ['perks'];
+    protected $with = [];//['perks'];
     
     /**
      * Get the route key for the model.

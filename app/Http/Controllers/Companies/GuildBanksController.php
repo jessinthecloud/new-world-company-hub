@@ -42,7 +42,6 @@ class GuildBanksController extends Controller
     {
         // add items to bank
         // or edit company attached (super-admin)
-        
         $companies = Company::orderBy('name')->distinct()->get()->mapWithKeys(function($company){
             return [$company->slug => $company->name];
         })->all();
@@ -52,21 +51,23 @@ class GuildBanksController extends Controller
             $company_options .= '<option value="'.$value.'">'.$text.'</option>';
         }
         
-        $armor = BaseArmor::distinct()->with('perks')
-            ->where('named', 0)->orderBy('name')->get()->mapWithKeys(function($armor){
+        $armor = BaseArmor::where('named', 0)->distinct()
+            ->orderBy('name')/*->dd()->toSql();*/
+            ->get()->mapWithKeys(function($armor){
         
             $wtype = $armor->type;
             $type = !empty($wtype) ? constant("App\Enums\ArmorType::$wtype")->value : null;
         
             return [$armor->slug => $armor->name . " (".(!empty($armor->weight_class) ? $armor->weight_class.' ' : '').$type.") Tier ".$armor->tier];
         })->all();
+//        ddd($guildBank, $companies, $armor);
 
         $armor_options = '<option value=""></option>';
         foreach($armor as $value => $text) {
             $armor_options .= '<option value="'.$value.'">'.$text.'</option>';
         }
         
-        $weapons = BaseWeapon::with('perks')->where('named', 0)->orderBy('name')->orderBy('tier')->distinct()->get()->mapWithKeys(function($weapon){
+        $weapons = BaseWeapon::/*with('perks')->*/where('named', 0)->orderBy('name')->orderBy('tier')->distinct()->get()->mapWithKeys(function($weapon){
         $wtype = $weapon->type;
         $type = !empty($wtype) ? constant("App\Enums\WeaponType::$wtype")->value : null;
         
@@ -131,7 +132,7 @@ class GuildBanksController extends Controller
                 'attribute_options' => $attribute_options,
                 'company_options' => $company_options,
                 'method' => 'PUT',
-                'form_action' => route('guild-banks.update', ['guild_bank'=>$guildBank]),
+                'form_action' => route('guild-banks.update', ['guildBank'=>$guildBank->slug]),
                 'button_text' => 'Update',
             ]
         );
@@ -218,13 +219,12 @@ $base,
         // attach perks
         $perks = Perk::whereIn('slug', $validated['perks'])->get();
 //dump('perks: ', $perks, $perks->pluck('id')->all());
-        if(!empty($perks->pluck('id')->all())) {
+        if(!empty(array_filter($perks->pluck('id')->all()))) {
             $item->perks()->attach($perks->pluck('id')->all());
         }
         
         // attach attributes
-        if(!empty($validated['attrs'])) {
-        
+        if(!empty(array_filter($validated['attrs']))) {
             $attrs = [];
             $amounts = [];
             foreach($validated['attrs'] as $key => $attr){
@@ -250,7 +250,8 @@ $attributes->pluck( 'id' )->all(),
         }
         
         // attach to bank
-        $item->companies()->attach($guildBank->company->id);
+        $item->company()->associate($guildBank->company()->id);
+        $item->save();
         
         return redirect(route('dashboard'))->with([
             'status'=> [
@@ -263,7 +264,7 @@ $attributes->pluck( 'id' )->all(),
     public function choose()
     {
         $guildBanks = GuildBank::get()->sortBy('company.name')->mapWithKeys(function($guildBank){
-            return [$guildBank->id => $guildBank->company->name.' Guild Bank'];
+            return [$guildBank->id => $guildBank->company()->name.' Guild Bank'];
         })->all();
         $form_action = route('guild-banks.find');
 
@@ -278,7 +279,7 @@ $attributes->pluck( 'id' )->all(),
 //    ddd($request);
         return redirect(
             route('guild-banks.'.$request->action, [
-                'guild_bank'=>$request->guildBank
+                'guildBank'=>$request->guildBank->slug
             ])
         );
     }

@@ -71,7 +71,7 @@
             </x-forms.field>            
             
             <div class="flex items-center" x-cloak x-show="(isWeapon || isArmor) && !newEntry">
-                <x-button type="button" class="bg-red-200 text-gray-700 hover:text-gray-100 hover:bg-red-500"
+                <x-button type="button" class="mb-6 bg-red-200 text-gray-700 hover:text-gray-100 hover:bg-red-500"
                     @click="newEntry=true"
                 >
                     My item isn't listed

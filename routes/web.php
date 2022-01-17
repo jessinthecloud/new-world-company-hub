@@ -188,7 +188,10 @@ Route::get( '/base-weapons/{baseWeapon}', function(BaseWeapon $baseWeapon){
             ->except( ['index', 'show'] );
             
         Route::resource( 'guild-banks', \App\Http\Controllers\Companies\GuildBanksController::class)
-            ->except(['index', 'show', 'destroy']);
+            ->except(['index', 'show', 'destroy'])
+            ->parameters([
+                'guild-banks' => 'guildBank'
+            ]);
     });
 // ##
 // ## END OFFICER

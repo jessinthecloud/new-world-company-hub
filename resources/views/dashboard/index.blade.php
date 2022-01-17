@@ -64,7 +64,7 @@
             <x-dashboard.resource-index
                 :title="'Guild Bank'"
                 :phpClass="\App\GuildBank::class" 
-                :entityName="'guild_bank'"
+                :entityName="'guildBank'"
                 :pluralEntityName="'guild-banks'"
                 :instance="$guildBank ?? null"
             />
