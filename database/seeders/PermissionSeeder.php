@@ -49,6 +49,7 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'delete guildbanks']);
         // their company's
         Permission::create(['name' => 'view own company guildbanks']);
+        Permission::create(['name' => 'create own company guildbanks']);
         Permission::create(['name' => 'edit own company guildbanks']);
         Permission::create(['name' => 'delete own company guildbanks']);
         // their factions'
