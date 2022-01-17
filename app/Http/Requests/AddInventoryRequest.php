@@ -29,6 +29,11 @@ class AddInventoryRequest extends FormRequest
             ],
             'armor_gear_score'    => [/*'required_with:armor',*/ 'numeric', 'nullable'],
             
+            // rarity always input
+            'rarity'             => ['required_without:custom_rarity', /*new Enum(Rarity::class)*/],
+            'custom_rarity'      => ['required_without:rarity', /*new Enum(Rarity::class)*/],
+
+            
             // perks
             'perks'               => ['array', 'nullable'],
             'perks.*'             => ['exists:perks,slug', 'nullable'],
@@ -41,7 +46,6 @@ class AddInventoryRequest extends FormRequest
             'gear_score'         => ['required_with:name', 'numeric', 'nullable'],
             'armor_type'         => ['required_if:is_armor,true', /*new Enum(ArmorType::class),*/],
             'weapon_type'        => ['required_if:is_weapon,true', /*new Enum(WeaponType::class),*/],
-            'rarity'             => ['required_with:name', /*new Enum(Rarity::class)*/],
             'tier'               => ['required_with:name', /*new Enum(Tier::class),*/ 'nullable'],
             'weight_class'       => ['nullable', /*new Enum(WeightClass::class)*/],
         ];

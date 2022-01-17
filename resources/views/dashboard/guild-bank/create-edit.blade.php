@@ -30,7 +30,7 @@
                 </x-button>
             </div>
                 
-            <x-forms.field :name="'weapon_gear_score'" class="mb-6 mr-4" x-show="isWeapon && !newEntry">
+            <x-forms.field :name="'weapon_gear_score'" class="mb-6 mr-4" x-cloak x-show="isWeapon && !newEntry">
                 <x-forms.label for="weapon_gear_score" :required="true">Gear Score:</x-forms.label>
                 <x-forms.input 
                     id="weapon_gear_score"
@@ -42,7 +42,7 @@
                     :required="true" 
                 />
             </x-forms.field>
-            <x-forms.field :name="'weapon'" class="mb-6" x-show="isWeapon && !newEntry">
+            <x-forms.field :name="'weapon'" class="mb-6" x-cloak x-show="isWeapon && !newEntry">
                 <x-forms.label for="weapon" :required="false">Weapon:</x-forms.label>
                 <x-forms.select name="weapon" id="weapon"
                     :values="$weapons ?? null"
@@ -50,7 +50,7 @@
                 >{!! $weapon_options ?? '' !!}</x-forms.select>
             </x-forms.field>
             
-            <x-forms.field :name="'armor_gear_score'" class="mb-6 mr-4" x-show="isArmor && !newEntry">
+            <x-forms.field :name="'armor_gear_score'" class="mb-6 mr-4" x-cloak x-show="isArmor && !newEntry">
                 <x-forms.label for="armor_gear_score" :required="true">Gear Score:</x-forms.label>
                 <x-forms.input 
                     id="armor_gear_score"
@@ -62,13 +62,21 @@
                     :required="true" 
                 />
             </x-forms.field>
-            <x-forms.field :name="'armor'" class="mb-6" x-show="isArmor && !newEntry">
+            <x-forms.field :name="'armor'" class="mb-6" x-cloak x-show="isArmor && !newEntry">
                 <x-forms.label for="armor" :required="false">Armor:</x-forms.label>
                 <x-forms.select name="armor" id="armor"
                     :values="$armors ?? null"
                     :required="false"
                 >{!! $armor_options ?? '' !!}</x-forms.select>
-            </x-forms.field>            
+            </x-forms.field>   
+            
+            <x-forms.field :name="'rarity'" class="mb-6 mr-4" x-cloak x-show="(isArmor || isWeapon) && !newEntry">
+                <x-forms.label for="rarity" :required="true">Rarity:</x-forms.label>
+                <x-forms.select name="rarity" id="rarity"
+                    :values="$raritys ?? null"
+                    :required="true"
+                >{!! $rarity_options ?? '' !!}</x-forms.select>
+            </x-forms.field>
             
             <div class="flex items-center" x-cloak x-show="(isWeapon || isArmor) && !newEntry">
                 <x-button type="button" class="mb-6 bg-red-200 text-gray-700 hover:text-gray-100 hover:bg-red-500"
@@ -130,9 +138,9 @@
                     >{!! $weapon_type_options ?? '' !!}</x-forms.select>
                 </x-forms.field>
                 
-                <x-forms.field :name="'rarity'" class="mb-6 mr-4">
-                    <x-forms.label for="rarity" :required="true">Rarity:</x-forms.label>
-                    <x-forms.select name="rarity" id="rarity"
+                <x-forms.field :name="'custom_rarity'" class="mb-6 mr-4">
+                    <x-forms.label for="custom-rarity" :required="true">Rarity:</x-forms.label>
+                    <x-forms.select name="custom_rarity" id="custom-rarity"
                         :values="$raritys ?? null"
                         :required="true"
                     >{!! $rarity_options ?? '' !!}</x-forms.select>

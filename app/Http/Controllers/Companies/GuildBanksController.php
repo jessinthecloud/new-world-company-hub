@@ -98,7 +98,7 @@ class GuildBanksController extends Controller
             $armor_type_options .= '<option value="'.$type->name.'">'.$type->value.'</option>';
         }
         
-        $rarity_options = '';
+        $rarity_options = '<option value=""></option>';
         foreach(Rarity::cases() as $type) {
             $rarity_options .= '<option value="'.$type->name.'">'.$type->value.'</option>';
         }
@@ -133,7 +133,7 @@ class GuildBanksController extends Controller
                 'company_options' => $company_options,
                 'method' => 'PUT',
                 'form_action' => route('guild-banks.update', ['guildBank'=>$guildBank->slug]),
-                'button_text' => 'Update',
+                'button_text' => 'Add Item',
             ]
         );
     }
