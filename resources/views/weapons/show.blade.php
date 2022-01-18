@@ -12,7 +12,7 @@
         <div id="wrapper-inner" class="max-w-7xl mx-auto flex flex-wrap sm:px-6 lg:px-8">
 <!--            --><?php //dump($weapon); ?>
             <h1 class="w-full"> {{ $weapon->gear_score }} -- {{ $weapon->name }}</h1>
-            <div class="w-1/2">
+            <div class="w-full lg:w-1/2">
                 <h2 class="w-full">Perks</h2>
                 <ul>
                     @foreach($weapon->perks as $perk)
