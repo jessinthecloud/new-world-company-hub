@@ -14,7 +14,7 @@ class BaseWeaponSeeder extends Seeder
 {
     public function run()
     {
-        $dir = __DIR__ . '/../../storage/app/json/weapons';
+        $dir = __DIR__ . '/../../storage/app/json/items/weapons';
         $files = new RecursiveIteratorIterator(
             new RecursiveDirectoryIterator( $dir, RecursiveDirectoryIterator::SKIP_DOTS )
         );
@@ -25,6 +25,8 @@ class BaseWeaponSeeder extends Seeder
             $insert = [];
             $bucket_perk_ids = [];
             foreach ( $weapons as $weapon ) {
+                $weapon=$weapon->data;
+
                 // create unique slug
                 $slug = $weapon->name
                     . ( str_contains($weapon->id, 'cast') ? ' cast' : '' )

@@ -14,7 +14,7 @@ class BaseArmorSeeder extends Seeder
 {
     public function run()
     {
-        $dir = __DIR__ . '/../../storage/app/json/armors';
+        $dir = __DIR__ . '/../../storage/app/json/items/armors';
         $files = new RecursiveIteratorIterator(
             new RecursiveDirectoryIterator( $dir, RecursiveDirectoryIterator::SKIP_DOTS )
         );
@@ -26,7 +26,7 @@ class BaseArmorSeeder extends Seeder
             $insert = [];
             $bucket_perk_ids = [];
             foreach ( $armors as $armor ) {
-            
+                $armor=$armor->data;
 
 /*$b = collect($armor->perkBuckets)->first()->perks;
 dd(
