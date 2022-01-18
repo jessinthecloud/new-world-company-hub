@@ -23,9 +23,13 @@ class WeaponsController extends Controller
         //
     }
 
-    public function show( Weapon $weapon )
+    public function show( Request $request, Weapon $weapon )
     {
-        //
+        $weapon = $weapon->load('perks', 'attributes');
+        
+        return $request->query('popup') == 1
+            ? view('armors.popup', ['weapon' => $weapon]) 
+            : view('weapons.show', ['weapon' => $weapon]);
     }
 
     public function edit( Weapon $weapon )

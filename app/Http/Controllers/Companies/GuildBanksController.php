@@ -223,7 +223,7 @@ $base,
         $perks = Perk::whereIn('slug', $validated['perks'])->get();
 //dump('perks: ', $perks, $perks->pluck('id')->all());
         if(!empty(array_filter($perks->pluck('id')->all()))) {
-            $item->perks()->attach($perks->pluck('id')->all());
+            $item->perks()->sync($perks->pluck('id')->all());
         }
         
         // attach attributes
@@ -245,10 +245,13 @@ $attributes->pluck( 'id' )->all(),
 'Guild Bank: ' . $guildBank->id
 );*/
             if ( !empty( $attributes->pluck( 'id' )->all() ) ) {
+                $attrs_to_sync = [];
                 // also attach with amounts
                 foreach($attributes as $attribute){
-                    $item->attributes()->attach($attribute->id, ['amount' => $amounts[$attribute->slug]]);
+                    $attrs_to_sync [$attribute->id] = ['amount' => $amounts[$attribute->slug]];
+//                    $item->attributes()->sync($attribute->id, ['amount' => $amounts[$attribute->slug]]);
                 }
+                $item->attributes()->sync($attrs_to_sync);
             }
         }
         
@@ -372,21 +375,35 @@ dump($itemSlug, $itemType, $item->slug);
                 }
             $weight_class_options .= '>'.$type->value.'</option>';
         }
-        
+//dump($item->attributes);        
         $attribute_options = '<option value=""></option>';
         foreach(collect(AttributeType::cases())->sortBy('value')->all() as $type) {
-            $attribute_options .= '<option value="'.$type->name.'"';
-                if(strtolower($type->value) == strtolower($item->attribute)){
-                    $attribute_options .= ' SELECTED ';
-                }
-            $attribute_options .= '>'.$type->value.'</option>';
+            $attribute_options .= '<option value="'.$type->name.'">'.$type->value.'</option>';
         }
+        
+        // existing attributes
+        $existing_attribute_options = [];
+        $existing_attribute_amounts = [];
+        foreach($item->attributes->all() as $attribute){
+            $existing_attribute_amounts [$attribute->id]= $attribute->pivot->amount;
+            $existing_attribute_options [$attribute->id]= '<option value=""></option>';
+            foreach(collect(AttributeType::cases())->sortBy('value')->all() as $type) {
+                $existing_attribute_options [$attribute->id].= '<option value="'.$type->name.'"';
+                    if($type->name == $attribute->name){
+                        $existing_attribute_options [$attribute->id].= ' SELECTED ';
+                    }
+                $existing_attribute_options [$attribute->id].= '>'.$type->value.'</option>';
+            }
+        }
+        
 
         return view(
             'dashboard.guild-bank.create-edit',
             [
                 'base_armor_options' => $base_armor_options,
                 'base_weapon_options' => $base_weapon_options,
+                'existing_attribute_options'=>$existing_attribute_options,
+                'existing_attribute_amounts'=>$existing_attribute_amounts,
                 'item' => $item,
                 'itemType' => $itemType,
                 'isWeapon' => strtolower($itemType) == 'weapon' ? 1 : 0,

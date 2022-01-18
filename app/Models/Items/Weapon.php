@@ -44,12 +44,12 @@ class Weapon extends Model
     
     public function perks()
     {
-        return $this->belongsToMany(Perk::class);
+        return $this->belongsToMany(Perk::class)->distinct(); //->groupBy('perks.id');
     }
     
     public function attributes()
     {
-        return $this->belongsToMany(Attribute::class)->withPivot('amount');
+        return $this->belongsToMany(Attribute::class)->withPivot('amount')->distinct(); //->groupBy('attributes.id', 'amount');
     }
     
     public function company()

@@ -14,19 +14,19 @@ class BaseArmorSeeder extends Seeder
 {
     public function run()
     {
-        $dir = __DIR__ . '/../../storage/app/json/armors';
+        $dir = __DIR__ . '/../../storage/app/json/items/armors';
         $files = new RecursiveIteratorIterator(
             new RecursiveDirectoryIterator( $dir, RecursiveDirectoryIterator::SKIP_DOTS )
         );
         foreach ( $files as $file ) {
-//    dump($file->getPathname());
+//            dump('unpacking: '.$file->getPathname());
 
             $armors = json_decode( file_get_contents( $file->getPathname() ) );
 
             $insert = [];
             $bucket_perk_ids = [];
             foreach ( $armors as $armor ) {
-            
+                $armor=$armor->data;
 
 /*$b = collect($armor->perkBuckets)->first()->perks;
 dd(
@@ -35,16 +35,60 @@ $b,
 'chance', collect($b)->pluck('chance')
 );*/                
                 // create unique slug
-                $slug = $armor->name 
-                    . ( str_contains($armor->id, 'cast') ? ' cast' : '' )
-                    . ( str_contains($armor->id, 'drop') ? ' drop' : '' )
-                    . ( str_contains($armor->id, 'dynasty') ? ' dynasty' : '' )
-                    . ( str_contains($armor->id, 'corrupted') ? ' corrupted' : '' )
-                    . (!empty($armor->rarity) ? ' '.$armor->rarity : '') 
-                    . (!empty($armor->tier) ? ' t'.$armor->tier : '') 
-                    . (!empty($armor->weightClass) ? ' '.$armor->weightClass : '');
-                    
-                $slug = Str::slug($slug);
+                $slug = ( !empty( $armor->itemClass[2] ) ? $armor->itemClass[2] . ' ' : '' )
+                    . $armor->name
+                    . ( !empty( $armor->rarity ) ? ' ' . $armor->rarity : '' ) 
+                    . ( !empty( $armor->tier ) ? ' t' . $armor->tier : '' );
+                
+                $slug = Str::slug( $slug );
+                
+                // see if slug exists
+                // in table 
+                $bw = BaseArmor::where('slug', 'like' , $slug.'%')->count();
+                // in pending inserts
+                $iw = collect( $insert )->pluck('slug')->filter(function($value, $key) use ($slug){
+//        dump(' ---  ',$value);
+//                    if(is_string($value)) dump('-- INNER -- key: '.$key.' -- value: '.$value.' -- slug to match: '.$slug);
+                    // find duplicate slugs that may not be exact match
+                    $match = (is_string($value) && str_contains($value, $slug));
+//                    if($match) dump ('*** MATCH ***', $value, $slug);
+                    return $match;
+                })->count();
+/*if(str_contains($slug, 'defiled-tower')) {
+    dump(
+        '
+
+',
+//        collect( $insert )->pluck( 'slug' )->all(),
+        'slug: '.$slug. ' name: '.$armor->name. ' type: '.$armor->itemClass[2].' --> '. $type. ' json id: '.$armor->id,
+        ' 
+        LIKE : ',collect( $insert )->pluck('slug')->filter(function($value, $key) use ($slug){
+//        dump(' ---  ',$value);
+                    if(is_string($value)) dump('-- INNER -- key: '.$key.' -- value: '.$value.' -- slug to match: '.$slug);
+                    // find duplicate slugs that may not be exact match
+                    $match = (is_string($value) && str_contains($value, $slug));
+                    if($match) dump ('*** MATCH ***');
+                    return $match;
+                })->all(),
+        'EQUAL : ',collect( $insert )->where( 'slug', '=', $slug )->pluck('slug')->all(),
+        '
+
+'
+    );
+} */               
+                $newslug = $slug;
+                if($bw > 0){
+//                dump('SLUG '.$slug.' EXISTS in DATABASE --'.$bw.'-- times');
+                    $newslug = $slug.'-x'.($bw+1);
+//                    dump('new slug: '.$newslug);
+                }
+                if($iw > 0){
+//                dump('SLUG '.$slug.' EXISTS in PENDING --'.$iw.'-- times');
+                    $newslug = $slug.'-x'.($bw+$iw+1);
+//                    dump('new slug: '.$newslug);
+                }
+                
+                $slug = $newslug;
                 
                 // save for batch query later
                 foreach ( $armor->perkBuckets as $bucket ) {

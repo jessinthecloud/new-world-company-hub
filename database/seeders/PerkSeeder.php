@@ -17,10 +17,12 @@ class PerkSeeder extends Seeder
             new RecursiveDirectoryIterator( $dir, RecursiveDirectoryIterator::SKIP_DOTS )
         );
         foreach ( $files as $file ) {
+        dump('unpacking: '.$file->getPathname());
             $perks = json_decode( file_get_contents( $file->getPathname() ) );
 
             $insert = [];
             foreach ( $perks as $perk ) {
+                $perk=$perk->data;
                 // create unique slug
                 $slug = Str::slug( $perk->name );
 
