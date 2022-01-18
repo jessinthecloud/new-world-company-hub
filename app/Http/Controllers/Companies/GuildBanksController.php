@@ -44,7 +44,7 @@ class GuildBanksController extends Controller
     {
         // add items to bank
         
-        $base_armor = BaseArmor::where('named', 0)->distinct()
+        $base_armor = BaseArmor::where('named', 0)->where('bindOnPickup', 0)->distinct()
             ->orderBy('name')/*->dd()->toSql();*/
             ->get()->mapWithKeys(function($base_armor){
         
@@ -60,7 +60,7 @@ class GuildBanksController extends Controller
             $base_armor_options .= '<option value="'.$value.'">'.$text.'</option>';
         }
         
-        $base_weapons = BaseWeapon::/*with('perks')->*/where('named', 0)->orderBy('name')->orderBy('tier')->distinct()->get()->mapWithKeys(function($base_weapon){
+        $base_weapons = BaseWeapon::/*with('perks')->*/where('named', 0)->where('bindOnPickup', 0)->orderBy('name')->orderBy('tier')->distinct()->get()->mapWithKeys(function($base_weapon){
         $wtype = $base_weapon->type;
         $type = !empty($wtype) ? constant("App\Enums\WeaponType::$wtype")->value : null;
         
@@ -282,7 +282,7 @@ $attributes->pluck( 'id' )->all(),
         $model = 'App\Models\Items\\'.Str::title($itemType);
         $item = $model::with('perks','base','attributes')->where('slug', $itemSlug)->sole();
 dump($itemSlug, $itemType, $item->slug);        
-        $base_armors = BaseArmor::where('named', 0)->distinct()
+        $base_armors = BaseArmor::where('named', 0)->where('bindOnPickup', 0)->distinct()
             ->orderBy('name')/*->dd()->toSql();*/
             ->get()->mapWithKeys(function($base_armor){
         
@@ -302,7 +302,7 @@ dump($itemSlug, $itemType, $item->slug);
             $base_armor_options .= '>'.$text.'</option>';
         }
         
-        $base_weapons = BaseWeapon::/*with('perks')->*/where('named', 0)->orderBy('name')->orderBy('tier')->distinct()->get()->mapWithKeys(function($base_weapon){
+        $base_weapons = BaseWeapon::/*with('perks')->*/where('named', 0)->where('bindOnPickup', 0)->orderBy('name')->orderBy('tier')->distinct()->get()->mapWithKeys(function($base_weapon){
         $wtype = $base_weapon->type;
         $type = !empty($wtype) ? constant("App\Enums\WeaponType::$wtype")->value : null;
         
