@@ -176,26 +176,52 @@
                 <div class="attributes ml-4">
                     <h3>Attributes:</h3>
                     
-                    <div id="attr-wrapper" class="block w-full flex flex-wrap justify-start items-end">
-                        <x-forms.field :name="'attribute_amounts[]'">
-                            <x-forms.input
-                                id="attribute_amounts"
-                                class=""
-                                type="text"
-                                name="attribute_amounts[]"
-                                value="{{ old('attribute_amounts[]') ?? null }}"
-                                size="10"
-                                :required="false"
-                                placeholder="Amount"
-                            />
-                        </x-forms.field>
-                        <x-forms.field :name="'attrs'" class="mb-6">
-                            <x-forms.select name="attrs[]" id="attrs"
-                                :values="$attrs ?? null"
-                                :required="false"
-                            >{!! $attribute_options ?? '' !!}</x-forms.select>
-                        </x-forms.field>
-                    </div>
+                    @if(!empty($existing_attribute_options))
+                        @foreach($existing_attribute_options as $id => $options)
+                            <div id="attr-wrapper" class="block w-full flex flex-wrap justify-start items-end">
+                                <x-forms.field :name="'attribute_amounts[]'">
+                                    <x-forms.input
+                                        id="attribute_amounts"
+                                        class=""
+                                        type="text"
+                                        name="attribute_amounts[]"
+                                        value="{{ $existing_attribute_amounts[$id] }}"
+                                        size="10"
+                                        :required="false"
+                                        placeholder="Amount"
+                                    />
+                                </x-forms.field>
+                                <x-forms.field :name="'attrs'" class="mb-6">
+                                    <x-forms.select name="attrs[]" id="attrs"
+                                        :values="$attrs ?? null"
+                                        :required="false"
+                                    >{!! $options ?? '' !!}</x-forms.select>
+                                </x-forms.field>
+                            </div>
+                        @endforeach
+                    @else
+                        <div id="attr-wrapper" class="block w-full flex flex-wrap justify-start items-end">
+                            <x-forms.field :name="'attribute_amounts[]'">
+                                <x-forms.input
+                                    id="attribute_amounts"
+                                    class=""
+                                    type="text"
+                                    name="attribute_amounts[]"
+                                    value="{{ old('attribute_amounts[]') ?? null }}"
+                                    size="10"
+                                    :required="false"
+                                    placeholder="Amount"
+                                />
+                            </x-forms.field>
+                            <x-forms.field :name="'attrs'" class="mb-6">
+                                <x-forms.select name="attrs[]" id="attrs"
+                                    :values="$attrs ?? null"
+                                    :required="false"
+                                >{!! $attribute_options ?? '' !!}</x-forms.select>
+                            </x-forms.field>
+                        </div>
+                    @endif
+
                     
                     <div id="appended-attrs">
                         
