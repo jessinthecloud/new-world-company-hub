@@ -46,7 +46,7 @@ class BaseWeaponSeeder extends Seeder
 //                    if(is_string($value)) dump('-- INNER -- key: '.$key.' -- value: '.$value.' -- slug to match: '.$slug);
                     // find duplicate slugs that may not be exact match
                     $match = (is_string($value) && str_contains($value, $slug));
-                    if($match) dump ('*** MATCH ***', $value, $slug);
+//                    if($match) dump ('*** MATCH ***', $value, $slug);
                     return $match;
                 })->count();
 /*if(str_contains($slug, 'defiled-tower')) {
