@@ -25,6 +25,8 @@ class ArmorsController extends Controller
 
     public function show( Request $request, Armor $armor )
     {
+        $armor = $armor->load('perks', 'attributes');
+        
         return $request->query('popup') == 1
             ? view('armors.popup', ['armor' => $armor]) 
             : view('armors.show', ['armor' => $armor]);
