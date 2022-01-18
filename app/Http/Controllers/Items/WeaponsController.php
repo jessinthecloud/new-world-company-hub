@@ -25,7 +25,8 @@ class WeaponsController extends Controller
 
     public function show( Weapon $weapon )
     {
-        //
+        $weapon = $weapon->load('perks', 'attributes');
+        return view('weapons.show', ['weapon'=>$weapon]);
     }
 
     public function edit( Weapon $weapon )
