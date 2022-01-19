@@ -522,7 +522,7 @@ $base,
         $perks = Perk::whereIn('slug', $validated['perks'])->get();
 //dump('perks: ', $perks, $perks->pluck('id')->all());
         if(!empty(array_filter($perks->pluck('id')->all()))) {
-            $item->perks()->attach($perks->pluck('id')->all());
+            $item->perks()->sync($perks->pluck('id')->all());
         }
         
         // attach attributes
@@ -544,12 +544,15 @@ $attributes->pluck( 'id' )->all(),
 'Guild Bank: ' . $guildBank->id
 );*/
             if ( !empty( $attributes->pluck( 'id' )->all() ) ) {
+                $attrs_to_sync = [];
                 // also attach with amounts
                 foreach($attributes as $attribute){
-                    $item->attributes()->attach($attribute->id, ['amount' => $amounts[$attribute->slug]]);
+                    $attrs_to_sync [$attribute->id] = ['amount' => $amounts[$attribute->slug]];
+//                    $item->attributes()->sync($attribute->id, ['amount' => $amounts[$attribute->slug]]);
                 }
+                $item->attributes()->sync($attrs_to_sync);
             }
-        }
+        }        
         
         // attach to bank
         $item->company()->associate($guildBank->company()->id);
