@@ -188,12 +188,14 @@ $base,
             $type = !empty($type_input) ? constant("App\Enums\ArmorType::$type_input")?->value : null;
             
             $weight_class = !empty($validated['weight_class']) ? WeightClass::from($validated['weight_class'])->name : null;
-/*dump(
+/*dd(
 $base,
 'weight class: '.$weight_class, 
+'base type: '.$base->type,
+'base type converted: '.ArmorType::fromName($base->type)->value,
 'type: '.$type,
 'gear score: '.($validated['gear_score'] ?? $validated['armor_gear_score'] ?? null)
-); */       
+);*/        
 
             // create unique slug
             // TODO: check DB for uniqueness and append numbers if not  
@@ -204,7 +206,7 @@ $base,
             $item = Armor::create([
                 'name' => $validated['name'] ?? $base?->name ?? null,
                 'slug' => $base->slug ?? $slug,
-                'type' => $type ?? $base->type,
+                'type' => $type ?? ArmorType::fromName($base->type)->value,
                 'description' => $validated['description'] ?? $base?->description ?? null,
                 'tier' => $tier ?? $base?->tier ?? null,
                 'rarity' => $rarity ?? $base?->rarity ?? null,
@@ -281,7 +283,7 @@ $attributes->pluck( 'id' )->all(),
         // get item specifics
         $model = 'App\Models\Items\\'.Str::title($itemType);
         $item = $model::with('perks','base','attributes')->where('slug', $itemSlug)->sole();
-dump($itemSlug, $itemType, $item->slug);        
+//dump($itemSlug, $itemType, $item->slug);        
         $base_armors = BaseArmor::where('named', 0)->where('bindOnPickup', 0)->distinct()
             ->orderBy('name')/*->dd()->toSql();*/
             ->get()->mapWithKeys(function($base_armor){
@@ -447,7 +449,7 @@ $validated
 
         $model = 'App\Models\Items\\'.Str::title($validated['itemType']);
         $item = $model::where('slug', $validated['slug'])->first();
-dump($item,$model,$validated['slug']);        
+//dump($item,$model,$validated['slug']);        
         // create instanced item
         if($validated['is_weapon']){
             
@@ -501,7 +503,7 @@ $base,
             $item->update([
                 'name' => $validated['name'] ?? $base?->name ?? null,
                 'slug' => $base->slug ?? $slug,
-                'type' => $type ?? $base->type,
+                'type' => $type ?? ArmorType::fromName($base->type)->value,
                 'description' => $validated['description'] ?? $base?->description ?? null,
                 'tier' => $tier ?? $base?->tier ?? null,
                 'rarity' => $rarity ?? $base?->rarity ?? null,
@@ -563,7 +565,7 @@ $attributes->pluck( 'id' )->all(),
     
     public function choose(Request $request, $action=null )
     {
-    dump('action: '.$request->action, 'item type: '.$request->itemType, 'item: '.$request->item, 'guildBank: '.$request->guildBank);
+//    dump('action: '.$request->action, 'item type: '.$request->itemType, 'item: '.$request->item, 'guildBank: '.$request->guildBank);
 
         $action = $request->action;
         
@@ -674,7 +676,7 @@ $attributes->pluck( 'id' )->all(),
         
         $company = $guildBank->company();
 
-        $armors = ArmorType::valueToAssociative();
+        $armors = ArmorType::toAssociative();
         $weapons = WeaponType::valueToAssociative();
         $weight_class = WeightClass::valueToAssociative();
         $rarity = Rarity::valueToAssociative();
