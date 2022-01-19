@@ -26,6 +26,11 @@
                         <input type="hidden" name="guildBank" value="{{ $guildBank }}">
                     </x-forms.field>
                 @endempty
+            @elseif($action == 'destroy')
+                <x-forms.field :name="'item'">
+                    <x-forms.label for="item" :required="true">Choose:</x-forms.label>
+                    <x-forms.select id="item" type="text" name="item" class="" :required="true" :values="$items"/>
+                </x-forms.field>
             @else
                 <x-forms.field :name="'guildBank'">
                     <x-forms.label for="guildBank" :required="true">Choose:</x-forms.label>

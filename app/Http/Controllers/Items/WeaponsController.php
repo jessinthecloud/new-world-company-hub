@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Items;
 
+use App\Enums\WeaponType;
+use App\Enums\AttributeType;
+use App\Enums\Rarity;
 use App\Http\Controllers\Controller;
 use App\Models\Items\Weapon;
 use Illuminate\Http\Request;
@@ -27,9 +30,28 @@ class WeaponsController extends Controller
     {
         $weapon = $weapon->load('perks', 'attributes');
         
-        return $request->query('popup') == 1
-            ? view('armors.popup', ['weapon' => $weapon]) 
-            : view('weapons.show', ['weapon' => $weapon]);
+        $rarity_color = Rarity::from($weapon->rarity)->color();
+        $attributes = $weapon->attributes->map(function($attribute){
+            return AttributeType::fromName($attribute->name)->value;
+        })->all();
+        
+        $weapon->type = WeaponType::fromName($weapon->type)->value;
+        
+        // empty perk slots
+        $used_perk_slots = count($weapon->perks->all()) + count($weapon->attributes->all());
+        if($used_perk_slots < $weapon->base->num_perk_slots){
+            $empty_slots = $weapon->base->num_perk_slots - $used_perk_slots;
+        }
+        
+        $view = $request->query('popup') == 1 ? 'weapons.popup' : 'weapons.show';
+        
+        return view($view, [
+            'weapon' => $weapon,
+            'item_attributes' => $attributes,
+            'rarity_color' => $rarity_color,
+            'empty_slots' => $empty_slots ?? null,
+            'rarity' => strtolower($weapon->rarity),
+        ]);
     }
 
     public function edit( Weapon $weapon )

@@ -39,7 +39,8 @@ a.button-link {
   padding: 0.5rem;
 }
 
-.alert-danger {
+.alert-danger,
+.alert-error {
   background-color: #FEE2E2;
   border-color: #FECACA;
   color: #7F1D1D;

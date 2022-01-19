@@ -569,12 +569,12 @@ $attributes->pluck( 'id' )->all(),
 
         $action = $request->action;
         
-        if($request->action == 'edit-item-type'){
+        if($action == 'edit-item-type'){
 
             // already chose guildBank
             $guildBank = $request->guildBank;
             $form_action = route('guild-banks.find', [
-                'action'=>$request->action,
+                'action'=>$action,
                 'guildBank'=>$request->guildBank
             ]);
             
@@ -586,13 +586,13 @@ $attributes->pluck( 'id' )->all(),
             );
         }
         
-        if($request->action == 'edit-item'){
+        if($action == 'edit-item'){
         
             // already chose guildBank and item type
             $guildBank = $request->guildBank;
             $itemType = $request->itemType;
             $form_action = route('guild-banks.find', [
-                'action'=>$request->action,
+                'action'=>$action,
                 'guildBank'=>$request->guildBank
             ]);
             
@@ -608,10 +608,33 @@ $attributes->pluck( 'id' )->all(),
             );
         }
         
+        if($request->action == 'destroy'){
+
+            // already chose guildBank
+            $company = Company::where('slug', $request->guildBank)->sole();
+            $guildBank = new GuildBank($company);
+            
+            $method = 'DELETE';
+            $form_action = route('guild-banks.destroy', [
+                'action'=>$action,
+                'guildBank'=>$request->guildBank,
+            ]);
+       
+            $items = $guildBank->items()->mapWithKeys(function($item){
+                // need to indicate type in case IDs collide
+                return [strtolower($item->type).'-'.$item->id => $item->name];
+            })->all();
+
+            return view(
+                'dashboard.guild-bank.choose',
+                compact('guildBank', 'method', 'action', 'form_action', 'items')
+            );
+        }
+        
         $guildBanks = Company::orderBy('name')->get()->mapWithKeys(function($guildBank){
             return [$guildBank->slug => $guildBank->name.' Guild Bank'];
         })->all();
-        $form_action = route('guild-banks.find', ['action'=>$request->action]);
+        $form_action = route('guild-banks.find', ['action'=>$action]);
         
 //dump('FORM ACTION: '.$form_action);
 
@@ -708,8 +731,31 @@ $attributes->pluck( 'id' )->all(),
         );
     }
 
-    public function destroy( GuildBank $guildBank )
+    public function destroy( Request $request, GuildBank $guildBank )
     {
-        // governor / (super-admin)
+        // governor / (super-admin)        
+        $item_id = Str::afterLast($request->item, '-');
+        $item_type = Str::before($request->item, '-');
+        $model = "App\Models\Items\\".Str::studly($item_type);
+        $item = $model::find($item_id);
+        $count = $model::destroy($item_id);
+        
+//        dump($guildBank, $request->item, $model, $item_id, $item);
+        
+        if($count > 0){
+            return redirect(route('dashboard'))->with([
+                'status'=> [
+                    'type'=>'success',
+                    'message' => 'Inventory deleted successfully: '.$item->name
+                ]
+            ]);
+        }
+        
+        return redirect(route('dashboard'))->with([
+            'status'=> [
+                'type'=>'error',
+                'message' => 'Inventory deletion failed for '.$item->name.' (ID: '.$item->id.')',
+            ]
+        ]);
     }
 }
