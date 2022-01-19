@@ -17,6 +17,7 @@
                 :rarityColor="$rarity_color"
                 :rarity="$rarity"
                 :itemAttributes="$item_attributes"
+                :emptySlots="$empty_slots"
             />
         </div>
     </div>

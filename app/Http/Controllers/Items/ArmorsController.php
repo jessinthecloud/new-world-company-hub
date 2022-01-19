@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Items;
 
+use App\Enums\ArmorType;
 use App\Enums\AttributeType;
 use App\Enums\Rarity;
 use App\Http\Controllers\Controller;
@@ -33,20 +34,24 @@ class ArmorsController extends Controller
         $attributes = $armor->attributes->map(function($attribute){
             return AttributeType::fromName($attribute->name)->value;
         })->all();
-     
-        return $request->query('popup') == 1
-            ? view('armors.popup', [
-                'armor' => $armor,
-                'item_attributes' => $attributes,
-                'rarity_color' => $rarity_color,
-                'rarity' => strtolower($armor->rarity),
-            ]) 
-            : view('armors.show', [
-                'armor' => $armor,
-                'item_attributes' => $attributes,
-                'rarity_color' => $rarity_color,
-                'rarity' => strtolower($armor->rarity),
-            ]);
+        
+        $armor->type = ArmorType::fromName($armor->type)->value;
+        
+        // empty perk slots
+        $used_perk_slots = count($armor->perks->all()) + count($armor->attributes->all());
+        if($used_perk_slots < $armor->base->num_perk_slots){
+            $empty_slots = $armor->base->num_perk_slots - $used_perk_slots;
+        }
+        
+        $view = $request->query('popup') == 1 ? 'armors.popup' : 'armors.show';
+        
+        return view($view, [
+            'armor' => $armor,
+            'item_attributes' => $attributes,
+            'rarity_color' => $rarity_color,
+            'empty_slots' => $empty_slots ?? null,
+            'rarity' => strtolower($armor->rarity),
+        ]);
     }
 
     public function edit( Armor $armor )
