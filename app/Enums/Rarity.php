@@ -23,7 +23,7 @@ enum Rarity : string
             Rarity::R2 => '#57A848',
             Rarity::R3 => '#217897',
             Rarity::R4 => '#B257B0',
-            Rarity::R5 => '#D9852F',
+            Rarity::R5 => '#FFA837',
         };
     }
 }
