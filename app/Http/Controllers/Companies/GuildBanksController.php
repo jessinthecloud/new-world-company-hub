@@ -12,7 +12,7 @@ use App\Enums\WeightClass;
 use App\GuildBank;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddInventoryRequest;
-use App\Http\Requests\EditInventoryRequest;
+use App\Http\Requests\InventoryRequest;
 use App\Models\Companies\Company;
 use App\Models\Items\Armor;
 use App\Models\Items\Attribute;
@@ -81,16 +81,16 @@ class GuildBanksController extends Controller
             $perk_options .= '<option value="'.$value.'">'.$text.'</option>';
         }
 
-        $weapon_type_options = '';
+        $weapon_type_options = '<option value=""></option>';
         foreach(collect(WeaponType::cases())->sortBy('value')->all() as $type) {
             $weapon_type_options .= '<option value="'.$type->name.'">'.$type->value.'</option>';
         }
         
-        $armor_type_options = '';
+        $armor_type_options = '<option value=""></option>';
         foreach(collect(ArmorType::cases())->sortBy('value')->all() as $type) {
             $armor_type_options .= '<option value="'.$type->name.'">'.$type->value.'</option>';
         }
-        
+      
         $rarity_options = '<option value=""></option>';
         foreach(Rarity::cases() as $type) {
             $rarity_options .= '<option value="'.$type->name.'">'.$type->value.'</option>';
@@ -130,7 +130,7 @@ class GuildBanksController extends Controller
         );
     } // end create()
 
-    public function store( AddInventoryRequest $request, GuildBank $guildBank )
+    public function store( InventoryRequest $request, GuildBank $guildBank )
     {
 
         // Retrieve the validated input data...
@@ -331,7 +331,7 @@ dump($itemSlug, $itemType, $item->slug);
             $perk_options .= '>'.$text.'</option>';
         }
 
-        $weapon_type_options = '';
+        $weapon_type_options = '<option value=""></option>';
         foreach(collect(WeaponType::cases())->sortBy('value')->all() as $type) {
             $weapon_type_options .= '<option value="'.$type->name.'"';
                 if(strtolower($value) == strtolower($itemType)){
@@ -340,7 +340,7 @@ dump($itemSlug, $itemType, $item->slug);
             $weapon_type_options .= '>'.$type->value.'</option>';
         }
         
-        $armor_type_options = '';
+        $armor_type_options = '<option value=""></option>';
         foreach(collect(ArmorType::cases())->sortBy('value')->all() as $type) {
             $armor_type_options .= '<option value="'.$type->name.'"';
                 if(strtolower($value) == strtolower($itemType)){
@@ -423,7 +423,7 @@ dump($itemSlug, $itemType, $item->slug);
         );
     }
 
-    public function update( EditInventoryRequest $request, GuildBank $guildBank )
+    public function update( InventoryRequest $request, GuildBank $guildBank )
     {
 
         // Retrieve the validated input data...
@@ -484,12 +484,13 @@ $base,
             $type = !empty($type_input) ? constant("App\Enums\ArmorType::$type_input")?->value : null;
             
             $weight_class = !empty($validated['weight_class']) ? WeightClass::from($validated['weight_class'])->name : null;
-/*dump(
+/*dd(
 $base,
 'weight class: '.$weight_class, 
-'type: '.$type,
+'base type: '.$base->type,
+'type: '.$type,$type_input,
 'gear score: '.($validated['gear_score'] ?? $validated['armor_gear_score'] ?? null)
-); */       
+);*/        
             // create unique slug
             // TODO: check DB for uniqueness and append numbers if not  
             $slug = $item->name 

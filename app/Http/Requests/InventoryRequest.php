@@ -9,14 +9,14 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 
-class EditInventoryRequest extends FormRequest
+class InventoryRequest extends FormRequest
 {
     public function rules() : array
     {
         return [
             'is_armor'           => ['boolean'],
             'is_weapon'          => ['boolean'],
-            'slug'          => ['string', 'nullable'],
+            'slug'              => ['string', 'nullable'],
             'itemType'          => ['string', 'nullable'],
             'weapon'              => [
                 Rule::requiredIf(function () {
@@ -46,8 +46,8 @@ class EditInventoryRequest extends FormRequest
             // custom 
             'name'               => ['required_without_all:armor,weapon', 'string', 'nullable'],
             'gear_score'         => ['required_with:name', 'numeric', 'nullable'],
-            'armor_type'         => ['required_if:is_armor,true', /*new Enum(ArmorType::class),*/],
-            'weapon_type'        => ['required_if:is_weapon,true', /*new Enum(WeaponType::class),*/],
+            'armor_type'         => [/*'required_if:is_armor,true',*/ /*new Enum(ArmorType::class),*/ 'nullable'],
+            'weapon_type'        => [/*'required_if:is_weapon,true',*/ /*new Enum(WeaponType::class),*/ 'nullable'],
             'tier'               => [/*new Enum(Tier::class),*/ 'nullable'],
             'weight_class'       => ['nullable', /*new Enum(WeightClass::class)*/],
         ];
