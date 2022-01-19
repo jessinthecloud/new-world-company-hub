@@ -6,15 +6,23 @@
     lg:flex-nowrap
     "> 
         @isset($item->base?->icon)
-            <div class="item-icon w-24 h-24 border border-{{ $rarity }}-500 shadow-md">
+            <div class="item-icon w-20 h-20 border border-{{ $rarity }}-500 shadow-md
+                lg:w-24 lg:h-24
+            ">
                 <img src="{{ $item->base->icon }}" alt="{{ $item->name }}">
             </div>
         @endisset
-        <div class="item-gear-score text-5xl font-bold mx-4">
+        <div class="item-gear-score text-4xl font-bold mx-4
+            lg:text-5xl
+        ">
             {{ $item->gear_score }}
         </div>
-        <div class="item-name-details flex flex-wrap gap-2 text-xl">
-            <h1 class="item-name w-full text-{{ $rarity }}-400">
+        <div class="item-name-details flex flex-wrap gap-2 text-lg 
+            lg:text-xl
+        ">
+            <h1 class="item-name w-full text-{{ $rarity }}-400
+                text-3xl lg:text-4xl
+            ">
                 {{ $item->name }}
             </h1>
             @isset($item->weight_class)
@@ -32,7 +40,7 @@
     </div>
     
     @isset($item->perks)
-        <div class="w-full lg:w-1/2 p-4">
+        <div class="w-full py-2 px-4 lg:w-1/2 lg:py-4">
             <h2 class="w-full">Perks</h2>
             <dl>
                 @foreach($item->perks->unique() as $perk)
@@ -44,7 +52,7 @@
     @endisset
     
     @isset($item->attributes)
-        <div class="w-1/2 p-4">
+        <div class="w-full py-2 px-4 lg:w-1/2 lg:py-4">
             <h2 class="w-full">Attributes</h2>
             <ul>
                 @foreach($item->attributes->unique() as $index => $attribute)
@@ -55,7 +63,7 @@
     @endisset
     
     @isset($emptySlots)
-        <div class="w-1/2 p-4">
+        <div class=" py-2 px-4 lg:w-1/2 lg:py-4">
             <h3 class="w-full">Open Slots</h3>
             <ul class="mt-1 ml-2">
                 @while(--$emptySlots >= 0)

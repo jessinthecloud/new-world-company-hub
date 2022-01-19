@@ -9,7 +9,7 @@
     @endif
     
     <div class="py-12">
-        <div id="wrapper-inner" class="max-w-7xl mx-auto flex flex-wrap sm:px-6 lg:px-8">
+        <div id="wrapper-inner" class="max-w-7xl mx-auto lg:px-8">
             <livewire:guild-bank-table 
                 :id="null"
                 :guildBank="$guildBank"
