@@ -39,8 +39,22 @@
             @endif
             
             <x-slot name="button">
-                <div class="flex flex-wrap justify-between lg:max-w-1/2">
-                    <x-button name="action" value="{{ empty($action) ? 'submit' : $action}}">{{ !empty($action) ? Str::title($action) : 'Submit' }}</x-button>
+                <div class="flex flex-wrap justify-between lg:max-w-1/2 ">
+                    @if($action == 'destroy') 
+                        <x-button name="action" 
+                            value="destroy"
+                            class="bg-red-800"
+                            {{--@click="confirm('Delete this item?');"--}}       
+                        >
+                            Delete
+                        </x-button>
+                    @else
+                        <x-button name="action" 
+                            value="{{ empty($action) ? 'submit' : $action}}"
+                        >
+                            {{ !empty($action) ? Str::title($action) : 'Submit' }}
+                        </x-button>
+                    @endif 
                 </div>
             </x-slot>
             

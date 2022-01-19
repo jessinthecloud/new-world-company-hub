@@ -77,6 +77,7 @@
                     ? route($pluralEntityName.'.choose', ['action'=>'destroy', $entityName=>$instance->slug]) 
                     : route($pluralEntityName.'.choose', ['action'=>'destroy'])"
                 :instance="$instance"
+                class="bg-red-800"
             >
                 {{ $buttonTexts['delete'] ?? 'Delete' }}
             </x-dashboard.gated-button>
