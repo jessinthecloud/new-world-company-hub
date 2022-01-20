@@ -79,6 +79,11 @@ class GuildBankTable extends DataTableComponent
             Column::make( 'Name', 'name' )
                 ->sortable()
                 ->searchable(),
+            Column::make( 'Gear Score', 'gear_score' )
+                ->sortable(),
+            Column::make( 'Perks', 'perks' )
+//                ->sortable()
+                ->searchable(),
             // type of item
             Column::make( 'Item Type', 'type' )
                 ->sortable()
@@ -90,14 +95,21 @@ class GuildBankTable extends DataTableComponent
             Column::make( 'Rarity', 'rarity' )
                 ->sortable()
                 ->searchable(),
-            Column::make( 'Gear Score', 'gear_score' )
-                ->sortable(),
+            
             Column::make( 'Weight Class', 'weight_class' )
                 ->sortable()
                 ->searchable(),
-//            Column::make( 'Slug', 'slug' ),
+            Column::make( 'Action' ),
          ];
     }
+    
+    public function rowView(): string
+    {
+        // do not need to wrap in a <tr> 
+         // Becomes /resources/views/location/to/my/row.blade.php
+         return 'guild-bank.table-row';
+    }
+    
     
     public function filters(): array
     {
@@ -112,8 +124,8 @@ class GuildBankTable extends DataTableComponent
                 ->select($this->weight_class),
             'rarity' => Filter::make('Rarity')
                 ->select($this->rarity),
-            'perks' => Filter::make('Perk')
-                ->multiSelect($this->perks),
+            /*'perks' => Filter::make('Perk')
+                ->multiSelect($this->perks),*/
         ];
     }
 
@@ -163,7 +175,7 @@ class GuildBankTable extends DataTableComponent
         });
         
         // -- perk filter
-        $query = $query->when($this->getFilter('perks'), 
+        /*$query = $query->when($this->getFilter('perks'), 
             function ($query, $perks) {
 
                 // save bindings so that we can attach at the end
@@ -172,7 +184,7 @@ class GuildBankTable extends DataTableComponent
                 
                 
                 return $this->guildBank->joinPerkQuery($query, $this->bindings, $perks);
-        });
+        });*/
 //ddd($query->toSql(),$this->bindings);     
         // manually attach bindings because mergeBindings() does not order them properly
         return $query->setBindings($this->bindings)

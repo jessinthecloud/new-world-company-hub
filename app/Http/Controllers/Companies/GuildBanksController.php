@@ -276,7 +276,7 @@ $attributes->pluck( 'id' )->all(),
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function edit( Request $request, GuildBank $guildBank )
+    public function edit( Request $request, GuildBank $guildBank, string $itemType=null, string $item=null )
     {
         $itemSlug = $request->item;
         $itemType = $request->itemType;

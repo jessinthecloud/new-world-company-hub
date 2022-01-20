@@ -77,5 +77,12 @@ class Weapon extends Model
     {
         return $this->select(DB::raw('weapons.id as id, weapons.slug as slug, weapons.name as name, weapons.type as subtype, weapons.rarity, weapons.gear_score, null as weight_class, "Weapon" as type'))
             ->whereRelation('company', 'id', $company->id);
+            
+            /*return $this->select(DB::raw('weapons.id as id, weapons.slug as slug, weapons.name as name, weapons.type as subtype, weapons.rarity, weapons.gear_score, null as weight_class, "Weapon" as type, perks.id as perk_id, perks.slug as perk_slug, perks.name as perk_name, perks.perk_type as perk_type, perks.description as perk_desc, perks.icon as perk_icon'))
+            ->whereRelation('company', 'id', $company->id)
+            ->leftJoin('perk_weapon', 'weapons.id', '=', 'perk_weapon.weapon_id')
+            ->join('perks', 'perk_weapon.perk_id', '=', 'perks.id')
+            ->groupBy('slug', 'perk_slug')
+            ;*/
     }
 }
