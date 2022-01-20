@@ -322,15 +322,24 @@ $attributes->pluck( 'id' )->all(),
         
         $perks = Perk::orderBy('name')->distinct()->get()->mapWithKeys(function($perk){
             return [$perk->slug => $perk->name];
-        })->all();
+        });
 
         $perk_options = '<option value=""></option>';
-        foreach($perks as $value => $text) {
-            $perk_options .= '<option value="'.$value.'"';
-                if(in_array($value, $item->perks->pluck('slug')->all())){
-                    $perk_options .= ' selected="selected" ';
-                }
-            $perk_options .= '>'.$text.'</option>';
+        foreach($perks->all() as $value => $text) {
+            $perk_options .= '<option value="'.$value.'">'.$text.'</option>';
+        }
+        
+        // existing perks
+        $existing_perk_options = [];
+        foreach($item->perks->all() as $perk){
+            $existing_perk_options [$perk->id]= '<option value=""></option>';
+            foreach($perks->sortBy('name')->all() as $value => $text) {
+                $existing_perk_options [$perk->id].= '<option value="'.$value.'"';
+                    if($value == $perk->slug){
+                        $existing_perk_options [$perk->id].= ' SELECTED ';
+                    }
+                $existing_perk_options [$perk->id].= '>'.$text.'</option>';
+            }
         }
 
         $weapon_type_options = '<option value=""></option>';
@@ -404,6 +413,7 @@ $attributes->pluck( 'id' )->all(),
             [
                 'base_armor_options' => $base_armor_options,
                 'base_weapon_options' => $base_weapon_options,
+                'existing_perk_options'=>$existing_perk_options,
                 'existing_attribute_options'=>$existing_attribute_options,
                 'existing_attribute_amounts'=>$existing_attribute_amounts,
                 'item' => $item,

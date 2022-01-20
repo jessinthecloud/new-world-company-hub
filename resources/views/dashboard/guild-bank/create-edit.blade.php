@@ -157,19 +157,41 @@
             <div id="perks-attr-wrapper" class="w-full flex flex-wrap justify-start"
                 x-cloak x-show="isWeapon || isArmor"
             >
+                
+            
+            <div id="perks-attr-wrapper" class="w-full flex flex-wrap justify-start"
+                x-cloak x-show="isWeapon || isArmor"
+            >
                 <div class="perks border-r-2 border-slate-50 pr-4 mr-4">
                     <h3>Perks:</h3>
+                    
+                     @if(!empty($existing_perk_options))
+                        @foreach($existing_perk_options as $id => $options)
+                            <div id="perks-wrapper" class="block w-full flex flex-wrap justify-start items-end">
+                                <x-forms.field :name="'perks'" class="mb-6">
+                                    <x-forms.select name="perks[]" id="perks"
+                                        :values="$perks ?? null"
+                                        :required="false"
+                                    >{!! $options ?? '' !!}</x-forms.select>
+                                </x-forms.field>
+                            </div>
+                        @endforeach
+                    @endif
                     
                     <div id="perks-wrapper" class="block w-full flex flex-wrap justify-start items-end">
                         <x-forms.field :name="'perks'" class="mb-6">
                             <x-forms.select name="perks[]" id="perks"
                                 :values="$perks ?? null"
                                 :required="false"
-                                :multiple="true"
-                                size="15"
                             >{!! $perk_options ?? '' !!}</x-forms.select>
                         </x-forms.field>
                     </div>
+                    
+                    <div id="appended-perks">
+                        
+                    </div>
+    
+                    <x-button id="add-perk" type="button" class="mb-4">Add Another Perk</x-button>
     
                 </div>
                 
@@ -199,29 +221,28 @@
                                 </x-forms.field>
                             </div>
                         @endforeach
-                    @else
-                        <div id="attr-wrapper" class="block w-full flex flex-wrap justify-start items-end">
-                            <x-forms.field :name="'attribute_amounts[]'">
-                                <x-forms.input
-                                    id="attribute_amounts"
-                                    class=""
-                                    type="text"
-                                    name="attribute_amounts[]"
-                                    value="{{ old('attribute_amounts[]') ?? null }}"
-                                    size="10"
-                                    :required="false"
-                                    placeholder="Amount"
-                                />
-                            </x-forms.field>
-                            <x-forms.field :name="'attrs'" class="mb-6">
-                                <x-forms.select name="attrs[]" id="attrs"
-                                    :values="$attrs ?? null"
-                                    :required="false"
-                                >{!! $attribute_options ?? '' !!}</x-forms.select>
-                            </x-forms.field>
-                        </div>
                     @endif
-
+                    
+                    <div id="attr-wrapper" class="block w-full flex flex-wrap justify-start items-end">
+                        <x-forms.field :name="'attribute_amounts[]'">
+                            <x-forms.input
+                                id="attribute_amounts"
+                                class=""
+                                type="text"
+                                name="attribute_amounts[]"
+                                value="{{ old('attribute_amounts[]') ?? null }}"
+                                size="10"
+                                :required="false"
+                                placeholder="Amount"
+                            />
+                        </x-forms.field>
+                        <x-forms.field :name="'attrs'" class="mb-6">
+                            <x-forms.select name="attrs[]" id="attrs"
+                                :values="$attrs ?? null"
+                                :required="false"
+                            >{!! $attribute_options ?? '' !!}</x-forms.select>
+                        </x-forms.field>
+                    </div>
                     
                     <div id="appended-attrs">
                         
