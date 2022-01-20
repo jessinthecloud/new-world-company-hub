@@ -58,18 +58,29 @@
             Edit
         </x-dashboard.gated-button>
         
-        <x-dashboard.gated-button
-            :can='["edit", $instance]'
-            :phpClass='"App\\Models\\Items\\{$row->type}"'
-            :route="route('guild-banks.edit', [
-                'guildBank' => $instance->company->slug,
-                'itemType' => $row->type,
-                'item' => $instance->slug
-            ])"
-            :instance="$instance"
-            class="bg-red-800"
-        >
-            Delete
-        </x-dashboard.gated-button>
+        @can("delete", $instance)
+            <x-forms.form
+                {{-- send as plain html attribute --}}
+                action="{{  route('guild-banks.destroy', [
+                    'guildBank' => $instance->company->slug,
+                    'itemType' => $row->type,
+                    'item' => $instance->id,
+                    'action'=>'destroy',
+                ]) }}"
+                {{-- set the custom $method variable --}}
+                {{-- (not the form method attribute) --}}
+                :method="'DELETE'"
+            >
+                <x-slot name="button">
+                    <x-button 
+                        name="action" 
+                        value="delete" 
+                        class="bg-red-800"
+                    >
+                        Delete
+                    </x-button>
+                </x-slot>
+            </x-forms.form>
+        @endcan
     </div>
 </x-livewire-tables::table.cell>

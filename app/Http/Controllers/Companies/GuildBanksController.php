@@ -737,8 +737,8 @@ $attributes->pluck( 'id' )->all(),
     public function destroy( Request $request, GuildBank $guildBank )
     {
         // governor / (super-admin)        
-        $item_id = Str::afterLast($request->item, '-');
-        $item_type = Str::before($request->item, '-');
+        $item_id = is_int($request->item) ? $request->item : Str::afterLast($request->item, '-');
+        $item_type = $request->itemType ?? Str::before($request->item, '-');
         $model = "App\Models\Items\\".Str::studly($item_type);
         $item = $model::find($item_id);
         $count = $model::destroy($item_id);
