@@ -37,7 +37,7 @@ class PerkSeeder extends Seeder
                     'icon'              => $perk->icon ?? null,
                     'image'             => $perk->iconHiRes ?? null,
                     
-                    'ScalingPerGearScore'      => $perk->ScalingPerGearScore ?? null,
+                    'gear_score_scale' => $perk->ScalingPerGearScore ?? null,
                     'min_gear_score'      => $perk->gearScoreMin ?? null,
                     'max_gear_score'      => $perk->gearScoreMax ?? null,
                     'condition'      => $perk->condition ?? null,

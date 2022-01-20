@@ -65,7 +65,8 @@ a {
     }
 }
 
-.alert-danger {
+.alert-danger,
+.alert-error {
     background-color: $danger-bg-color;
     border-color: $danger-border-color;
     color: $danger-text-color;

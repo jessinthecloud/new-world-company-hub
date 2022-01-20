@@ -22,7 +22,7 @@ class CreatePerksTable extends Migration
             $table->string('icon')->nullable();
             $table->string('image')->nullable();
 
-            $table->string('ScalingPerGearScore')->nullable();
+            $table->string('gear_score_scale')->nullable();
             $table->string('min_gear_score')->nullable();
             $table->string('max_gear_score')->nullable();
             $table->string('condition')->nullable();

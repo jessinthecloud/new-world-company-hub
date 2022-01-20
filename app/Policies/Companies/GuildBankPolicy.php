@@ -125,7 +125,7 @@ class GuildBankPolicy
             $user->can('delete guildbanks') 
             ||
             (
-                $user->can('delete own guildbanks')
+                $user->can('delete own company guildbanks')
                 &&
                 !empty($user->characters->all())
                 &&

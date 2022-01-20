@@ -71,6 +71,7 @@
                     'view' => 'View Inventory',
                     'create' => 'Add to Inventory',
                     'edit' => 'Edit Item in Inventory',
+                    'delete' => 'Delete Item from Inventory',
                 ]"
             />
             

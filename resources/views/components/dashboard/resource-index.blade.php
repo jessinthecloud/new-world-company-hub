@@ -53,15 +53,31 @@
                 {{ $buttonTexts['edit'] ?? 'Edit' }}
             </x-dashboard.gated-button>
         @endif
-        
         @if(Route::has($pluralEntityName.'.destroy') && Route::has($pluralEntityName.'.choose'))
+<!--                --><?php //dump(Route::has($pluralEntityName.'.destroy'),Route::has($pluralEntityName.'.choose'),$instance);?>
+            {{--@can('delete', $instance)
+                <x-forms.form
+                    --}}{{-- send as plain html attribute --}}{{--
+                    action="{{ $form_action ?? '' }}"
+                    --}}{{-- set the custom $method variable --}}{{--
+                    --}}{{-- (not the form method attribute) --}}{{--
+                    :method="$method ?? null"
+                    :button-text="$button_text"
+                    class="flex flex-wrap justify-start"
+                    
+                     x-data="{weapons: {}, armors: {}, isWeapon:{{ $isWeapon ?? 0 }}, isArmor:{{ $isArmor ?? 0 }}, newEntry:{{ $newEntry ?? 0 }}, fetch:false}"
+                >
+                </x-forms.form>
+            @endcan--}}
+            
             <x-dashboard.gated-button 
                 :can="['delete', $instance]"
                 :phpClass="$phpClass"
                 :route="isset($instance) 
-                    ? route($pluralEntityName.'.destroy', [$entityName=>$instance->slug]) 
+                    ? route($pluralEntityName.'.choose', ['action'=>'destroy', $entityName=>$instance->slug]) 
                     : route($pluralEntityName.'.choose', ['action'=>'destroy'])"
                 :instance="$instance"
+                class="bg-red-800"
             >
                 {{ $buttonTexts['delete'] ?? 'Delete' }}
             </x-dashboard.gated-button>

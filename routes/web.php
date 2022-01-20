@@ -17,7 +17,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
 Route::get('/', function () {
 
     return view( 'auth.login' );
@@ -196,6 +195,9 @@ Route::get( '/base-weapons/{baseWeapon}', function(BaseWeapon $baseWeapon){
             ->name('guild-banks.create');
         Route::post( 'guild-banks/{guildBank}/create', [\App\Http\Controllers\Companies\GuildBanksController::class, 'store'])
             ->name('guild-banks.store');
+            
+        Route::delete( 'guild-banks/{guildBank}', [\App\Http\Controllers\Companies\GuildBanksController::class, 'destroy'])
+            ->name('guild-banks.destroy');
     });
 // ##
 // ## END OFFICER

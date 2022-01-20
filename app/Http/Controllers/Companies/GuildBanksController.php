@@ -12,7 +12,7 @@ use App\Enums\WeightClass;
 use App\GuildBank;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddInventoryRequest;
-use App\Http\Requests\EditInventoryRequest;
+use App\Http\Requests\InventoryRequest;
 use App\Models\Companies\Company;
 use App\Models\Items\Armor;
 use App\Models\Items\Attribute;
@@ -44,7 +44,7 @@ class GuildBanksController extends Controller
     {
         // add items to bank
         
-        $base_armor = BaseArmor::where('named', 0)->distinct()
+        $base_armor = BaseArmor::where('named', 0)->where('bindOnPickup', 0)->distinct()
             ->orderBy('name')/*->dd()->toSql();*/
             ->get()->mapWithKeys(function($base_armor){
         
@@ -60,7 +60,7 @@ class GuildBanksController extends Controller
             $base_armor_options .= '<option value="'.$value.'">'.$text.'</option>';
         }
         
-        $base_weapons = BaseWeapon::/*with('perks')->*/where('named', 0)->orderBy('name')->orderBy('tier')->distinct()->get()->mapWithKeys(function($base_weapon){
+        $base_weapons = BaseWeapon::/*with('perks')->*/where('named', 0)->where('bindOnPickup', 0)->orderBy('name')->orderBy('tier')->distinct()->get()->mapWithKeys(function($base_weapon){
         $wtype = $base_weapon->type;
         $type = !empty($wtype) ? constant("App\Enums\WeaponType::$wtype")->value : null;
         
@@ -81,16 +81,16 @@ class GuildBanksController extends Controller
             $perk_options .= '<option value="'.$value.'">'.$text.'</option>';
         }
 
-        $weapon_type_options = '';
+        $weapon_type_options = '<option value=""></option>';
         foreach(collect(WeaponType::cases())->sortBy('value')->all() as $type) {
             $weapon_type_options .= '<option value="'.$type->name.'">'.$type->value.'</option>';
         }
         
-        $armor_type_options = '';
+        $armor_type_options = '<option value=""></option>';
         foreach(collect(ArmorType::cases())->sortBy('value')->all() as $type) {
             $armor_type_options .= '<option value="'.$type->name.'">'.$type->value.'</option>';
         }
-        
+      
         $rarity_options = '<option value=""></option>';
         foreach(Rarity::cases() as $type) {
             $rarity_options .= '<option value="'.$type->name.'">'.$type->value.'</option>';
@@ -130,7 +130,7 @@ class GuildBanksController extends Controller
         );
     } // end create()
 
-    public function store( AddInventoryRequest $request, GuildBank $guildBank )
+    public function store( InventoryRequest $request, GuildBank $guildBank )
     {
 
         // Retrieve the validated input data...
@@ -188,12 +188,14 @@ $base,
             $type = !empty($type_input) ? constant("App\Enums\ArmorType::$type_input")?->value : null;
             
             $weight_class = !empty($validated['weight_class']) ? WeightClass::from($validated['weight_class'])->name : null;
-/*dump(
+/*dd(
 $base,
 'weight class: '.$weight_class, 
+'base type: '.$base->type,
+'base type converted: '.ArmorType::fromName($base->type)->value,
 'type: '.$type,
 'gear score: '.($validated['gear_score'] ?? $validated['armor_gear_score'] ?? null)
-); */       
+);*/        
 
             // create unique slug
             // TODO: check DB for uniqueness and append numbers if not  
@@ -204,7 +206,7 @@ $base,
             $item = Armor::create([
                 'name' => $validated['name'] ?? $base?->name ?? null,
                 'slug' => $base->slug ?? $slug,
-                'type' => $type ?? $base->type,
+                'type' => $type ?? ArmorType::fromName($base->type)->value,
                 'description' => $validated['description'] ?? $base?->description ?? null,
                 'tier' => $tier ?? $base?->tier ?? null,
                 'rarity' => $rarity ?? $base?->rarity ?? null,
@@ -281,8 +283,8 @@ $attributes->pluck( 'id' )->all(),
         // get item specifics
         $model = 'App\Models\Items\\'.Str::title($itemType);
         $item = $model::with('perks','base','attributes')->where('slug', $itemSlug)->sole();
-dump($itemSlug, $itemType, $item->slug);        
-        $base_armors = BaseArmor::where('named', 0)->distinct()
+//dump($itemSlug, $itemType, $item->slug);        
+        $base_armors = BaseArmor::where('named', 0)->where('bindOnPickup', 0)->distinct()
             ->orderBy('name')/*->dd()->toSql();*/
             ->get()->mapWithKeys(function($base_armor){
         
@@ -302,7 +304,7 @@ dump($itemSlug, $itemType, $item->slug);
             $base_armor_options .= '>'.$text.'</option>';
         }
         
-        $base_weapons = BaseWeapon::/*with('perks')->*/where('named', 0)->orderBy('name')->orderBy('tier')->distinct()->get()->mapWithKeys(function($base_weapon){
+        $base_weapons = BaseWeapon::/*with('perks')->*/where('named', 0)->where('bindOnPickup', 0)->orderBy('name')->orderBy('tier')->distinct()->get()->mapWithKeys(function($base_weapon){
         $wtype = $base_weapon->type;
         $type = !empty($wtype) ? constant("App\Enums\WeaponType::$wtype")->value : null;
         
@@ -331,7 +333,7 @@ dump($itemSlug, $itemType, $item->slug);
             $perk_options .= '>'.$text.'</option>';
         }
 
-        $weapon_type_options = '';
+        $weapon_type_options = '<option value=""></option>';
         foreach(collect(WeaponType::cases())->sortBy('value')->all() as $type) {
             $weapon_type_options .= '<option value="'.$type->name.'"';
                 if(strtolower($value) == strtolower($itemType)){
@@ -340,7 +342,7 @@ dump($itemSlug, $itemType, $item->slug);
             $weapon_type_options .= '>'.$type->value.'</option>';
         }
         
-        $armor_type_options = '';
+        $armor_type_options = '<option value=""></option>';
         foreach(collect(ArmorType::cases())->sortBy('value')->all() as $type) {
             $armor_type_options .= '<option value="'.$type->name.'"';
                 if(strtolower($value) == strtolower($itemType)){
@@ -423,7 +425,7 @@ dump($itemSlug, $itemType, $item->slug);
         );
     }
 
-    public function update( EditInventoryRequest $request, GuildBank $guildBank )
+    public function update( InventoryRequest $request, GuildBank $guildBank )
     {
 
         // Retrieve the validated input data...
@@ -447,7 +449,7 @@ $validated
 
         $model = 'App\Models\Items\\'.Str::title($validated['itemType']);
         $item = $model::where('slug', $validated['slug'])->first();
-dump($item,$model,$validated['slug']);        
+//dump($item,$model,$validated['slug']);        
         // create instanced item
         if($validated['is_weapon']){
             
@@ -484,12 +486,13 @@ $base,
             $type = !empty($type_input) ? constant("App\Enums\ArmorType::$type_input")?->value : null;
             
             $weight_class = !empty($validated['weight_class']) ? WeightClass::from($validated['weight_class'])->name : null;
-/*dump(
+/*dd(
 $base,
 'weight class: '.$weight_class, 
-'type: '.$type,
+'base type: '.$base->type,
+'type: '.$type,$type_input,
 'gear score: '.($validated['gear_score'] ?? $validated['armor_gear_score'] ?? null)
-); */       
+);*/        
             // create unique slug
             // TODO: check DB for uniqueness and append numbers if not  
             $slug = $item->name 
@@ -500,7 +503,7 @@ $base,
             $item->update([
                 'name' => $validated['name'] ?? $base?->name ?? null,
                 'slug' => $base->slug ?? $slug,
-                'type' => $type ?? $base->type,
+                'type' => $type ?? ArmorType::fromName($base->type)->value,
                 'description' => $validated['description'] ?? $base?->description ?? null,
                 'tier' => $tier ?? $base?->tier ?? null,
                 'rarity' => $rarity ?? $base?->rarity ?? null,
@@ -519,7 +522,7 @@ $base,
         $perks = Perk::whereIn('slug', $validated['perks'])->get();
 //dump('perks: ', $perks, $perks->pluck('id')->all());
         if(!empty(array_filter($perks->pluck('id')->all()))) {
-            $item->perks()->attach($perks->pluck('id')->all());
+            $item->perks()->sync($perks->pluck('id')->all());
         }
         
         // attach attributes
@@ -541,12 +544,15 @@ $attributes->pluck( 'id' )->all(),
 'Guild Bank: ' . $guildBank->id
 );*/
             if ( !empty( $attributes->pluck( 'id' )->all() ) ) {
+                $attrs_to_sync = [];
                 // also attach with amounts
                 foreach($attributes as $attribute){
-                    $item->attributes()->attach($attribute->id, ['amount' => $amounts[$attribute->slug]]);
+                    $attrs_to_sync [$attribute->id] = ['amount' => $amounts[$attribute->slug]];
+//                    $item->attributes()->sync($attribute->id, ['amount' => $amounts[$attribute->slug]]);
                 }
+                $item->attributes()->sync($attrs_to_sync);
             }
-        }
+        }        
         
         // attach to bank
         $item->company()->associate($guildBank->company()->id);
@@ -562,16 +568,16 @@ $attributes->pluck( 'id' )->all(),
     
     public function choose(Request $request, $action=null )
     {
-    dump('action: '.$request->action, 'item type: '.$request->itemType, 'item: '.$request->item, 'guildBank: '.$request->guildBank);
+//    dump('action: '.$request->action, 'item type: '.$request->itemType, 'item: '.$request->item, 'guildBank: '.$request->guildBank);
 
         $action = $request->action;
         
-        if($request->action == 'edit-item-type'){
+        if($action == 'edit-item-type'){
 
             // already chose guildBank
             $guildBank = $request->guildBank;
             $form_action = route('guild-banks.find', [
-                'action'=>$request->action,
+                'action'=>$action,
                 'guildBank'=>$request->guildBank
             ]);
             
@@ -583,13 +589,13 @@ $attributes->pluck( 'id' )->all(),
             );
         }
         
-        if($request->action == 'edit-item'){
+        if($action == 'edit-item'){
         
             // already chose guildBank and item type
             $guildBank = $request->guildBank;
             $itemType = $request->itemType;
             $form_action = route('guild-banks.find', [
-                'action'=>$request->action,
+                'action'=>$action,
                 'guildBank'=>$request->guildBank
             ]);
             
@@ -605,10 +611,33 @@ $attributes->pluck( 'id' )->all(),
             );
         }
         
+        if($request->action == 'destroy'){
+
+            // already chose guildBank
+            $company = Company::where('slug', $request->guildBank)->sole();
+            $guildBank = new GuildBank($company);
+            
+            $method = 'DELETE';
+            $form_action = route('guild-banks.destroy', [
+                'action'=>$action,
+                'guildBank'=>$request->guildBank,
+            ]);
+       
+            $items = $guildBank->items()->mapWithKeys(function($item){
+                // need to indicate type in case IDs collide
+                return [strtolower($item->type).'-'.$item->id => $item->name];
+            })->all();
+
+            return view(
+                'dashboard.guild-bank.choose',
+                compact('guildBank', 'method', 'action', 'form_action', 'items')
+            );
+        }
+        
         $guildBanks = Company::orderBy('name')->get()->mapWithKeys(function($guildBank){
             return [$guildBank->slug => $guildBank->name.' Guild Bank'];
         })->all();
-        $form_action = route('guild-banks.find', ['action'=>$request->action]);
+        $form_action = route('guild-banks.find', ['action'=>$action]);
         
 //dump('FORM ACTION: '.$form_action);
 
@@ -673,7 +702,7 @@ $attributes->pluck( 'id' )->all(),
         
         $company = $guildBank->company();
 
-        $armors = ArmorType::valueToAssociative();
+        $armors = ArmorType::toAssociative();
         $weapons = WeaponType::valueToAssociative();
         $weight_class = WeightClass::valueToAssociative();
         $rarity = Rarity::valueToAssociative();
@@ -705,8 +734,31 @@ $attributes->pluck( 'id' )->all(),
         );
     }
 
-    public function destroy( GuildBank $guildBank )
+    public function destroy( Request $request, GuildBank $guildBank )
     {
-        // governor / (super-admin)
+        // governor / (super-admin)        
+        $item_id = Str::afterLast($request->item, '-');
+        $item_type = Str::before($request->item, '-');
+        $model = "App\Models\Items\\".Str::studly($item_type);
+        $item = $model::find($item_id);
+        $count = $model::destroy($item_id);
+        
+//        dump($guildBank, $request->item, $model, $item_id, $item);
+        
+        if($count > 0){
+            return redirect(route('dashboard'))->with([
+                'status'=> [
+                    'type'=>'success',
+                    'message' => 'Inventory deleted successfully: '.$item->name
+                ]
+            ]);
+        }
+        
+        return redirect(route('dashboard'))->with([
+            'status'=> [
+                'type'=>'error',
+                'message' => 'Inventory deletion failed for '.$item->name.' (ID: '.$item->id.')',
+            ]
+        ]);
     }
 }
