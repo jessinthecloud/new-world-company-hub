@@ -35,12 +35,11 @@ class ProductionSeeder extends Seeder
             RankSeeder::class,
             ClassSeeder::class,
             SkillSeeder::class,
-            AttributeSeeder::class,
+//            AttributeSeeder::class,
 //            ConsumableSeeder::class,
-//            BaseArmorSeeder::class,
-//            BaseWeaponSeeder::class,
-//            PerkSeeder::class,
-            AttributeSeeder::class,
+            PerkSeeder::class,
+            BaseArmorSeeder::class,
+            BaseWeaponSeeder::class,
         ]);
     }
 }
