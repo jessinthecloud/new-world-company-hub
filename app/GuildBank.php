@@ -100,11 +100,13 @@ class GuildBank implements InventoryContract
     /**
      * Initialize the query for getting the bank's items' perks from DB
      *
-     * @param array                                   $bindings
-     * @param array                                   $perks
-     * @param \Illuminate\Database\Query\Builder|null $query
+     * @param \Illuminate\Database\Query\Builder $query
+     *
+     * @param array                              $bindings
+     * @param array                              $perks
      *
      * @return \Illuminate\Database\Query\Builder
+     * @throws \Exception
      */
     public static function joinPerkQuery(Builder $query, array $bindings, array $perks=[]) : Builder
     {

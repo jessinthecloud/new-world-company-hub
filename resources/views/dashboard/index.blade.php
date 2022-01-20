@@ -1,6 +1,6 @@
 <x-layouts.dashboard>
     
-        {{-- If use has no access, tell them they're a loser --}}
+    {{-- If user has no access, tell them they're a loser --}}
     @empty(Auth::user()->getAllPermissions()->all())
         <div class="w-full
             sm:px-6 

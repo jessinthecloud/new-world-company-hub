@@ -1,3 +1,11 @@
+
+@php 
+$itemtable = Str::plural(strtolower($row->type));
+$perk_names = App\Models\Items\Perk::whereRelation($itemtable, $itemtable.'.id', '=', $row->id)->orderBy('name')->get();
+$instance = "App\\Models\\Items\\{$row->type}"::find($row->id);
+$guildBank = new \App\GuildBank($instance->company);
+@endphp
+
 <x-livewire-tables::table.cell>
     {{ ucfirst($row->name) }}
 </x-livewire-tables::table.cell>
@@ -7,10 +15,6 @@
 </x-livewire-tables::table.cell>
 
 <x-livewire-tables::table.cell class="w-md max-w-md">
-    <?php
-    $itemtable = Str::plural(strtolower($row->type));
-    $perk_names = App\Models\Items\Perk::whereRelation($itemtable, $itemtable.'.id', '=', $row->id)->orderBy('name')->get();
-    ?>
     {{  $perk_names->pluck('name')->implode(', ') }}
 </x-livewire-tables::table.cell>
 
@@ -44,25 +48,24 @@
 
 <x-livewire-tables::table.cell>
     <div class="flex flex-wrap">
-        @php $instance = "App\\Models\\Items\\{$row->type}"::find($row->id) @endphp
+        
         <x-dashboard.gated-button
-            :can='["edit", $instance]'
-            :phpClass='"App\\Models\\Items\\{$row->type}"'
+            :can='["update", $guildBank]'
+            :phpClass='"App\\Models\\Items\\GuildBank"'
             :route="route('guild-banks.edit', [
-                'guildBank' => $instance->company->slug,
+                'guildBank' => $guildBank->slug,
                 'itemType' => $row->type,
                 'item' => $instance->slug
             ])"
-            :instance="$instance"
         >
             Edit
         </x-dashboard.gated-button>
         
-        @can("delete", $instance)
+        @can("delete", $guildBank)
             <x-forms.form
                 {{-- send as plain html attribute --}}
                 action="{{  route('guild-banks.destroy', [
-                    'guildBank' => $instance->company->slug,
+                    'guildBank' => $guildBank->slug,
                     'itemType' => $row->type,
                     'item' => $instance->id,
                     'action'=>'destroy',
