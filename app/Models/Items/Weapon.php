@@ -2,14 +2,16 @@
 
 namespace App\Models\Items;
 
+use App\Contracts\InventoryItemContract;
 use App\Models\Characters\Character;
 use App\Models\Characters\Loadout;
 use App\Models\Companies\Company;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class Weapon extends Model
+class Weapon extends Model implements InventoryItemContract
 {
     use HasFactory;
 
@@ -84,5 +86,19 @@ class Weapon extends Model
             ->join('perks', 'perk_weapon.perk_id', '=', 'perks.id')
             ->groupBy('slug', 'perk_slug')
             ;*/
+    }
+    
+    public function scopeSimilarSlugs(Builder $query, string $slug){
+        return $query->where('slug', 'like' , $slug.'%');
+    }
+    
+// -- MISC 
+
+    /**
+     * @return mixed
+     */
+    public function ownedBy() : mixed
+    {
+        return $this->company ?? $this->character() ?? null;
     }
 }

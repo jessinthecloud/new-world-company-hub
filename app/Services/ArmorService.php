@@ -4,7 +4,9 @@ namespace App\Services;
 
 use App\Enums\ArmorType;
 use App\Enums\WeightClass;
+use App\Models\Items\Armor;
 use App\Models\Items\BaseArmor;
+use Illuminate\Support\Str;
 
 class ArmorService extends ItemService implements ItemServiceContract
 {
@@ -43,6 +45,9 @@ class ArmorService extends ItemService implements ItemServiceContract
         return $base_armor_options;
     }
 
+    /**
+     * @return string
+     */
     public function weightClassOptions() : string
     {
         $weight_class_options = '<option value="">None</option>';
@@ -64,5 +69,31 @@ class ArmorService extends ItemService implements ItemServiceContract
         }
         
         return $armor_type_options;
+    }
+
+    /**
+     * TODO: may need to make sure the slug found doesn't belong to the current item we are checking for. Can't just check for > 1 because current item's slug could be different now so an existing slug from another item would matter
+     * 
+     * @param array $fields
+     *
+     * @return string
+     */
+    public function createUniqueSlug(array $fields) : string
+    {
+        $slug = $fields['type'] . ' ' . $fields['name'] . ' ' 
+            . ( !empty( $fields['rarity'] ) ? ' ' . $fields['rarity'] : '' ) 
+            . ( !empty( $fields['tier'] ) ? ' t' . $fields['tier'] : '' )
+            . ( !empty( $fields['weight_class'] ) ? ' ' . $fields['weight_class'] : '' )
+        ;
+        $slug = Str::slug( $slug );
+        
+        // see if slug exists in table 
+        $slug_count = Armor::similarSlugs($slug.'%')->count();
+        
+        if($slug_count > 0){
+            $slug .= '-x'.($slug_count+1);
+        }
+        
+        return $slug;
     }
 }

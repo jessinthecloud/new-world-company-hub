@@ -2,13 +2,15 @@
 
 namespace App\Models\Items;
 
+use App\Contracts\InventoryItemContract;
 use App\Models\Characters\Character;
 use App\Models\Companies\Company;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class Armor extends Model
+class Armor extends Model implements InventoryItemContract
 {
     use HasFactory;
 
@@ -66,5 +68,17 @@ class Armor extends Model
     {
         return $this->select(DB::raw('armors.id as id, armors.slug as slug, armors.name as name, armors.type as subtype, armors.rarity, armors.gear_score, armors.weight_class, "Armor" as type'))
             ->whereRelation('company', 'id', $company->id);
+    }
+    
+    public function scopeSimilarSlugs(Builder $query, string $slug){
+        return $query->where('slug', 'like' , $slug.'%');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function ownedBy() : mixed
+    {
+        return $this->company ?? $this->character() ?? null;
     }
 }

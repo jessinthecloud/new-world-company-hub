@@ -90,11 +90,14 @@ class GuildBanksController extends Controller
             
             $type_input = $validated['weapon_type'];
             $type = !empty($type_input) ? constant("App\Enums\WeaponType::$type_input")?->value : null;
-           
-            // TODO: check DB for uniqueness and append numbers if not  
-            $slug = $validated['name']
-                    . ( !empty( $rarity ) ? ' ' . $rarity : '' ) 
-                    . ( !empty( $tier ) ? ' t' . $tier : '' );
+             
+            $slug = $this->weaponService->createUniqueSlug([
+                'name' => $validated['name'],
+                'rarity' => $rarity,
+                'tier' => $tier,
+                'type' => $type,
+            ]);
+            
             $item = Weapon::create([
                 'name' => $validated['name'] ?? $base->name,
                 'slug' => $base->slug ?? $slug,
@@ -116,11 +119,14 @@ class GuildBanksController extends Controller
             $weight_class = !empty($validated['weight_class']) ? WeightClass::from($validated['weight_class'])->name : null;
 
             // create unique slug
-            // TODO: check DB for uniqueness and append numbers if not  
-            $slug = $validated['name']
-                . (!empty($rarity) ? ' '.$rarity : '') 
-                . (!empty($tier) ? ' t'.$tier : '') 
-                . (!empty($weight_class) ? ' '.$weight_class : '');    
+            $slug = $this->armorService->createUniqueSlug([
+                'name' => $validated['name'],
+                'rarity' => $rarity,
+                'tier' => $tier,
+                'type' => $type,
+                'weight_class' => $weight_class,
+            ]);
+                    
             $item = Armor::create([
                 'name' => $validated['name'] ?? $base?->name ?? null,
                 'slug' => $base->slug ?? $slug,
@@ -368,11 +374,13 @@ class GuildBanksController extends Controller
             
             $type_input = $validated['weapon_type'];
             $type = !empty($type_input) ? constant("App\Enums\WeaponType::$type_input")?->value : null;
-         
-            // TODO: check DB for uniqueness and append numbers if not  
-            $slug = $item->name
-                    . ( !empty( $rarity ) ? ' ' . $rarity : '' ) 
-                    . ( !empty( $tier ) ? ' t' . $tier : '' );
+            
+            $slug = $this->weaponService->createUniqueSlug([
+                'name' => empty($validated['name']) ? $item->name : $validated['name'],
+                'rarity' => $rarity,
+                'tier' => $tier,
+                'type' => $type,
+            ]);
             
             $item->update([
                 'name' => $validated['name'] ?? $base->name,
@@ -393,12 +401,14 @@ class GuildBanksController extends Controller
             
             $weight_class = !empty($validated['weight_class']) ? WeightClass::from($validated['weight_class'])->name : null;
       
-            // create unique slug
-            // TODO: check DB for uniqueness and append numbers if not  
-            $slug = $item->name 
-                . (!empty($rarity) ? ' '.$rarity : '') 
-                . (!empty($tier) ? ' t'.$tier : '') 
-                . (!empty($weight_class) ? ' '.$weight_class : '');
+            // create unique slug             
+            $slug = $this->armorService->createUniqueSlug([
+                'name' => empty($validated['name']) ? $item->name : $validated['name'],
+                'rarity' => $rarity,
+                'tier' => $tier,
+                'type' => $type,
+                'weight_class' => $weight_class,
+            ]);
             
             $item->update([
                 'name' => $validated['name'] ?? $base?->name ?? null,
