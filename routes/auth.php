@@ -30,7 +30,7 @@ Route::get('/auth/discord/callback', [\App\Http\Controllers\Auth\DiscordAuthCont
 Route::post('/register', [RegisteredUserController::class, 'store'])
                 ->middleware('guest');*/
 
-Route::get('/login', [AuthenticatedSessionController::class, 'create'])
+/*Route::get('/login', [AuthenticatedSessionController::class, 'create'])
                 ->middleware('guest')
                 ->name('login');
 
@@ -70,7 +70,7 @@ Route::get('/confirm-password', [ConfirmablePasswordController::class, 'show'])
                 ->name('password.confirm');
 
 Route::post('/confirm-password', [ConfirmablePasswordController::class, 'store'])
-                ->middleware('auth');
+                ->middleware('auth');*/
 
 // allow logout from URL                
 Route::match(['post','get'], '/logout', [AuthenticatedSessionController::class, 'destroy'])
