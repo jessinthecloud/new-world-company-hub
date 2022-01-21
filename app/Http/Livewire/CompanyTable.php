@@ -50,10 +50,10 @@ class CompanyTable extends DataTableComponent
                 ->sortable()
                 ->searchable(),
             Column::make( 'Discord Name', 'user.discord_name' )
-                ->sortable()
+//                ->sortable()
                 ->searchable(),
             Column::make( 'Class', 'class.name' )
-                ->sortable()
+//                ->sortable()
                 ->searchable(),
             /*Column::make( 'Main Hand', 'loadout.main.name' )
                 ->sortable()
