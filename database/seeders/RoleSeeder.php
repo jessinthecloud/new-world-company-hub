@@ -44,7 +44,10 @@ class RoleSeeder extends Seeder
                     'company_id'=> 1, // breakpoint
                     'role_id' => $role->id,
                 ],
-                ['id'=> $discord_role['id']], 
+                [
+                    'id'=> $discord_role['id'],
+                    'role_id'=> $role->id,
+                ], 
             );
         }
     }
