@@ -55,12 +55,12 @@ class CompanyTable extends DataTableComponent
             Column::make( 'Class', 'class.name' )
                 ->sortable()
                 ->searchable(),
-            Column::make( 'Main Hand', 'loadout.main.name' )
+            /*Column::make( 'Main Hand', 'loadout.main.name' )
                 ->sortable()
                 ->searchable(),
             Column::make( 'Offhand', 'loadout.offhand.name' )
                 ->sortable()
-                ->searchable(),
+                ->searchable(),*/
         ];
     }
     

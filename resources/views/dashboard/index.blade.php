@@ -11,7 +11,7 @@
                 class="mx-auto text-center
                 lg:w-1/2"
             >
-                <img class="mx-auto text-center" src="{{ Storage::url('no.gif') }}" alt="Ron Swanson: No.">
+                <img class="mx-auto text-center" src="{{ Storage::url('ronswansonNo.gif') }}" alt="Ron Swanson: No.">
                 
                 <p>Come back later with a hall pass. <BR>
                 Maybe.</p>
