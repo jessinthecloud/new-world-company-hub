@@ -15,6 +15,26 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    
+                    @if(Auth::check() && Auth::user()->company() !== null && Auth::user()->can('view', new App\GuildBank(Auth::user()->company())))
+                        <x-nav-link :href="route('guild-banks.show', [
+                                'guildBank' => Auth::user()->company()->slug
+                            ])" 
+                            :active="request()->routeIs('guild-banks.show')"
+                        >
+                            {{ __('Guild Bank') }}
+                        </x-nav-link>
+                    @endif
+                    
+                    @if(Auth::check() && Auth::user()->company() !== null && Auth::user()->can('view', Auth::user()->company()))
+                        <x-nav-link :href="route('companies.show', [
+                                'company' => Auth::user()->company()->slug
+                            ])" 
+                            :active="request()->routeIs('companies.show')"
+                        >
+                            {{ __('Roster') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -66,6 +86,25 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+            @if(Auth::check() && Auth::user()->company() !== null && Auth::user()->can('view', new App\GuildBank(Auth::user()->company())))
+                <x-responsive-nav-link :href="route('guild-banks.show', [
+                        'guildBank' => Auth::user()->company()->slug
+                    ])" 
+                    :active="request()->routeIs('guild-banks.show')"
+                >
+                    {{ __('Guild Bank') }}
+                </x-responsive-nav-link>
+            @endif
+            
+            @if(Auth::check() && Auth::user()->company() !== null && Auth::user()->can('view', Auth::user()->company()))
+                <x-responsive-nav-link :href="route('companies.show', [
+                        'company' => Auth::user()->company()->slug
+                    ])" 
+                    :active="request()->routeIs('companies.show')"
+                >
+                    {{ __('Roster') }}
+                </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->
