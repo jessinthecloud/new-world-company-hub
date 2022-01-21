@@ -20,6 +20,8 @@ use App\Models\Items\BaseArmor;
 use App\Models\Items\BaseWeapon;
 use App\Models\Items\Perk;
 use App\Models\Items\Weapon;
+use App\Services\ArmorService;
+use App\Services\WeaponService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -30,7 +32,7 @@ use function view;
 
 class GuildBanksController extends Controller
 {
-    public function __construct() 
+    public function __construct(protected ArmorService $armorService, protected WeaponService $weaponService) 
     {
          
     }
@@ -39,90 +41,28 @@ class GuildBanksController extends Controller
     {
         
     }
-    
+
+    /**
+     * form to add items to bank
+     * 
+     * @param \App\GuildBank $guildBank
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function create( GuildBank $guildBank )
     {
-        // add items to bank
-        
-        $base_armor = BaseArmor::bankable()->distinct()
-            ->orderBy('name')/*->dd()->toSql();*/
-            ->get()->mapWithKeys(function($base_armor){
-        
-            $wtype = $base_armor->type;
-            $type = !empty($wtype) ? constant("App\Enums\ArmorType::$wtype")->value : null;
-        
-            return [$base_armor->slug => $base_armor->name . " (".(!empty($base_armor->weight_class) ? $base_armor->weight_class.' ' : '').$type.") Tier ".$base_armor->tier];
-        })->all();
-//        ddd($guildBank, $companies, $base_armor);
-
-        $base_armor_options = '<option value=""></option>';
-        foreach($base_armor as $value => $text) {
-            $base_armor_options .= '<option value="'.$value.'">'.$text.'</option>';
-        }
-        
-        $base_weapons = BaseWeapon::bankable()->orderBy('name')->orderBy('tier')->distinct()->get()->mapWithKeys(function($base_weapon){
-        $wtype = $base_weapon->type;
-        $type = !empty($wtype) ? constant("App\Enums\WeaponType::$wtype")->value : null;
-        
-            return [$base_weapon->slug => $base_weapon->name . " ($type) Tier ".$base_weapon->tier];
-        })->all();
-
-        $base_weapon_options = '<option value=""></option>';
-        foreach($base_weapons as $value => $text) {
-            $base_weapon_options .= '<option value="'.$value.'">'.$text.'</option>';
-        }
-        
-        $perks = Perk::orderBy('name')->distinct()->get()->mapWithKeys(function($perk){
-            return [$perk->slug => $perk->name];
-        })->all();
-
-        $perk_options = '<option value=""></option>';
-        foreach($perks as $value => $text) {
-            $perk_options .= '<option value="'.$value.'">'.$text.'</option>';
-        }
-
-        $weapon_type_options = '<option value=""></option>';
-        foreach(collect(WeaponType::cases())->sortBy('value')->all() as $type) {
-            $weapon_type_options .= '<option value="'.$type->name.'">'.$type->value.'</option>';
-        }
-        
-        $armor_type_options = '<option value=""></option>';
-        foreach(collect(ArmorType::cases())->sortBy('value')->all() as $type) {
-            $armor_type_options .= '<option value="'.$type->name.'">'.$type->value.'</option>';
-        }
-      
-        $rarity_options = '<option value=""></option>';
-        foreach(Rarity::cases() as $type) {
-            $rarity_options .= '<option value="'.$type->name.'">'.$type->value.'</option>';
-        }
-        
-        $tier_options = '<option value=""></option>';
-        foreach(Tier::cases() as $type) {
-            $tier_options .= '<option value="'.$type->name.'">'.$type->value.'</option>';
-        }
-        
-        $weight_class_options = '<option value="">None</option>';
-        foreach(WeightClass::cases() as $type) {
-            $weight_class_options .= '<option value="'.$type->name.'">'.$type->value.'</option>';
-        }
-        
-        $attribute_options = '<option value=""></option>';
-        foreach(collect(AttributeType::cases())->sortBy('value')->all() as $type) {
-            $attribute_options .= '<option value="'.$type->name.'">'.$type->value.'</option>';
-        }
-
         return view(
             'dashboard.guild-bank.create-edit',
             [
-                'base_armor_options' => $base_armor_options,
-                'base_weapon_options' => $base_weapon_options,
-                'armor_type_options' => $armor_type_options,
-                'weapon_type_options' => $weapon_type_options,
-                'perk_options' => $perk_options,
-                'rarity_options' => $rarity_options,
-                'tier_options' => $tier_options,
-                'weight_class_options' => $weight_class_options,
-                'attribute_options' => $attribute_options,
+                'base_armor_options' => $this->armorService->baseItemsOptions(),
+                'base_weapon_options' => $this->weaponService->baseItemsOptions(),
+                'armor_type_options' => $this->armorService->itemTypeOptions(),
+                'weapon_type_options' => $this->weaponService->itemTypeOptions(),
+                'perk_options' => $this->weaponService->perkOptions(),
+                'rarity_options' => $this->weaponService->rarityOptions(),
+                'tier_options' => $this->weaponService->tierOptions(),
+                'weight_class_options' => $this->armorService->weightClassOptions(),
+                'attribute_options' => $this->weaponService->attributeOptions(),
                 'method' => 'POST',
                 'form_action' => route('guild-banks.store', ['guildBank'=>$guildBank->slug]),
                 'button_text' => 'Add Item',
@@ -136,21 +76,11 @@ class GuildBanksController extends Controller
         // Retrieve the validated input data...
         $validated = $request->validated();
 
-/*dump(
-//'missing: ', array_diff_key($request->all(), $validated), 
-$validated 
-);*/
-
         $rarity_input = $validated['rarity'];
         $rarity = !empty($rarity_input) ? constant("App\Enums\Rarity::$rarity_input")?->value : null;
         
         $tier_input = $validated['tier'];
-        $tier = !empty($tier_input) ? constant("App\Enums\Tier::$tier_input")?->value : null;      
-        
-/*dump(
-'tier: '.$tier,
-'rarity: '.$rarity
-); */ 
+        $tier = !empty($tier_input) ? constant("App\Enums\Tier::$tier_input")?->value : null;
         
         // create instanced item
         if($validated['is_weapon']){
@@ -160,11 +90,7 @@ $validated
             
             $type_input = $validated['weapon_type'];
             $type = !empty($type_input) ? constant("App\Enums\WeaponType::$type_input")?->value : null;
-/*dump(
-$base,
-'type: '.$type,
-'gear score: '.($validated['gear_score'] ?? $validated['weapon_gear_score'] ?? null)
-);*/            
+           
             // TODO: check DB for uniqueness and append numbers if not  
             $slug = $validated['name']
                     . ( !empty( $rarity ) ? ' ' . $rarity : '' ) 
@@ -188,14 +114,6 @@ $base,
             $type = !empty($type_input) ? constant("App\Enums\ArmorType::$type_input")?->value : null;
             
             $weight_class = !empty($validated['weight_class']) ? WeightClass::from($validated['weight_class'])->name : null;
-/*dd(
-$base,
-'weight class: '.$weight_class, 
-'base type: '.$base->type,
-'base type converted: '.ArmorType::fromName($base->type)->value,
-'type: '.$type,
-'gear score: '.($validated['gear_score'] ?? $validated['armor_gear_score'] ?? null)
-);*/        
 
             // create unique slug
             // TODO: check DB for uniqueness and append numbers if not  
@@ -223,7 +141,7 @@ $base,
         
         // attach perks
         $perks = Perk::whereIn('slug', $validated['perks'])->get();
-//dump('perks: ', $perks, $perks->pluck('id')->all());
+
         if(!empty(array_filter($perks->pluck('id')->all()))) {
             $item->perks()->sync($perks->pluck('id')->all());
         }
@@ -239,19 +157,12 @@ $base,
             }
       
             $attributes = Attribute::whereIn( 'slug', $attrs)->get();
-/*ddd(
-$attrs,
-'attributes: ',
-$attributes,
-$attributes->pluck( 'id' )->all(),
-'Guild Bank: ' . $guildBank->id
-);*/
+
             if ( !empty( $attributes->pluck( 'id' )->all() ) ) {
                 $attrs_to_sync = [];
                 // also attach with amounts
                 foreach($attributes as $attribute){
                     $attrs_to_sync [$attribute->id] = ['amount' => $amounts[$attribute->slug]];
-//                    $item->attributes()->sync($attribute->id, ['amount' => $amounts[$attribute->slug]]);
                 }
                 $item->attributes()->sync($attrs_to_sync);
             }
@@ -283,7 +194,7 @@ $attributes->pluck( 'id' )->all(),
         // get item specifics
         $model = 'App\Models\Items\\'.Str::title($itemType);
         $item = $model::with('perks','base','attributes')->where('slug', $itemSlug)->sole();
-//dump($itemSlug, $itemType, $item->slug);        
+      
         $base_armors = BaseArmor::where('named', 0)->where('bindOnPickup', 0)->distinct()
             ->orderBy('name')/*->dd()->toSql();*/
             ->get()->mapWithKeys(function($base_armor){
@@ -293,7 +204,6 @@ $attributes->pluck( 'id' )->all(),
         
             return [$base_armor->slug => $base_armor->name . " (".(!empty($base_armor->weight_class) ? $base_armor->weight_class.' ' : '').$type.") Tier ".$base_armor->tier];
         })->all();
-//        ddd($guildBank, $companies, $base_armor);
 
         $base_armor_options = '<option value=""></option>';
         foreach($base_armors as $value => $text) {
@@ -386,7 +296,7 @@ $attributes->pluck( 'id' )->all(),
                 }
             $weight_class_options .= '>'.$type->value.'</option>';
         }
-//dump($item->attributes);        
+      
         $attribute_options = '<option value=""></option>';
         foreach(collect(AttributeType::cases())->sortBy('value')->all() as $type) {
             $attribute_options .= '<option value="'.$type->name.'">'.$type->value.'</option>';
@@ -441,25 +351,15 @@ $attributes->pluck( 'id' )->all(),
         // Retrieve the validated input data...
         $validated = $request->validated();
 
-/*dump(
-//'missing: ', array_diff_key($request->all(), $validated), 
-$validated 
-);*/
-
         $rarity_input = $validated['rarity'];
         $rarity = !empty($rarity_input) ? constant("App\Enums\Rarity::$rarity_input")?->value : null;
         
         $tier_input = $validated['tier'];
-        $tier = !empty($tier_input) ? constant("App\Enums\Tier::$tier_input")?->value : null;      
-        
-/*dump(
-'tier: '.$tier,
-'rarity: '.$rarity
-); */ 
+        $tier = !empty($tier_input) ? constant("App\Enums\Tier::$tier_input")?->value : null;
 
         $model = 'App\Models\Items\\'.Str::title($validated['itemType']);
         $item = $model::where('slug', $validated['slug'])->first();
-//dump($item,$model,$validated['slug']);        
+       
         // create instanced item
         if($validated['is_weapon']){
             
@@ -468,11 +368,7 @@ $validated
             
             $type_input = $validated['weapon_type'];
             $type = !empty($type_input) ? constant("App\Enums\WeaponType::$type_input")?->value : null;
-/*dump(
-$base,
-'type: '.$type,
-'gear score: '.($validated['gear_score'] ?? $validated['weapon_gear_score'] ?? null)
-);*/          
+         
             // TODO: check DB for uniqueness and append numbers if not  
             $slug = $item->name
                     . ( !empty( $rarity ) ? ' ' . $rarity : '' ) 
@@ -496,13 +392,7 @@ $base,
             $type = !empty($type_input) ? constant("App\Enums\ArmorType::$type_input")?->value : null;
             
             $weight_class = !empty($validated['weight_class']) ? WeightClass::from($validated['weight_class'])->name : null;
-/*dd(
-$base,
-'weight class: '.$weight_class, 
-'base type: '.$base->type,
-'type: '.$type,$type_input,
-'gear score: '.($validated['gear_score'] ?? $validated['armor_gear_score'] ?? null)
-);*/        
+      
             // create unique slug
             // TODO: check DB for uniqueness and append numbers if not  
             $slug = $item->name 
@@ -530,7 +420,7 @@ $base,
         
         // attach perks
         $perks = Perk::whereIn('slug', $validated['perks'])->get();
-//dump('perks: ', $perks, $perks->pluck('id')->all());
+
         if(!empty(array_filter($perks->pluck('id')->all()))) {
             $item->perks()->sync($perks->pluck('id')->all());
         }
@@ -546,19 +436,12 @@ $base,
             }
       
             $attributes = Attribute::whereIn( 'slug', $attrs)->get();
-/*ddd(
-$attrs,
-'attributes: ',
-$attributes,
-$attributes->pluck( 'id' )->all(),
-'Guild Bank: ' . $guildBank->id
-);*/
+
             if ( !empty( $attributes->pluck( 'id' )->all() ) ) {
                 $attrs_to_sync = [];
                 // also attach with amounts
                 foreach($attributes as $attribute){
                     $attrs_to_sync [$attribute->id] = ['amount' => $amounts[$attribute->slug]];
-//                    $item->attributes()->sync($attribute->id, ['amount' => $amounts[$attribute->slug]]);
                 }
                 $item->attributes()->sync($attrs_to_sync);
             }
