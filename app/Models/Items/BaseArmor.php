@@ -2,11 +2,7 @@
 
 namespace App\Models\Items;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
-
-class BaseArmor extends Model
+class BaseArmor extends BaseItem
 {
     /**
      * The relationships that should always be loaded.
@@ -15,15 +11,6 @@ class BaseArmor extends Model
      */
     protected $with = [];//['perks'];
     
-    /**
-     * Get the route key for the model.
-     *
-     * @return string
-     */
-    public function getRouteKeyName()
-    {
-        return 'slug';
-    }
 
     public function instances()
     {
@@ -34,16 +21,13 @@ class BaseArmor extends Model
     {
         return $this->belongsToMany(ArmorSet::class);
     }
-    
-    public function perks()
-    {
-        return $this->belongsToMany(Perk::class)->withPivot('chance');
-    }
 
-    public function iconUrl()
-    {
-        // image that exists: primordial-void-gauntlet-1-t5 (weapon)
-//    dump(storage_path('app/images/'.Str::afterLast(strtolower($this->icon), '/')));
-        Storage::url('app/images/'.Str::afterLast(strtolower($this->icon), '/'));
-    }
+    
+// -- SCOPES
+
+
+
+// -- MISC
+
+
 }
