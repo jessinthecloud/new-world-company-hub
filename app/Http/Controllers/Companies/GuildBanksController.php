@@ -44,7 +44,7 @@ class GuildBanksController extends Controller
     {
         // add items to bank
         
-        $base_armor = BaseArmor::where('named', 0)->where('bindOnPickup', 0)->distinct()
+        $base_armor = BaseArmor::bankable()->distinct()
             ->orderBy('name')/*->dd()->toSql();*/
             ->get()->mapWithKeys(function($base_armor){
         
@@ -60,7 +60,7 @@ class GuildBanksController extends Controller
             $base_armor_options .= '<option value="'.$value.'">'.$text.'</option>';
         }
         
-        $base_weapons = BaseWeapon::/*with('perks')->*/where('named', 0)->where('bindOnPickup', 0)->orderBy('name')->orderBy('tier')->distinct()->get()->mapWithKeys(function($base_weapon){
+        $base_weapons = BaseWeapon::bankable()->orderBy('name')->orderBy('tier')->distinct()->get()->mapWithKeys(function($base_weapon){
         $wtype = $base_weapon->type;
         $type = !empty($wtype) ? constant("App\Enums\WeaponType::$wtype")->value : null;
         

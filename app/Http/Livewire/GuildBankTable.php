@@ -123,9 +123,7 @@ class GuildBankTable extends DataTableComponent
             'weight_class' => Filter::make('Weight Class')
                 ->select($this->weight_class),
             'rarity' => Filter::make('Rarity')
-                ->select($this->rarity),
-            /*'perks' => Filter::make('Perk')
-                ->multiSelect($this->perks),*/
+                ->select($this->rarity)
         ];
     }
 

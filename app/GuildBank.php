@@ -29,7 +29,6 @@ class GuildBank implements InventoryContract
     public function __construct( protected Company $owner, protected ?Collection $items=null )
     {
         $this->slug = $this->owner->slug;
-//        $this->items ??= $this->findItems();
     }
 
     /**
@@ -62,8 +61,6 @@ class GuildBank implements InventoryContract
         $bindings = $union->getBindings();
         $this->union_query->setBindings($bindings);
         
-//        $this->union_query = $this->joinPerkQuery($this->union_query, $bindings);
-//ddd($this->union_query->toSql());         
         return $this->union_query;
     }
 
@@ -95,59 +92,6 @@ class GuildBank implements InventoryContract
     public function items() : Collection
     {
         return $this->items ??= $this->findItems();
-    }
-
-    /**
-     * Initialize the query for getting the bank's items' perks from DB
-     *
-     * @param \Illuminate\Database\Query\Builder $query
-     *
-     * @param array                              $bindings
-     * @param array                              $perks
-     *
-     * @return \Illuminate\Database\Query\Builder
-     * @throws \Exception
-     */
-    public static function joinPerkQuery(Builder $query, array $bindings, array $perks=[]) : Builder
-    {
-        
-        $query = $query->select(DB::raw('items.id, items.name, items.subtype, items.type, items.rarity, items.gear_score, items.weight_class, perks.id as perk_id, perks.slug as perk_slug, perks.name as perk_name, perks.perk_type as perk_type, perks.description as perk_desc, perks.icon as perk_icon'))
-            ->join('perk_weapon', function($join){
-            return $join->on('items.id', '=', 'perk_weapon.weapon_id');
-        }) 
-            ->join('armor_perk', function($join){
-                return $join->on('items.id', '=', 'armor_perk.armor_id');
-            }) 
-            ->join('perks', function($join) use ($perks) {
-                return $join->on('perks.id', '=', 'perk_weapon.perk_id')
-                    /*->whereRaw('perks.slug IN 
-                ('.implode(',', 
-                    array_fill(0, count($perks), '?')).')')*/
-                    ->orOn('perks.id', '=', 'armor_perk.perk_id') 
-                    /*->whereRaw('perks.slug IN 
-                ('.implode(',', 
-                    array_fill(0, count($perks), '?')).')')                   */
-                ;
-            })
-            ;
-            
-        $query = DB::table(DB::raw("({$query->toSql()}) as itemsWithPerks"))
-            ->selectRaw('itemsWithPerks.*')
-            // , items.id, items.slug, items.name, items.subtype, items.rarity, items.gear_score, items.weight_class, items.type
-            /*->groupBy(
-                'items.id',
-                'items.name',
-                'items.subtype',
-                'items.type',
-                'items.rarity',
-                'items.gear_score',
-                'items.weight_class'
-            )*/;
-            
-        // manually attach bindings because mergeBindings() does not order them properly
-        $query->setBindings($bindings);
-ddd($query->toSql());        
-        return $query;        
     }
 
     public function owner() : Model
