@@ -3,10 +3,10 @@
 namespace App;
 
 use App\Contracts\InventoryContract;
+use App\Models\Characters\Character;
 use App\Models\Companies\Company;
 use App\Models\Items\Armor;
 use App\Models\Items\Weapon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -21,12 +21,12 @@ class GuildBank implements InventoryContract
 
     /**
      *
-     * @param \App\Models\Companies\Company       $owner
-     * @param \Illuminate\Support\Collection|null $items
-     *      Reminder that constructor property promotion
-     *      also declares and initializes the props
+     * @param \App\Models\Companies\Company|\App\Models\Characters\Character $owner (Company or Character)
+     * @param \Illuminate\Support\Collection|null                            $items
+     *                                                                              Reminder that constructor property promotion
+     *                                                                              also declares and initializes the props
      */
-    public function __construct( protected Company $owner, protected ?Collection $items=null )
+    public function __construct( protected Company | Character $owner, protected ?Collection $items=null )
     {
         $this->slug = $this->owner->slug;
     }
@@ -53,6 +53,7 @@ class GuildBank implements InventoryContract
     {
         $union = Armor::rawForCompany($this->owner) 
             ->union(Weapon::rawForCompany($this->owner));
+            
         // create derived table so that we can filter on the union as a whole if needed
         $this->union_query = DB::table(DB::raw("({$union->toSql()}) as items"))
             ->selectRaw('items.*');
@@ -94,14 +95,19 @@ class GuildBank implements InventoryContract
         return $this->items ??= $this->findItems();
     }
 
-    public function owner() : Model
+    public function owner() : Company | Character
     {
         return $this->owner;
     }
 
-    public function company()
+    public function company() : ?Company
     {
-        return $this->owner;
+        return ($this->owner instanceof Company) ? $this->owner : null;
+    }
+    
+    public function character() : ?Character
+    {
+        return ($this->owner instanceof Character) ? $this->owner : null;
     }
 
     public function weapons()
