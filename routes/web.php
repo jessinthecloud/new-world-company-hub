@@ -34,7 +34,7 @@ Route::middleware(['guest'])->group(function() {
 // ###################################
 // ## AUTH
 // ##
-Route::middleware(['auth'])->group(function(){
+Route::middleware(['auth', 'company'])->group(function(){
     
     // dashboard
     Route::get( '/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])

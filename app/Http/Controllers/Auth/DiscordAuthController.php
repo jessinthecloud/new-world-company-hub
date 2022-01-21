@@ -160,7 +160,7 @@ class DiscordAuthController extends Controller
             Auth::login($user, true);
 
             // send to character choice page to set character for this login
-            return redirect(route('characters.choose', ['action'=>'login']));
+            return redirect(route('dashboard'));
            
         } catch ( ClientException $e ) {
         
