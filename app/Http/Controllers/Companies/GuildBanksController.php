@@ -149,14 +149,14 @@ class GuildBanksController extends Controller
         $perks = Perk::whereIn('slug', $validated['perks'])->get();
 
         if(!empty(array_filter($perks->pluck('id')->all()))) {
-            $item->perks()->sync($perks->pluck('id')->all());
+            $item->perks()->sync(array_filter($perks->pluck('id')->all()));
         }
         
         // attach attributes
         if(!empty(array_filter($validated['attrs']))) {
             $attrs = [];
             $amounts = [];
-            foreach($validated['attrs'] as $key => $attr){
+            foreach(array_filter($validated['attrs']) as $key => $attr){
                 $attr_slug = constant("App\Enums\AttributeType::$attr")?->value;
                 $attrs []= $attr_slug;
                 $amounts [strtolower($attr_slug)]= $validated['attribute_amounts'][$key];
@@ -432,14 +432,14 @@ class GuildBanksController extends Controller
         $perks = Perk::whereIn('slug', $validated['perks'])->get();
 
         if(!empty(array_filter($perks->pluck('id')->all()))) {
-            $item->perks()->sync($perks->pluck('id')->all());
+            $item->perks()->sync(array_filter($perks->pluck('id')->all()));
         }
         
         // attach attributes
         if(!empty(array_filter($validated['attrs']))) {
             $attrs = [];
             $amounts = [];
-            foreach($validated['attrs'] as $key => $attr){
+            foreach(array_filter($validated['attrs']) as $key => $attr){
                 $attr_slug = constant("App\Enums\AttributeType::$attr")?->value;
                 $attrs []= $attr_slug;
                 $amounts [strtolower($attr_slug)]= $validated['attribute_amounts'][$key];
