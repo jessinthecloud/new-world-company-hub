@@ -37,7 +37,7 @@ class WeaponService extends ItemService implements ItemServiceContract
         $weapon_type_options = '<option value=""></option>';
         foreach(collect(WeaponType::cases())->sortBy('value')->all() as $type) {
             $weapon_type_options .= '<option value="'.$type->name.'"';
-                if(strtolower($type->name) == strtolower($itemType)){
+                if(strtolower($type->value) == strtolower($itemType)){
                     $weapon_type_options .= ' SELECTED ';
                 }
             $weapon_type_options .= '>'.$type->value.'</option>';
