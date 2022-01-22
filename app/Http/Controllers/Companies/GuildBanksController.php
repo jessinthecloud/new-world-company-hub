@@ -76,7 +76,10 @@ class GuildBanksController extends Controller
             $item = $this->armorService->saveItemRelations($validated, $item, $guildBank->company()->id);
         }
                 
-        return redirect(route('dashboard'))->with([
+        return redirect(
+            route('guild-banks.show',[
+                'guildBank'=>$guildBank->slug
+            ]))->with([
             'status'=> [
                 'type'=>'success',
                 'message' => 'Inventory added successfully: '.($item->name)
@@ -164,7 +167,9 @@ class GuildBanksController extends Controller
             );
         }
         
-        return redirect(route('dashboard'))->with([
+        return redirect(route('guild-banks.show',[
+                'guildBank'=>$guildBank->slug
+            ]))->with([
             'status'=> [
                 'type'=>'success',
                 'message' => 'Inventory edited successfully: '.($item->name)
@@ -352,7 +357,9 @@ class GuildBanksController extends Controller
 //        dump($guildBank, $request->item, $model, $item_id, $item);
         
         if($count > 0){
-            return redirect(route('dashboard'))->with([
+            return redirect(route('guild-banks.show',[
+                    'guildBank'=>$guildBank->slug
+                ]))->with([
                 'status'=> [
                     'type'=>'success',
                     'message' => 'Inventory deleted successfully: '.$item->name
@@ -360,7 +367,10 @@ class GuildBanksController extends Controller
             ]);
         }
         
-        return redirect(route('dashboard'))->with([
+        return redirect(
+            route('guild-banks.show',[
+                'guildBank'=>$guildBank->slug
+            ]))->with([
             'status'=> [
                 'type'=>'error',
                 'message' => 'Inventory deletion failed for '.$item->name.' (ID: '.$item->id.')',
