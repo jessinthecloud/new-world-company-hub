@@ -18,8 +18,7 @@ class CompanyTable extends DataTableComponent
     public Company $company;
     
     // passed in as Collections and then made arrays
-    public $classes;
-    public $weapons;    
+    public $classes;  
      
     /**
      * constructor is called before company can be set,
@@ -27,20 +26,17 @@ class CompanyTable extends DataTableComponent
      *
      * @param \App\Models\Companies\Company  $company
      * @param \Illuminate\Support\Collection $classes
-     * @param \Illuminate\Support\Collection $weapons
      *
      * @return void
      */
-    public function mount(Company $company, Collection $classes, Collection $weapons)
+    public function mount(Company $company, Collection $classes)
     {
         $this->company = $company;
         
         // add "Any" to the front of the filter arrays
         $classes->prepend('Any', '');
-        $weapons->prepend('Any', '');
 
         $this->classes = $classes->all();
-        $this->weapons = $weapons->all();
     }
 
     public function columns() : array
@@ -55,12 +51,6 @@ class CompanyTable extends DataTableComponent
             Column::make( 'Class', 'class.name' )
 //                ->sortable()
                 ->searchable(),
-            /*Column::make( 'Main Hand', 'loadout.main.name' )
-                ->sortable()
-                ->searchable(),
-            Column::make( 'Offhand', 'loadout.offhand.name' )
-                ->sortable()
-                ->searchable(),*/
         ];
     }
     
@@ -69,8 +59,6 @@ class CompanyTable extends DataTableComponent
         return [
             'class' => Filter::make('Class')
                 ->select($this->classes),
-/*            'weapon' => Filter::make('Weapon')
-                ->select($this->weapons),*/
         ];
     }
 
@@ -81,15 +69,6 @@ class CompanyTable extends DataTableComponent
             
             // -- class filter --
             ->when($this->getFilter('class'), fn ($query, $class) => $query->whereRelation('class', 'id', $class))
-            
-            // -- weapon filter -- match the weapon filter to main hand or offhand
-            /*->when($this->getFilter('weapon'), fn ($query, $weapon) => 
-                $query->where(function($query) use ($weapon){
-                    return $query
-                        ->whereRelation('loadout.main', 'id', $weapon)
-                        ->orWhereRelation('loadout.offhand', 'id', $weapon);
-                })
-            )*/
             ;
     }
 }

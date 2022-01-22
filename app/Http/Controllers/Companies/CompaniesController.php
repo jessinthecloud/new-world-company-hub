@@ -98,14 +98,14 @@ class CompaniesController extends Controller
     {
         $classes = CharacterClass::orderBy('name')->get()->mapWithKeys(function($class){
             return [$class->id => $class->name];
-        });
+        });/*
         
         $weapons = BaseWeapon::orderBy( 'name')->get()->mapWithKeys(function($class){
             return [$class->id => $class->name];
-        });
+        });*/
         
         return view('company.show', 
-            compact('company', 'classes', 'weapons')
+            compact('company', 'classes')
         );
     }
 
