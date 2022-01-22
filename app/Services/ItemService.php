@@ -247,7 +247,6 @@ abstract class ItemService implements ItemServiceContract
     
     public function createItem(array $validated, BaseItem $base=null)
     {
-    dump($validated, $base);
         return $this->itemClass::create(
             $this->initItemAttributes($validated, $base)
         );
@@ -255,7 +254,6 @@ abstract class ItemService implements ItemServiceContract
     
     public function updateItem(array $validated, InventoryItemContract $item, BaseItem $base=null)
     {
-//dump($validated, $base);
         $item->update(
             $this->initItemAttributes($validated, $base)
         );
