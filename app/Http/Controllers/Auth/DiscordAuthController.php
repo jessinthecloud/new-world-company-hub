@@ -83,6 +83,8 @@ class DiscordAuthController extends Controller
                         'discord_name' => $discordUser->nickname,
                     ]
                 );
+                
+                event(new Registered($user));
             }
             else{
                 // user already exists in some way
@@ -93,6 +95,7 @@ class DiscordAuthController extends Controller
                         'discord_name' => $discordUser->nickname,
                     ]);
                 $user->save();
+                // TODO: read role from server
                 if(empty($user->getRoleNames()->all())){
                     // assign imported users a default settlers role in their company
                     $user->assignRole('settler');
@@ -104,6 +107,7 @@ class DiscordAuthController extends Controller
                 [ 'email' => $discordUser->email, ],
                 [
                     'user_id' => $user->id,
+                    'discord_id' => $discordUser->id,
                     'name' => $user->name,
                     'nickname' => $discordUser->nickname,
                     'email' => $user->email,
@@ -113,9 +117,6 @@ class DiscordAuthController extends Controller
                     'expires_in' => $discordUser->expiresIn,
                 ]
             );
-
-            // TODO: only fire these events if the user is completely new
-            event(new Registered($user));
 
             if ($discordUser->user['verified'] && $user->markEmailAsVerified()) {
                 event(new Verified($user));
@@ -129,7 +130,7 @@ class DiscordAuthController extends Controller
         } catch ( ClientException $e ) {
         
             return redirect( route( 'login' ) )
-            ->withErrors( ['Discord authorization denied. Please try again or enter your information to register.'] );
+            ->withErrors( ['Discord authorization denied. Please try again.'] );
         
         } catch ( InvalidStateException $e ) {
         
