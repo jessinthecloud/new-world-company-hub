@@ -37,24 +37,34 @@ class ArmorService extends ItemService implements ItemServiceContract
     /**
      * @return string
      */
-    public function weightClassOptions() : string
+    public function weightClassOptions( string $weight_class ) : string
     {
         $weight_class_options = '<option value="">None</option>';
         foreach(WeightClass::cases() as $type) {
-            $weight_class_options .= '<option value="'.$type->name.'">'.$type->value.'</option>';
+            $weight_class_options .= '<option value="'.$type->name.'"';
+                if(strtolower($type->value) == strtolower($weight_class)){
+                    $weight_class_options .= ' SELECTED ';
+                }
+            $weight_class_options .= '>'.$type->value.'</option>';
         }
         
         return $weight_class_options;
     }
 
     /**
+     * @param string $itemType
+     *
      * @return string
      */
-    public function itemTypeOptions() : string
+    public function itemTypeOptions( string $itemType='' ) : string
     {
         $armor_type_options = '<option value=""></option>';
         foreach(collect(ArmorType::cases())->sortBy('value')->all() as $type) {
-            $armor_type_options .= '<option value="'.$type->name.'">'.$type->value.'</option>';
+            $armor_type_options .= '<option value="'.$type->name.'"';
+                if(strtolower($type->value) == strtolower($itemType)){
+                    $armor_type_options .= ' SELECTED ';
+                }
+            $armor_type_options .= '>'.$type->value.'</option>';
         }
         
         return $armor_type_options;

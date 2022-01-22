@@ -15,9 +15,9 @@ use Illuminate\Support\Str;
 
 abstract class ItemService implements ItemServiceContract
 {
-    public function perkOptions(  ) : string
+    public function perkOptions( array $perks=null ) : string
     {
-        $perks = Perk::orderBy('name')->distinct()->get()->mapWithKeys(function($perk){
+        $perks ??= Perk::orderBy('name')->distinct()->get()->mapWithKeys(function($perk){
             return [$perk->slug => $perk->name];
         })->all();
 
@@ -29,21 +29,70 @@ abstract class ItemService implements ItemServiceContract
         return $perk_options;
     }
 
-    public function rarityOptions(  ) : string
+    public function existingPerkOptions( array $item_perks, array $perks ) : array
+    {
+        $existing_perk_options = [];
+        foreach($item_perks as $perk){
+            $existing_perk_options [$perk->id]= '<option value=""></option>';
+            foreach($perks as $value => $text) {
+                $existing_perk_options [$perk->id].= '<option value="'.$value.'"';
+                    if($value == $perk->slug){
+                        $existing_perk_options [$perk->id].= ' SELECTED ';
+                    }
+                $existing_perk_options [$perk->id].= '>'.$text.'</option>';
+            }
+        }
+        
+        return $existing_perk_options;
+    }
+
+    /**
+     * @param array $item_attributes
+     * @param array $attributes - array of AttributeType sorted by value
+     *
+     * @return array[]
+     */
+    public function existingAttributeOptions( array $item_attributes, array $attributes ) : array
+    {
+        $existing_attribute_options = [];
+        $existing_attribute_amounts = [];
+        foreach($item_attributes as $attribute){
+            $existing_attribute_amounts [$attribute->id]= $attribute->pivot->amount;
+            $existing_attribute_options [$attribute->id]= '<option value=""></option>';
+            foreach($attributes as $type) {
+                $existing_attribute_options [$attribute->id].= '<option value="'.$type->name.'"';
+                    if($type->name == $attribute->name){
+                        $existing_attribute_options [$attribute->id].= ' SELECTED ';
+                    }
+                $existing_attribute_options [$attribute->id].= '>'.$type->value.'</option>';
+            }
+        }
+        return [$existing_attribute_amounts, $existing_attribute_options];
+    }
+
+    public function rarityOptions( string $rarity='' ) : string
     {
         $rarity_options = '<option value=""></option>';
         foreach(Rarity::cases() as $type) {
-            $rarity_options .= '<option value="'.$type->name.'">'.$type->value.'</option>';
+            $rarity_options .= '<option value="'.$type->name.'"';
+                if(strtolower($type->value) == strtolower($rarity)){
+                    $rarity_options .= ' SELECTED ';
+                }
+            $rarity_options .= '>'.$type->value.'</option>';
         }
         
         return $rarity_options;
     }
 
-    public function tierOptions(  )
+    public function tierOptions( string $tier ='' )
     {
         $tier_options = '<option value=""></option>';
         foreach(Tier::cases() as $type) {
-            $tier_options .= '<option value="'.$type->name.'">'.$type->value.'</option>';
+            $tier_options .= '<option value="'.$type->name.'"';
+                if(strtolower($type->value) == strtolower($tier)){
+                    $tier_options .= ' SELECTED ';
+                }
+            $tier_options .= '>'.$type->value.'</option>';
         }
         
         return $tier_options;
@@ -58,17 +107,23 @@ abstract class ItemService implements ItemServiceContract
         
         return $attribute_options;
     }
-    
+
     /**
+     * @param \App\Contracts\InventoryItemContract|null $item
+     *
      * @return string
      */
-    public function baseItemsOptions() : string
+    public function baseItemsOptions(InventoryItemContract $item=null) : string
     {
         $base_item = $this->getAllBaseItems();
 
         $base_item_options = '<option value=""></option>';
         foreach($base_item as $value => $text) {
-            $base_item_options .= '<option value="'.$value.'">'.$text.'</option>';
+            $base_item_options .= '<option value="'.$value.'"';
+                if($value == $item?->slug){
+                    $base_item_options .= ' SELECTED ';
+                }
+            $base_item_options .= '>'.$text.'</option>';
         }
         
         return $base_item_options;

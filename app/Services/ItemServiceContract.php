@@ -7,9 +7,9 @@ use App\Models\Items\BaseItem;
 
 interface ItemServiceContract
 {
-    public function baseItemsOptions() : string;
+    public function baseItemsOptions(InventoryItemContract $item=null) : string;
 
-    public function itemTypeOptions(  ) : string;
+    public function itemTypeOptions(string $itemType='') : string;
 
     public function getAllBaseItems() : array;
     

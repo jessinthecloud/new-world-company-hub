@@ -90,10 +90,11 @@ class GuildBanksController extends Controller
         ]);    
     } // end store()
 
-    /** 
-     * @param \App\GuildBank $guildBank
-     * @param                $itemType // Weapon/Armor/Material
-     * @param                $item // slug of specific item
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @param \App\GuildBank           $guildBank
+     * @param string|null              $itemType // Weapon/Armor/Material
+     * @param string|null              $item     // slug of specific item
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
@@ -104,135 +105,23 @@ class GuildBanksController extends Controller
         // get item specifics
         $model = 'App\Models\Items\\'.Str::title($itemType);
         $item = $model::with('perks','base','attributes')->where('slug', $itemSlug)->sole();
-      
-        $base_armors = BaseArmor::where('named', 0)->where('bindOnPickup', 0)->distinct()
-            ->orderBy('name')/*->dd()->toSql();*/
-            ->get()->mapWithKeys(function($base_armor){
-        
-            $wtype = $base_armor->type;
-            $type = !empty($wtype) ? constant("App\Enums\ArmorType::$wtype")->value : null;
-        
-            return [$base_armor->slug => $base_armor->name . " (".(!empty($base_armor->weight_class) ? $base_armor->weight_class.' ' : '').$type.") Tier ".$base_armor->tier];
-        })->all();
-
-        $base_armor_options = '<option value=""></option>';
-        foreach($base_armors as $value => $text) {
-            $base_armor_options .= '<option value="'.$value.'"';
-                if($value == $item->slug){
-                    $base_armor_options .= ' SELECTED ';
-                }
-            $base_armor_options .= '>'.$text.'</option>';
-        }
-        
-        $base_weapons = BaseWeapon::/*with('perks')->*/where('named', 0)->where('bindOnPickup', 0)->orderBy('name')->orderBy('tier')->distinct()->get()->mapWithKeys(function($base_weapon){
-        $wtype = $base_weapon->type;
-        $type = !empty($wtype) ? constant("App\Enums\WeaponType::$wtype")->value : null;
-        
-            return [$base_weapon->slug => $base_weapon->name . " ($type) Tier ".$base_weapon->tier];
-        })->all();
-
-        $base_weapon_options = '<option value=""></option>';
-        foreach($base_weapons as $value => $text) {
-            $base_weapon_options .= '<option value="'.$value.'"';
-                if($value == $item->slug){
-                    $base_weapon_options .= ' SELECTED ';
-                }
-            $base_weapon_options .= '>'.$text.'</option>';
-        }
         
         $perks = Perk::orderBy('name')->distinct()->get()->mapWithKeys(function($perk){
             return [$perk->slug => $perk->name];
-        });
-
-        $perk_options = '<option value=""></option>';
-        foreach($perks->all() as $value => $text) {
-            $perk_options .= '<option value="'.$value.'">'.$text.'</option>';
-        }
-        
+        });        
         // existing perks
-        $existing_perk_options = [];
-        foreach($item->perks->all() as $perk){
-            $existing_perk_options [$perk->id]= '<option value=""></option>';
-            foreach($perks->sortBy('name')->all() as $value => $text) {
-                $existing_perk_options [$perk->id].= '<option value="'.$value.'"';
-                    if($value == $perk->slug){
-                        $existing_perk_options [$perk->id].= ' SELECTED ';
-                    }
-                $existing_perk_options [$perk->id].= '>'.$text.'</option>';
-            }
-        }
+        $existing_perk_options = $this->weaponService->existingPerkOptions($item->perks->all(), $perks->sortBy('name')->all());
 
-        $weapon_type_options = '<option value=""></option>';
-        foreach(collect(WeaponType::cases())->sortBy('value')->all() as $type) {
-            $weapon_type_options .= '<option value="'.$type->name.'"';
-                if(strtolower($value) == strtolower($itemType)){
-                    $weapon_type_options .= ' SELECTED ';
-                }
-            $weapon_type_options .= '>'.$type->value.'</option>';
-        }
-        
-        $armor_type_options = '<option value=""></option>';
-        foreach(collect(ArmorType::cases())->sortBy('value')->all() as $type) {
-            $armor_type_options .= '<option value="'.$type->name.'"';
-                if(strtolower($value) == strtolower($itemType)){
-                    $armor_type_options .= ' SELECTED ';
-                }
-            $armor_type_options .= '>'.$type->value.'</option>';
-        }
-        
-        $rarity_options = '<option value=""></option>';
-        foreach(Rarity::cases() as $type) {
-             $rarity_options .= '<option value="'.$type->name.'"';
-                if(strtolower($type->value) == strtolower($item->rarity)){
-                    $rarity_options .= ' SELECTED ';
-                }
-            $rarity_options .= '>'.$type->value.'</option>';
-        }
-        
-        $tier_options = '<option value=""></option>';
-        foreach(Tier::cases() as $type) {
-            $tier_options .= '<option value="'.$type->name.'"';
-                if(strtolower($type->value) == strtolower($item->tier)){
-                    $tier_options .= ' SELECTED ';
-                }
-            $tier_options .= '>'.$type->value.'</option>';
-        }
-        
-        $weight_class_options = '<option value="">None</option>';
-        foreach(WeightClass::cases() as $type) {
-            $weight_class_options .= '<option value="'.$type->name.'"';
-                if(strtolower($type->value) == strtolower($item->weight_class)){
-                    $weight_class_options .= ' SELECTED ';
-                }
-            $weight_class_options .= '>'.$type->value.'</option>';
-        }
-      
-        $attribute_options = '<option value=""></option>';
-        foreach(collect(AttributeType::cases())->sortBy('value')->all() as $type) {
-            $attribute_options .= '<option value="'.$type->name.'">'.$type->value.'</option>';
-        }
-        
         // existing attributes
-        $existing_attribute_options = [];
-        $existing_attribute_amounts = [];
-        foreach($item->attributes->all() as $attribute){
-            $existing_attribute_amounts [$attribute->id]= $attribute->pivot->amount;
-            $existing_attribute_options [$attribute->id]= '<option value=""></option>';
-            foreach(collect(AttributeType::cases())->sortBy('value')->all() as $type) {
-                $existing_attribute_options [$attribute->id].= '<option value="'.$type->name.'"';
-                    if($type->name == $attribute->name){
-                        $existing_attribute_options [$attribute->id].= ' SELECTED ';
-                    }
-                $existing_attribute_options [$attribute->id].= '>'.$type->value.'</option>';
-            }
-        }
-        
+        [$existing_attribute_amounts, $existing_attribute_options] = 
+            $this->weaponService->existingAttributeOptions(
+                $item->attributes->all(), 
+                collect(AttributeType::cases())->sortBy('value')->all()
+            );
 
         return view(
             'dashboard.guild-bank.create-edit',
             [
-                'base_armor_options' => $base_armor_options,
-                'base_weapon_options' => $base_weapon_options,
                 'existing_perk_options'=>$existing_perk_options,
                 'existing_attribute_options'=>$existing_attribute_options,
                 'existing_attribute_amounts'=>$existing_attribute_amounts,
@@ -241,13 +130,15 @@ class GuildBanksController extends Controller
                 'isWeapon' => strtolower($itemType) == 'weapon' ? 1 : 0,
                 'isArmor' => strtolower($itemType) == 'armor' ? 1 : 0,
                 'newEntry' => isset($item?->base?->id) ? 0 : 1,
-                'armor_type_options' => $armor_type_options,
-                'weapon_type_options' => $weapon_type_options,
-                'perk_options' => $perk_options,
-                'rarity_options' => $rarity_options,
-                'tier_options' => $tier_options,
-                'weight_class_options' => $weight_class_options,
-                'attribute_options' => $attribute_options,
+                'base_armor_options' => $this->armorService->baseItemsOptions($item),
+                'base_weapon_options' => $this->weaponService->baseItemsOptions($item),
+                'armor_type_options' => $this->armorService->itemTypeOptions($itemType),
+                'weapon_type_options' => $this->weaponService->itemTypeOptions($itemType),
+                'perk_options' => $this->weaponService->perkOptions($perks->sortBy('name')->all()),
+                'rarity_options' => $this->weaponService->rarityOptions($item->rarity),
+                'tier_options' => $this->weaponService->tierOptions($item->tier),
+                'weight_class_options' => $this->armorService->weightClassOptions($item->weight_class ?? ''),
+                'attribute_options' => $this->weaponService->attributeOptions(),
                 'method' => 'PUT',
                 'form_action' => route('guild-banks.update', ['guildBank'=>$guildBank->slug]),
                 'button_text' => 'Edit Item',
