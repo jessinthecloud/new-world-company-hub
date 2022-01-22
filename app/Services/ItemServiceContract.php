@@ -19,5 +19,5 @@ interface ItemServiceContract
     
     public function createItem(array $validated, BaseItem $base=null);
 
-    public function baseItem(string $slug) : ?BaseItem;
+    public function baseItemBySlug(string $slug) : ?BaseItem;
 }
