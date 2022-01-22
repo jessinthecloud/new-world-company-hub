@@ -98,6 +98,8 @@ class GuildBankTable extends DataTableComponent
             Column::make( 'Weight Class', 'weight_class' )
                 ->sortable()
                 ->searchable(),
+            Column::make( 'Added At', 'created_at' )
+                ->sortable()
          ];
     }
     

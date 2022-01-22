@@ -77,7 +77,7 @@ class Weapon extends Model implements InventoryItemContract
 // SCOPES ---
     public function scopeRawForCompany($query, Company $company)
     {
-        return $this->select(DB::raw('weapons.id as id, weapons.slug as slug, weapons.name as name, weapons.type as subtype, weapons.rarity, weapons.gear_score, null as weight_class, "Weapon" as type'))
+        return $this->select(DB::raw('weapons.id as id, weapons.slug as slug, weapons.name as name, weapons.type as subtype, weapons.rarity, weapons.gear_score, null as weight_class, "Weapon" as type, weapons.created_at as created_at'))
             ->whereRelation('company', 'id', $company->id);
             
             /*return $this->select(DB::raw('weapons.id as id, weapons.slug as slug, weapons.name as name, weapons.type as subtype, weapons.rarity, weapons.gear_score, null as weight_class, "Weapon" as type, perks.id as perk_id, perks.slug as perk_slug, perks.name as perk_name, perks.perk_type as perk_type, perks.description as perk_desc, perks.icon as perk_icon'))

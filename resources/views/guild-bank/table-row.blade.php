@@ -94,3 +94,7 @@ $guildBank = new \App\GuildBank($instance->company);
 <x-livewire-tables::table.cell>
     {{ $row->weight_class }}
 </x-livewire-tables::table.cell>
+
+<x-livewire-tables::table.cell>
+    {{ \Illuminate\Support\Carbon::createFromFormat('Y-m-d H:i:s', $row->created_at, new \DateTimeZone('America/New_York'))->format("g:i A M j Y") }}
+</x-livewire-tables::table.cell>

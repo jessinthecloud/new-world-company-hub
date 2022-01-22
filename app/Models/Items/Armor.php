@@ -66,7 +66,7 @@ class Armor extends Model implements InventoryItemContract
 // SCOPES ---
     public function scopeRawForCompany($query, Company $company)
     {
-        return $this->select(DB::raw('armors.id as id, armors.slug as slug, armors.name as name, armors.type as subtype, armors.rarity, armors.gear_score, armors.weight_class, "Armor" as type'))
+        return $this->select(DB::raw('armors.id as id, armors.slug as slug, armors.name as name, armors.type as subtype, armors.rarity, armors.gear_score, armors.weight_class, "Armor" as type, armors.created_at as created_at'))
             ->whereRelation('company', 'id', $company->id);
     }
     
