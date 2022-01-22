@@ -24,7 +24,7 @@ class ArmorService extends ItemService implements ItemServiceContract
     public function getAllBaseItems() : array
     {
         return BaseArmor::bankable()->orderBy( 'name' )->orderBy( 'tier' )->distinct()
-            ->orderBy( 'name' )/*->dd()->toSql();*/
+            ->orderBy( 'name' )
             ->get()->mapWithKeys( function ( $base_armor ) {
                 $wtype = $base_armor->type;
                 $type = !empty( $wtype ) ? constant( "App\Enums\ArmorType::$wtype" )->value : null;
@@ -81,13 +81,10 @@ class ArmorService extends ItemService implements ItemServiceContract
     {
         $values = [];
         
-        // get base armor
-        $base ??= $this->baseItem( $validated['armor'] ?? $validated['slug'] );
-        
         $type_input = $validated['armor_type'];
         $type = !empty( $type_input )
             ? constant( "App\Enums\ArmorType::$type_input" )?->value
-            : constant( "App\Enums\ArmorType::{$base->type}" )?->value ?? null;
+            : constant( "App\Enums\ArmorType::{$base?->type}" )?->value ?? null;
 
         $weight_class = !empty( $validated['weight_class'] )
             ? WeightClass::from( $validated['weight_class'] )->name

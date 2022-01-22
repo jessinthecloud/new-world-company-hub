@@ -66,15 +66,22 @@ class GuildBanksController extends Controller
     public function store( InventoryRequest $request, GuildBank $guildBank )
     {
         $validated = $request->validated();
-      
+              
         if($request->is_weapon){
-            $item = $this->weaponService->createItem( $validated );
-            $item = $this->weaponService->saveItemRelations($validated, $item, $guildBank->company()->id);
+            $service = 'weaponService';
+            $slug = $validated['weapon'] ?? $validated['slug'];
         }
         else{
-            $item = $this->armorService->createItem( $validated );
-            $item = $this->armorService->saveItemRelations($validated, $item, $guildBank->company()->id);
+            $service = 'armorService';
+            $slug = $validated['armor'] ?? $validated['slug'];
         }
+        
+        // get base item
+        $base ??= $this->{$service}->baseItem($slug);    
+        $item = $this->{$service}->createItem( $validated, $base );
+        $item = $this->{$service}->saveItemRelations(
+            $validated, $item, $guildBank->company()->id, $base
+        );
                 
         return redirect(
             route('guild-banks.show',[
@@ -151,20 +158,23 @@ class GuildBanksController extends Controller
         
         $model = 'App\Models\Items\\'.Str::title($validated['itemType']);
         $item = $model::where('slug', $validated['slug'])->first();
-//dd($validated,$item);        
-        // update instanced item
+//dd($validated,$item);
+        
         if($request->is_weapon){
-            $item = $this->weaponService->updateItem( $validated, $item );
-            $item = $this->weaponService->saveItemRelations(
-                $validated, $item, $guildBank->company()->id
-            );
+            $service = 'weaponService';
+            $slug = $validated['weapon'] ?? $validated['slug'];
         }
         else{
-            $item = $this->armorService->updateItem( $validated, $item );
-            $item = $this->armorService->saveItemRelations(
-                $validated, $item, $guildBank->company()->id
-            );
+            $service = 'armorService';
+            $slug = $validated['armor'] ?? $validated['slug'];
         }
+        
+        // update instanced item
+        $base ??= $this->{$service}->baseItem($slug);    
+        $item = $this->{$service}->updateItem( $validated, $item, $base );
+        $item = $this->{$service}->saveItemRelations(
+            $validated, $item, $guildBank->company()->id, $base
+        );
         
         return redirect(route('guild-banks.show',[
                 'guildBank'=>$guildBank->slug

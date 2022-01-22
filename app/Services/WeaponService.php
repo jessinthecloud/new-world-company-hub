@@ -50,14 +50,11 @@ class WeaponService extends ItemService implements ItemServiceContract
     {
         $values = [];
         
-        // get base weapon
-        $base ??= $this->baseItem($validated['weapon'] ?? $validated['slug']);
-            
         $type_input = $validated['weapon_type'];
 //        $typeEnum = \App\Enums\WeaponType::class;
         $type = !empty($type_input) 
             ? constant("App\Enums\WeaponType::$type_input")?->value 
-            : constant("App\Enums\WeaponType::{$base->type}")?->value ?? null;
+            : constant("App\Enums\WeaponType::{$base?->type}")?->value ?? null;
 
         $values ['type']= $type;
 

@@ -120,7 +120,7 @@ abstract class ItemService implements ItemServiceContract
         $base_item_options = '<option value=""></option>';
         foreach($base_item as $value => $text) {
             $base_item_options .= '<option value="'.$value.'"';
-                if($value == $item?->slug){
+                if($value == $item?->base?->slug){
                     $base_item_options .= ' SELECTED ';
                 }
             $base_item_options .= '>'.$text.'</option>';
@@ -197,10 +197,11 @@ abstract class ItemService implements ItemServiceContract
      * @param array                                $validated
      * @param \App\Contracts\InventoryItemContract $item
      * @param string                               $company_id
+     * @param \App\Models\Items\BaseItem|null      $base
      *
      * @return \App\Contracts\InventoryItemContract
      */
-    public function saveItemRelations( array $validated, InventoryItemContract $item, string $company_id )
+    public function saveItemRelations( array $validated, InventoryItemContract $item, string $company_id, BaseItem $base=null )
     {
         if(isset($base)) {
             // attach to base item
@@ -246,6 +247,7 @@ abstract class ItemService implements ItemServiceContract
     
     public function createItem(array $validated, BaseItem $base=null)
     {
+    dump($validated, $base);
         return $this->itemClass::create(
             $this->initItemAttributes($validated, $base)
         );
@@ -253,6 +255,7 @@ abstract class ItemService implements ItemServiceContract
     
     public function updateItem(array $validated, InventoryItemContract $item, BaseItem $base=null)
     {
+//dump($validated, $base);
         $item->update(
             $this->initItemAttributes($validated, $base)
         );
