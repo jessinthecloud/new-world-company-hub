@@ -14,8 +14,10 @@ interface ItemServiceContract
     public function getAllBaseItems() : array;
     
     public function createUniqueSlug(array $fields) : string;
+
+    public function initItemAttributes( array $validated, BaseItem $base=null );
     
     public function createItem(array $validated, BaseItem $base=null);
 
-    public function baseItem(string $slug) : BaseItem;
+    public function baseItem(string $slug) : ?BaseItem;
 }

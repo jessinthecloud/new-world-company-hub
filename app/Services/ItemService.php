@@ -89,7 +89,7 @@ abstract class ItemService implements ItemServiceContract
         $tier_options = '<option value=""></option>';
         foreach(Tier::cases() as $type) {
             $tier_options .= '<option value="'.$type->name.'"';
-                if(strtolower($type->value) == strtolower($tier)){
+                if(strtolower($type->name) == strtolower('t'.$tier)){
                     $tier_options .= ' SELECTED ';
                 }
             $tier_options .= '>'.$type->value.'</option>';
@@ -159,15 +159,38 @@ dump("db slugs:",$db_slugs,$slug.'%',"slug before checking: $slug", "slug count:
 
         return $slug;
     }
-    
+
+    public function initGenericItemAttributes( array $validated, array $values, BaseItem $base=null ) : array
+    {
+        $values['name']= $validated['name'] ?? $base->name;
+        $values['description']= $validated['description'] ?? $base?->description ?? null;
+        $values['gear_score']= $validated['gear_score'] ?? $validated['weapon_gear_score'] 
+            ?? $validated['armor_gear_score'] ?? $base->gear_score ?? null;
+        
+        $rarity_input = $validated['rarity'];
+        $values['rarity']= !empty($rarity_input) 
+            ? constant("App\Enums\Rarity::$rarity_input")?->value 
+            : $base->rarity ?? null;
+            
+        $tier_input = $validated['tier'];
+        $values['tier']= !empty($tier_input) 
+            ? constant("App\Enums\Tier::$tier_input")?->value 
+            : $base?->tier ?? null;
+            
+        // determine unique slug
+        $values ['slug']= $this->createUniqueSlug($values, $validated['slug']);
+
+        return $values;
+    }
+
     /**
      * @param string $slug
      *
-     * @return \App\Models\Items\BaseItem
+     * @return \App\Models\Items\BaseItem|null
      */
-    public function baseItem(string $slug) : BaseItem
+    public function baseItem(string $slug) : ?BaseItem
     {
-        return $this->baseItemClass::where('slug', $slug)->first();
+        return $this->baseItemClass::where('slug', 'like', Str::beforeLast($slug, '-').'%')->first();
     }
 
     /**
@@ -217,6 +240,22 @@ dump("db slugs:",$db_slugs,$slug.'%',"slug before checking: $slug", "slug count:
         // attach to bank
         $item->company()->associate($company_id);
         $item->save();
+        
+        return $item;
+    }
+    
+    public function createItem(array $validated, BaseItem $base=null)
+    {
+        return $this->itemClass::create(
+            $this->initItemAttributes($validated, $base)
+        );
+    }
+    
+    public function updateItem(array $validated, InventoryItemContract $item, BaseItem $base=null)
+    {
+        $item->update(
+            $this->initItemAttributes($validated, $base)
+        );
         
         return $item;
     }

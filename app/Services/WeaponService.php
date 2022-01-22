@@ -37,7 +37,7 @@ class WeaponService extends ItemService implements ItemServiceContract
         $weapon_type_options = '<option value=""></option>';
         foreach(collect(WeaponType::cases())->sortBy('value')->all() as $type) {
             $weapon_type_options .= '<option value="'.$type->name.'"';
-                if(strtolower($type->value) == strtolower($itemType)){
+                if(strtolower($type->name) == strtolower($itemType)){
                     $weapon_type_options .= ' SELECTED ';
                 }
             $weapon_type_options .= '>'.$type->value.'</option>';
@@ -45,46 +45,25 @@ class WeaponService extends ItemService implements ItemServiceContract
         
         return $weapon_type_options;
     }
-        
-    public function createItem(array $validated, BaseItem $base=null)
-    {
-        // get base weapon
-        $base ??= $this->baseItem($validated['weapon']);
 
-        $name = $validated['name'] ?? $base->name;
-        $description = $validated['description'] ?? $base?->description ?? null;
-        $gear_score = $validated['gear_score'] ?? $validated['weapon_gear_score'] 
-            ?? $base->gear_score ?? null;
+    public function initItemAttributes( array $validated, BaseItem $base=null )
+    {
+        $values = [];
         
-        $rarity_input = $validated['rarity'];
-        $rarity = !empty($rarity_input) 
-            ? constant("App\Enums\Rarity::$rarity_input")?->value 
-            : $base->rarity ?? null;
-            
-        $tier_input = $validated['tier'];
-        $tier = !empty($tier_input) 
-            ? constant("App\Enums\Tier::$tier_input")?->value 
-            : $base?->tier ?? null;
+        // get base weapon
+        $base ??= $this->baseItem($validated['weapon'] ?? $validated['slug']);
             
         $type_input = $validated['weapon_type'];
+//        $typeEnum = \App\Enums\WeaponType::class;
         $type = !empty($type_input) 
             ? constant("App\Enums\WeaponType::$type_input")?->value 
-            : $base->type ?? null;
-            
-        $values = [
-            'name' => $name,
-            'type' => $type,
-            'description' => $description,
-            'tier' => $tier,
-            'rarity' => $rarity,
-            'gear_score' => $gear_score,
-       ];
-            
-        // determine unique slug
-        $values ['slug']= $this->createUniqueSlug($values);
-        
-dump('created slug: '.$values ['slug']);        
-       
-       return Weapon::create($values);
+            : constant("App\Enums\WeaponType::{$base->type}")?->value ?? null;
+
+        $values ['type']= $type;
+
+        return array_merge( 
+            $values, 
+            $this->initGenericItemAttributes( $validated, $values, $base )
+        );
     }
 }
