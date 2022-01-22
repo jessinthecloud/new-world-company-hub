@@ -14,6 +14,7 @@ class InventoryRequest extends FormRequest
     public function rules() : array
     {
         return [
+            'id'           => [],
             'is_armor'           => ['boolean'],
             'is_weapon'          => ['boolean'],
             'slug'              => ['string', 'nullable'],

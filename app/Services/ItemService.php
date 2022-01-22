@@ -120,7 +120,8 @@ abstract class ItemService implements ItemServiceContract
         $base_item_options = '<option value=""></option>';
         foreach($base_item as $value => $text) {
             $base_item_options .= '<option value="'.$value.'"';
-                if($value == $item?->base?->slug){
+            if($value == $item?->base?->slug){
+//dump('base slug: '.$value .' == '.$item?->base?->slug);
                     $base_item_options .= ' SELECTED ';
                 }
             $base_item_options .= '>'.$text.'</option>';
@@ -138,6 +139,7 @@ abstract class ItemService implements ItemServiceContract
      */
     public function createUniqueSlug(array $fields, string $old_slug=null) : string
     {
+//dump($fields, 'old slug: '.$old_slug);
         $slug = $fields['type'] . ' ' . $fields['name'] . ' ' 
             . ( !empty( $fields['rarity'] ) ? ' ' . $fields['rarity'] : '' ) 
             . ( !empty( $fields['tier'] ) ? ' t' . $fields['tier'] : '' )
@@ -149,7 +151,13 @@ abstract class ItemService implements ItemServiceContract
 
          $slug_count = $db_slugs->count();
         
-//dump("db slugs:",$db_slugs,$slug.'%',"slug before checking: $slug", "slug count: $slug_count");        
+/*dump(
+'new slug: '.$slug,
+"db slugs:",$db_slugs,
+$slug.'%',
+"slug before checking: $slug", 
+"slug count: $slug_count"
+); */       
         
         if( !$db_slugs->contains($old_slug) && $slug_count > 0 ){
             // the found slug is not from the item we're editing,
@@ -167,6 +175,7 @@ abstract class ItemService implements ItemServiceContract
 
     public function initGenericItemAttributes( array $validated, array $values, BaseItem $base=null ) : array
     {
+  
         $values['name']= $validated['name'] ?? $base->name;
         $values['description']= $validated['description'] ?? $base?->description ?? null;
         $values['gear_score']= $validated['gear_score'] ?? $validated['weapon_gear_score'] 
@@ -193,7 +202,7 @@ abstract class ItemService implements ItemServiceContract
      *
      * @return \App\Models\Items\BaseItem|null
      */
-    public function baseItem(string $slug) : ?BaseItem
+    public function baseItemBySlug(string $slug) : ?BaseItem
     {
         // make sure the slug is a match even when it has a dupe
         // don't mistake last - segment for a dupe 

@@ -95,7 +95,7 @@
                         class=""
                         type="text"
                         name="name" 
-                        value="{{ old('name') ?? (isset($item) ? $item->name : '') }}"
+                        value="{{ old('name') ?? '' }}"
                         :required="true" 
                     />
                 </x-forms.field>
@@ -254,10 +254,11 @@
                 
             </div> 
             <!-- end perks-attr-wrapper -->
-
+          
             <x-forms.input type="hidden" name="is_weapon" x-bind:value="isWeapon"/>
             <x-forms.input type="hidden" name="is_armor" x-bind:value="isArmor"/>
-            <input type="hidden" name="slug" value="{{isset($item) ? $item->slug : ''}}"/>
+            <input type="hidden" name="id" value="{{ isset($item) ? $item->id : '' }}"/>
+            <input type="hidden" name="slug" value="{{ isset($item) ? $item->slug : '' }}"/>
             <input type="hidden" name="itemType" value="{{$itemType ?? ''}}"/>
 
             <x-slot name="button">

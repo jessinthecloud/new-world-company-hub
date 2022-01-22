@@ -77,7 +77,7 @@ class GuildBanksController extends Controller
         }
         
         // get base item
-        $base ??= $this->{$service}->baseItem($slug);    
+        $base ??= $this->{$service}->baseItemBySlug($slug);    
         $item = $this->{$service}->createItem( $validated, $base );
         $item = $this->{$service}->saveItemRelations(
             $validated, $item, $guildBank->company()->id, $base
@@ -106,13 +106,14 @@ class GuildBanksController extends Controller
     {
         $itemSlug = $request->item;
         $itemType = $request->itemType;
+       
         // get item specifics
         $model = 'App\Models\Items\\'.Str::title($itemType);
         $item = $model::with('perks','base','attributes')->where('slug', $itemSlug)->sole();
 
         $perks = Perk::orderBy('name')->distinct()->get()->mapWithKeys(function($perk){
             return [$perk->slug => $perk->name];
-        });        
+        });
         // existing perks
         $existing_perk_options = $this->weaponService->existingPerkOptions($item->perks->all(), $perks->sortBy('name')->all());
 
@@ -155,10 +156,10 @@ class GuildBanksController extends Controller
 
         // Retrieve the validated input data...
         $validated = $request->validated();
-        
+//dump($validated['id'], $validated['slug'], $validated);     
         $model = 'App\Models\Items\\'.Str::title($validated['itemType']);
-        $item = $model::where('slug', $validated['slug'])->first();
-//dd($validated,$item);
+        $item = $model::where('id', '=', $validated['id'])->first();
+//dd($model, $item, $item->base);
         
         if($request->is_weapon){
             $service = 'weaponService';
@@ -170,7 +171,7 @@ class GuildBanksController extends Controller
         }
         
         // update instanced item
-        $base ??= $this->{$service}->baseItem($slug);    
+        $base ??= $item->base;    
         $item = $this->{$service}->updateItem( $validated, $item, $base );
         $item = $this->{$service}->saveItemRelations(
             $validated, $item, $guildBank->company()->id, $base
