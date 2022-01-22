@@ -1,9 +1,9 @@
 <x-guest-layout>
     <x-auth-card>
         <x-slot name="logo">
-            <a href="/">
+            {{--<a href="/">
                 <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-            </a>
+            </a>--}}
         </x-slot>
         
         @if(!empty(session('status')))
@@ -26,7 +26,7 @@
             </x-utils.card>
         @endif
 
-        @if(Route::has('discord.redirect') && Route::has('login'))
+        {{--@if(Route::has('discord.redirect') && Route::has('login'))
             <div class="flex flex-wrap items-center justify-center mt-6">
                 - OR -
             </div>
@@ -76,6 +76,6 @@
                     </div>
                 </form>
             </x-utils.card>
-        @endif
+        @endif--}}
     </x-auth-card>
 </x-guest-layout>
