@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use App\Contracts\InventoryItemContract;
 use App\Enums\WeaponType;
+use App\Models\Items\BaseItem;
 use App\Models\Items\BaseWeapon;
 use App\Models\Items\Weapon;
 use Illuminate\Support\Str;
@@ -24,22 +26,7 @@ class WeaponService extends ItemService implements ItemServiceContract
             return [$base_weapon->slug => $base_weapon->name . " ($type) Tier ".$base_weapon->tier];
         })->all();   
     }
-
-    /**
-     * @return string
-     */
-    public function baseItemsOptions() : string
-    {
-        $base_weapons = $this->getAllBaseItems();
-
-        $base_weapon_options = '<option value=""></option>';
-        foreach($base_weapons as $value => $text) {
-            $base_weapon_options .= '<option value="'.$value.'">'.$text.'</option>';
-        }
-        
-        return $base_weapon_options;
-    }
-
+    
     /**
      * @return string
      */
@@ -52,29 +39,46 @@ class WeaponService extends ItemService implements ItemServiceContract
         
         return $weapon_type_options;
     }
-
-    /**
-     * TODO: may need to make sure the slug found doesn't belong to the current item we are checking for. Can't just check for > 1 because current item's slug could be different now so an existing slug from another item would matter
-     * 
-     * @param array $fields
-     *
-     * @return string
-     */
-    public function createUniqueSlug(array $fields) : string
+        
+    public function createItem(array $validated, BaseItem $base=null)
     {
-        $slug = $fields['type'] . ' ' . $fields['name'] . ' ' 
-            . ( !empty( $fields['rarity'] ) ? ' ' . $fields['rarity'] : '' ) 
-            . ( !empty( $fields['tier'] ) ? ' t' . $fields['tier'] : '' )
-        ;
-        $slug = Str::slug( $slug );
-        // see if slug exists in table 
-        $slug_count = Weapon::similarSlugs($slug.'%')->count();
-dump("slug before checking: $slug", "slug count: $slug_count");        
+        // get base weapon
+        $base ??= $this->baseItem($validated['weapon']);
+
+        $name = $validated['name'] ?? $base->name;
+        $description = $validated['description'] ?? $base?->description ?? null;
+        $gear_score = $validated['gear_score'] ?? $validated['weapon_gear_score'] 
+            ?? $base->gear_score ?? null;
         
-        if($slug_count > 0){
-            $slug .= '-x'.($slug_count+1);
-        }
+        $rarity_input = $validated['rarity'];
+        $rarity = !empty($rarity_input) 
+            ? constant("App\Enums\Rarity::$rarity_input")?->value 
+            : $base->rarity ?? null;
+            
+        $tier_input = $validated['tier'];
+        $tier = !empty($tier_input) 
+            ? constant("App\Enums\Tier::$tier_input")?->value 
+            : $base?->tier ?? null;
+            
+        $type_input = $validated['weapon_type'];
+        $type = !empty($type_input) 
+            ? constant("App\Enums\WeaponType::$type_input")?->value 
+            : $base->type ?? null;
+            
+        $values = [
+            'name' => $name,
+            'type' => $type,
+            'description' => $description,
+            'tier' => $tier,
+            'rarity' => $rarity,
+            'gear_score' => $gear_score,
+       ];
+            
+        // determine unique slug
+        $values ['slug']= $this->createUniqueSlug($values);
         
-        return $slug;
+dump('created slug: '.$values ['slug']);        
+       
+       return Weapon::create($values);
     }
 }

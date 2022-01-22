@@ -71,116 +71,21 @@ class GuildBanksController extends Controller
 
     public function store( InventoryRequest $request, GuildBank $guildBank )
     {
-
-        // Retrieve the validated input data...
         $validated = $request->validated();
-
-        $rarity_input = $validated['rarity'];
-        $rarity = !empty($rarity_input) ? constant("App\Enums\Rarity::$rarity_input")?->value : null;
-        
-        $tier_input = $validated['tier'];
-        $tier = !empty($tier_input) ? constant("App\Enums\Tier::$tier_input")?->value : null;
-        
-        // create instanced item
-        if($validated['is_weapon']){
-            
-            // get base weapon
-            $base = BaseWeapon::where('slug', $validated['weapon'])->first();
-            
-            $type_input = $validated['weapon_type'];
-            $type = !empty($type_input) ? constant("App\Enums\WeaponType::$type_input")?->value : null;
-             
-            $slug = $this->weaponService->createUniqueSlug([
-                'name' => $validated['name'],
-                'rarity' => $rarity,
-                'tier' => $tier,
-                'type' => $type,
-            ]);
-dump('created slug: '.$slug);            
-            $item = Weapon::create([
-                'name' => $validated['name'] ?? $base->name,
-                'slug' => $base->slug ?? $slug,
-                'type' => $type ?? $base->type,
-                'description' => $validated['description'] ?? $base?->description ?? null,
-                'tier' => $tier ?? $base?->tier ?? null,
-                'rarity' => $rarity ?? $base?->rarity ?? null,
-                'gear_score' => $validated['gear_score'] ?? $validated['weapon_gear_score'] ?? $base?->gear_score ?? null,
-           ]);
-
+      
+        if($request->is_weapon){
+            $item = $this->weaponService->createItem( $validated );
+            $item = $this->weaponService->saveItemRelations($validated, $item, $guildBank->company()->id);
         }
         else{
-            // get base armor
-            $base = BaseArmor::where('slug', $validated['armor'])->first();
-            
-            $type_input = $validated['armor_type'];
-            $type = !empty($type_input) ? constant("App\Enums\ArmorType::$type_input")?->value : null;
-            
-            $weight_class = !empty($validated['weight_class']) ? WeightClass::from($validated['weight_class'])->name : null;
-
-            // create unique slug
-            $slug = $this->armorService->createUniqueSlug([
-                'name' => $validated['name'],
-                'rarity' => $rarity,
-                'tier' => $tier,
-                'type' => $type,
-                'weight_class' => $weight_class,
-            ]);
-                    
-            $item = Armor::create([
-                'name' => $validated['name'] ?? $base?->name ?? null,
-                'slug' => $base->slug ?? $slug,
-                'type' => $type ?? ArmorType::fromName($base->type)->value,
-                'description' => $validated['description'] ?? $base?->description ?? null,
-                'tier' => $tier ?? $base?->tier ?? null,
-                'rarity' => $rarity ?? $base?->rarity ?? null,
-                'weight_class' => $weight_class ?? $base?->weight_class ?? null,
-                'gear_score' => $validated['gear_score'] ?? $validated['armor_gear_score'] ?? $base?->gear_score ?? null,
-           ]);
+            $item = $this->armorService->createItem( $validated );
+            $item = $this->armorService->saveItemRelations($validated, $item, $guildBank->company()->id);
         }
-        
-        if(isset($base)) {
-            // attach to base item
-            $item->base()->associate($base);
-            $item->save();
-        }
-        
-        // attach perks
-        $perks = Perk::whereIn('slug', $validated['perks'])->get();
-
-        if(!empty(array_filter($perks->pluck('id')->all()))) {
-            $item->perks()->sync(array_filter($perks->pluck('id')->all()));
-        }
-        
-        // attach attributes
-        if(!empty(array_filter($validated['attrs']))) {
-            $attrs = [];
-            $amounts = [];
-            foreach(array_filter($validated['attrs']) as $key => $attr){
-                $attr_slug = constant("App\Enums\AttributeType::$attr")?->value;
-                $attrs []= $attr_slug;
-                $amounts [strtolower($attr_slug)]= $validated['attribute_amounts'][$key];
-            }
-      
-            $attributes = Attribute::whereIn( 'slug', $attrs)->get();
-
-            if ( !empty( $attributes->pluck( 'id' )->all() ) ) {
-                $attrs_to_sync = [];
-                // also attach with amounts
-                foreach($attributes as $attribute){
-                    $attrs_to_sync [$attribute->id] = ['amount' => $amounts[$attribute->slug]];
-                }
-                $item->attributes()->sync($attrs_to_sync);
-            }
-        }
-        
-        // attach to bank
-        $item->company()->associate($guildBank->company()->id);
-        $item->save();
-        
+                
         return redirect(route('dashboard'))->with([
             'status'=> [
                 'type'=>'success',
-                'message' => 'Inventory added successfully: '.($item->name ?? $base->name)
+                'message' => 'Inventory added successfully: '.($item->name)
             ]
         ]);    
     } // end store()

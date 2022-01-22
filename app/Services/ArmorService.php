@@ -6,10 +6,14 @@ use App\Enums\ArmorType;
 use App\Enums\WeightClass;
 use App\Models\Items\Armor;
 use App\Models\Items\BaseArmor;
+use App\Models\Items\BaseItem;
 use Illuminate\Support\Str;
 
 class ArmorService extends ItemService implements ItemServiceContract
 {
+    protected string $itemClass = Armor::class;
+    protected string $baseItemClass = BaseArmor::class;
+    
     public function __construct() {
         
     }
@@ -28,21 +32,6 @@ class ArmorService extends ItemService implements ItemServiceContract
         
             return [$base_armor->slug => $base_armor->name . " (".(!empty($base_armor->weight_class) ? $base_armor->weight_class.' ' : '').$type.") Tier ".$base_armor->tier];
         })->all();
-    }
-
-    /**
-     * @return string
-     */
-    public function baseItemsOptions() : string
-    {
-        $base_armor = $this->getAllBaseItems();
-
-        $base_armor_options = '<option value=""></option>';
-        foreach($base_armor as $value => $text) {
-            $base_armor_options .= '<option value="'.$value.'">'.$text.'</option>';
-        }
-        
-        return $base_armor_options;
     }
 
     /**
@@ -72,28 +61,55 @@ class ArmorService extends ItemService implements ItemServiceContract
     }
 
     /**
-     * TODO: may need to make sure the slug found doesn't belong to the current item we are checking for. Can't just check for > 1 because current item's slug could be different now so an existing slug from another item would matter
-     * 
-     * @param array $fields
+     * @param array                           $validated
+     * @param \App\Models\Items\BaseItem|null $base
      *
-     * @return string
+     * @return mixed
      */
-    public function createUniqueSlug(array $fields) : string
+    public function createItem( array $validated, BaseItem $base = null )
     {
-        $slug = $fields['type'] . ' ' . $fields['name'] . ' ' 
-            . ( !empty( $fields['rarity'] ) ? ' ' . $fields['rarity'] : '' ) 
-            . ( !empty( $fields['tier'] ) ? ' t' . $fields['tier'] : '' )
-            . ( !empty( $fields['weight_class'] ) ? ' ' . $fields['weight_class'] : '' )
-        ;
-        $slug = Str::slug( $slug );
+        // get base armor
+        $base ??= $this->baseItem($validated['armor']);
+
+        $name = $validated['name'] ?? $base->name;
+        $description = $validated['description'] ?? $base?->description ?? null;
+        $gear_score = $validated['gear_score'] ?? $validated['armor_gear_score'] 
+            ?? $base->gear_score ?? null;
         
-        // see if slug exists in table 
-        $slug_count = Armor::similarSlugs($slug.'%')->count();
+        $rarity_input = $validated['rarity'];
+        $rarity = !empty($rarity_input) 
+            ? constant("App\Enums\Rarity::$rarity_input")?->value 
+            : $base->rarity ?? null;
+            
+        $tier_input = $validated['tier'];
+        $tier = !empty($tier_input) 
+            ? constant("App\Enums\Tier::$tier_input")?->value 
+            : $base?->tier ?? null;
+            
+        $type_input = $validated['armor_type'];
+        $type = !empty($type_input) 
+            ? constant("App\Enums\ArmorType::$type_input")?->value 
+            : $base->type ?? null;
+            
+        $weight_class = !empty($validated['weight_class']) 
+            ? WeightClass::from($validated['weight_class'])->name 
+            : null;
+            
+        $values = [
+            'name' => $name,
+            'type' => $type,
+            'description' => $description,
+            'tier' => $tier,
+            'rarity' => $rarity,
+            'gear_score' => $gear_score,
+            'weight_class' => $weight_class,
+       ];
+            
+        // determine unique slug
+        $values ['slug']= $this->createUniqueSlug($values);
         
-        if($slug_count > 0){
-            $slug .= '-x'.($slug_count+1);
-        }
-        
-        return $slug;
+dump('created slug: '.$values ['slug']);        
+       
+       return Armor::create($values);
     }
 }

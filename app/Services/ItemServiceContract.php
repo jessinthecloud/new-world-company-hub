@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Contracts\InventoryItemContract;
+use App\Models\Items\BaseItem;
 
 interface ItemServiceContract
 {
@@ -13,4 +14,8 @@ interface ItemServiceContract
     public function getAllBaseItems() : array;
     
     public function createUniqueSlug(array $fields) : string;
+    
+    public function createItem(array $validated, BaseItem $base=null);
+
+    public function baseItem(string $slug) : BaseItem;
 }
