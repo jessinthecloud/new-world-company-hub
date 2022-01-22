@@ -33,7 +33,7 @@ abstract class BaseItem extends Model
 
     public function scopeBankable(Builder $query)
     {
-        return $this->where('named', 0)->where('bindOnPickup', 0);
+        return $this->where('named', 0)->where('bindOnPickup', 0)->where('name', 'not like', '@%');
     }
     
 // -- MISC

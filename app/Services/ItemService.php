@@ -149,7 +149,7 @@ abstract class ItemService implements ItemServiceContract
 
          $slug_count = $db_slugs->count();
         
-dump("db slugs:",$db_slugs,$slug.'%',"slug before checking: $slug", "slug count: $slug_count");        
+//dump("db slugs:",$db_slugs,$slug.'%',"slug before checking: $slug", "slug count: $slug_count");        
         
         if( !$db_slugs->contains($old_slug) && $slug_count > 0 ){
             // the found slug is not from the item we're editing,

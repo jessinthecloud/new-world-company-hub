@@ -102,7 +102,6 @@ class GuildBanksController extends Controller
         // get item specifics
         $model = 'App\Models\Items\\'.Str::title($itemType);
         $item = $model::with('perks','base','attributes')->where('slug', $itemSlug)->sole();
-            dump($item);
 
         $perks = Perk::orderBy('name')->distinct()->get()->mapWithKeys(function($perk){
             return [$perk->slug => $perk->name];
