@@ -139,14 +139,11 @@ class User extends Authenticatable
     
     public function rosters()
     {
-        /*
-         * query for company member list:
-         return Roster::join('companies', 'rosters.company_id', '=', 'companies.id')
+        return Roster::join('companies', 'rosters.company_id', '=', 'companies.id')
             ->join('characters', 'characters.company_id', '=', 'companies.id')
             ->join('users', 'users.id', '=', 'characters.user_id')
-            ->where('users.id', '=', $this->id)->get(); 
-        */
-        return $this->hasManyThrough(Roster::class, Character::class);
+            ->where('users.id', '=', $this->id)->get();
+//        return $this->hasManyThrough(Roster::class, Character::class);
     }
     
     public function events()
