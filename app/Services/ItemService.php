@@ -160,6 +160,11 @@ abstract class ItemService implements ItemServiceContract
         return $slug;
     }
 
+    public function isCustomSlug( string $slug )
+    {
+//        return (Str::after);
+    }
+
     public function initGenericItemAttributes( array $validated, array $values, BaseItem $base=null ) : array
     {
         $values['name']= $validated['name'] ?? $base->name;
@@ -190,7 +195,11 @@ abstract class ItemService implements ItemServiceContract
      */
     public function baseItem(string $slug) : ?BaseItem
     {
-        return $this->baseItemClass::where('slug', 'like', Str::beforeLast($slug, '-').'%')->first();
+        // make sure the slug is a match even when it has a dupe
+        // don't mistake last - segment for a dupe 
+        $condition = ['slug', 'like', Str::beforeLast($slug, '-x').'%'];
+        
+        return $this->baseItemClass::where(...$condition)->first();
     }
 
     /**
