@@ -124,6 +124,7 @@ class RoleSeeder extends Seeder
             'view own company guildbanks',
             'create own company guildbanks',
             'edit own company guildbanks',
+            'delete own company guildbanks',
             
             'view own company events', 
             'create own company events', 
@@ -165,7 +166,11 @@ class RoleSeeder extends Seeder
             'view own company users',
             'view own company characters',
             'view own company loadouts',
+            
             'view own company guildbanks',
+            'create own company guildbanks',
+            'edit own company guildbanks',
+            'delete own company guildbanks',
             
             'view own company events', 
             'create own company events', 

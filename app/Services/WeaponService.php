@@ -67,9 +67,9 @@ class WeaponService extends ItemService implements ItemServiceContract
             . ( !empty( $fields['tier'] ) ? ' t' . $fields['tier'] : '' )
         ;
         $slug = Str::slug( $slug );
-        
         // see if slug exists in table 
         $slug_count = Weapon::similarSlugs($slug.'%')->count();
+dump("slug before checking: $slug", "slug count: $slug_count");        
         
         if($slug_count > 0){
             $slug .= '-x'.($slug_count+1);

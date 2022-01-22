@@ -96,7 +96,7 @@ class GuildBanksController extends Controller
                 'tier' => $tier,
                 'type' => $type,
             ]);
-            
+dump('created slug: '.$slug);            
             $item = Weapon::create([
                 'name' => $validated['name'] ?? $base->name,
                 'slug' => $base->slug ?? $slug,
