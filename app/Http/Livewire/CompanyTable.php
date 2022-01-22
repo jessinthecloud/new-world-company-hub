@@ -69,8 +69,8 @@ class CompanyTable extends DataTableComponent
         return [
             'class' => Filter::make('Class')
                 ->select($this->classes),
-            'weapon' => Filter::make('Weapon')
-                ->select($this->weapons),
+/*            'weapon' => Filter::make('Weapon')
+                ->select($this->weapons),*/
         ];
     }
 
