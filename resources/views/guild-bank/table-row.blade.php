@@ -6,48 +6,14 @@ $instance = "App\\Models\\Items\\{$row->type}"::find($row->id);
 $guildBank = new \App\GuildBank($instance->company);
 @endphp
 
-<x-livewire-tables::table.cell>
+<x-livewire-tables::table.cell
+    class="max-w-sm"
+    {{-- tailwind not doing these:--}} 
+    style="white-space:normal; min-width:225px; max-width:250px; "
+>
     {{ ucfirst($row->name) }}
-</x-livewire-tables::table.cell>
-
-<x-livewire-tables::table.cell>
-    {{ $row->gear_score }}
-</x-livewire-tables::table.cell>
-
-<x-livewire-tables::table.cell class="w-md max-w-md">
-    {{  $perk_names->pluck('name')->implode(', ') }}
-</x-livewire-tables::table.cell>
-
-<x-livewire-tables::table.cell>
-    {{ $row->type }}
-    {{--@if ($row->isAdmin())
-        @lang('All')
-    @elseif (! $row->permissions->count())
-        @lang('None')
-    @else
-        {!! collect($row->permissions->pluck('description'))->implode('<br/>') !!}
-    @endif--}}
-</x-livewire-tables::table.cell>
-
-<x-livewire-tables::table.cell>
-    {{ $row->subtype }}
-</x-livewire-tables::table.cell>
-
-<x-livewire-tables::table.cell>
-    {{ $row->rarity }}
-    {{--@if(! $row->isAdmin())
-        <a href="{{ route('admin.auth.role.edit', $row) }}" class="text-primary-600 font-medium hover:text-primary-900">Manage</a>
-    @else
-        <span>-</span>
-    @endif--}}
-</x-livewire-tables::table.cell>
-
-<x-livewire-tables::table.cell>
-    {{ $row->weight_class }}
-</x-livewire-tables::table.cell>
-
-<x-livewire-tables::table.cell>
-    <div class="flex flex-wrap">
+    
+    <div class="flex flex-wrap mt-4">
         
         <x-dashboard.gated-button
             :can='["update", $guildBank]'
@@ -57,6 +23,7 @@ $guildBank = new \App\GuildBank($instance->company);
                 'itemType' => $row->type,
                 'item' => $instance->slug
             ])"
+            class="px-2"
         >
             Edit
         </x-dashboard.gated-button>
@@ -86,4 +53,44 @@ $guildBank = new \App\GuildBank($instance->company);
             </x-forms.form>
         @endcan
     </div>
+    
+</x-livewire-tables::table.cell>
+
+<x-livewire-tables::table.cell>
+    {{ $row->gear_score }}
+</x-livewire-tables::table.cell>
+
+<x-livewire-tables::table.cell 
+    class="!whitespace-normal"
+    {{-- tailwind not doing these:--}} 
+    style="white-space:normal; min-width:200px; ">
+    {!! $perk_names->pluck('name')->implode(', <BR>') !!}
+</x-livewire-tables::table.cell>
+
+<x-livewire-tables::table.cell>
+    {{ $row->type }}
+    {{--@if ($row->isAdmin())
+        @lang('All')
+    @elseif (! $row->permissions->count())
+        @lang('None')
+    @else
+        {!! collect($row->permissions->pluck('description'))->implode('<br/>') !!}
+    @endif--}}
+</x-livewire-tables::table.cell>
+
+<x-livewire-tables::table.cell>
+    {{ $row->subtype }}
+</x-livewire-tables::table.cell>
+
+<x-livewire-tables::table.cell>
+    {{ $row->rarity }}
+    {{--@if(! $row->isAdmin())
+        <a href="{{ route('admin.auth.role.edit', $row) }}" class="text-primary-600 font-medium hover:text-primary-900">Manage</a>
+    @else
+        <span>-</span>
+    @endif--}}
+</x-livewire-tables::table.cell>
+
+<x-livewire-tables::table.cell>
+    {{ $row->weight_class }}
 </x-livewire-tables::table.cell>

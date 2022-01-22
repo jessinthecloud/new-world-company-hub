@@ -94,12 +94,10 @@ class GuildBankTable extends DataTableComponent
                 ->searchable(),
             Column::make( 'Rarity', 'rarity' )
                 ->sortable()
-                ->searchable(),
-            
+                ->searchable(),            
             Column::make( 'Weight Class', 'weight_class' )
                 ->sortable()
                 ->searchable(),
-            Column::make( 'Action' ),
          ];
     }
     
