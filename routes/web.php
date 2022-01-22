@@ -4,6 +4,7 @@ use App\Models\Items\Armor;
 use App\Models\Items\BaseArmor;
 use App\Models\Items\BaseWeapon;
 use App\Models\Items\Weapon;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,7 +19,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-
     return view( 'auth.login' );
 })
 ->name('home');

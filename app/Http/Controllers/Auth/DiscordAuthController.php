@@ -11,9 +11,14 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Laravel\Socialite\Facades\Socialite;
 
 use Laravel\Socialite\Two\InvalidStateException;
+
+use Spatie\Permission\Models\Role;
 
 use function redirect;
 
@@ -95,13 +100,9 @@ class DiscordAuthController extends Controller
                         'discord_name' => $discordUser->nickname,
                     ]);
                 $user->save();
-                // TODO: read role from server
-                if(empty($user->getRoleNames()->all())){
-                    // assign imported users a default settlers role in their company
-                    $user->assignRole('settler');
-                }
-            }
 
+            }
+            
             // update or save discord data and tie to user
             $data = DiscordData::updateOrCreate(
                 [ 'email' => $discordUser->email, ],
@@ -117,6 +118,49 @@ class DiscordAuthController extends Controller
                     'expires_in' => $discordUser->expiresIn,
                 ]
             );
+            
+            // TODO: read role from server
+//            if(empty($user->getRoleNames()->all())){
+
+                // assign users their discord role
+                // get their roles for the guild
+                $discord_user_info = Cache::remember('user_guild_info', 600, 
+                    Http::withHeaders([
+                        "Authorization" => "Bearer ".$discordUser->token
+                    ])
+                    ->acceptJson()
+                    ->get("https://discord.com/api/users/@me/guilds/895006799319666718/member")
+                    ->json()
+                )
+                ;
+dump($discord_user_info);                
+                // match role(s) to the ones we have
+                foreach($discord_user_info['roles'] as $discord_role){
+dump($discord_role);
+                    $role_id = DB::table('discord_roles')
+                        ->select('role_id')
+                        ->where('company_id', '=', 1)
+                        ->where('id', '=', $discord_role)
+                        ->first();
+dump(
+DB::table('discord_roles')
+->select('role_id')
+->where('company_id', '=', 1)
+->where('id', '=', $discord_role)->toSql(),
+'role id: '.$role_id
+);                        
+                    $role = Role::where('id', '=', $role_id)->first();
+dd($role);
+                    if(!empty($role)){
+                        $user->assignRole($role);
+                    }
+                    // TODO: also assign character rank?
+                    
+                }
+                
+//                dd($response->json());
+//                $user->assignRole('settler');
+//            }
 
             if ($discordUser->user['verified'] && $user->markEmailAsVerified()) {
                 event(new Verified($user));
