@@ -11,8 +11,8 @@ class CreateCharacterSkillsTable extends Migration
         Schema::create( 'character_skill', function ( Blueprint $table ) {
             $table->bigIncrements( 'id' );
 
-            $table->foreignId('character_id')->constrained();
-            $table->foreignId('skill_id')->constrained();
+            $table->foreignId('character_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('skill_id')->constrained()->cascadeOnDelete();
             $table->smallInteger('level');
 
             $table->timestamps();
