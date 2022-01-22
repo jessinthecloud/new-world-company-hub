@@ -10,8 +10,31 @@ class RolePermissionSeeder extends Seeder
     public function run()
     {
         $all_roles = Role::all(); 
+    // -- SUPER / DEV
+        $super = $all_roles->where('name', '=', 'super-admin')->first();
+        $super->givePermissionTo(
+            'view characters', 'create characters', 'edit characters', 'delete characters', 
+            'view loadouts', 'create loadouts', 'edit loadouts', 'delete loadouts',
+            'view companies', 'create companies', 'edit companies', 'delete companies', 
+            'view rosters', 'create rosters', 'edit rosters', 'delete rosters', 'import rosters',
+            'view events', 'create events', 'edit events', 'delete events',
+            'view positions', 'create positions', 'edit positions', 'delete positions',
+            'view users', 'create users', 'edit users', 'delete users',
+            'view guildbanks', 'create guildbanks', 'edit guildbanks', 'delete guildbanks',
+        );
+        $dev = $all_roles->where('name', '=', 'dev')->first();
+        $dev->givePermissionTo(
+            'view characters', 'create characters', 'edit characters', 'delete characters', 
+            'view loadouts', 'create loadouts', 'edit loadouts', 'delete loadouts',
+            'view companies', 'create companies', 'edit companies', 'delete companies', 
+            'view rosters', 'create rosters', 'edit rosters', 'delete rosters', 'import rosters',
+            'view events', 'create events', 'edit events', 'delete events',
+            'view positions', 'create positions', 'edit positions', 'delete positions',
+            'view users', 'create users', 'edit users', 'delete users',
+            'view guildbanks', 'create guildbanks', 'edit guildbanks', 'delete guildbanks',
+        );
     // -- ADMIN
-        $admin = $all_roles->where('name', '=', 'super-admin')->first();
+        $admin = $all_roles->where('name', '=', 'admin')->first();
         $admin->givePermissionTo(
             'view characters', 'create characters', 'edit characters', 
             'view loadouts', 'create loadouts', 'edit loadouts', 
