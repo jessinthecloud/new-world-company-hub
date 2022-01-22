@@ -14,7 +14,6 @@
                 :id="null" 
                 :company="$company" 
                 :classes="$classes"
-                :weapons="$weapons"
             />
         </div>
     </div>
