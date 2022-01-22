@@ -7,6 +7,7 @@ use App\Models\Characters\Character;
 use App\Models\Faction;
 use App\Models\Items\Armor;
 use App\Models\Items\Weapon;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Company extends Model
@@ -59,5 +60,17 @@ class Company extends Model
     {
         return new GuildBank($this);
     }
+    
+    /**
+     * Would need custom hasManyThroughManyToMany() relation
+     * https://stackoverflow.com/questions/37430217/has-many-through-many-to-many
+     * 
+     * @return mixed
+     *
+    public function users(  )
+    {
+        return $this->hasManyThrough(User::class, Character::class);
+    }
+    //*/
 
 }

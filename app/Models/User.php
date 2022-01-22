@@ -93,7 +93,12 @@ class User extends Authenticatable
     
 // -- DISTANT RELATIONSHIPS
 
-    
+    /**
+     * Would need custom hasManyThroughManyToMany() relation
+     * https://stackoverflow.com/questions/37430217/has-many-through-many-to-many
+     * 
+     * @return mixed
+     */
     public function factions()
     {
         return Faction::join('companies', 'companies.faction_id', '=', 'companies.id')
@@ -103,7 +108,13 @@ class User extends Authenticatable
         ;
 //        return $this->hasManyThrough(Faction::class, Company::class, 'id', 'id', 'id');
     }
-    
+
+    /**
+     * Would need custom hasManyThroughManyToMany() relation
+     * https://stackoverflow.com/questions/37430217/has-many-through-many-to-many
+     * 
+     * @return mixed
+     */
     public function companies()
     {
         return Company::join('characters', 'characters.company_id', '=', 'companies.id')
@@ -112,6 +123,12 @@ class User extends Authenticatable
 //        return $this->hasManyThrough(Company::class, Character::class);
     }
     
+    /**
+     * Would need custom hasManyThroughManyToMany() relation
+     * https://stackoverflow.com/questions/37430217/has-many-through-many-to-many
+     * 
+     * @return mixed
+     */
     public function ranks()
     {
         return Rank::join('characters', 'characters.rank_id', '=', 'ranks.id')
@@ -122,11 +139,14 @@ class User extends Authenticatable
     
     public function rosters()
     {
-        return Roster::join('companies', 'rosters.company_id', '=', 'companies.id')
+        /*
+         * query for company member list:
+         return Roster::join('companies', 'rosters.company_id', '=', 'companies.id')
             ->join('characters', 'characters.company_id', '=', 'companies.id')
             ->join('users', 'users.id', '=', 'characters.user_id')
-            ->where('users.id', '=', $this->id)->get();
-//        return $this->hasManyThrough(Roster::class, Character::class);
+            ->where('users.id', '=', $this->id)->get(); 
+        */
+        return $this->hasManyThrough(Roster::class, Character::class);
     }
     
     public function events()

@@ -106,6 +106,35 @@ class CompanyPolicy
             )
         );
     }
+    
+    public function import( User $user, Company $company ) : bool
+    {
+        return (
+            $user->can(['import members']) 
+            ||
+            (
+                !empty($user->characters->all())
+                &&
+                (
+                    (
+                        $user->can('import own company members')
+                        &&
+                        (
+                            $user->character()->where('company.id', $company->id)->count() > 0
+                        )
+                    )
+                    ||
+                    (
+                        $user->can('import own faction members') 
+                        &&
+                        (
+                            $user->character()->where('company.faction.id', $company->faction->id)->count() > 0
+                        )
+                    )
+                )
+            ) 
+        );
+    }
 
     public function delete( User $user, Company $company ) : bool
     {
