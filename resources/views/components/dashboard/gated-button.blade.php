@@ -6,6 +6,6 @@
             'class' => 'mr-1 mb-2'
         ]) }}
     >
-        {{ empty($slot->toHtml()) ? 'View' : $slot}}
+        {{ empty($slot->toHtml()) ? 'View' : $slot }}
     </x-button-link> 
 @endcan

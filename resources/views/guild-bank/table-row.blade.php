@@ -12,48 +12,14 @@ $guildBank = new \App\GuildBank($instance->company);
     style="white-space:normal; min-width:225px; max-width:250px; "
 >
     {{ ucfirst($row->name) }}
-    
-    <div class="flex flex-wrap mt-4">
-        
-        <x-dashboard.gated-button
-            :can='["update", $guildBank]'
-            :phpClass='"App\\Models\\Items\\GuildBank"'
-            :route="route('guild-banks.edit', [
-                'guildBank' => $guildBank->slug,
-                'itemType' => $row->type,
-                'item' => $instance->slug
-            ])"
-            class="px-2"
-        >
-            Edit
-        </x-dashboard.gated-button>
-        
-        @can("delete", $guildBank)
-            <x-forms.form
-                {{-- send as plain html attribute --}}
-                action="{{  route('guild-banks.destroy', [
-                    'guildBank' => $guildBank->slug,
-                    'itemType' => $row->type,
-                    'item' => $instance->id,
-                    'action'=>'destroy',
-                ]) }}"
-                {{-- set the custom $method variable --}}
-                {{-- (not the form method attribute) --}}
-                :method="'DELETE'"
-            >
-                <x-slot name="button">
-                    <x-button 
-                        name="action" 
-                        value="delete" 
-                        class="bg-red-800"
-                    >
-                        Delete
-                    </x-button>
-                </x-slot>
-            </x-forms.form>
-        @endcan
-    </div>
-    
+
+    <x-dashboard.edit-delete-bank-item-buttons
+        :item="$instance"
+        :itemType="$row->type"            
+        :guildBank="$guildBank"
+        {{--            :guildBankClass="$guildBankClass"--}}
+        class="mt-4"
+    />
 </x-livewire-tables::table.cell>
 
 <x-livewire-tables::table.cell>
