@@ -35,7 +35,9 @@ class ArmorsController extends Controller
             return AttributeType::fromName($attribute->name)->value;
         })->all();
         
-        $armor->type = null !== ArmorType::fromName($armor->type) ? ArmorType::fromName($armor->type)->value : $armor->type;
+        $armor->type = null !== ArmorType::fromName($armor->type) 
+            ? ArmorType::fromName($armor->type)->value 
+            : $armor->type;
         
         // empty perk slots
         $used_perk_slots = count($armor->perks->all()) + count($armor->attributes->all());

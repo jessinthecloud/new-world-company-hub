@@ -41,6 +41,9 @@
                 :entityName="'company'"
                 :pluralEntityName="'companies'"
                 :instance="$company ?? null"
+                :buttonTexts="[
+                    'view' => 'View Members',
+                ]"
             >
                 <x-dashboard.gated-button
                     :can="['import', \App\Models\Companies\Roster::class]"
@@ -68,10 +71,10 @@
                 :pluralEntityName="'guild-banks'"
                 :instance="$guildBank ?? null"
                 :buttonTexts="[
-                    'view' => 'View Inventory',
-                    'create' => 'Add to Inventory',
-                    'edit' => 'Edit Item in Inventory',
-                    'delete' => 'Delete Item from Inventory',
+                    'view' => 'View Guild Bank',
+                    'create' => 'Add to Guild Bank',
+                    'edit' => 'Edit Item in Guild Bank',
+                    'delete' => 'Delete Item from Guild Bank',
                 ]"
             />
             
@@ -85,21 +88,30 @@
             />
             
             {{-- Loadout --}}
-            <x-dashboard.resource-index
+            {{--<x-dashboard.resource-index
                 :title="'Loadout'"
                 :phpClass="\App\Models\Characters\Loadout::class" 
                 :entityName="'loadout'"
                 :pluralEntityName="'loadouts'"
                 :instance="$loadout ?? null"
-            />
+            />--}}
             
             {{-- Weapon --}}
             <x-dashboard.resource-index
-                :title="'Weapon'"
+                :title="'Weapons'"
                 :phpClass="\App\Models\Items\Weapon::class" 
                 :entityName="'weapon'"
                 :pluralEntityName="'weapons'"
                 :instance="$weapon ?? null"
+            />
+            
+            {{-- Armor --}}
+            <x-dashboard.resource-index
+                :title="'Armor'"
+                :phpClass="\App\Models\Items\Armor::class" 
+                :entityName="'armor'"
+                :pluralEntityName="'armors'"
+                :instance="$armor ?? null"
             />
         </div>
     @endempty

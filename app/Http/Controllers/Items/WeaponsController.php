@@ -35,7 +35,9 @@ class WeaponsController extends Controller
             return AttributeType::fromName($attribute->name)->value;
         })->all();
         
-        $weapon->type = WeaponType::fromName($weapon->type)->value;
+        $weapon->type = null !== WeaponType::from($weapon->type) 
+            ? WeaponType::from($weapon->type)->value 
+            : $weapon->type;
         
         // empty perk slots
         $used_perk_slots = count($weapon->perks->all()) + count($weapon->attributes->all());
