@@ -1,7 +1,7 @@
 @props(['item', 'rarity', 'rarityColor', 'itemAttributes', 'emptySlots'])
 
 <!--            --><?php //dump($item); ?>
-<div class="item-wrapper w-3/4 mx-auto flex flex-wrap border border-{{ $rarity }}-700">
+<div class="item-wrapper w-full mx-auto flex flex-wrap border border-{{ $rarity }}-700">
     <div class="item-heading w-full flex flex-wrap gap-4 items-center bg-gradient-to-b from-gray-700 via-{{$rarity}}-800 to-{{$rarity}}-800 p-4 text-gray-200 text-shadow
     lg:flex-nowrap
     "> 

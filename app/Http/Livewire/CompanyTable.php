@@ -69,13 +69,14 @@ class CompanyTable extends DataTableComponent
         return [
             'class' => Filter::make('Class')
                 ->select($this->classes),
-            'weapon' => Filter::make('Weapon')
-                ->select($this->weapons),
+/*            'weapon' => Filter::make('Weapon')
+                ->select($this->weapons),*/
         ];
     }
 
     public function query() : Builder
     {
+//    Character::with('user:discord_name', 'class:name')->whereRelation( 'company', 'id', $this->company->id )
         return Character::whereRelation( 'company', 'id', $this->company->id )
             
             // -- class filter --

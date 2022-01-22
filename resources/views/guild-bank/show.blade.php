@@ -16,7 +16,7 @@
                     )"
                      class="mb-6"
                 >
-                    Add Item to Inventory
+                    Add Item to Guild Bank
                 </x-dashboard.gated-button>
             @endif
             
