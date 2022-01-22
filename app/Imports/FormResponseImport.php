@@ -37,23 +37,27 @@ class FormResponseImport implements ToCollection, WithHeadingRow, WithCalculated
         // remove duplicates, keeping newest
         // check uniqueness via in game name and discord name
         $rows = $rows->sortByDesc('timestamp')->unique(function ($item) {
-                return $item['in_game_name'];
-            })->filter();
+            return $item['in_game_name'];
+        })->filter();
 
         
         //  heading keys are formatted with the Laravel str_slug() helper.
         // E.g. this means all spaces are converted to _
         foreach ($rows as $row) 
         {
-            if(!isset($row['in_game_name'])){
+            if(!isset($row['in_game_name']) || str_contains($row['discord_user_name_ex_discord1234'], ' ') 
+                || !str_contains($row['discord_user_name_ex_discord1234'], '#') ){
+                // no name is set, or discord name is invalid, so skip
                 continue;
             }    
-//        dump($row);
+
             // find or create eloquent user
             $user = User::updateOrCreate(
                 // full discord username
-                [ 'discord_name' => $row['discord_user_name_ex_discord1234'],
-                'slug' => Str::slug($row['in_game_name']), ],
+                [ 
+                    'discord_name' => $row['discord_user_name_ex_discord1234'],
+                    'slug' => Str::slug($row['in_game_name']), 
+                ],
                 [
                     'name' => $row['in_game_name'],
                     'slug' => Str::slug($row['in_game_name']),
@@ -69,6 +73,7 @@ class FormResponseImport implements ToCollection, WithHeadingRow, WithCalculated
             
             $class = CharacterClass::firstWhere('name', $row['class_you_play']);
             
+            // create user's character and tie to them+company
             $character = Character::updateOrCreate(
                 [ 
                     'name' => $row['in_game_name'],

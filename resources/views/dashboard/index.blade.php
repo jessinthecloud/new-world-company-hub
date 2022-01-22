@@ -41,15 +41,6 @@
                 :entityName="'company'"
                 :pluralEntityName="'companies'"
                 :instance="$company ?? null"
-            />
-            
-            {{-- Roster --}}
-            <x-dashboard.resource-index
-                :title="'Roster'"
-                :phpClass="\App\Models\Companies\Roster::class" 
-                :entityName="'roster'"
-                :pluralEntityName="'rosters'"
-                :instance="$roster ?? null"
             >
                 <x-dashboard.gated-button
                     :can="['import', \App\Models\Companies\Roster::class]"
@@ -60,6 +51,15 @@
                 </x-dashboard.gated-button>
             </x-dashboard.resource-index>
             
+            {{-- Roster --}}
+            {{--<x-dashboard.resource-index
+                :title="'Roster'"
+                :phpClass="\App\Models\Companies\Roster::class" 
+                :entityName="'roster'"
+                :pluralEntityName="'rosters'"
+                :instance="$roster ?? null"
+            />--}}
+                        
             {{-- Guild Bank --}}
             <x-dashboard.resource-index
                 :title="'Guild Bank'"
