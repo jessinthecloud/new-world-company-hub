@@ -13,7 +13,7 @@
     {{-- Additional meta tags, FB, twitter, etc--}}
     @stack('meta')
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name') }}</title>
 
     {{-- additional <head> content (optional) --}}
     {!! $headslot ?? '' !!}
