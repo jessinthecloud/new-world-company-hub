@@ -17,7 +17,6 @@ class RoleSeeder extends Seeder
         // super admin gets all permissions via Gate::before rule; see AuthServiceProvider
         $super = Role::updateOrCreate(['name' => 'super-admin']);
         $admin = Role::updateOrCreate(['name' => 'admin']);
-        $banker = Role::updateOrCreate(['name' => 'banker']);        
         
         // get roles from breakpoint discord
         $response = Http::withHeaders([

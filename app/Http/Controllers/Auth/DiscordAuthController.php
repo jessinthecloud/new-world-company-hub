@@ -73,9 +73,9 @@ class DiscordAuthController extends Controller
     public function callback(Request $request)
     {
         try {
-            $discordUser = Cache::remember('user_info', 900, function() {
-                return Socialite::driver( 'discord' )->user();
-            });
+            
+            $discordUser = Socialite::driver( 'discord' )->user();
+            
             // find or create eloquent user with this discord name
             $user = User::where('discord_name',  $discordUser->nickname)->get();
 //dd($discordUser);          
