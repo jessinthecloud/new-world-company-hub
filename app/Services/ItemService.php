@@ -210,6 +210,16 @@ $slug.'%',
         
         return $this->baseItemClass::where(...$condition)->first();
     }
+    
+    /**
+     * @param string $slug
+     *
+     * @return \App\Models\Items\BaseItem|null
+     */
+    public function baseItem($id) : ?BaseItem
+    {
+        return $this->baseItemClass::where('id', '=', $id)->first();
+    }
 
     /**
      * @param array                                $validated

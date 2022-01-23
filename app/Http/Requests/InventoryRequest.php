@@ -13,29 +13,23 @@ class InventoryRequest extends FormRequest
 {
     public function rules() : array
     {
+//    dd($this->request);
         return [
             'id'           => [],
-            'is_armor'           => ['boolean'],
-            'is_weapon'          => ['boolean'],
+            'base_id'           => [],
+            'base_slug'           => ['string', 'nullable'],
             'slug'              => ['string', 'nullable'],
             'itemType'          => ['string', 'nullable'],
-            'weapon'              => [
-                Rule::requiredIf(function () {
-                    return empty($this->name) && $this->is_weapon == true;
-                }),
+            'item'              => [
+                /*Rule::requiredIf(function () {
+                    return empty($this->name);
+                }),*/
             ],
-            'weapon_gear_score'   => [/*'required_with:weapon',*/ 'numeric', 'nullable'],
-            'armor'               => [
-                Rule::requiredIf(function () {
-                    return empty($this->name) && $this->is_armor == true;
-                }),
-            ],
-            'armor_gear_score'    => [/*'required_with:armor',*/ 'numeric', 'nullable'],
-            
+            // always input
+            'gear_score'         => ['required', 'numeric'],
             // rarity always input
             'rarity'             => ['required_without:custom_rarity', /*new Enum(Rarity::class)*/],
             'custom_rarity'      => ['required_without:rarity', /*new Enum(Rarity::class)*/],
-
             
             // perks
             'perks'               => ['array', 'nullable'],
@@ -45,8 +39,7 @@ class InventoryRequest extends FormRequest
             'attribute_amounts.*' => ['required_with:attributes', 'numeric', 'nullable'],
             
             // custom 
-            'name'               => ['required_without_all:armor,weapon', 'string', 'nullable'],
-            'gear_score'         => ['required_with:name', 'numeric', 'nullable'],
+            'name'               => ['required_without:base_id', 'string', 'nullable'],
             'armor_type'         => [/*'required_if:is_armor,true',*/ /*new Enum(ArmorType::class),*/ 'nullable'],
             'weapon_type'        => [/*'required_if:is_weapon,true',*/ /*new Enum(WeaponType::class),*/ 'nullable'],
             'tier'               => [/*new Enum(Tier::class),*/ 'nullable'],

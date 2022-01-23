@@ -66,18 +66,11 @@ class GuildBanksController extends Controller
     public function store( InventoryRequest $request, GuildBank $guildBank )
     {
         $validated = $request->validated();
-              
-        if($request->is_weapon){
-            $service = 'weaponService';
-            $slug = $validated['weapon'] ?? $validated['slug'];
-        }
-        else{
-            $service = 'armorService';
-            $slug = $validated['armor'] ?? $validated['slug'];
-        }
+        
+        $service = (strtolower($validated['itemType']) == 'weapon') ? 'weaponService' : 'armorService';
         
         // get base item
-        $base ??= $this->{$service}->baseItemBySlug($slug);    
+        $base ??= $this->{$service}->baseItem($validated['base_id']);    
         $item = $this->{$service}->createItem( $validated, $base );
         $item = $this->{$service}->saveItemRelations(
             $validated, $item, $guildBank->company()->id, $base
