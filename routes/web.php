@@ -4,6 +4,7 @@ use App\Models\Items\Armor;
 use App\Models\Items\BaseArmor;
 use App\Models\Items\BaseWeapon;
 use App\Models\Items\Weapon;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,7 +19,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-
     return view( 'auth.login' );
 })
 ->name('home');
@@ -74,7 +74,7 @@ Route::middleware(['auth'])->group(function(){
 // ###################################
 // ## SUPER ADMIN
 // ##
-    Route::middleware(['role:super-admin'])->group(function() {
+    Route::middleware(['role:super-admin|dev'])->group(function() {
     
         
     }); // end super admin
@@ -85,7 +85,7 @@ Route::middleware(['auth'])->group(function(){
 // ###################################
 // # ADMIN
 // #
-    Route::middleware(['role:super-admin|admin'])->group(function() {
+    Route::middleware(['role:super-admin|dev|admin'])->group(function() {
     
         Route::resource( 'factions', \App\Http\Controllers\FactionsController::class )
             ->except( ['index', 'show'] );
@@ -117,7 +117,7 @@ Route::middleware(['auth'])->group(function(){
 // ###################################
 // # GOVERNOR
 // #
-    Route::middleware(['role:super-admin|admin|governor'])->group(function() {
+    Route::middleware(['role:super-admin|dev|admin|governor'])->group(function() {
         Route::resource( 'companies', \App\Http\Controllers\Companies\CompaniesController::class )
             ->only( ['edit', 'update'] );
     });
@@ -128,7 +128,7 @@ Route::middleware(['auth'])->group(function(){
 // ###################################
 // # CONSUL
 // #
-    Route::middleware(['role:super-admin|admin|governor|consul'])->group(function() {
+    Route::middleware(['role:super-admin|dev|admin|governor|consul'])->group(function() {
        
         
     });
@@ -139,7 +139,7 @@ Route::middleware(['auth'])->group(function(){
 // ###################################
 // # OFFICER
 // #
-    Route::middleware(['role:super-admin|admin|governor|consul|officer'])->group(function() {
+    Route::middleware(['role:super-admin|dev|admin|governor|consul|officer'])->group(function() {
         // import rosters
         Route::get('/import', [\App\Http\Controllers\Companies\ImportRosterController::class, 'create'])
             ->name( 'rosters.import.create' );
@@ -169,7 +169,7 @@ Route::middleware(['auth'])->group(function(){
 // ###################################
 // # SETTLER
 // #
-    Route::middleware(['role:super-admin|admin|governor|consul|officer|settler'])->group(function() {
+    Route::middleware(['role:super-admin|dev|admin|governor|consul|officer|settler'])->group(function() {
         
         Route::get( '/weapons/{weapon}', [\App\Http\Controllers\Items\WeaponsController::class, 'show'] )
         ->name( 'weapons.show' );
