@@ -1,6 +1,7 @@
 <x-layouts.dashboard>
     <x-dashboard.section
         :title="'Guild Bank'"
+        class="min-h-screen"
     >
     <p>Add items to the Guild Bank</p>
         <x-forms.form
@@ -14,60 +15,23 @@
             
              x-data="{weapons: {}, armors: {}, isWeapon:{{ $isWeapon ?? 0 }}, isArmor:{{ $isArmor ?? 0 }}, newEntry:{{ $newEntry ?? 0 }}, fetch:false}"
         >
-            <div class="buttons w-full flex flex-wrap justify-start items-center mt-4 mb-4" x-show="!isWeapon && !isArmor">
-                <x-button 
-                    id="add-weapon" type="button" class="mb-4 mr-4"
-                    @click="isWeapon=1, console.log(isWeapon) {{--, weapons = await getItems('base-weapons')--}}"
-                >
-                    Add Weapon
-                </x-button>
-                <x-button 
-                    id="add-armor" type="button" class="mb-4"
-                    @click="isArmor=1"
-                >
-                    Add Armor
-                </x-button>
-            </div>
                 
-            <x-forms.field :name="'weapon_gear_score'" class="mb-6 mr-4" x-cloak x-show="isWeapon && !newEntry">
-                <x-forms.label for="weapon_gear_score" :required="true">Gear Score:</x-forms.label>
+            <x-forms.field :name="'gear_score'" class="mb-6 mr-4" x-cloak x-show="!newEntry">
+                <x-forms.label for="gear_score" :required="true">Gear Score:</x-forms.label>
                 <x-forms.input 
-                    id="weapon_gear_score"
+                    id="gear_score"
                     class=""
                     type="text"
-                    name="weapon_gear_score" 
-                    value="{{ old('weapon_gear_score') ?? (isset($item) ? $item->gear_score : '') }}"
+                    name="gear_score" 
+                    value="{{ old('gear_score') ?? (isset($item) ? $item->gear_score : '') }}"
                     size="10"
                     :required="true" 
                 />
             </x-forms.field>
-            <x-forms.field :name="'weapon'" class="mb-6" x-cloak x-show="isWeapon && !newEntry">
-                <x-forms.label for="weapon" :required="false">Weapon:</x-forms.label>
-                <x-forms.select name="weapon" id="weapon"
-                    :values="$weapons ?? null"
-                    :required="false"
-                >{!! $base_weapon_options ?? '' !!}</x-forms.select>
+            <x-forms.field :name="'item'" class="mb-6" x-cloak x-show="!newEntry">
+                <x-forms.label for="item" :required="false">Item:</x-forms.label>
+                <livewire:item-drop-down/>
             </x-forms.field>
-            
-            <x-forms.field :name="'armor_gear_score'" class="mb-6 mr-4" x-cloak x-show="isArmor && !newEntry">
-                <x-forms.label for="armor_gear_score" :required="true">Gear Score:</x-forms.label>
-                <x-forms.input 
-                    id="armor_gear_score"
-                    class=""
-                    type="text"
-                    name="armor_gear_score" 
-                    value="{{ old('armor_gear_score') ?? (isset($item) ? $item->gear_score : '') }}"
-                    size="10"
-                    :required="true" 
-                />
-            </x-forms.field>
-            <x-forms.field :name="'armor'" class="mb-6" x-cloak x-show="isArmor && !newEntry">
-                <x-forms.label for="armor" :required="false">Armor:</x-forms.label>
-                <x-forms.select name="armor" id="armor"
-                    :values="$armors ?? null"
-                    :required="false"
-                >{!! $base_armor_options ?? '' !!}</x-forms.select>
-            </x-forms.field>   
             
             <x-forms.field :name="'rarity'" class="mb-6 mr-4" x-cloak x-show="(isArmor || isWeapon) && !newEntry">
                 <x-forms.label for="rarity" :required="true">Rarity:</x-forms.label>
