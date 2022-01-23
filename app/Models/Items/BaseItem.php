@@ -39,7 +39,7 @@ abstract class BaseItem extends Model
             // no test items
             ->where('name', 'not like', '@%')
             // no items under tier 5
-            ->where('tier', '>=', 5);
+            ->where('tier', '>=', 5)
             ;
     }
     
