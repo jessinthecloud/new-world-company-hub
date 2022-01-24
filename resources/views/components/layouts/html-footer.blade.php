@@ -30,7 +30,9 @@
     <script>
         $(document).ready(function() {
             $('#add-attr').click(function () {
-                $('#appended-attrs').append($('#attr-wrapper').clone());
+                let clone = $('#attr-wrapper').clone();
+                $(clone).find('input').val('');                
+                $('#appended-attrs').append(clone);
             });
             $('#add-perk').click(function () {
                 $('#appended-perks').append($('#perks-wrapper').clone());
