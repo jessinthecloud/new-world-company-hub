@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Policies\CompanyInventoryPolicy;
 use App\Policies\EventPolicy;
 use App\Policies\PositionPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -46,5 +47,10 @@ class AuthServiceProvider extends ServiceProvider
         Gate::before( function ( $user, $ability ) {
             return $user->hasRole( ['super-admin','dev'] ) ? true : null;
         } );
+        
+        // define more abstract policies --
+        // i.e., Inventory Item that could be tied to company or character
+        // TODO: ...would it be better/easier to just define the polymorphic relation (company_inventory)?
+        Gate::define('update-company-inventory', [CompanyInventoryPolicy::class, 'update']);
     }
 }
