@@ -63,6 +63,16 @@ class Armor extends Model implements InventoryItemContract
         return $this->belongsTo(Character::class);
     }
     
+    public function asItem(  )
+    {
+        return $this->morphMany(Item::class, 'itemable');
+    }
+    
+    public function asInventoryItem(  )
+    {
+        return $this->morphMany(InventoryItem::class, 'ownable');
+    }
+    
 // SCOPES ---
     public function scopeRawForCompany($query, Company $company)
     {
