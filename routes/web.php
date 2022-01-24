@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Items\CompanyInventoryController;
 use App\Models\Items\Armor;
 use App\Models\Items\BaseArmor;
 use App\Models\Items\BaseWeapon;
@@ -105,13 +106,31 @@ Route::middleware(['auth'])->group(function(){
 // # BANKER
 // #
     Route::middleware(['role:super-admin|admin|banker'])->group(function() {
-        Route::resource( 'items', \App\Http\Controllers\Items\ItemsController::class );
-//            ->only( ['edit', 'update'] );
-        Route::resource( 'inventory-items', \App\Http\Controllers\Items\InventoryItemsController::class )
-            ->parameters([
-                'inevntory-items' => 'inventoryItem'
-            ]);
-//            ->only( ['edit', 'update'] );
+    
+        Route::get( '/companies/{company}/inventory', 
+            [CompanyInventoryController::class, 'index'] )
+            ->name('company.inventory')
+        ;
+        Route::get( '/companies/{company}/inventory/create', 
+            [CompanyInventoryController::class, 'create'] )
+            ->name('company.inventory.create')
+        ;
+        Route::post( '/companies/{company}/inventory', 
+            [CompanyInventoryController::class, 'store'] )            
+            ->name('company.inventory.store')
+        ;
+        Route::get( '/companies/{company}/inventory/{type}/{item}/edit', 
+            [CompanyInventoryController::class, 'edit'] )
+            ->name('company.inventory.edit')
+        ;
+        Route::put( '/companies/{company}/inventory/{type}/{item}', 
+            [CompanyInventoryController::class, 'update'] )
+            ->name('company.inventory.update')
+        ;
+        Route::delete( '/companies/{company}/inventory/{type}/{item}', 
+            [CompanyInventoryController::class, 'destroy'] )
+            ->name('company.inventory.destroy')
+        ;
     });
 // ##
 // ## END BANKER
