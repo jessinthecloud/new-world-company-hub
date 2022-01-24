@@ -2,6 +2,9 @@
 
 namespace App\Models\Items;
 
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
+
 class BaseArmor extends BaseItem
 {
     /**
@@ -24,7 +27,18 @@ class BaseArmor extends BaseItem
 
     
 // -- SCOPES
-
+    public function scopeRawForBankSearch(Builder $query, string $term)
+    {
+        return $this->select(DB::raw('base_armors.id as id, base_armors.slug as slug, base_armors.name as name, base_armors.type as subtype, base_armors.rarity, base_armors.gear_score, base_armors.weight_class, "Armor" as type'))
+            ->where('base_armors.name', 'like', $term)
+            ->where('named', 0)
+            ->where('bindOnPickup', 0)
+            // no test items
+            ->where('name', 'not like', '@%')
+            // no items under tier 5
+            ->where('tier', '>=', 5)
+        ;
+    }
 
 
 // -- MISC

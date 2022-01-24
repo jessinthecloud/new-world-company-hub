@@ -66,18 +66,11 @@ class GuildBanksController extends Controller
     public function store( InventoryRequest $request, GuildBank $guildBank )
     {
         $validated = $request->validated();
-              
-        if($request->is_weapon){
-            $service = 'weaponService';
-            $slug = $validated['weapon'] ?? $validated['slug'];
-        }
-        else{
-            $service = 'armorService';
-            $slug = $validated['armor'] ?? $validated['slug'];
-        }
+        
+        $service = (strtolower($validated['itemType']) == 'weapon') ? 'weaponService' : 'armorService';
         
         // get base item
-        $base ??= $this->{$service}->baseItemBySlug($slug);    
+        $base ??= $this->{$service}->baseItem($validated['base_id']);    
         $item = $this->{$service}->createItem( $validated, $base );
         $item = $this->{$service}->saveItemRelations(
             $validated, $item, $guildBank->company()->id, $base
@@ -156,22 +149,15 @@ class GuildBanksController extends Controller
 
         // Retrieve the validated input data...
         $validated = $request->validated();
-//dump($validated['id'], $validated['slug'], $validated);     
+    
         $model = 'App\Models\Items\\'.Str::title($validated['itemType']);
         $item = $model::where('id', '=', $validated['id'])->first();
-//dd($model, $item, $item->base);
+//dd($model, $request->validated(), $item, $item->base);
         
-        if($request->is_weapon){
-            $service = 'weaponService';
-            $slug = $validated['weapon'] ?? $validated['slug'];
-        }
-        else{
-            $service = 'armorService';
-            $slug = $validated['armor'] ?? $validated['slug'];
-        }
+        $service = (strtolower($validated['itemType']) == 'weapon') ? 'weaponService' : 'armorService';
         
         // update instanced item
-        $base ??= $item->base;    
+        $base = $this->{$service}->baseItem($validated['base_id']) ?? $item->base;    
         $item = $this->{$service}->updateItem( $validated, $item, $base );
         $item = $this->{$service}->saveItemRelations(
             $validated, $item, $guildBank->company()->id, $base
