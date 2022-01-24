@@ -30,8 +30,7 @@
             </x-forms.field>
             <x-forms.field :name="'item'" class="mb-6 w-3/4 lg:w-1/2" x-cloak x-show="!newEntry">
                 <x-forms.label for="item" :required="false">Item:</x-forms.label>
-                {{--<livewire:item-drop-down/>--}}
-                <livewire:item-autocomplete/>
+                <livewire:item-autocomplete :search="isset($item) ? $item->name : ''"/>
             </x-forms.field>
             
             <x-forms.field :name="'rarity'" class="mb-6 mr-4" x-cloak x-show="!newEntry">
