@@ -72,7 +72,7 @@ Route::middleware(['auth'])->group(function(){
     Route::resource( 'base-armors', \App\Http\Controllers\Items\BaseArmorsController::class);
     // BASE WEAPON
     Route::resource( 'base-weapons', \App\Http\Controllers\Items\BaseWeaponsController::class);
-                
+    
             
 // ###################################
 // ## SUPER ADMIN
@@ -99,6 +99,22 @@ Route::middleware(['auth'])->group(function(){
     });
 // ##
 // ## END ADMIN
+// ################################################################
+
+// ###################################
+// # BANKER
+// #
+    Route::middleware(['role:super-admin|admin|banker'])->group(function() {
+        Route::resource( 'items', \App\Http\Controllers\Items\ItemsController::class );
+//            ->only( ['edit', 'update'] );
+        Route::resource( 'inventory-items', \App\Http\Controllers\Items\InventoryItemsController::class )
+            ->parameters([
+                'inevntory-items' => 'inventoryItem'
+            ]);
+//            ->only( ['edit', 'update'] );
+    });
+// ##
+// ## END BANKER
 // ################################################################
 
 // ###################################
