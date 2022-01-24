@@ -2,7 +2,7 @@
 
 namespace App\Models\Items;
 
-use App\Contracts\InventoryItemContract;
+use App\Contracts\InventoryItem;
 use App\Models\Characters\Character;
 use App\Models\Companies\Company;
 use Illuminate\Database\Eloquent\Builder;
@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class Armor extends Model implements InventoryItemContract
+class Armor extends Model implements InventoryItem
 {
     use HasFactory;
 
@@ -63,15 +63,7 @@ class Armor extends Model implements InventoryItemContract
         return $this->belongsTo(Character::class);
     }
     
-    public function asItem(  )
-    {
-        return $this->morphMany(Item::class, 'itemable');
-    }
     
-    public function asInventoryItem(  )
-    {
-        return $this->morphMany(InventoryItem::class, 'ownable');
-    }
     
 // SCOPES ---
     public function scopeRawForCompany($query, Company $company)
@@ -87,8 +79,8 @@ class Armor extends Model implements InventoryItemContract
     /**
      * @return mixed
      */
-    public function ownedBy() : mixed
+    public function owner() : mixed
     {
-        return $this->company ?? $this->character() ?? null;
+        return $this->company ?? $this->character ?? null;
     }
 }

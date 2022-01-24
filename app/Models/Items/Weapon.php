@@ -2,7 +2,7 @@
 
 namespace App\Models\Items;
 
-use App\Contracts\InventoryItemContract;
+use App\Contracts\InventoryItem;
 use App\Models\Characters\Character;
 use App\Models\Characters\Loadout;
 use App\Models\Companies\Company;
@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class Weapon extends Model implements InventoryItemContract
+class Weapon extends Model implements InventoryItem
 {
     use HasFactory;
 
@@ -73,16 +73,6 @@ class Weapon extends Model implements InventoryItemContract
     {
         return $this->hasMany(Loadout::class, 'offhand_id');
     }
-
-    public function asItem(  )
-    {
-        return $this->morphMany(Item::class, 'itemable');
-    }
-    
-    public function asInventoryItem(  )
-    {
-        return $this->morphMany(InventoryItem::class, 'ownable');
-    }
     
 // SCOPES ---
     public function scopeRawForCompany($query, Company $company)
@@ -107,8 +97,8 @@ class Weapon extends Model implements InventoryItemContract
     /**
      * @return mixed
      */
-    public function ownedBy() : mixed
+    public function owner() : mixed
     {
-        return $this->company ?? $this->character() ?? null;
+        return $this->company ?? $this->character ?? null;
     }
 }

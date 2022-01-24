@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Contracts\InventoryItemContract;
+use App\Contracts\InventoryItem;
 use App\Enums\AttributeType;
 use App\Enums\Rarity;
 use App\Enums\Tier;
@@ -109,11 +109,11 @@ abstract class ItemService implements ItemServiceContract
     }
 
     /**
-     * @param \App\Contracts\InventoryItemContract|null $item
+     * @param \App\Contracts\InventoryItem|null $item
      *
      * @return string
      */
-    public function baseItemsOptions(InventoryItemContract $item=null) : string
+    public function baseItemsOptions(InventoryItem $item=null) : string
     {
         $base_item = $this->getAllBaseItems();
 
@@ -222,14 +222,14 @@ $slug.'%',
     }
 
     /**
-     * @param array                                $validated
-     * @param \App\Contracts\InventoryItemContract $item
-     * @param string                               $company_id
-     * @param \App\Models\Items\BaseItem|null      $base
+     * @param array                           $validated
+     * @param \App\Contracts\InventoryItem    $item
+     * @param string                          $company_id
+     * @param \App\Models\Items\BaseItem|null $base
      *
-     * @return \App\Contracts\InventoryItemContract
+     * @return \App\Contracts\InventoryItem
      */
-    public function saveItemRelations( array $validated, InventoryItemContract $item, string $company_id, BaseItem $base=null )
+    public function saveItemRelations( array $validated, InventoryItem $item, string $company_id, BaseItem $base=null )
     {
         if(isset($base)) {
             // attach to base item
@@ -280,7 +280,7 @@ $slug.'%',
         );
     }
     
-    public function updateItem(array $validated, InventoryItemContract $item, BaseItem $base=null)
+    public function updateItem(array $validated, InventoryItem $item, BaseItem $base=null)
     {
         $item->update(
             $this->initItemAttributes($validated, $base)

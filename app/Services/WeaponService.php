@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Contracts\InventoryItemContract;
+use App\Contracts\InventoryItem;
 use App\Enums\WeaponType;
 use App\Models\Items\BaseItem;
 use App\Models\Items\BaseWeapon;
