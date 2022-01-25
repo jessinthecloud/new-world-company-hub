@@ -282,7 +282,8 @@ class CharactersController extends Controller
 
     public function destroy( Character $character )
     {
-        Character::destroy($character);
+//dd($character);    
+        Character::destroy($character->id);
         
         return redirect(route('dashboard'))->with([
             'status'=> [

@@ -15,8 +15,8 @@ class CreateCharactersTable extends Migration
             $table->string('slug')->nullable()->unique();
             $table->smallInteger('level')->nullable();
             $table->foreignId('character_class_id')->constrained();
-            $table->foreignId('company_id')->constrained();
-            $table->foreignId('user_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignId('company_id')->nullable()->constrained();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('rank_id')->nullable()->constrained()->nullOnDelete();
 
             $table->timestamps();

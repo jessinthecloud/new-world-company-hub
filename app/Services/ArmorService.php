@@ -84,15 +84,15 @@ class ArmorService extends ItemService implements ItemServiceContract
         $type_input = $validated['armor_type'];
         $type = !empty( $type_input )
             ? constant( "App\Enums\ArmorType::$type_input" )?->value
-            : constant( "App\Enums\ArmorType::{$base?->type}" )?->value ?? null;
+            : constant( "App\Enums\ArmorType::{$base?->type}" )?->value 
+            ?? $base->type ?? null;
 
         $weight_class = !empty( $validated['weight_class'] )
-            ? WeightClass::from( $validated['weight_class'] )->name
-            : null;
-
+            ? ( WeightClass::from( $validated['weight_class'] )->name ?? null )
+            : ($base->weight_class ?? null);
         $values ['type'] = $type;
         $values ['weight_class'] = $weight_class;
-
+        
         return array_merge( 
             $values, 
             $this->initGenericItemAttributes( $validated, $values, $base )

@@ -183,6 +183,9 @@ Route::middleware(['auth'])->group(function(){
             
         Route::delete( 'guild-banks/{guildBank}', [\App\Http\Controllers\Companies\GuildBanksController::class, 'destroy'])
             ->name('guild-banks.destroy');
+            
+        Route::delete( 'companies/{company}/member/{character}', [\App\Http\Controllers\Companies\CompanyMembersController::class, 'destroy'])
+            ->name('company.members.destroy');
     });
 // ##
 // ## END OFFICER

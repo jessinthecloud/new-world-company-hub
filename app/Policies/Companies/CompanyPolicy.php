@@ -160,4 +160,19 @@ class CompanyPolicy
     {
         return false;
     }
+    
+    public function removeMembers( User $user, Company $company ) : bool
+    {
+        return (
+            $user->can('remove company members') 
+            ||
+            (
+                $user->can('remove own company members')
+                &&
+                !empty($user->characters->all())
+                &&
+                ($user->characters->where('company.id', $company->id)->count() > 0) 
+            )
+        );
+    }
 }
