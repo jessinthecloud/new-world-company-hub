@@ -4,7 +4,21 @@
     style="white-space:normal; min-width:225px; max-width:250px; "
 >
     {{ ucfirst($row->name) }}
+</x-livewire-tables::table.cell>
 
+<x-livewire-tables::table.cell>
+    {{ $row->user->discord_name }}
+</x-livewire-tables::table.cell>
+
+<x-livewire-tables::table.cell>
+    {{ $row->name }}
+</x-livewire-tables::table.cell>
+
+<x-livewire-tables::table.cell>
+    {{ \Illuminate\Support\Carbon::createFromFormat('Y-m-d H:i:s', $row->created_at, new \DateTimeZone('America/New_York'))->format("g:i A M j Y") }}
+</x-livewire-tables::table.cell>
+
+<x-livewire-tables::table.cell>
     @if(Route::has('company.members.destroy'))
         @can("removeMembers", $row->company)
             <x-forms.form
@@ -27,16 +41,4 @@
             </x-forms.form>
         @endcan
     @endif
-</x-livewire-tables::table.cell>
-
-<x-livewire-tables::table.cell>
-    {{ $row->user->discord_name }}
-</x-livewire-tables::table.cell>
-
-<x-livewire-tables::table.cell>
-    {{ $row->name }}
-</x-livewire-tables::table.cell>
-
-<x-livewire-tables::table.cell>
-    {{ \Illuminate\Support\Carbon::createFromFormat('Y-m-d H:i:s', $row->created_at, new \DateTimeZone('America/New_York'))->format("g:i A M j Y") }}
 </x-livewire-tables::table.cell>

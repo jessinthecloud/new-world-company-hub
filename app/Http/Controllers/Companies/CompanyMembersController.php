@@ -16,7 +16,7 @@ class CompanyMembersController extends Controller
         
         // TODO : remove appropriate permissions/roles from user as well 
         
-        return redirect(route('dashboard'))->with([
+        return redirect(route('companies.show', ['company'=>$company->slug]))->with([
             'status'=> [
                 'type'=>'success',
                 'message' => 'Character removed successfully'
