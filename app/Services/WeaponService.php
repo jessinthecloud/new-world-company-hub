@@ -54,7 +54,8 @@ class WeaponService extends ItemService implements ItemServiceContract
 //        $typeEnum = \App\Enums\WeaponType::class;
         $type = !empty($type_input) 
             ? constant("App\Enums\WeaponType::$type_input")?->value 
-            : constant("App\Enums\WeaponType::{$base?->type}")?->value ?? null;
+            : constant("App\Enums\WeaponType::{$base?->type}")?->value 
+            ?? $base?->type ?? null;
 
         $values ['type']= $type;
 
