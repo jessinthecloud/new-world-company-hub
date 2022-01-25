@@ -203,8 +203,8 @@
             </div> 
             <!-- end perks-attr-wrapper -->
                 
-            <input id="base-model-id" type="hidden" name="base_id" value="{{ isset($item) ? $item->id : '' }}"/>
-            <input id="base-model-slug" type="hidden" name="base_slug" value="{{ isset($item) ? $item->slug : '' }}"/>
+            <input id="base-model-id" type="hidden" name="base_id" value="{{ isset($item) && isset($item->base) ? $item->base->id : '' }}"/>
+            <input id="base-model-slug" type="hidden" name="base_slug" value="{{ isset($item) && isset($item->base) ? $item->base->slug : '' }}"/>
             <input id="model-id" type="hidden" name="id" value="{{ isset($item) ? $item->id : '' }}"/>
             <input type="hidden" name="slug" value="{{ isset($item) ? $item->slug : '' }}"/>
             <input id="itemType" type="hidden" name="itemType" value="{{ $itemType ?? '' }}"/>
