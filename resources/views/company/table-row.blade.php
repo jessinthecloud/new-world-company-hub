@@ -5,16 +5,13 @@
 >
     {{ ucfirst($row->name) }}
 
-    @if(Route::has('guild-banks.destroy'))
-        @can("delete", $row)
+    @if(Route::has('company.members.destroy'))
+        @can("removeMembers", $row->company)
             <x-forms.form
-                {{-- send as plain html attribute --}}
                 action="{{  route('company.members.destroy', [
                     'company' => $row->company->slug,
                     'character' => $row->slug,
                 ]) }}"
-                {{-- set the custom $method variable --}}
-                {{-- (not the form method attribute) --}}
                 :method="'DELETE'"
                 class="mt-2"
             >
