@@ -33,7 +33,7 @@
 </x-livewire-tables::table.cell>
 
 <x-livewire-tables::table.cell>
-    {{ $row->discord_name }}
+    {{ $row->user->discord_name }}
 </x-livewire-tables::table.cell>
 
 <x-livewire-tables::table.cell>
