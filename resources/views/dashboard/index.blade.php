@@ -78,6 +78,21 @@
                 ]"
             />
             
+            {{-- Guild Bank --}}
+            <x-dashboard.inventory-index
+                :title="'Inventory (Guild Bank)'"
+                :phpClass="\App\Models\Items\InventoryItem::class" 
+                :entityName="'company'"
+                :pluralEntityName="'companies'"
+                :instance="$company ?? null"
+                :buttonTexts="[
+                    'view' => 'View Guild Bank',
+                    'create' => 'Add to Guild Bank',
+                    'edit' => 'Edit Item in Guild Bank',
+                    'delete' => 'Delete Item from Guild Bank',
+                ]"
+            />
+            
             {{-- Character --}}
             <x-dashboard.resource-index
                 :title="'Character'"

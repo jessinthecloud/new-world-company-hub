@@ -4,7 +4,7 @@ namespace App\Contracts;
 
 use Illuminate\Database\Eloquent\Builder;
 
-interface InventoryItem
+interface InventoryItemContract
 {
     public function owner();
     

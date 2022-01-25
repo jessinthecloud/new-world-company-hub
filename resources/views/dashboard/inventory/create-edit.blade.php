@@ -3,7 +3,7 @@
         :title="'Guild Bank'"
         class="min-h-screen"
     >
-    <p>Add items to the Guild Bank</p>
+    <p>Add/Edit items for the Guild Bank</p>
         <x-forms.form
             {{-- send as plain html attribute --}}
             action="{{ $form_action ?? '' }}"
@@ -13,7 +13,7 @@
             :button-text="$button_text"
             class="flex flex-wrap justify-start"
             
-             x-data="{weapons: {}, armors: {}, isWeapon:{{ $isWeapon ?? 0 }}, isArmor:{{ $isArmor ?? 0 }}, newEntry:{{ $newEntry ?? 0 }}, fetch:false}"
+             x-data="{weapons: {}, armors: {}, newEntry:{{ $newEntry ?? 0 }}, fetch:false}"
         >
             <x-forms.field :name="'gear_score'" class="mb-6 mr-4">
                 <x-forms.label for="gear_score" :required="true">Gear Score:</x-forms.label>
@@ -202,9 +202,7 @@
                 
             </div> 
             <!-- end perks-attr-wrapper -->
-          
-            <x-forms.input type="hidden" name="is_weapon" x-bind:value="isWeapon"/>
-            <x-forms.input type="hidden" name="is_armor" x-bind:value="isArmor"/>
+                
             <input id="base-model-id" type="hidden" name="base_id" value="{{ isset($item) ? $item->id : '' }}"/>
             <input id="base-model-slug" type="hidden" name="base_slug" value="{{ isset($item) ? $item->slug : '' }}"/>
             <input id="model-id" type="hidden" name="id" value="{{ isset($item) ? $item->id : '' }}"/>

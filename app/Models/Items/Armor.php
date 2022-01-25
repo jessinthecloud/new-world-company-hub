@@ -2,7 +2,7 @@
 
 namespace App\Models\Items;
 
-use App\Contracts\InventoryItem;
+use App\Contracts\InventoryItemContract;
 use App\Models\Characters\Character;
 use App\Models\Companies\Company;
 use Illuminate\Database\Eloquent\Builder;
@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class Armor extends Model implements InventoryItem
+class Armor extends Model implements InventoryItemContract
 {
     use HasFactory;
 

@@ -2,12 +2,12 @@
 
 namespace App\Services;
 
-use App\Contracts\InventoryItem;
+use App\Contracts\InventoryItemContract;
 use App\Models\Items\BaseItem;
 
 interface ItemServiceContract
 {
-    public function baseItemsOptions(InventoryItem $item=null) : string;
+    public function baseItemsOptions(InventoryItemContract $item=null) : string;
 
     public function itemTypeOptions(string $itemType='') : string;
 

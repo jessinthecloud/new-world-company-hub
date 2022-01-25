@@ -70,9 +70,9 @@ Route::middleware(['auth'])->group(function(){
     
     
     // BASE ARMOR
-    Route::resource( 'base-armors', \App\Http\Controllers\Items\BaseArmorsController::class);
-    // BASE WEAPON
-    Route::resource( 'base-weapons', \App\Http\Controllers\Items\BaseWeaponsController::class);
+//    Route::resource( 'base-armors', \App\Http\Controllers\Items\BaseArmorsController::class);
+//    // BASE WEAPON
+//    Route::resource( 'base-weapons', \App\Http\Controllers\Items\BaseWeaponsController::class);
     
             
 // ###################################
@@ -119,15 +119,15 @@ Route::middleware(['auth'])->group(function(){
             [CompanyInventoryController::class, 'store'] )            
             ->name('company.inventory.store')
         ;
-        Route::get( '/companies/{company}/inventory/{item}/edit', 
+        Route::get( '/companies/{company}/inventory/{inventoryItem}/edit', 
             [CompanyInventoryController::class, 'edit'] )
             ->name('company.inventory.edit')
         ;
-        Route::put( '/companies/{company}/inventory/{item}', 
+        Route::put( '/companies/{company}/inventory/{inventoryItem}', 
             [CompanyInventoryController::class, 'update'] )
             ->name('company.inventory.update')
         ;
-        Route::delete( '/companies/{company}/inventory/{item}', 
+        Route::delete( '/companies/{company}/inventory/{inventoryItem}', 
             [CompanyInventoryController::class, 'destroy'] )
             ->name('company.inventory.destroy')
         ;

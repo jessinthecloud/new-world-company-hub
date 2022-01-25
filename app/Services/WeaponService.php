@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Contracts\InventoryItem;
+use App\Contracts\InventoryItemContract;
 use App\Enums\WeaponType;
 use App\Models\Items\BaseItem;
 use App\Models\Items\BaseWeapon;
@@ -19,9 +19,15 @@ class WeaponService extends ItemService implements ItemServiceContract
      */
     public function getAllBaseItems() : array
     {
-        return BaseWeapon::bankable()->orderBy('name')->orderBy('tier')->distinct()->get()->mapWithKeys(function($base_weapon){
+        return BaseWeapon::bankable()
+            ->orderBy('name')
+            ->orderBy('tier')
+            ->distinct()
+            ->get()->mapWithKeys(function($base_weapon){
         $wtype = $base_weapon->type;
-        $type = !empty($wtype) ? constant("App\Enums\WeaponType::$wtype")->value : null;
+        $type = !empty($wtype) 
+            ? constant("App\Enums\WeaponType::$wtype")->value 
+            : null;
         
             return [$base_weapon->slug => $base_weapon->name . " ($type) Tier ".$base_weapon->tier];
         })->all();   
