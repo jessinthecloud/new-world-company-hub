@@ -7,6 +7,7 @@ use App\Models\Companies\Position;
 use App\Models\Companies\Rank;
 use App\Models\Faction;
 use App\Models\Items\Armor;
+use App\Models\Items\InventoryItem;
 use App\Models\Items\Weapon;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -72,7 +73,7 @@ class Character extends Model
         return $this->hasMany(Position::class);
     }
     
-    public function weapons()
+    /*public function weapons()
     {
         return $this->hasMany(Weapon::class);
     }
@@ -80,6 +81,11 @@ class Character extends Model
     public function armor()
     {
         return $this->hasMany(Armor::class);
+    }*/
+    
+    public function inventory(  )
+    {
+        return $this->morphMany(InventoryItem::class, 'ownerable');
     }
     
 // -- DISTANT RELATIONSHIPS

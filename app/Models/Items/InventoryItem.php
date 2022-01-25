@@ -6,8 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class InventoryItem extends Model
 {
-    public function ownable(  )
+    public function ownerable(  )
     {
         return $this->morphTo();
+    }
+
+    public function item(  )
+    {
+        return $this->belongsTo(Item::class);
     }
 }

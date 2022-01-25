@@ -12,8 +12,8 @@ class CreateInventoryTable extends Migration
             $table->bigIncrements( 'id' );
 
             // character or company
-            $table->unsignedBigInteger('owner_id');
-            $table->string('owner_type');
+            $table->unsignedBigInteger('ownerable_id');
+            $table->string('ownerable_type');
             $table->foreignId('item_id');
 
             $table->timestamps();
@@ -22,6 +22,6 @@ class CreateInventoryTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists( 'inventory' );
+        Schema::dropIfExists( 'inventory_items' );
     }
 }

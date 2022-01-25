@@ -11,9 +11,9 @@ class CreateItemTable extends Migration
         Schema::create( 'items', function ( Blueprint $table ) {
             $table->bigIncrements( 'id' );
 
-            $table->string('item_type');
+            $table->string('itemable_type');
             // weapon or armor, etc
-            $table->unsignedBigInteger('item_id');
+            $table->unsignedBigInteger('itemable_id');
 
             $table->timestamps();
         } );
@@ -21,6 +21,6 @@ class CreateItemTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists( 'item' );
+        Schema::dropIfExists( 'items' );
     }
 }

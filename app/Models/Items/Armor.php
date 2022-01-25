@@ -53,7 +53,7 @@ class Armor extends Model implements InventoryItem
         return $this->belongsToMany(Attribute::class, 'attribute_armor')->withPivot('amount');
     }
     
-    public function company()
+    /*public function company()
     {
         return $this->belongsTo(Company::class);
     }
@@ -61,9 +61,41 @@ class Armor extends Model implements InventoryItem
     public function character()
     {
         return $this->belongsTo(Character::class);
+    }*/
+
+    public function asItem(  )
+    {
+        return $this->morphOne(Item::class, 'itemable');
     }
     
+    /**
+     * @return mixed
+     */
+    public function owner() : mixed
+    {
+        return $this->hasOneThrough(\App\Models\Items\InventoryItem::class, Item::class)
+            ->withPivot(['ownerable_id', 'ownerable_type']);
+    }
     
+    /**
+     * @return mixed
+     */
+    public function company() : mixed
+    {
+        return $this->hasOneThrough(\App\Models\Items\InventoryItem::class, Item::class)
+            ->withPivot('ownerable_id')
+            ->where('ownerable_type', '=', Company::class);
+    }
+    
+    /**
+     * @return mixed
+     */
+    public function character() : mixed
+    {
+        return $this->hasOneThrough(\App\Models\Items\InventoryItem::class, Item::class)
+            ->withPivot('ownerable_id')
+            ->where('ownerable_type', '=', Character::class);
+    }
     
 // SCOPES ---
     public function scopeRawForCompany($query, Company $company)
@@ -76,11 +108,4 @@ class Armor extends Model implements InventoryItem
         return $query->where('slug', 'like' , $slug.'%');
     }
 
-    /**
-     * @return mixed
-     */
-    public function owner() : mixed
-    {
-        return $this->company ?? $this->character ?? null;
-    }
 }

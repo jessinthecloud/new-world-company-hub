@@ -109,7 +109,7 @@ Route::middleware(['auth'])->group(function(){
     
         Route::get( '/companies/{company}/inventory', 
             [CompanyInventoryController::class, 'index'] )
-            ->name('company.inventory')
+            ->name('company.inventory.index')
         ;
         Route::get( '/companies/{company}/inventory/create', 
             [CompanyInventoryController::class, 'create'] )
@@ -119,15 +119,15 @@ Route::middleware(['auth'])->group(function(){
             [CompanyInventoryController::class, 'store'] )            
             ->name('company.inventory.store')
         ;
-        Route::get( '/companies/{company}/inventory/{type}/{item}/edit', 
+        Route::get( '/companies/{company}/inventory/{item}/edit', 
             [CompanyInventoryController::class, 'edit'] )
             ->name('company.inventory.edit')
         ;
-        Route::put( '/companies/{company}/inventory/{type}/{item}', 
+        Route::put( '/companies/{company}/inventory/{item}', 
             [CompanyInventoryController::class, 'update'] )
             ->name('company.inventory.update')
         ;
-        Route::delete( '/companies/{company}/inventory/{type}/{item}', 
+        Route::delete( '/companies/{company}/inventory/{item}', 
             [CompanyInventoryController::class, 'destroy'] )
             ->name('company.inventory.destroy')
         ;

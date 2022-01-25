@@ -6,6 +6,7 @@ use App\GuildBank;
 use App\Models\Characters\Character;
 use App\Models\Faction;
 use App\Models\Items\Armor;
+use App\Models\Items\InventoryItem;
 use App\Models\Items\Weapon;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
@@ -46,7 +47,7 @@ class Company extends Model
         $this->hasMany(Event::class);
     }
     
-    public function weapons()
+    /*public function weapons()
     {
         return $this->hasMany(Weapon::class);
     }
@@ -59,6 +60,11 @@ class Company extends Model
     public function bank()
     {
         return new GuildBank($this);
+    }*/
+
+    public function inventory(  )
+    {
+        return $this->morphMany(InventoryItem::class, 'ownerable');
     }
     
     /**

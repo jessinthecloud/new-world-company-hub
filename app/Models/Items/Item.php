@@ -10,4 +10,9 @@ class Item extends Model
     {
         return $this->morphTo();
     }
+
+    public function inventory(  )
+    {
+        return $this->hasOne(InventoryItem::class);
+    }
 }
