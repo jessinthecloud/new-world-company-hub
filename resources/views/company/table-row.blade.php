@@ -9,8 +9,9 @@
         @can("delete", $row)
             <x-forms.form
                 {{-- send as plain html attribute --}}
-                action="{{  route('characters.destroy', [
-                    'character' => $row->slug
+                action="{{  route('company.members.destroy', [
+                    'company' => $row->company->slug,
+                    'character' => $row->slug,
                 ]) }}"
                 {{-- set the custom $method variable --}}
                 {{-- (not the form method attribute) --}}
