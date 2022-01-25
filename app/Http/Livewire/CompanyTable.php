@@ -54,6 +54,13 @@ class CompanyTable extends DataTableComponent
         ];
     }
     
+    public function rowView(): string
+    {
+        // do not need to wrap in a <tr> 
+         // Becomes /resources/views/location/to/my/row.blade.php
+         return 'company.table-row';
+    }
+    
     public function filters(): array
     {
         return [
