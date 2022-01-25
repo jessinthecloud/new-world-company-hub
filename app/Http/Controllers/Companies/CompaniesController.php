@@ -10,6 +10,7 @@ use App\Models\Faction;
 use App\Models\Items\BaseWeapon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 use function dump;
@@ -96,6 +97,7 @@ class CompaniesController extends Controller
      */
     public function show(Company $company)
     {
+//        dump(Auth::user()->getRoleNames()->all(), Auth::user()->getAllPermissions()->pluck('name')->all());
         $classes = CharacterClass::orderBy('name')->get()->mapWithKeys(function($class){
             return [$class->id => $class->name];
         });/*
