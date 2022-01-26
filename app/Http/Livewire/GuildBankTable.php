@@ -37,9 +37,9 @@ class GuildBankTable extends DataTableComponent
     public array $rarity;
     public array $perks;
 
-    public string $defaultSortColumn = 'items.name';
-
-    public string $defaultSortDirection = 'asc';
+    public string $defaultSortColumn = 'items.gear_score';
+    public string $defaultSortDirection = 'desc';
+    
     private array $bindings = [];
 
     /**
