@@ -30,6 +30,7 @@ class CompanyLoginController extends Controller
     {
         // set the team id for roles/permissions lookups
         // @see : https://spatie.be/docs/laravel-permission/v5/basic-usage/teams-permissions#working-with-teams-permissions
+        setPermissionsTeamId($company->id);
         $request->session()->put('team_id', $company->id);
         
         $user = $request->user();

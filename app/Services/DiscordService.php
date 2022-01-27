@@ -65,7 +65,7 @@ class DiscordService
         return Cache::remember('user_'.$user->id.'_guilds', 900, 
             function() use($user) {
                 return Http::withHeaders([
-                   "Authorization" => "Bearer " . $user->discord_data->token
+                   "Authorization" => "Bearer " . $user->discord->token
                 ])
                 ->acceptJson()
                 ->get( "https://discord.com/api/users/@me/guilds" )
@@ -79,7 +79,7 @@ class DiscordService
         return Cache::remember('user_'.$user->id.'_guild_'.$guild_id.'_member', 900, 
             function() use($user, $guild_id) {
                 return Http::withHeaders([
-                   "Authorization" => "Bearer " . $user->discord_data->token
+                   "Authorization" => "Bearer " . $user->discord->token
                 ])
                 ->acceptJson()
                 ->get( "https://discord.com/api/users/@me/guilds/{$guild_id}/member" )

@@ -11,7 +11,8 @@ use Illuminate\Support\Facades\Auth;
 
 class EnsureUserHasCompany
 {
-    
+    public function __construct(protected DiscordService $discordService) { }
+
     /**
      * Handle an incoming request.
      *
@@ -19,17 +20,22 @@ class EnsureUserHasCompany
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next, DiscordService $discordService)
+    public function handle(Request $request, Closure $next)
     {
         $response = $next($request);
-dump( $request->user());
+//dump( $request->user(), $request->session()->get('team_id'));
+
+        if(empty($request->user())){
+            redirect(route('login'));
+        }
         
         if(!empty($request->user()) && !empty(session('team_id'))){
+            setPermissionsTeamId(session('team_id'));
             return $response;
         }
         
         // find user's guilds that have registered on the app
-        $guilds = $discordService->fetchUserGuilds($request->user());
+        $guilds = $this->discordService->fetchUserGuilds($request->user());
         $guild_ids = collect($guilds)->pluck('id')->all();
         
         // match user guilds to registered companies
