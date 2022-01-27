@@ -74,6 +74,23 @@ Route::middleware(['auth', 'company'])->group(function(){
     // BASE WEAPON
     Route::resource( 'base-weapons', \App\Http\Controllers\Items\BaseWeaponsController::class);
     
+// character is chosen on login
+Route::get( '/characters/{character}/login',
+    [\App\Http\Controllers\CharacterLoginController::class, 'login'] 
+)
+    ->name( 'characters.login.login' )
+;
+Route::get( '/characters/login/choose',
+    [\App\Http\Controllers\CharacterLoginController::class, 'choose'] 
+)
+    ->name( 'characters.login.choose' )
+;
+Route::get( '/characters/login/choose',
+    [\App\Http\Controllers\CharacterLoginController::class, 'choose'] 
+)
+    ->name( 'characters.login.choose' )
+;
+    
             
 // ###################################
 // ## SUPER ADMIN
@@ -233,10 +250,6 @@ Route::middleware(['auth', 'company'])->group(function(){
         ->name( 'rosters.choose' );
     Route::get( '/guild-banks/choose', [\App\Http\Controllers\Companies\GuildBanksController::class, 'choose'] )
         ->name( 'guild-banks.choose' );
-        
-    // where to go after character is chosen on login
-        Route::get( '/characters/{character}/login', [\App\Http\Controllers\Characters\CharactersController::class, 'login'] )
-            ->name( 'characters.login' );
     
 // ## FIND
     // find model chosen from drop down

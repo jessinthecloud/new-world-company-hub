@@ -102,7 +102,6 @@ class DiscordAuthController extends Controller
                         'discord_name' => $discordUser->nickname,
                     ]);
                 $user->save();
-
             }
             
             // update or save discord data and tie to user
@@ -121,45 +120,12 @@ class DiscordAuthController extends Controller
                 ]
             );
 
-            // assign users their discord role
-            // get their roles for the discord guild
-            $discord_user_info = Cache::remember('user_'.$user->id.'_guild_info', 900, 
-                function() use($discordUser) {
-                    return Http::withHeaders([
-                           "Authorization" => "Bearer " . $discordUser->token
-                        ])
-                        ->acceptJson()
-                        ->get( "https://discord.com/api/users/@me/guilds/895006799319666718/member" )
-                        ->json()
-                        ;
-            });
-//dump($discord_user_info);                
-            // match role(s) to the ones we have
-            foreach($discord_user_info['roles'] as $discord_role_id){
-
-                $dr = DB::table('discord_roles')
-                    ->select('role_id')
-                    ->where('company_id', '=', 1)
-                    ->where('id', '=', intval($discord_role_id))
-                    ->first();
-                    
-                $role_id = $dr->role_id;
-                        
-                $role = Role::where('id', '=', $role_id)->first();
-
-                if(!empty($role)){
-                    $user->assignRole($role);
-                }
-                // TODO: also assign character rank?
-            } // end each discord role
-
             if ($discordUser->user['verified'] && $user->markEmailAsVerified()) {
                 event(new Verified($user));
             }
 
             Auth::login($user, true);
-
-            // send to character choice page to set character for this login
+            
             return redirect(route('dashboard'));
            
         } catch ( ClientException $e ) {
