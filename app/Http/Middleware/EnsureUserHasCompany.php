@@ -3,8 +3,11 @@
 namespace App\Http\Middleware;
 
 use App\Models\Characters\Character;
+use App\Models\Companies\Company;
+use App\Services\DiscordService;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class EnsureUserHasCompany
 {
@@ -16,39 +19,39 @@ class EnsureUserHasCompany
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next, DiscordService $discordService)
     {
         $response = $next($request);
 dump( $request->user());
         
-        if(!empty($request->user()->character())){
+        if(!empty($request->user()) && !empty(session('team_id'))){
             return $response;
         }
-
-        $characters = Character::forUser($request->user()->id);
-dump($characters->get());
-        dd($characters->count(), $request->session()->get('discord_guild_id'));
-
-        switch ($characters->count()){
-            case 0:
-                // create character
-                $request->session()->flash(
-                    'discord_guild_id', 
-                    $request->session()->get('discord_guild_id')
-                );
-                
-                break;
-            case 1:
-                // only one, then choose it automatically 
-                return redirect(route('characters.login', [
-                    'character' => $characters->first()->slug
-                ]));
-            default:
-                // choose character
-                return redirect(route('characters.login.choose'));
-                break;
-        }
         
+        // find user's guilds that have registered on the app
+        $guilds = $discordService->fetchUserGuilds($request->user());
+        $guild_ids = collect($guilds)->pluck('id')->all();
+        
+        // match user guilds to registered companies
+        $companies = Company::whereIn('discord_guild_id', $guild_ids);
+        
+        switch($companies->count()){
+            case 0:
+                // no match -> send away/send message to register app
+                abort(403, 'Your discord server is not registered with this application.');
+                break;
+            case 1: 
+                // single match -> set as selected team
+                // see : https://spatie.be/docs/laravel-permission/v5/basic-usage/teams-permissions#working-with-teams-permissions
+                return redirect(route('companies.login.login', [
+                    'company' => $companies->first()->slug
+                ]));
+                break;
+            default: 
+                // multiple companies; send to a choose company page
+                return redirect(route('companies.login.choose'));
+                break;    
+        }        
                 
         return $response;
     }

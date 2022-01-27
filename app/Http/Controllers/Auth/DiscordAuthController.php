@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Companies\Company;
 use App\Models\DiscordData;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
@@ -93,12 +94,12 @@ class DiscordAuthController extends Controller
         } catch ( ClientException $e ) {
         
             return redirect( route( 'login' ) )
-            ->withErrors( ['Discord authorization denied. Please try again.'] );
+                ->withErrors( ['Discord authorization denied. Please try again.'] );
         
         } catch ( InvalidStateException $e ) {
         
             return redirect( route( 'login' ) )
-            ->withErrors( ['Invalid discord request, please try again.'] );
+                ->withErrors( ['Invalid discord request, please try again.'] );
         
         }
     }

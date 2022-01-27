@@ -75,20 +75,20 @@ Route::middleware(['auth', 'company'])->group(function(){
     Route::resource( 'base-weapons', \App\Http\Controllers\Items\BaseWeaponsController::class);
     
 // character is chosen on login
-Route::get( '/characters/{character}/login',
-    [\App\Http\Controllers\CharacterLoginController::class, 'login'] 
+Route::get( '/companies/{company}/login',
+    [\App\Http\Controllers\CompanyLoginController::class, 'login'] 
 )
-    ->name( 'characters.login.login' )
+    ->name( 'companies.login.login' )
 ;
-Route::get( '/characters/login/choose',
-    [\App\Http\Controllers\CharacterLoginController::class, 'choose'] 
+Route::get( '/companies/login/choose',
+    [\App\Http\Controllers\CompanyLoginController::class, 'choose'] 
 )
-    ->name( 'characters.login.choose' )
+    ->name( 'companies.login.choose' )
 ;
-Route::get( '/characters/login/choose',
-    [\App\Http\Controllers\CharacterLoginController::class, 'choose'] 
+Route::get( '/companies/login/choose',
+    [\App\Http\Controllers\CompanyLoginController::class, 'choose'] 
 )
-    ->name( 'characters.login.choose' )
+    ->name( 'companies.login.choose' )
 ;
     
             

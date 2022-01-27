@@ -59,10 +59,24 @@ class DiscordService
         
         return $user;
     }
+    
+    public function fetchUserGuilds( User $user)
+    {
+        return Cache::remember('user_'.$user->id.'_guilds', 900, 
+            function() use($user) {
+                return Http::withHeaders([
+                   "Authorization" => "Bearer " . $user->discord_data->token
+                ])
+                ->acceptJson()
+                ->get( "https://discord.com/api/users/@me/guilds" )
+                ->json()
+                ;
+        });
+    }
 
     public function fetchGuildMember( User $user, string $guild_id)
     {
-        return Cache::remember('user_'.$user->id.'_guild_info', 900, 
+        return Cache::remember('user_'.$user->id.'_guild_'.$guild_id.'_member', 900, 
             function() use($user, $guild_id) {
                 return Http::withHeaders([
                    "Authorization" => "Bearer " . $user->discord_data->token
@@ -95,7 +109,7 @@ class DiscordService
 
     public function syncCharacterRanks( User $user, int $company_id, array $roles )
     {
-        // find roles that have the same name as a rank
+        // TODO : find roles that have the same name as a rank
         // attach that rank to character
     }
 }
