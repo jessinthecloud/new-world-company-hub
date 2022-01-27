@@ -20,7 +20,8 @@ class RoleSeeder extends Seeder
         $admin = Role::updateOrCreate(['name' => 'admin']);
         
         // get roles from discord
-        $companies = Company::select('discord_guild_id')->get();
+        $companies = Company::all();
+
         foreach($companies as $company){
 
             $response = Http::withHeaders([
@@ -42,7 +43,7 @@ class RoleSeeder extends Seeder
                     'name' => strtolower(Str::slug($discord_role['name'])),
                     'team_id' => $company->id,
                 ]);
-
+dump('( '.$company->id.' ) '.$role->name.' created for team '.$role->team_id);
                 DB::table('discord_roles')->upsert(
                     [
                         'id'=> $discord_role['id'],
