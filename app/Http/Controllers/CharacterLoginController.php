@@ -10,6 +10,7 @@ use App\Models\Characters\SkillType;
 use App\Models\Companies\Company;
 use App\Models\Companies\Rank;
 use App\Providers\RouteServiceProvider;
+use App\Services\DiscordService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -21,7 +22,9 @@ use Spatie\Permission\Models\Role;
 
 class CharacterLoginController extends Controller
 {
-   /**
+    public function __construct(protected DiscordService $discordService) { }
+
+    /**
      * Set this as primary character for logged-in user
      *
      * @param \Illuminate\Http\Request         $request
@@ -34,36 +37,19 @@ class CharacterLoginController extends Controller
         $request->session()->put('character', $character);
         
         $user = $request->user();
+        // TODO: GET FROM SESSION (LOGIN)
+        $guild_id = '895006799319666718';
+        
         // assign users their discord role
+        
         // get their roles for the discord guild
-        $discord_user_info = Cache::remember('user_'.$user->id.'_guild_info', 900, 
-            function() use($user) {
-                return Http::withHeaders([
-                       "Authorization" => "Bearer " . $user->discord_data->token
-                    ])
-                    ->acceptJson()
-                    ->get( "https://discord.com/api/users/@me/guilds/895006799319666718/member" )
-                    ->json()
-                    ;
-        });
-//dump($discord_user_info);                
-        // match role(s) to the ones we have
-        foreach($discord_user_info['roles'] as $discord_role_id){
-
-            $dr = DB::table('discord_roles')
-                ->select('role_id')
-                ->where('company_id', '=', 1)
-                ->where('id', '=', intval($discord_role_id))
-                ->first();
+        $discord_user_info = $this->discordService->fetchGuildMember($user, $guild_id);
+//dump($discord_user_info);
                 
-            $role_id = $dr->role_id;
-                    
-            $role = Role::where('id', '=', $role_id)->first();
-
-            if(!empty($role)){
-                $user->assignRole($role);
-            }
-        } // end each discord role
+        // match role(s) to the ones we have
+        // TODO: GET FROM SESSION (LOGIN/TEAM ID)
+        $company_id = 1;
+        $roles = $this->discordService->syncUserRoles($user, $company_id, $discord_user_info['roles']);
 
         return redirect(RouteServiceProvider::DASHBOARD);
     }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\DiscordData;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
+use App\Services\DiscordService;
 use GuzzleHttp\Exception\ClientException;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Events\Verified;
@@ -24,6 +25,8 @@ use function redirect;
 
 class DiscordAuthController extends Controller
 {
+    public function __construct(protected DiscordService $discordService) { }
+
     /**
      * Redirect the user to the Discord authentication page.
      *
@@ -77,48 +80,7 @@ class DiscordAuthController extends Controller
             $discordUser = Socialite::driver( 'discord' )->user();
             
             // find or create eloquent user with this discord name
-            $user = User::where('discord_name',  $discordUser->nickname)->get();
-//dd($discordUser);          
-            if($user->isEmpty()){
-                // account may exist prior to logging in with discord
-                // and should be tied to discord data
-                $user = User::updateOrCreate(
-                    [ 'email' => $discordUser->email, ],
-                    [
-                        'name' => $discordUser->name,
-                        'email' => $discordUser->email,
-                        'discord_name' => $discordUser->nickname,
-                    ]
-                );
-                
-                event(new Registered($user));
-            }
-            else{
-                // user already exists in some way
-                $user = $user->sole();
-                $user->update([
-                        'name' => $discordUser->name,
-                        'email' => $discordUser->email,
-                        'discord_name' => $discordUser->nickname,
-                    ]);
-                $user->save();
-            }
-            
-            // update or save discord data and tie to user
-            $data = DiscordData::updateOrCreate(
-                [ 'email' => $discordUser->email, ],
-                [
-                    'user_id' => $user->id,
-                    'discord_id' => $discordUser->id,
-                    'name' => $user->name,
-                    'nickname' => $discordUser->nickname,
-                    'email' => $user->email,
-                    'avatar' => $discordUser->avatar,
-                    'token' => $discordUser->token,
-                    'refresh_token' => $discordUser->refreshToken,
-                    'expires_in' => $discordUser->expiresIn,
-                ]
-            );
+            $user = $this->discordService->upsertDiscordUser($discordUser);
 
             if ($discordUser->user['verified'] && $user->markEmailAsVerified()) {
                 event(new Verified($user));
