@@ -48,7 +48,23 @@ Route::middleware(['auth'])->group(function() {
         ->name( 'companies.login.choose' );
 });
 
-Route::middleware(['auth', 'company'])->group(function(){
+Route::middleware(['auth', 'company'])->group(function() {
+// character is chosen on login
+    Route::get( '/characters/{character}/login',
+                [\App\Http\Controllers\Characters\CharacterLoginController::class, 'login']
+    )
+        ->name( 'characters.login.login' );
+    Route::get( '/characters/login/choose',
+                [\App\Http\Controllers\Characters\CharacterLoginController::class, 'choose']
+    )
+        ->name( 'characters.login.choose' );
+    Route::get( '/characters/login/choose',
+                [\App\Http\Controllers\Characters\CharacterLoginController::class, 'choose']
+    )
+        ->name( 'characters.login.choose' );
+});
+
+Route::middleware(['auth', 'company', 'character'])->group(function(){
     
     // dashboard
     Route::get( '/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])

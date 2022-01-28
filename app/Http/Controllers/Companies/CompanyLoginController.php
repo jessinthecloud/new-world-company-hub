@@ -46,10 +46,8 @@ class CompanyLoginController extends Controller
         // match role(s) to the ones in the app
         $roles = $this->discordService->syncUserRoles($user, $company->id, $discord_user_info['roles']);
 
-        // TODO : check for characters belonging to this User+Company combo
-        
-        
-        
+        // TODO: check for characters belonging to this User+Company combo
+        // TODO: find user's roles that match character classes
         // TODO: set character rank based on matching roles
 /*dd( 
         $request->session(), 
