@@ -77,27 +77,27 @@ class GuildBankTable extends DataTableComponent
     {
         return [
             Column::make( 'Name', 'name' )
-                ->sortable()
-                ->searchable(),
+                ->sortable(),
+//                ->searchable(),
             Column::make( 'Gear Score', 'gear_score' )
                 ->sortable(),
-            Column::make( 'Perks', 'perks' )
+            Column::make( 'Perks', 'perks' ),
 //                ->sortable()
-                ->searchable(),
+//                ->searchable(),
             // type of item
             Column::make( 'Item Type', 'type' )
-                ->sortable()
-                ->searchable(),
+                ->sortable(),
+//                ->searchable(),
             // kind of weapon/armor
             Column::make( 'Type', 'subtype' )
-                ->sortable()
-                ->searchable(),
+                ->sortable(),
+//                ->searchable(),
             Column::make( 'Rarity', 'rarity' )
-                ->sortable()
-                ->searchable(),            
+                ->sortable(),
+//                ->searchable(),            
             Column::make( 'Weight Class', 'weight_class' )
-                ->sortable()
-                ->searchable(),
+                ->sortable(),
+//                ->searchable(),
             Column::make( 'Added At', 'created_at' )
                 ->sortable()
          ];
@@ -136,7 +136,7 @@ class GuildBankTable extends DataTableComponent
         $this->bindings = $query->getBindings();
     
         // -- item type filter -- find based on subtypes of weapons or armor
-        $query->when($this->getFilter('item_type'), function ($query, $item_type) {
+        $query = $query->when($this->getFilter('item_type'), function ($query, $item_type) {
             // save bindings so we can attach at the end
             $this->bindings []= '%'.$item_type.'%';
 
@@ -170,6 +170,21 @@ class GuildBankTable extends DataTableComponent
             // save bindings so we can attach at the end
             $this->bindings[]= '%'.$rarity.'%';
             return $query->whereRaw('items.rarity like ?');
+        })
+        // search filter
+        ->when($this->getFilter('search'), function ($query, $term) {
+            // save bindings so we can attach at the end
+            $this->bindings[]= strtolower('%'.$term.'%');
+            $this->bindings[]= strtolower('%'.$term.'%');
+            $this->bindings[]= strtolower('%'.$term.'%');
+            $this->bindings[]= strtolower('%'.$term.'%');
+            $this->bindings[]= strtolower('%'.$term.'%');
+            
+            return $query->whereRaw( 'LOWER(items.name) like ?' )
+                ->orWhereRaw( 'LOWER(items.type) like ?' )
+                ->orWhereRaw( 'LOWER(items.subtype) like ?' )
+                ->orWhereRaw( 'LOWER(items.rarity) like ?' )
+                ->orWhereRaw( 'LOWER(items.weight_class) like ?' );
         });
         
         // -- perk filter
