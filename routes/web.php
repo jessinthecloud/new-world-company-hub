@@ -1,11 +1,8 @@
 <?php
 
 use App\Http\Controllers\Items\CompanyInventoryController;
-use App\Models\Items\Armor;
 use App\Models\Items\BaseArmor;
 use App\Models\Items\BaseWeapon;
-use App\Models\Items\Weapon;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,15 +35,15 @@ Route::middleware(['guest'])->group(function() {
 Route::middleware(['auth'])->group(function() {
 // character is chosen on login
     Route::get( '/companies/{company}/login',
-                [\App\Http\Controllers\CompanyLoginController::class, 'login']
+                [\App\Http\Controllers\Companies\CompanyLoginController::class, 'login']
     )
         ->name( 'companies.login.login' );
     Route::get( '/companies/login/choose',
-                [\App\Http\Controllers\CompanyLoginController::class, 'choose']
+                [\App\Http\Controllers\Companies\CompanyLoginController::class, 'choose']
     )
         ->name( 'companies.login.choose' );
     Route::get( '/companies/login/choose',
-                [\App\Http\Controllers\CompanyLoginController::class, 'choose']
+                [\App\Http\Controllers\Companies\CompanyLoginController::class, 'choose']
     )
         ->name( 'companies.login.choose' );
 });

@@ -1,18 +1,17 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Companies;
 
+use App\Http\Controllers\Controller;
 use App\Models\Companies\Company;
 use App\Providers\RouteServiceProvider;
 use App\Services\DiscordService;
-use Illuminate\Contracts\View\View;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Str;
-use Spatie\Permission\Models\Role;
+
+use function redirect;
+use function route;
+use function setPermissionsTeamId;
+use function view;
 
 class CompanyLoginController extends Controller
 {
@@ -48,6 +47,9 @@ class CompanyLoginController extends Controller
         $roles = $this->discordService->syncUserRoles($user, $company->id, $discord_user_info['roles']);
 
         // TODO : check for characters belonging to this User+Company combo
+        
+        
+        
         // TODO: set character rank based on matching roles
 /*dd( 
         $request->session(), 

@@ -25,7 +25,6 @@ class EnsureUserHasCompany
 //dump( $request->user(), $request->session()->get('team_id'));
         
         if(empty($request->user())){
-dd('user is empty', $request->session());        
             redirect(route('login'));
         }
         
@@ -52,7 +51,7 @@ dd('user is empty', $request->session());
                 ]));
         }
 
-        // multiple companies; send to a choose company page
+        // multiple companies; send to choose a company page
         return redirect(route('companies.login.choose'));
     }
 }
