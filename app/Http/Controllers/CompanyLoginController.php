@@ -28,10 +28,13 @@ class CompanyLoginController extends Controller
      */
     public function login( Request $request, Company $company )
     {
-        // set the team id for roles/permissions lookups
-        // @see : https://spatie.be/docs/laravel-permission/v5/basic-usage/teams-permissions#working-with-teams-permissions
-        setPermissionsTeamId($company->id);
-        $request->session()->put('team_id', $company->id);
+        if(empty($request->session()->get('team_id'))) {
+            // set the team id for roles/permissions lookups
+            // @see : https://spatie.be/docs/laravel-permission/v5/basic-usage/teams-permissions#working-with-teams-permissions
+            setPermissionsTeamId( $company->id );
+            $request->session()->put( 'team_id', $company->id );
+            //dump('team id set: '.getPermissionsTeamId());        
+        }
         
         $user = $request->user();
        
@@ -46,7 +49,13 @@ class CompanyLoginController extends Controller
 
         // TODO : check for characters belonging to this User+Company combo
         // TODO: set character rank based on matching roles
-
+/*dd( 
+        $request->session(), 
+//        $roles,
+//        $request->user()->getAllPermissions()->pluck('name')->all(),
+        $request->user()->getRoleNames()->all(),
+//        $request->user()->character()?->company->name 
+     );*/
         return redirect(RouteServiceProvider::DASHBOARD);
     }
     

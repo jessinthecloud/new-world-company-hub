@@ -22,16 +22,15 @@ class EnsureUserHasCompany
      */
     public function handle(Request $request, Closure $next)
     {
-        $response = $next($request);
 //dump( $request->user(), $request->session()->get('team_id'));
-
+        
         if(empty($request->user())){
+dd('user is empty', $request->session());        
             redirect(route('login'));
         }
         
-        if(!empty($request->user()) && !empty(session('team_id'))){
-            setPermissionsTeamId(session('team_id'));
-            return $response;
+        if(!empty($request->session()->get('team_id'))){
+            return $next($request);
         }
         
         // find user's guilds that have registered on the app
@@ -41,24 +40,19 @@ class EnsureUserHasCompany
         // match user guilds to registered companies
         $companies = Company::whereIn('discord_guild_id', $guild_ids);
         
-        switch($companies->count()){
-            case 0:
+        switch(true){
+            case $companies->count() === 0:
                 // no match -> send away/send message to register app
                 abort(403, 'Your discord server is not registered with this application.');
-                break;
-            case 1: 
+            case $companies->count() == 1: 
                 // single match -> set as selected team
                 // see : https://spatie.be/docs/laravel-permission/v5/basic-usage/teams-permissions#working-with-teams-permissions
                 return redirect(route('companies.login.login', [
                     'company' => $companies->first()->slug
                 ]));
-                break;
-            default: 
-                // multiple companies; send to a choose company page
-                return redirect(route('companies.login.choose'));
-                break;    
-        }        
-                
-        return $response;
+        }
+
+        // multiple companies; send to a choose company page
+        return redirect(route('companies.login.choose'));
     }
 }

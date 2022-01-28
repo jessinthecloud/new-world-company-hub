@@ -34,6 +34,23 @@ Route::middleware(['guest'])->group(function() {
 // ###################################
 // ## AUTH
 // ##
+
+Route::middleware(['auth'])->group(function() {
+// character is chosen on login
+    Route::get( '/companies/{company}/login',
+                [\App\Http\Controllers\CompanyLoginController::class, 'login']
+    )
+        ->name( 'companies.login.login' );
+    Route::get( '/companies/login/choose',
+                [\App\Http\Controllers\CompanyLoginController::class, 'choose']
+    )
+        ->name( 'companies.login.choose' );
+    Route::get( '/companies/login/choose',
+                [\App\Http\Controllers\CompanyLoginController::class, 'choose']
+    )
+        ->name( 'companies.login.choose' );
+});
+
 Route::middleware(['auth', 'company'])->group(function(){
     
     // dashboard
@@ -73,23 +90,6 @@ Route::middleware(['auth', 'company'])->group(function(){
     Route::resource( 'base-armors', \App\Http\Controllers\Items\BaseArmorsController::class);
     // BASE WEAPON
     Route::resource( 'base-weapons', \App\Http\Controllers\Items\BaseWeaponsController::class);
-    
-// character is chosen on login
-Route::get( '/companies/{company}/login',
-    [\App\Http\Controllers\CompanyLoginController::class, 'login'] 
-)
-    ->name( 'companies.login.login' )
-;
-Route::get( '/companies/login/choose',
-    [\App\Http\Controllers\CompanyLoginController::class, 'choose'] 
-)
-    ->name( 'companies.login.choose' )
-;
-Route::get( '/companies/login/choose',
-    [\App\Http\Controllers\CompanyLoginController::class, 'choose'] 
-)
-    ->name( 'companies.login.choose' )
-;
     
             
 // ###################################
