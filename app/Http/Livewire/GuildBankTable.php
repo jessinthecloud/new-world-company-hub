@@ -37,8 +37,8 @@ class GuildBankTable extends DataTableComponent
     public array $rarity;
     public array $perks;
 
-//    public string $defaultSortColumn = 'items.gear_score';
-//    public string $defaultSortDirection = 'desc';
+    public string $defaultSortColumn = 'items.gear_score';
+    public string $defaultSortDirection = 'desc';
     
     private array $bindings = [];
 
@@ -130,7 +130,7 @@ class GuildBankTable extends DataTableComponent
     public function query()
     {
         // livewire is no longer respecting mount()...???? so this
-        $this->guildBank ??= GuildBank::make(Auth::user()->company() ?? 1);
+        $this->guildBank ??= GuildBank::make(Auth::user()->company() ?? Company::find(1));
         
         $query = $this->guildBank->unionQuery();
         $this->bindings = $query->getBindings();
@@ -184,10 +184,7 @@ class GuildBankTable extends DataTableComponent
                 return $this->guildBank->joinPerkQuery($query, $this->bindings, $perks);
         });*/
 //ddd($query->toSql(),$this->bindings);
-//
-        $query->orderBy('items.gear_score', 'desc')
-            ->orderBy('items.name', 'asc')
-        ;
+
 //     
         // manually attach bindings because mergeBindings() does not order them properly
         return $query->setBindings($this->bindings)

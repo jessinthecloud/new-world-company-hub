@@ -309,7 +309,7 @@ class GuildBanksController extends Controller
         
         $company = $guildBank->company();
 
-        $armors = ArmorType::toAssociative();
+        $armors = ArmorType::valueToAssociative();
         $weapons = WeaponType::valueToAssociative();
         $weight_class = WeightClass::valueToAssociative();
         $rarity = Rarity::valueToAssociative();
