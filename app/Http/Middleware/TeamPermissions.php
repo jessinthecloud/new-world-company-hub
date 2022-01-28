@@ -15,7 +15,6 @@ class TeamPermissions
             setPermissionsTeamId(session('team_id'));
 //dump('after: '.getPermissionsTeamId());
         }
-    
         return $next( $request );
     }
 }

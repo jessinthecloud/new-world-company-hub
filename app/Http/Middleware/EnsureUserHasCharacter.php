@@ -33,8 +33,7 @@ class EnsureUserHasCharacter
         
         // find user's characters tied to the current company (team_id)
         $characters = $request->user()->characters
-            ->where('company.id', '=', $request->session()->get('team_id'))
-            ->all();
+            ->where('company.id', '=', $request->session()->get('team_id'));
         
         switch(true){
             case $characters->count() === 0:
