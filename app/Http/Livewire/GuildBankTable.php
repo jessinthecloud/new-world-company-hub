@@ -41,6 +41,8 @@ class GuildBankTable extends DataTableComponent
     public string $defaultSortDirection = 'desc';
     
     private array $bindings = [];
+    
+    public bool $dumpFilters = true;
 
     /**
      * constructor is called before company can be set,
@@ -63,6 +65,9 @@ class GuildBankTable extends DataTableComponent
      */
     public function mount(GuildBank $guildBank, array $armors, array $weapons, array $weight_class, array $types, array $rarity, array $perks, Company $company=null)
     {
+        if(!empty(session('guild-bank-filters'))){
+            $this->filters = session('guild-bank-filters');
+        }
         $this->guildBank = $guildBank;
         $this->company = $company ?? $this->guildBank->company();
         $this->armor_types = $armors;
@@ -110,9 +115,24 @@ class GuildBankTable extends DataTableComponent
          return 'guild-bank.table-row';
     }
     
-    
-    public function filters(): array
+    public function resetFilters() : void
     {
+        parent::resetFilters();
+        
+        // clear session filters
+        session()->forget('guild-bank-filters');
+    }
+    
+    public function updatedFilters() : void
+    {
+        parent::updatedFilters();
+        
+        // keep track of filters across requests
+        session()->put('guild-bank-filters', $this->filters);
+    }
+
+    public function filters(): array
+    {    
         return [
             'item_type' => Filter::make('Item Type')
                 ->select($this->itemTypes),
@@ -128,7 +148,7 @@ class GuildBankTable extends DataTableComponent
     }
 
     public function query()
-    {
+    {        
         // livewire is no longer respecting mount()...???? so this
         $this->guildBank ??= GuildBank::make(Auth::user()->company() ?? Company::find(1));
         
@@ -155,6 +175,7 @@ class GuildBankTable extends DataTableComponent
         ->when($this->getFilter('armor_type'), function ($query, $armor_type) {
             // save bindings so we can attach at the end
             $this->bindings[]= '%'.$armor_type.'%';
+            
             return $query->whereRaw('items.subtype like ?');
         })
         
@@ -162,6 +183,7 @@ class GuildBankTable extends DataTableComponent
         ->when($this->getFilter('weight_class'), function ($query, $weight_class) {
             // save bindings so we can attach at the end
             $this->bindings[]= '%'.$weight_class.'%';
+            
             return $query->whereRaw('items.weight_class like ?');
         })
         
@@ -169,6 +191,7 @@ class GuildBankTable extends DataTableComponent
         ->when($this->getFilter('rarity'), function ($query, $rarity) {
             // save bindings so we can attach at the end
             $this->bindings[]= '%'.$rarity.'%';
+            
             return $query->whereRaw('items.rarity like ?');
         })
         // search filter
