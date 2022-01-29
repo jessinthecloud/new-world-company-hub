@@ -8,6 +8,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role;
 
 class DiscordService
@@ -23,6 +24,7 @@ class DiscordService
                 [ 'email' => $discordUser->email, ],
                 [
                     'name' => $discordUser->name,
+                    'slug' => Str::slug($discordUser->name),
                     'email' => $discordUser->email,
                     'discord_name' => $discordUser->nickname,
                 ]
@@ -34,10 +36,11 @@ class DiscordService
             // user already exists in some way
             $user = $user->sole();
             $user->update([
-                    'name' => $discordUser->name,
-                    'email' => $discordUser->email,
-                    'discord_name' => $discordUser->nickname,
-                ]);
+                'name' => $discordUser->name,
+                'slug' => Str::slug($discordUser->name),
+                'email' => $discordUser->email,
+                'discord_name' => $discordUser->nickname,
+            ]);
             $user->save();
         }
         
