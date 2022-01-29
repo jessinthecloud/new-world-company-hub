@@ -23,29 +23,33 @@
                 />
             </x-forms.field>
             
-            {{--<x-forms.field :name="'company'" class="mb-6">
-                <x-forms.label for="company" :required="true">Company:</x-forms.label>
-                <x-forms.select name="company" id="company"
-                    :values="$companies ?? null"
-                    :required="true"
-                >{!! $company_options ?? '' !!}</x-forms.select>
-            </x-forms.field>--}}
-            
-            {{--<x-forms.field :name="'rank'" class="mb-6">
-                <x-forms.label for="rank" :required="false">Rank:</x-forms.label>
-                <x-forms.select name="rank" id="rank"
-                    :values="$ranks ?? null"
-                    :required="false"
-                >{!! $rank_options ?? '' !!}</x-forms.select>
-            </x-forms.field>--}}
-
-            {{--<x-forms.field :name="'class'" class="mb-6">
-                <x-forms.label for="class" :required="true">Class:</x-forms.label>
-                <x-forms.select name="class" id="class"
-                                :values="$classes ?? null"
-                                :required="true"
-                >{!! $class_options ?? '' !!}</x-forms.select>
-            </x-forms.field>--}}
+            @if(strtolower($method) == 'put')
+                @if(request()->user()->can('edit company members'))
+                    <x-forms.field :name="'company'" class="mb-6">
+                        <x-forms.label for="company" :required="true">Company:</x-forms.label>
+                        <x-forms.select name="company" id="company"
+                            :values="$companies ?? null"
+                            :required="true"
+                        >{!! $company_options ?? '' !!}</x-forms.select>
+                    </x-forms.field>
+                    
+                    <x-forms.field :name="'rank'" class="mb-6">
+                        <x-forms.label for="rank" :required="false">Rank:</x-forms.label>
+                        <x-forms.select name="rank" id="rank"
+                            :values="$ranks ?? null"
+                            :required="false"
+                        >{!! $rank_options ?? '' !!}</x-forms.select>
+                    </x-forms.field>
+                @endif
+    
+                <x-forms.field :name="'class'" class="mb-6">
+                    <x-forms.label for="class" :required="true">Class:</x-forms.label>
+                    <x-forms.select name="class" id="class"
+                                    :values="$classes ?? null"
+                                    :required="true"
+                    >{!! $class_options ?? '' !!}</x-forms.select>
+                </x-forms.field>
+            @endif
 
             {{--<x-forms.field :name="'level'">
                 <x-forms.label for="level" :required="false">Level:</x-forms.label>
@@ -68,7 +72,7 @@
                         <x-forms.select name="mainhand" id="mainhand"
                             :values="$weapons ?? null"
                             :required="true"
-                        >{!! $weapon_type_options ?? '' !!}</x-forms.select>
+                        >{!! $mainhand_options ?? '' !!}</x-forms.select>
                     </x-forms.field>
                 </div>   
                 <div class="offhand w-full flex flex-col p4 lg:w-1/3"> 
@@ -78,7 +82,7 @@
                         <x-forms.select name="offhand" id="offhand"
                             :values="$weapons ?? null"
                             :required="true"
-                        >{!! $weapon_type_options ?? '' !!}</x-forms.select>
+                        >{!! $offhand_options ?? '' !!}</x-forms.select>
                     </x-forms.field>
                 </div>
             </div>

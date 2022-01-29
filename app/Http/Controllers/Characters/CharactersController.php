@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Characters;
 
+use App\Enums\WeaponType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CharacterUpsertRequest;
 use App\Models\Characters\Character;
@@ -54,7 +55,7 @@ class CharactersController extends Controller
                             ? ' (Level '.$character->level.')' 
                             : ''
                 ];
-        })->all();
+            })->all();
         
         $form_action = route('characters.find');
         
@@ -107,6 +108,8 @@ class CharactersController extends Controller
             $query->orderBy('order');
         }])->orderBy('order')->get()->all();
         
+        $weapons = WeaponType::valueToAssociative();
+        asort($weapons);
     
         $form_action = route('characters.store');
         $button_text = 'Add';
@@ -114,7 +117,7 @@ class CharactersController extends Controller
         return view(
             'dashboard.character.create-edit', 
             compact('ranks', 'skillTypes', 'classes', 
-                'companies', 'form_action', 'button_text')
+                'companies', 'form_action', 'button_text', 'weapons')
         );
     }
 
@@ -166,12 +169,12 @@ class CharactersController extends Controller
         })->all();
 
         $classes = CharacterClass::distinct()->get()->mapWithKeys(function($class){
-            return [$class->id => $class->name.' ('.$class->type->name.')'];
+            return [$class->id => $class->name];
         })->all();
 
         $companies = Company::with('faction')->get()
             ->mapWithKeys(function($company){
-            return [$company->slug => $company->name.' ('.$company->faction->name.')'];
+            return [$company->id => $company->name.' ('.$company->faction->name.')'];
         })->all();
 
         $character = $character->load('skills', 'rank', 'company', 'class', 'user');
@@ -207,6 +210,27 @@ class CharactersController extends Controller
             $company_options .= '>'.$text.'</option>';
         }
         
+        $weapons = WeaponType::valueToAssociative();
+        asort($weapons);
+      
+        $mainhand_options = '<option value=""></option>';
+        foreach($weapons as $value => $text) {
+            $mainhand_options .= '<option value="'.$value.'"';
+            if($character->mainhand === $value){
+                $mainhand_options .= ' SELECTED ';
+            }
+            $mainhand_options .= '>'.$text.'</option>';
+        }
+        
+        $offhand_options = '<option value=""></option>';
+        foreach($weapons as $value => $text) {
+            $offhand_options .= '<option value="'.$value.'"';
+            if($character->offhand === $value){
+                $offhand_options .= ' SELECTED ';
+            }
+            $offhand_options .= '>'.$text.'</option>';
+        }
+        
         return view(
             'dashboard.character.create-edit', 
             [
@@ -215,6 +239,8 @@ class CharactersController extends Controller
                 'rank_options' => $rank_options,
                 'class_options' => $class_options,
                 'company_options' => $company_options,
+                'mainhand_options' => $mainhand_options,
+                'offhand_options' => $offhand_options,
                 'method' => 'PUT',
                 'form_action' => route('characters.update', ['character'=>$character]), 
                 'button_text' => 'Edit',
@@ -228,16 +254,32 @@ class CharactersController extends Controller
 //dump($validated, $character, $character->skills->pluck('pivot')->pluck('level')/*, $request*/);
         $character->name = $validated['name'];
         $character->slug = isset($validated['slug']) ? Str::slug($validated['slug']) : Str::slug($validated['name']);
-        $character->level = $validated['level'];
+        $character->level = $validated['level'] ?? 0;
+        $character->mainhand = $validated['mainhand'];
+        $character->offhand = $validated['offhand'];
+        
         // relations
-        $character->rank()->associate($validated['rank']);
         $character->class()->associate($validated['class']);
-        $character->company()->associate($validated['company']);
+        
+        if($request->user()->can('edit company members')){
+            $character->rank()->associate($validated['rank']);
+            $character->company()->associate($validated['company']);
+            // TODO: allow editing attached user if not current user's character
+        }
+        
         $character->save();
-        // update skills levels related to this character on pivot table
-        foreach($validated['skills'] as $skill => $level){
-            // don't need to save
-            $character->skills()->updateExistingPivot($skill, ['level'=>$level ?? 0]);
+        
+        if(isset($validated['skills'])) {
+            // update skills levels related to this character on pivot table
+            foreach ( $validated['skills'] as $skill => $level ) {
+                // don't need to save
+                $character->skills()->updateExistingPivot( $skill, ['level' => $level ?? 0] );
+            }
+        }
+        
+        // if this is the user's own character, update the session info
+        if($request->user()->character()->id == $character->id){
+            $request->session()->put('character', $character);
         }
         
 //        dump($character, $character->skills->pluck('pivot')->pluck('level'));

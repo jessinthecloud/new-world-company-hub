@@ -16,7 +16,8 @@ class DashboardController extends Controller
 //        $request->session(), 
         $request->user()->getAllPermissions()->pluck('name')->all(),
         $request->user()->getRoleNames()->all(),
-        $request->user()->character()?->company->name 
+        $request->user()->character(),
+        $request->user()->characters,
      );*/
 
         // determine what user is allowed to see on the dashboard

@@ -42,7 +42,7 @@ class GuildBankTable extends DataTableComponent
     
     private array $bindings = [];
     
-    public bool $dumpFilters = true;
+    public bool $dumpFilters = false;
 
     /**
      * constructor is called before company can be set,

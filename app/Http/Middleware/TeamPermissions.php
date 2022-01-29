@@ -15,6 +15,17 @@ class TeamPermissions
             setPermissionsTeamId(session('team_id'));
 //dump('after: '.getPermissionsTeamId());
         }
+        
+/*        dd( 
+//    app(\Spatie\Permission\PermissionRegistrar::class),
+        'spatie team id: '.getPermissionsTeamId(),
+        'session team id: '.session('team_id'), 
+//        $request->session(), 
+        $request->user()->getAllPermissions()->pluck('name')->all(),
+        $request->user()->getRoleNames()->all(),
+        $request->user()->character()?->company->name 
+     );*/
+        
         return $next( $request );
     }
 }
