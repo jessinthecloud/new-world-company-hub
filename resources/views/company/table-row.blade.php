@@ -11,7 +11,7 @@
 </x-livewire-tables::table.cell>
 
 <x-livewire-tables::table.cell>
-    {{ $row->name }}
+    {{ $row->class->name }}
 </x-livewire-tables::table.cell>
 
 <x-livewire-tables::table.cell>

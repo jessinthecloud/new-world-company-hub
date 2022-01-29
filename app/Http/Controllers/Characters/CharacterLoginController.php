@@ -128,7 +128,7 @@ class CharacterLoginController extends Controller
             'offhand' => $validated['offhand'],
             // relations
             'character_class_id' => $class->id,
-            'rank_id' => $rank->id,
+            'rank_id' => $rank?->id ?? null,
             'company_id' => getPermissionsTeamId(),
             'user_id' => $request->user()->id,
         ]);

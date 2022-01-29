@@ -36,7 +36,7 @@ class EnsureUserHasCompany
         // find user's guilds that have registered on the app
         $guilds = $this->discordService->fetchUserGuilds($request->user());
         $guild_ids = collect($guilds)->pluck('id')->all();
-//dump('guilds', collect($guilds)->pluck('name'));        
+//dump($request->user(),'guilds', collect($guilds)->pluck('name'), $guild_ids);        
         // match user guilds to registered companies
         $companies = Company::whereIn('discord_guild_id', $guild_ids);
 //dd('companies', $companies->pluck('name'));        

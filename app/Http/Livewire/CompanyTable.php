@@ -72,7 +72,7 @@ class CompanyTable extends DataTableComponent
     public function query() : Builder
     {
 //    Character::with('user:discord_name', 'class:name')->whereRelation( 'company', 'id', $this->company->id )
-        return Character::whereRelation( 'company', 'id', $this->company->id )
+        return Character::with('user', 'class')->whereRelation( 'company', 'id', $this->company->id )
             
             // -- class filter --
             ->when($this->getFilter('class'), fn ($query, $class) => $query->whereRelation('class', 'id', $class))
