@@ -9,7 +9,11 @@ class DashboardController extends Controller
 {
     public function index( Request $request )
     {
-    /*dump( 
+/*    dump( 
+//    app(\Spatie\Permission\PermissionRegistrar::class),
+        'spatie team id: '.getPermissionsTeamId(),
+        'session team id: '.session('team_id'), 
+//        $request->session(), 
         $request->user()->getAllPermissions()->pluck('name')->all(),
         $request->user()->getRoleNames()->all(),
         $request->user()->character()?->company->name 

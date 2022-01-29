@@ -1,11 +1,8 @@
 <?php
 
 use App\Http\Controllers\Items\CompanyInventoryController;
-use App\Models\Items\Armor;
 use App\Models\Items\BaseArmor;
 use App\Models\Items\BaseWeapon;
-use App\Models\Items\Weapon;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,7 +31,40 @@ Route::middleware(['guest'])->group(function() {
 // ###################################
 // ## AUTH
 // ##
-Route::middleware(['auth'])->group(function(){
+
+Route::middleware(['auth'])->group(function() {
+// character is chosen on login
+    Route::get( '/companies/{company}/login',
+                [\App\Http\Controllers\Companies\CompanyLoginController::class, 'login']
+    )
+        ->name( 'companies.login.login' );
+    Route::get( '/companies/login/choose',
+                [\App\Http\Controllers\Companies\CompanyLoginController::class, 'choose']
+    )
+        ->name( 'companies.login.choose' );
+});
+
+Route::middleware(['auth', 'company'])->group(function() {
+// character is chosen on login
+    Route::get( '/characters/{character}/login',
+                [\App\Http\Controllers\Characters\CharacterLoginController::class, 'login']
+    )
+        ->name( 'characters.login.login' );
+    Route::get( '/characters/login/choose',
+                [\App\Http\Controllers\Characters\CharacterLoginController::class, 'choose']
+    )
+        ->name( 'characters.login.choose' );
+    Route::get( '/characters/login/create',
+                [\App\Http\Controllers\Characters\CharacterLoginController::class, 'create']
+    )
+        ->name( 'characters.login.create' );
+    Route::post( '/characters/login',
+                [\App\Http\Controllers\Characters\CharacterLoginController::class, 'store']
+    )
+        ->name( 'characters.login.store' );
+});
+
+Route::middleware(['auth', 'company', 'character'])->group(function(){
     
     // dashboard
     Route::get( '/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])
@@ -78,7 +108,7 @@ Route::middleware(['auth'])->group(function(){
 // ###################################
 // ## SUPER ADMIN
 // ##
-    Route::middleware(['role:super-admin|dev'])->group(function() {
+    Route::middleware(['role:super-admin'])->group(function() {
     
         
     }); // end super admin
@@ -89,7 +119,7 @@ Route::middleware(['auth'])->group(function(){
 // ###################################
 // # ADMIN
 // #
-    Route::middleware(['role:super-admin|dev|admin'])->group(function() {
+    Route::middleware(['role:super-admin|admin'])->group(function() {
     
         Route::resource( 'factions', \App\Http\Controllers\FactionsController::class )
             ->except( ['index', 'show'] );
@@ -139,7 +169,7 @@ Route::middleware(['auth'])->group(function(){
 // ###################################
 // # GOVERNOR
 // #
-    Route::middleware(['role:super-admin|dev|admin|governor'])->group(function() {
+    Route::middleware(['role:super-admin|admin|governor'])->group(function() {
         Route::resource( 'companies', \App\Http\Controllers\Companies\CompaniesController::class )
             ->only( ['edit', 'update'] );
     });
@@ -150,7 +180,7 @@ Route::middleware(['auth'])->group(function(){
 // ###################################
 // # CONSUL
 // #
-    Route::middleware(['role:super-admin|dev|admin|governor|consul'])->group(function() {
+    Route::middleware(['role:super-admin|admin|governor|consul'])->group(function() {
        
         
     });
@@ -161,7 +191,7 @@ Route::middleware(['auth'])->group(function(){
 // ###################################
 // # OFFICER
 // #
-    Route::middleware(['role:super-admin|dev|admin|governor|consul|officer'])->group(function() {
+    Route::middleware(['role:super-admin|admin|governor|consul|officer'])->group(function() {
         // import rosters
         Route::get('/import', [\App\Http\Controllers\Companies\ImportRosterController::class, 'create'])
             ->name( 'rosters.import.create' );
@@ -194,7 +224,7 @@ Route::middleware(['auth'])->group(function(){
 // ###################################
 // # SETTLER
 // #
-    Route::middleware(['role:super-admin|dev|admin|governor|consul|officer|settler'])->group(function() {
+    Route::middleware(['role:super-admin|admin|governor|consul|officer|breakpoint-member'])->group(function() {
         
         Route::get( '/weapons/{weapon}', [\App\Http\Controllers\Items\WeaponsController::class, 'show'] )
         ->name( 'weapons.show' );
@@ -233,10 +263,6 @@ Route::middleware(['auth'])->group(function(){
         ->name( 'rosters.choose' );
     Route::get( '/guild-banks/choose', [\App\Http\Controllers\Companies\GuildBanksController::class, 'choose'] )
         ->name( 'guild-banks.choose' );
-        
-    // where to go after character is chosen on login
-        Route::get( '/characters/{character}/login', [\App\Http\Controllers\Characters\CharactersController::class, 'login'] )
-            ->name( 'characters.login' );
     
 // ## FIND
     // find model chosen from drop down

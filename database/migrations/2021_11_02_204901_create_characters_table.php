@@ -18,6 +18,10 @@ class CreateCharactersTable extends Migration
             $table->foreignId('company_id')->nullable()->constrained();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('rank_id')->nullable()->constrained()->nullOnDelete();
+//            $table->foreignId('mainhand_id')->nullable()->constrained('weapons')->nullOnDelete();
+            $table->string('mainhand')->nullable();
+//            $table->foreignId('offhand_id')->nullable()->constrained('weapons')->nullOnDelete();
+            $table->string('offhand')->nullable();
 
             $table->timestamps();
         } );

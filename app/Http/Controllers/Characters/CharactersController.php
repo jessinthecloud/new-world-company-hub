@@ -38,39 +38,23 @@ class CharactersController extends Controller
     }
 
     /**
-     * @param string $action
+     * @param \Illuminate\Http\Request $request
+     * @param string                   $action
      *
-     * @return \Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Contracts\View\View
      */
-    public function choose(Request $request, string $action = 'Submit')
+    public function choose(Request $request, string $action = 'Submit') : View
     {
-        $characters = Character::query();
-        
-        if($action == 'login'){
-            // restrict to own characters when choosing for login
-            $characters = $characters->where('user_id', $request->user()->id);
-        }
-        
-        $characters = $characters->orderBy('name')
+        $characters = Character::orderBy('name')
             ->orderBy('level')->get()
             ->mapWithKeys(function($character){
                 return [
                     $character->slug => $character->name 
-                        . ' (Level '.$character->level.')'
+                        . (!empty($character->level)) 
+                            ? ' (Level '.$character->level.')' 
+                            : ''
                 ];
         })->all();
-        
-        if($action == 'login' && count($characters) === 1){
-            // only one, then choose it automatically 
-            return redirect(route('characters.login', [
-                'character'=>array_key_first($characters)
-            ]));
-        }
-
-        if($action == 'login' && count($characters) < 1){
-            // no characters
-            return redirect(RouteServiceProvider::DASHBOARD);
-        }
         
         $form_action = route('characters.find');
         
@@ -94,21 +78,6 @@ class CharactersController extends Controller
         return redirect(route('characters.'.$request->action, [
             'character'=>$request->character
         ]));
-    }
-
-    /**
-     * Set this as primary character for logged-in user
-     *
-     * @param \Illuminate\Http\Request         $request
-     * @param \App\Models\Characters\Character $character
-     *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
-    public function login( Request $request, Character $character )
-    {
-        $request->session()->put('character', $character);
-
-        return redirect(RouteServiceProvider::DASHBOARD);
     }
 
     /**
