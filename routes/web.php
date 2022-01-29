@@ -42,10 +42,6 @@ Route::middleware(['auth'])->group(function() {
                 [\App\Http\Controllers\Companies\CompanyLoginController::class, 'choose']
     )
         ->name( 'companies.login.choose' );
-    Route::get( '/companies/login/choose',
-                [\App\Http\Controllers\Companies\CompanyLoginController::class, 'choose']
-    )
-        ->name( 'companies.login.choose' );
 });
 
 Route::middleware(['auth', 'company'])->group(function() {
@@ -58,10 +54,14 @@ Route::middleware(['auth', 'company'])->group(function() {
                 [\App\Http\Controllers\Characters\CharacterLoginController::class, 'choose']
     )
         ->name( 'characters.login.choose' );
-    Route::get( '/characters/login/choose',
-                [\App\Http\Controllers\Characters\CharacterLoginController::class, 'choose']
+    Route::get( '/characters/login/create',
+                [\App\Http\Controllers\Characters\CharacterLoginController::class, 'create']
     )
-        ->name( 'characters.login.choose' );
+        ->name( 'characters.login.create' );
+    Route::post( '/characters/login',
+                [\App\Http\Controllers\Characters\CharacterLoginController::class, 'store']
+    )
+        ->name( 'characters.login.store' );
 });
 
 Route::middleware(['auth', 'company', 'character'])->group(function(){
@@ -108,7 +108,7 @@ Route::middleware(['auth', 'company', 'character'])->group(function(){
 // ###################################
 // ## SUPER ADMIN
 // ##
-    Route::middleware(['role:super-admin|dev'])->group(function() {
+    Route::middleware(['role:super-admin'])->group(function() {
     
         
     }); // end super admin
@@ -119,7 +119,7 @@ Route::middleware(['auth', 'company', 'character'])->group(function(){
 // ###################################
 // # ADMIN
 // #
-    Route::middleware(['role:super-admin|dev|admin'])->group(function() {
+    Route::middleware(['role:super-admin|admin'])->group(function() {
     
         Route::resource( 'factions', \App\Http\Controllers\FactionsController::class )
             ->except( ['index', 'show'] );
@@ -169,7 +169,7 @@ Route::middleware(['auth', 'company', 'character'])->group(function(){
 // ###################################
 // # GOVERNOR
 // #
-    Route::middleware(['role:super-admin|dev|admin|governor'])->group(function() {
+    Route::middleware(['role:super-admin|admin|governor'])->group(function() {
         Route::resource( 'companies', \App\Http\Controllers\Companies\CompaniesController::class )
             ->only( ['edit', 'update'] );
     });
@@ -180,7 +180,7 @@ Route::middleware(['auth', 'company', 'character'])->group(function(){
 // ###################################
 // # CONSUL
 // #
-    Route::middleware(['role:super-admin|dev|admin|governor|consul'])->group(function() {
+    Route::middleware(['role:super-admin|admin|governor|consul'])->group(function() {
        
         
     });
@@ -191,7 +191,7 @@ Route::middleware(['auth', 'company', 'character'])->group(function(){
 // ###################################
 // # OFFICER
 // #
-    Route::middleware(['role:super-admin|dev|admin|governor|consul|officer'])->group(function() {
+    Route::middleware(['role:super-admin|admin|governor|consul|officer'])->group(function() {
         // import rosters
         Route::get('/import', [\App\Http\Controllers\Companies\ImportRosterController::class, 'create'])
             ->name( 'rosters.import.create' );
@@ -224,7 +224,7 @@ Route::middleware(['auth', 'company', 'character'])->group(function(){
 // ###################################
 // # SETTLER
 // #
-    Route::middleware(['role:super-admin|dev|admin|governor|consul|officer|settler'])->group(function() {
+    Route::middleware(['role:super-admin|admin|governor|consul|officer|breakpoint-member'])->group(function() {
         
         Route::get( '/weapons/{weapon}', [\App\Http\Controllers\Items\WeaponsController::class, 'show'] )
         ->name( 'weapons.show' );

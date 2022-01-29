@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Characters;
 
+use App\Enums\WeaponType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CharacterCreationRequest;
 use App\Http\Requests\CharacterUpsertRequest;
@@ -83,21 +84,20 @@ class CharacterLoginController extends Controller
      */
     public function create() : View
     {
-        $ranks = Rank::distinct()->get()->mapWithKeys(function($rank){
-            return [$rank->id => $rank->name];
-        })->all();
 
         $skillTypes = SkillType::with(['skills' => function ($query) {
             $query->orderBy('order');
         }])->orderBy('order')->get()->all();
         
+        $weapons = WeaponType::valueToAssociative();
+        asort($weapons);
     
         $form_action = route('characters.login.store');
         $button_text = 'Add';
     
         return view(
             'dashboard.character.create-edit', 
-            compact('ranks', 'skillTypes',
+            compact('skillTypes', 'weapons',
                 'form_action', 'button_text')
         );
     }
@@ -106,27 +106,44 @@ class CharacterLoginController extends Controller
     {
         $validated = $request->validated();
 //dump($validated, $character, $character->skills->pluck('pivot')->pluck('level')/*, $request*/);
+
+        $user_roles = $request->user()->getRoleNames()->all();
+//dump('user roles',$user_roles);
+        // get class from user roles
+        $class = CharacterClass::whereIn('name', $user_roles)->first();
+//dump('class',$class);
+        // get rank from user roles
+        $rank = Rank::whereIn('name', $user_roles)->orderBy('order')->first();
+//dump('rank',$rank);        
+        // if no ranks, but have member role, add settler rank
+        if(empty($rank) && in_array('breakpoint-member', $user_roles)){
+            $rank = Rank::where('name', 'Settler')->first();
+        }
+//dd('rank',$rank); 
         $character = Character::create([
             'name' => $validated['name'],
             'slug' => Str::slug($validated['name']),
-            'level' => $validated['level'],
+//            'level' => $validated['level'],
+            'mainhand' => $validated['mainhand'],
+            'offhand' => $validated['offhand'],
             // relations
-            'character_class_id' => $validated['class'],
-            'rank_id' => $validated['rank'],
-            'company_id' => $validated['company'],
+            'character_class_id' => $class->id,
+            'rank_id' => $rank->id,
+            'company_id' => getPermissionsTeamId(),
+            'user_id' => $request->user()->id,
         ]);
         
         // update skills levels related to this character on pivot table
-        foreach($validated['skills'] as $skill_id => $level){
+        /*foreach($validated['skills'] as $skill_id => $level){
             // don't need to ->save()
             $character->skills()->attach($skill_id, ['level'=>$level ?? 0]);
-        }
+        }*/
 
 //        dump($character, $character->skills->pluck('pivot')->pluck('level'));
         return redirect(route('dashboard'))->with([
             'status'=> [
                 'type'=>'success',
-                'message' => 'Character created successfully'
+                'message' => 'Character '.$validated['name'].' created successfully'
             ]
         ]);
     }

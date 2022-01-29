@@ -29,16 +29,17 @@ class EnsureUserHasCompany
         }
         
         if(!empty($request->session()->get('team_id'))){
+//dd('team id is set: '.$request->session()->get('team_id'));        
             return $next($request);
         }
         
         // find user's guilds that have registered on the app
         $guilds = $this->discordService->fetchUserGuilds($request->user());
         $guild_ids = collect($guilds)->pluck('id')->all();
-        
+//dump('guilds', collect($guilds)->pluck('name'));        
         // match user guilds to registered companies
         $companies = Company::whereIn('discord_guild_id', $guild_ids);
-        
+//dd('companies', $companies->pluck('name'));        
         switch(true){
             case $companies->count() === 0:
                 // no match -> send away/send message to register app

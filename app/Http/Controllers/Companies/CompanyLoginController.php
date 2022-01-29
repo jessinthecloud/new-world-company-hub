@@ -41,10 +41,11 @@ class CompanyLoginController extends Controller
         
         // get their roles for the discord guild
         $discord_user_info = $this->discordService->fetchGuildMember($user, $company->discord_guild_id);
-//dump($discord_user_info);
+//dump($user, $discord_user_info);
                 
         // match role(s) to the ones in the app
         $roles = $this->discordService->syncUserRoles($user, $company->id, $discord_user_info['roles']);
+//dd('roles synced: ', $roles);
 
         // TODO: check for characters belonging to this User+Company combo
         // TODO: find user's roles that match character classes
