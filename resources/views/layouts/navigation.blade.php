@@ -16,7 +16,8 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     
-                    @if(Auth::check() && Auth::user()->company() !== null && Auth::user()->can('view', new App\GuildBank(Auth::user()->company())))
+                    @if(Auth::check() && Auth::user()->company() !== null 
+                        && Auth::user()->can('view', new App\GuildBank(Auth::user()->company())))
                         <x-nav-link :href="route('guild-banks.show', [
                                 'guildBank' => Auth::user()->company()->slug
                             ])" 

@@ -7,7 +7,7 @@ use App\Models\Characters\Skill;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class CharacterUpsertRequest extends FormRequest
+class CharacterCreationRequest extends FormRequest
 {
     public function rules() : array
     {
@@ -17,10 +17,7 @@ class CharacterUpsertRequest extends FormRequest
         $rules = [
            'name' => ['required', 'string', 'max:255'], 
            'slug' => ['nullable', 'string', 'max:255'],
-//           'level' => ['required', 'numeric', 'max:255'], 
-           'rank' => ['nullable', 'numeric', 'exists:ranks,id'], 
-           'class' => ['required', 'numeric', 'exists:character_classes,id'],
-           'company' => ['nullable', 'numeric', 'exists:companies,id'],
+//           'level' => ['required', 'numeric', 'max:60'], 
            'mainhand' => [
                 'required', 
                 'string',
@@ -31,6 +28,7 @@ class CharacterUpsertRequest extends FormRequest
                 'string',
                 Rule::in(WeaponType::getAllValues()),
             ], 
+           'class' => ['required', 'numeric', 'exists:character_classes,id'],
            // define the valid array keys (skill ids) 
            'skills' => ['array:'.$valid_skill_ids_string, 'nullable'],
         ];

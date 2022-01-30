@@ -32,8 +32,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
         
-        // send to character choice page to set character for this login
-        return redirect(route('characters.choose', ['action'=>'login']));
+        return redirect(route('dashboard'));
     }
 
     /**
