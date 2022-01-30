@@ -206,7 +206,7 @@ Route::middleware(['auth', 'company', 'character'])->group(function(){
         Route::resource( 'rosters', \App\Http\Controllers\Companies\RostersController::class )
             ->except( ['create', 'index', 'show'] );
             
-        Route::resource( 'guild-banks', \App\Http\Controllers\Companies\GuildBanksController::class)
+        /*Route::resource( 'guild-banks', \App\Http\Controllers\Companies\GuildBanksController::class)
             ->except(['create', 'store', 'index', 'show', 'destroy'])
             ->parameters([
                 'guild-banks' => 'guildBank'
@@ -217,7 +217,7 @@ Route::middleware(['auth', 'company', 'character'])->group(function(){
             ->name('guild-banks.store');
             
         Route::delete( 'guild-banks/{guildBank}', [\App\Http\Controllers\Companies\GuildBanksController::class, 'destroy'])
-            ->name('guild-banks.destroy');
+            ->name('guild-banks.destroy');*/
             
         Route::delete( 'companies/{company}/member/{character}', [\App\Http\Controllers\Companies\CompanyMembersController::class, 'destroy'])
             ->name('company.members.destroy');
@@ -267,8 +267,8 @@ Route::middleware(['auth', 'company', 'character'])->group(function(){
         ->name( 'base-weapons.choose' );
     Route::get( '/rosters/choose', [\App\Http\Controllers\Companies\RostersController::class, 'choose'] )
         ->name( 'rosters.choose' );
-    Route::get( '/guild-banks/choose', [\App\Http\Controllers\Companies\GuildBanksController::class, 'choose'] )
-        ->name( 'guild-banks.choose' );
+    /*Route::get( '/guild-banks/choose', [\App\Http\Controllers\Companies\GuildBanksController::class, 'choose'] )
+        ->name( 'guild-banks.choose' );*/
     
 // ## FIND
     // find model chosen from drop down
@@ -284,16 +284,16 @@ Route::middleware(['auth', 'company', 'character'])->group(function(){
         ->name( 'base-weapons.find' );
     Route::post( '/rosters/find', [\App\Http\Controllers\Companies\RostersController::class, 'find'] )
         ->name( 'rosters.find' );
-    Route::post( '/guild-banks/find', [\App\Http\Controllers\Companies\GuildBanksController::class, 'find'] )
-        ->name( 'guild-banks.find' );
+    /*Route::post( '/guild-banks/find', [\App\Http\Controllers\Companies\GuildBanksController::class, 'find'] )
+        ->name( 'guild-banks.find' );*/
         
         
-    // GUILD BANK
+    /*// GUILD BANK
     Route::get( 'guild-banks/{guildBank}', [\App\Http\Controllers\Companies\GuildBanksController::class, 'show'])
         ->name('guild-banks.show');
     // if guildbank (company slug) is not in URL, defaults to current logged-in user's selected company to create one
     Route::get( 'guild-bank/', [\App\Http\Controllers\Companies\GuildBanksController::class, 'show'])
-        ->name('guild-banks.show.single');
+        ->name('guild-banks.show.single');*/
         
 });
 // ##

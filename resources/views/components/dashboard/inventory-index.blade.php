@@ -17,8 +17,6 @@
         
         <x-dashboard.gated-button 
             :can="['create', $owner]"
-            :phpClass="$owner"
-            {{--:route="route(Str::plural($ownerType).'.create')"--}}
             :route="route(
                 Str::plural($ownerType).'.inventory.create', 
                 [

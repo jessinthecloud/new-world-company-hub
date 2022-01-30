@@ -13,11 +13,10 @@ use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filter;
 
-class GuildBankTable extends DataTableComponent
+class InventoryTable extends DataTableComponent
 {
     
-    public Company $company;
-    protected GuildBank $guildBank;
+    public $owner;
     
     // passed in as Collections and then made arrays
     /**
@@ -52,24 +51,22 @@ class GuildBankTable extends DataTableComponent
      *      have it create a GuildBank as needed with static constructor
      *      I can't be bothered with the JS BS right now tbh
      *
-     * @param \App\GuildBank                     $guildBank
+     * @param \App\Models\Companies\Company|\App\Models\Characters\Character|null $owner
      * @param array                              $armors
      * @param array                              $weapons
      * @param array                              $weight_class
      * @param array                              $types
      * @param array                              $rarity
      * @param array                              $perks
-     * @param \App\Models\Companies\Company|null $company
      *
      * @return void
      */
-    public function mount(GuildBank $guildBank, array $armors, array $weapons, array $weight_class, array $types, array $rarity, array $perks, Company $company=null)
+    public function mount($owner, array $armors, array $weapons, array $weight_class, array $types, array $rarity, array $perks)
     {
-        if(!empty(session('guild-bank-filters'))){
-            $this->filters = session('guild-bank-filters');
+        if(!empty(session('inventory-'.$this->owner->name.'-filters'))){
+            $this->filters = session('inventory-'.$this->owner->name.'-filters');
         }
-        $this->guildBank = $guildBank;
-        $this->company = $company ?? $this->guildBank->company();
+        $this->company = $owner;
         $this->armor_types = $armors;
         $this->weapon_types = $weapons;
         $this->weight_class = $weight_class;
@@ -83,26 +80,19 @@ class GuildBankTable extends DataTableComponent
         return [
             Column::make( 'Name', 'name' )
                 ->sortable(),
-//                ->searchable(),
             Column::make( 'Gear Score', 'gear_score' )
                 ->sortable(),
             Column::make( 'Perks', 'perks' ),
-//                ->sortable()
-//                ->searchable(),
             // type of item
             Column::make( 'Item Type', 'type' )
                 ->sortable(),
-//                ->searchable(),
             // kind of weapon/armor
             Column::make( 'Type', 'subtype' )
                 ->sortable(),
-//                ->searchable(),
             Column::make( 'Rarity', 'rarity' )
                 ->sortable(),
-//                ->searchable(),            
             Column::make( 'Weight Class', 'weight_class' )
                 ->sortable(),
-//                ->searchable(),
             Column::make( 'Added At', 'created_at' )
                 ->sortable()
          ];
@@ -112,7 +102,7 @@ class GuildBankTable extends DataTableComponent
     {
         // do not need to wrap in a <tr> 
          // Becomes /resources/views/location/to/my/row.blade.php
-         return 'guild-bank.table-row';
+         return 'inventory.table-row';
     }
     
     public function resetFilters() : void
@@ -120,7 +110,7 @@ class GuildBankTable extends DataTableComponent
         parent::resetFilters();
         
         // clear session filters
-        session()->forget('guild-bank-filters');
+        session()->forget('inventory-'.$this->owner->name.'-filters');
     }
     
     public function updatedFilters() : void
@@ -128,7 +118,7 @@ class GuildBankTable extends DataTableComponent
         parent::updatedFilters();
         
         // keep track of filters across requests
-        session()->put('guild-bank-filters', $this->filters);
+        session()->put('inventory-'.$this->owner->name.'-filters', $this->filters);
     }
 
     public function filters(): array

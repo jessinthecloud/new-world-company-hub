@@ -1,0 +1,35 @@
+<x-app-layout>
+    <x-slot name="title">
+        Guild Bank
+    </x-slot>
+    
+    <div class="py-12">
+        <div id="wrapper-inner" class="max-w-7xl mx-auto lg:px-8">
+            
+            <x-dashboard.gated-button 
+                :can="['create', $owner]"
+                :owner="$owner"
+                :route="route(
+                    Str::plural($ownerType).'.inventory.create', 
+                    [
+                        $ownerType=>$owner->slug,
+                    ]
+                )"
+            >
+                {{ $buttonTexts['create'] ?? 'Create' }}
+            </x-dashboard.gated-button>
+            
+            <livewire:inventory-table 
+                :id="null"
+                :owner="$owner"
+                :weapons="$weapons"
+                :armors="$armors"
+                :weight_class="$weight_class"
+                :rarity="$rarity"
+                :types="$types"
+                :perks="$perks"
+            />
+        </div>
+    </div>
+
+</x-app-layout>

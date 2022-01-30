@@ -13,11 +13,10 @@ $guildBank = new \App\GuildBank($instance->company);
 >
     {{ ucfirst($row->name) }}
 
-    <x-dashboard.edit-delete-bank-item-buttons
+    <x-dashboard.edit-delete-inventory-item-buttons
         :item="$instance"
         :itemType="$row->type"            
         :guildBank="$guildBank"
-        {{--            :guildBankClass="$guildBankClass"--}}
         class="mt-4"
     />
 </x-livewire-tables::table.cell>
@@ -35,13 +34,6 @@ $guildBank = new \App\GuildBank($instance->company);
 
 <x-livewire-tables::table.cell>
     {{ $row->type }}
-    {{--@if ($row->isAdmin())
-        @lang('All')
-    @elseif (! $row->permissions->count())
-        @lang('None')
-    @else
-        {!! collect($row->permissions->pluck('description'))->implode('<br/>') !!}
-    @endif--}}
 </x-livewire-tables::table.cell>
 
 <x-livewire-tables::table.cell>
@@ -50,11 +42,6 @@ $guildBank = new \App\GuildBank($instance->company);
 
 <x-livewire-tables::table.cell>
     {{ $row->rarity }}
-    {{--@if(! $row->isAdmin())
-        <a href="{{ route('admin.auth.role.edit', $row) }}" class="text-primary-600 font-medium hover:text-primary-900">Manage</a>
-    @else
-        <span>-</span>
-    @endif--}}
 </x-livewire-tables::table.cell>
 
 <x-livewire-tables::table.cell>
