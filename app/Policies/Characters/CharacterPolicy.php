@@ -32,7 +32,6 @@ class CharacterPolicy
      */
     public function viewAny( User $user ) : bool
     {
-//dump('COMPANY viewAny: '.$user->canAny(['view characters', 'view own characters', 'view faction characters']));    
         return $user->canAny([
             'view characters', 
             'view own characters', 
@@ -94,7 +93,7 @@ class CharacterPolicy
                 (
                     $user->can('edit own characters') 
                     &&
-                    ($user->characters->where('company.id', $character->id)->count() > 0) 
+                    ($user->characters->where('id', $character->id)->count() > 0) 
                 ) 
                 ||
                 (
@@ -121,7 +120,7 @@ class CharacterPolicy
                 (
                     $user->can('delete own characters')
                     &&
-                    ($user->characters->where('company.id', $character->id)->count() > 0)
+                    ($user->characters->where('id', $character->id)->count() > 0)
                 )
                 ||
                 (

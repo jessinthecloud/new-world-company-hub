@@ -131,8 +131,8 @@ class CharactersController extends Controller
             'level' => $validated['level'],
             // relations
             'character_class_id' => $validated['class'],
-            'rank_id' => $validated['rank'],
-            'company_id' => $validated['company'],
+//            'rank_id' => $validated['rank'],
+//            'company_id' => $validated['company'],
         ]);
         
         // update skills levels related to this character on pivot table

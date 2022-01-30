@@ -84,13 +84,30 @@ class CharacterLoginController extends Controller
      */
     public function create() : View
     {
-
+        $classes = CharacterClass::distinct()->get()->mapWithKeys(function($class){
+            return [$class->id => $class->name];
+        })->all();
+    
         $skillTypes = SkillType::with(['skills' => function ($query) {
             $query->orderBy('order');
         }])->orderBy('order')->get()->all();
         
         $weapons = WeaponType::valueToAssociative();
         asort($weapons);
+        
+        // pre-select class if it is assigned in discord
+        $user_roles = request()->user()->getRoleNames()->all();
+        $current_classes = CharacterClass::whereIn('name', $user_roles)->get();
+        $class_ids = $current_classes->pluck('id')->all();
+        
+        $class_options = '';
+        foreach($classes as $value => $text) {
+            $class_options .= '<option value="'.$value.'"';
+            if(in_array($value, $class_ids)){
+                $class_options .= ' SELECTED ';
+            }
+            $class_options .= '>'.$text.'</option>';
+        }
     
         $form_action = route('characters.login.store');
         $button_text = 'Add';
@@ -98,7 +115,7 @@ class CharacterLoginController extends Controller
         return view(
             'dashboard.character.create-edit', 
             compact('skillTypes', 'weapons',
-                'form_action', 'button_text')
+                'form_action', 'button_text', 'class_options')
         );
     }
 
@@ -110,7 +127,7 @@ class CharacterLoginController extends Controller
         $user_roles = $request->user()->getRoleNames()->all();
 //dump('user roles',$user_roles);
         // get class from user roles
-        $class = CharacterClass::whereIn('name', $user_roles)->first();
+//        $class = CharacterClass::whereIn('name', $user_roles)->first();
 //dump('class',$class);
         // get rank from user roles
         $rank = Rank::whereIn('name', $user_roles)->orderBy('order')->first();
@@ -127,7 +144,7 @@ class CharacterLoginController extends Controller
             'mainhand' => $validated['mainhand'],
             'offhand' => $validated['offhand'],
             // relations
-            'character_class_id' => $class->id,
+            'character_class_id' => $validated['class'], //$class->id,
             'rank_id' => $rank?->id ?? null,
             'company_id' => getPermissionsTeamId(),
             'user_id' => $request->user()->id,

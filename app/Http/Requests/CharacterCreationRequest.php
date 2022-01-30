@@ -28,7 +28,7 @@ class CharacterCreationRequest extends FormRequest
                 'string',
                 Rule::in(WeaponType::getAllValues()),
             ], 
-//           'class' => ['required', 'numeric', 'exists:character_classes,id'],
+           'class' => ['required', 'numeric', 'exists:character_classes,id'],
            // define the valid array keys (skill ids) 
            'skills' => ['array:'.$valid_skill_ids_string, 'nullable'],
         ];

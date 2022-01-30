@@ -15,7 +15,8 @@
             </x-dashboard.gated-button>
         @endif
 
-        @if(Route::has($pluralEntityName.'.show') && Route::has($pluralEntityName.'.choose'))
+        @if(Route::has($pluralEntityName.'.show') && Route::has($pluralEntityName.'.choose')  
+            && $phpClass != \App\Models\Characters\Character::class)
             <x-dashboard.gated-button
                 :can="['view', $instance]"
                 :phpClass="$phpClass" 
@@ -28,7 +29,8 @@
             </x-dashboard.gated-button>
         @endif
         
-        @if(Route::has($pluralEntityName.'.create'))
+        @if(Route::has($pluralEntityName.'.create') 
+            && $phpClass != \App\Models\Characters\Character::class)
             <x-dashboard.gated-button 
                 :can="['create', $phpClass]"
                 :phpClass="$phpClass"
@@ -41,7 +43,7 @@
             </x-dashboard.gated-button>
         @endif
         
-        @if(Route::has($pluralEntityName.'.edit') && Route::has($pluralEntityName.'.choose'))
+        @if(Route::has($pluralEntityName.'.edit') /*&& Route::has($pluralEntityName.'.choose')*/)
             <x-dashboard.gated-button
                 :can="['update', $instance]"
                 :phpClass="$phpClass" 
@@ -53,34 +55,30 @@
                 {{ $buttonTexts['edit'] ?? 'Edit' }}
             </x-dashboard.gated-button>
         @endif
-        @if(Route::has($pluralEntityName.'.destroy') && Route::has($pluralEntityName.'.choose'))
-<!--                --><?php //dump(Route::has($pluralEntityName.'.destroy'),Route::has($pluralEntityName.'.choose'),$instance);?>
-            {{--@can('delete', $instance)
+        
+        @if(Route::has($pluralEntityName.'.destroy') 
+            && $phpClass != \App\Models\Characters\Character::class)
+       
+            @can('delete', $instance)
                 <x-forms.form
-                    --}}{{-- send as plain html attribute --}}{{--
                     action="{{ $form_action ?? '' }}"
-                    --}}{{-- set the custom $method variable --}}{{--
-                    --}}{{-- (not the form method attribute) --}}{{--
                     :method="$method ?? null"
-                    :button-text="$button_text"
+                    :button-text="$button_text ?? 'Delete'"
                     class="flex flex-wrap justify-start"
-                    
-                     x-data="{weapons: {}, armors: {}, isWeapon:{{ $isWeapon ?? 0 }}, isArmor:{{ $isArmor ?? 0 }}, newEntry:{{ $newEntry ?? 0 }}, fetch:false}"
                 >
                 </x-forms.form>
-            @endcan--}}
+            @endcan
             
-            <x-dashboard.gated-button 
+            {{--<x-dashboard.gated-button 
                 :can="['delete', $instance]"
                 :phpClass="$phpClass"
-                :route="isset($instance) 
-                    ? route($pluralEntityName.'.choose', ['action'=>'destroy', $entityName=>$instance->slug]) 
-                    : route($pluralEntityName.'.choose', ['action'=>'destroy'])"
+                :route="route($pluralEntityName.'.destroy', [$entityName=>$instance->slug])"
                 :instance="$instance"
                 class="bg-red-800"
             >
                 {{ $buttonTexts['delete'] ?? 'Delete' }}
-            </x-dashboard.gated-button>
+            </x-dashboard.gated-button>--}}
+            
         @endif
         
         {!! $slot !!}

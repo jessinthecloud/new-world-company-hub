@@ -23,7 +23,7 @@
                 />
             </x-forms.field>
             
-            @if(strtolower($method) == 'put')
+            @if(isset($method) && strtolower($method) == 'put')
                 @if(request()->user()->can('edit company members'))
                     <x-forms.field :name="'company'" class="mb-6">
                         <x-forms.label for="company" :required="true">Company:</x-forms.label>
@@ -42,14 +42,15 @@
                     </x-forms.field>
                 @endif
     
-                <x-forms.field :name="'class'" class="mb-6">
-                    <x-forms.label for="class" :required="true">Class:</x-forms.label>
-                    <x-forms.select name="class" id="class"
-                                    :values="$classes ?? null"
-                                    :required="true"
-                    >{!! $class_options ?? '' !!}</x-forms.select>
-                </x-forms.field>
             @endif
+            
+            <x-forms.field :name="'class'" class="mb-6">
+                <x-forms.label for="class" :required="true">Class:</x-forms.label>
+                <x-forms.select name="class" id="class"
+                                :values="$classes ?? null"
+                                :required="true"
+                >{!! $class_options ?? '' !!}</x-forms.select>
+            </x-forms.field>
 
             {{--<x-forms.field :name="'level'">
                 <x-forms.label for="level" :required="false">Level:</x-forms.label>

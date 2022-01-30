@@ -18,9 +18,9 @@ class CharacterUpsertRequest extends FormRequest
            'name' => ['required', 'string', 'max:255'], 
            'slug' => ['nullable', 'string', 'max:255'],
 //           'level' => ['required', 'numeric', 'max:255'], 
-           'rank' => ['required', 'numeric', 'exists:ranks,id'], 
+           'rank' => ['nullable', 'numeric', 'exists:ranks,id'], 
            'class' => ['required', 'numeric', 'exists:character_classes,id'],
-           'company' => ['required', 'numeric', 'exists:companies,id'],
+           'company' => ['nullable', 'numeric', 'exists:companies,id'],
            'mainhand' => [
                 'required', 
                 'string',

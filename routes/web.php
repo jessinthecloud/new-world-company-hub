@@ -238,6 +238,7 @@ Route::middleware(['auth', 'company', 'character'])->group(function(){
         // COMPANY
         Route::resource( 'companies', \App\Http\Controllers\Companies\CompaniesController::class)
             ->only(['index', 'show']);
+            
         // CHARACTER
         Route::resource( 'characters', \App\Http\Controllers\Characters\CharactersController::class);
         // LOADOUT
