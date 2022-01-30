@@ -63,9 +63,13 @@
                 <x-forms.form
                     action="{{ $form_action ?? '' }}"
                     :method="$method ?? null"
-                    :button-text="$button_text ?? 'Delete'"
                     class="flex flex-wrap justify-start"
                 >
+                    <x-slot name="button">
+                        <x-button class="bg-red-800">
+                            Delete
+                        </x-button>
+                    </x-slot>
                 </x-forms.form>
             @endcan
             

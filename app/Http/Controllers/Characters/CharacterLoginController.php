@@ -122,21 +122,17 @@ class CharacterLoginController extends Controller
     public function store( CharacterCreationRequest $request )
     {
         $validated = $request->validated();
-//dump($validated, $character, $character->skills->pluck('pivot')->pluck('level')/*, $request*/);
 
         $user_roles = $request->user()->getRoleNames()->all();
-//dump('user roles',$user_roles);
-        // get class from user roles
-//        $class = CharacterClass::whereIn('name', $user_roles)->first();
-//dump('class',$class);
+        
         // get rank from user roles
         $rank = Rank::whereIn('name', $user_roles)->orderBy('order')->first();
-//dump('rank',$rank);        
+       
         // if no ranks, but have member role, add settler rank
         if(empty($rank) && in_array('breakpoint-member', $user_roles)){
             $rank = Rank::where('name', 'Settler')->first();
         }
-//dd('rank',$rank); 
+
         $character = Character::create([
             'name' => $validated['name'],
             'slug' => Str::slug($validated['name']),
@@ -156,7 +152,6 @@ class CharacterLoginController extends Controller
             $character->skills()->attach($skill_id, ['level'=>$level ?? 0]);
         }*/
 
-//        dump($character, $character->skills->pluck('pivot')->pluck('level'));
         return redirect(route('dashboard'))->with([
             'status'=> [
                 'type'=>'success',

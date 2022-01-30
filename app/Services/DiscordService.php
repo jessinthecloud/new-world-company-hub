@@ -16,7 +16,7 @@ class DiscordService
     public function upsertDiscordUser( $discordUser )
     {
         $user = User::where('discord_name',  $discordUser->nickname)->get();
-//dd($discordUser);          
+      
         if($user->isEmpty()){
             // account may exist prior to logging in with discord
             // and should be tied to discord data
@@ -99,20 +99,18 @@ class DiscordService
             ->whereIn('id', array_map('intval', $discord_role_ids))
             ->get();
         $role_ids = $discord_roles->pluck("role_id")->all();
-//dump('company: '.$company_id, $discord_role_ids,'discord roles: ',$role_ids);
-
+        
         $roles = Role::whereIn('id', $role_ids)->get()->pluck('name')->all();
-//dump('app roles: ',$roles);
+
         if(!empty($roles)){
             $user->syncRoles($roles);
         }
         
+        if($user->isSuperAdmin()){
+            // make sure super admin stays if it was removed via the sync
+            $user->assignRole('super-admin');
+        }
+        
         return $roles;
-    }
-
-    public function syncCharacterRanks( User $user, int $company_id, array $roles )
-    {
-        // TODO : find roles that have the same name as a rank
-        // attach that rank to character
     }
 }
