@@ -1,4 +1,4 @@
-@props(['phpClass', 'route', 'can', 'instance'=>null])
+@props(['route', 'can',])
 
 @can(...$can)
     <x-button-link href="{{ $route }}" 
