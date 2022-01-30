@@ -6,6 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Item extends Model
 {
+    /**
+     * The relationships that should always be loaded.
+     *
+     * @var array
+     */
+    protected $with = ['itemable'];
+
     public function itemable(  )
     {
         return $this->morphTo();

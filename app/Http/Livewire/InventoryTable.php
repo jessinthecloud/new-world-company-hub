@@ -4,7 +4,9 @@ namespace App\Http\Livewire;
 
 use App\GuildBank;
 use App\Models\Companies\Company;
+use App\Models\CompanyInventory;
 use App\Models\Items\Armor;
+use App\Models\Items\InventoryItem;
 use App\Models\Items\Weapon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -139,10 +141,12 @@ class InventoryTable extends DataTableComponent
 
     public function query()
     {        
-        // livewire is no longer respecting mount()...???? so this
-        $this->guildBank ??= GuildBank::make(Auth::user()->company() ?? Company::find(1));
+        return InventoryItem::ownedBy($this->owner);
         
-        $query = $this->guildBank->unionQuery();
+        // livewire is no longer respecting mount()...???? so this
+//        $this->guildBank ??= GuildBank::make(Auth::user()->company() ?? Company::find(1));
+        
+        /*$query = $this->guildBank->unionQuery();
         $this->bindings = $query->getBindings();
     
         // -- item type filter -- find based on subtypes of weapons or armor
@@ -200,23 +204,10 @@ class InventoryTable extends DataTableComponent
                 ->orWhereRaw( 'LOWER(items.weight_class) like ?' );
         });
         
-        // -- perk filter
-        /*$query = $query->when($this->getFilter('perks'), 
-            function ($query, $perks) {
-
-                // save bindings so that we can attach at the end
-                // perks are used twice in the query
-                $this->bindings = array_merge($this->bindings, $perks, $perks);
-                
-                
-                return $this->guildBank->joinPerkQuery($query, $this->bindings, $perks);
-        });*/
-//ddd($query->toSql(),$this->bindings);
-
-//     
+        
         // manually attach bindings because mergeBindings() does not order them properly
         return $query->setBindings($this->bindings)
-        ;
+        ;*/
     }
     
     public function getTableRowUrl($row): string

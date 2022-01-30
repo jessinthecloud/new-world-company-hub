@@ -6,8 +6,7 @@
             :can="['update', $owner]"
             :route="route(Str::plural($ownerType).'.inventory.edit', [
                 $ownerType => $owner->slug,
-                'itemType' => $itemType ?? $item->type,
-                'item' => $item->slug
+                'inventoryItem' => $item->slug
             ])"
             class="px-2"
         >
@@ -20,8 +19,7 @@
             <x-forms.form
                 action="{{  route(Str::plural($ownerType).'.inventory.destroy', [
                     $ownerType => $owner->slug,
-                    'itemType' => $itemType ?? $item->type,
-                    'item' => $item->id,
+                    'inventoryItem' => $item->id,
                 ]) }}"
                 :method="'DELETE'"
             >

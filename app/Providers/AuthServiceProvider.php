@@ -46,12 +46,7 @@ class AuthServiceProvider extends ServiceProvider
          * @see https://spatie.be/docs/laravel-permission/v5/basic-usage/super-admin
          */
         Gate::before( function ( $user, $ability ) {
-            return $user->hasRole( ['super-admin','dev'] ) ? true : null;
+            return $user->hasRole( ['super-admin'] ) ? true : null;
         } );
-        
-        // define more abstract policies --
-        // i.e., Inventory Item that could be tied to company or character
-        // TODO: ...would it be better/easier to just define the polymorphic relation (company_inventory)?
-        Gate::define('update-company-inventory', [CompanyInventoryPolicy::class, 'update']);
     }
 }
