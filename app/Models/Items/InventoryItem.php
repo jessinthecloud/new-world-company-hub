@@ -42,4 +42,11 @@ class InventoryItem extends Model
             ->where('ownerable_id', $company->id)
         ;
     }
+    public function scopeForTable( Builder $query )
+    {
+        return $query
+//            ->selectRaw('armors.id as id, armors.slug as slug, armors.name as name, armors.type as subtype, armors.rarity, armors.gear_score, armors.weight_class, "Armor" as type, armors.created_at as created_at')
+            ->with('item.itemable')
+        ;
+    }
 }

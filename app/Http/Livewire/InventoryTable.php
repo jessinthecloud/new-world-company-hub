@@ -38,8 +38,8 @@ class InventoryTable extends DataTableComponent
     public array $rarity;
     public array $perks;
 
-    public string $defaultSortColumn = 'items.gear_score';
-    public string $defaultSortDirection = 'desc';
+//    public string $defaultSortColumn = 'gear_score';
+//    public string $defaultSortDirection = 'desc';
     
     private array $bindings = [];
     
@@ -80,32 +80,32 @@ class InventoryTable extends DataTableComponent
     public function columns(): array
     {
         return [
-            Column::make( 'Name', 'name' )
+            Column::make( 'Name', 'item.itemable.name' )
                 ->sortable(),
-            Column::make( 'Gear Score', 'gear_score' )
+            Column::make( 'Gear Score', 'item.itemable.gear_score' )
                 ->sortable(),
-            Column::make( 'Perks', 'perks' ),
+            Column::make( 'Perks', 'item.itemable.perks' ),
             // type of item
-            Column::make( 'Item Type', 'type' )
+            Column::make( 'Item Type', 'item.itemable.type' )
                 ->sortable(),
             // kind of weapon/armor
-            Column::make( 'Type', 'subtype' )
+            Column::make( 'Type', 'item.itemable_type' )
                 ->sortable(),
-            Column::make( 'Rarity', 'rarity' )
+            Column::make( 'Rarity', 'item.itemable.rarity' )
                 ->sortable(),
-            Column::make( 'Weight Class', 'weight_class' )
+            Column::make( 'Weight Class', 'item.itemable.weight_class' )
                 ->sortable(),
-            Column::make( 'Added At', 'created_at' )
+            Column::make( 'Added At', 'item.itemable.created_at' )
                 ->sortable()
          ];
     }
     
-    public function rowView(): string
+    /*public function rowView(): string
     {
         // do not need to wrap in a <tr> 
          // Becomes /resources/views/location/to/my/row.blade.php
          return 'inventory.table-row';
-    }
+    }*/
     
     public function resetFilters() : void
     {
@@ -140,8 +140,9 @@ class InventoryTable extends DataTableComponent
     }
 
     public function query()
-    {        
-        return InventoryItem::ownedBy($this->owner);
+    {
+//    dd(InventoryItem::ownedBy($this->owner)->forTable()->get());   
+        return InventoryItem::ownedBy($this->owner)->forTable();
         
         // livewire is no longer respecting mount()...???? so this
 //        $this->guildBank ??= GuildBank::make(Auth::user()->company() ?? Company::find(1));
@@ -210,10 +211,10 @@ class InventoryTable extends DataTableComponent
         ;*/
     }
     
-    public function getTableRowUrl($row): string
+    /*public function getTableRowUrl($row): string
     {
         return route(Str::plural(strtolower($row->type)).'.show', [
             strtolower($row->type)=>$row->slug
         ]);
-    }
+    }*/
 }
