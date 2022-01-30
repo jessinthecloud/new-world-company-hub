@@ -151,4 +151,15 @@ class User extends Authenticatable
         return $this->hasManyThrough(Event::class, Character::class);
     } 
     
+// -- SCOPES
+    public function scopeFindSuperAdmin( $query )
+    {
+        return $query->where('slug', config('app.super_admin'));
+    }
+    
+// -- MISC
+    public function isSuperAdmin()
+    {
+        return $this->slug == config('app.super_admin');
+    }
 }

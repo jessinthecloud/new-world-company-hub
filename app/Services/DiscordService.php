@@ -99,20 +99,18 @@ class DiscordService
             ->whereIn('id', array_map('intval', $discord_role_ids))
             ->get();
         $role_ids = $discord_roles->pluck("role_id")->all();
-
-
+        
         $roles = Role::whereIn('id', $role_ids)->get()->pluck('name')->all();
 
         if(!empty($roles)){
             $user->syncRoles($roles);
         }
         
+        if($user->isSuperAdmin()){
+            // make sure super admin stays if it was removed via the sync
+            $user->assignRole('super-admin');
+        }
+        
         return $roles;
-    }
-
-    public function syncCharacterRanks( User $user, int $company_id, array $roles )
-    {
-        // TODO : find roles that have the same name as a rank
-        // attach that rank to character
     }
 }
