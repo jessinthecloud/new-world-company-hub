@@ -3,7 +3,6 @@
         :title="'Guild Bank'"
         class="min-h-screen"
     >
-    <p>Add/Edit items for the Guild Bank</p>
         <x-forms.form
             {{-- send as plain html attribute --}}
             action="{{ $form_action ?? '' }}"

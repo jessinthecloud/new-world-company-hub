@@ -17,7 +17,7 @@ interface ItemServiceContract
 
     public function initItemAttributes( array $validated, BaseItem $base=null );
     
-    public function createItem(array $validated, BaseItem $base=null);
+    public function createSpecificItem(array $validated, BaseItem $base=null);
 
     public function baseItemBySlug(string $slug) : ?BaseItem;
 }

@@ -10,7 +10,7 @@ use App\Enums\WeaponType;
 use App\Enums\WeightClass;
 use App\GuildBank;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\InventoryRequest;
+use App\Http\Requests\InventoryUpsertRequest;
 use App\Models\Companies\Company;
 use App\Models\Items\Perk;
 use App\Services\ArmorService;
@@ -63,7 +63,7 @@ class GuildBanksController extends Controller
         );
     } // end create()
 
-    public function store( InventoryRequest $request, GuildBank $guildBank )
+    public function store( InventoryUpsertRequest $request, GuildBank $guildBank )
     {
         $validated = $request->validated();
         
@@ -71,8 +71,8 @@ class GuildBanksController extends Controller
         
         // get base item
         $base ??= $this->{$service}->baseItem($validated['base_id']);    
-        $item = $this->{$service}->createItem( $validated, $base );
-        $item = $this->{$service}->saveItemRelations(
+        $item = $this->{$service}->createSpecificItem( $validated, $base );
+        $item = $this->{$service}->saveSpecificItemRelations(
             $validated, $item, $guildBank->company()->id, $base
         );
                 
@@ -145,7 +145,7 @@ class GuildBanksController extends Controller
         );
     }
 
-    public function update( InventoryRequest $request, GuildBank $guildBank )
+    public function update( InventoryUpsertRequest $request, GuildBank $guildBank )
     {
 
         // Retrieve the validated input data...
@@ -159,7 +159,7 @@ class GuildBanksController extends Controller
         // update instanced item
         $base = $this->{$service}->baseItem($validated['base_id']) ?? $item->base;    
         $item = $this->{$service}->updateItem( $validated, $item, $base );
-        $item = $this->{$service}->saveItemRelations(
+        $item = $this->{$service}->saveSpecificItemRelations(
             $validated, $item, $guildBank->company()->id, $base
         );
         

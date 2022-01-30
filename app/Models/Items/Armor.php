@@ -74,7 +74,7 @@ class Armor extends Model implements InventoryItemContract
     public function owner() : mixed
     {
         return $this->hasOneThrough(\App\Models\Items\InventoryItem::class, Item::class)
-            ->withPivot(['ownerable_id', 'ownerable_type']);
+            ->withPivot(['inventory_items.ownerable_id', 'inventory_items.ownerable_type']);
     }
     
     /**
@@ -83,7 +83,7 @@ class Armor extends Model implements InventoryItemContract
     public function company() : mixed
     {
         return $this->hasOneThrough(\App\Models\Items\InventoryItem::class, Item::class)
-            ->withPivot('ownerable_id')
+//            ->withPivot('inventory_items.ownerable_id')
             ->where('ownerable_type', '=', Company::class);
     }
     

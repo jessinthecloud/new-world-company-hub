@@ -8,6 +8,8 @@ use App\Enums\Rarity;
 use App\Enums\Tier;
 use App\Models\Items\Attribute;
 use App\Models\Items\BaseItem;
+use App\Models\Items\InventoryItem;
+use App\Models\Items\Item;
 use App\Models\Items\Perk;
 use Illuminate\Support\Str;
 
@@ -247,7 +249,7 @@ $slug.'%',
      *
      * @return \App\Contracts\InventoryItemContract
      */
-    public function saveItemRelations( array $validated, InventoryItemContract $item, string $company_id, BaseItem $base=null )
+    public function saveSpecificItemRelations( array $validated, InventoryItemContract $item, string $company_id, BaseItem $base=null )
     {
         if(isset($base)) {
             // attach to base item
@@ -284,14 +286,12 @@ $slug.'%',
             }
         }
         
-        // attach to bank
-        $item->company()->associate($company_id);
         $item->save();
         
         return $item;
     }
     
-    public function createItem(array $validated, BaseItem $base=null)
+    public function createSpecificItem(array $validated, BaseItem $base=null)
     {
         return $this->itemClass::create(
             $this->initItemAttributes($validated, $base)
@@ -305,5 +305,22 @@ $slug.'%',
         );
         
         return $item;
+    }
+
+    public function createMorphableItem( $specificItem )
+    {
+        return Item::create([
+            'itemable_type' => $specificItem::class,
+            'itemable_id' => $specificItem->id,
+        ]);
+    }
+    
+    public function createInventoryItem( $item, $owner )
+    {
+        return InventoryItem::create([
+            'item_id' => $item->id,
+            'ownerable_type' => $owner::class,
+            'ownerable_id' => $owner->id,
+        ]);
     }
 }

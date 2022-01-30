@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class InventoryItem extends Model
 {
+    protected $guarded = ['id'];
+    
     /**
      * The relationships that should always be loaded.
      *

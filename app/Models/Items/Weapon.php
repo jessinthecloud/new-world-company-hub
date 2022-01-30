@@ -94,7 +94,7 @@ class Weapon extends Model implements InventoryItemContract
     public function company() : mixed
     {
         return $this->hasOneThrough(\App\Models\Items\InventoryItem::class, Item::class)
-            ->withPivot('ownerable_id')
+//            ->withPivot('ownerable_id')
             ->where('ownerable_type', '=', Company::class);
     }
     

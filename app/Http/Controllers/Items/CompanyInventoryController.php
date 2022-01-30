@@ -8,6 +8,7 @@ use App\Enums\Rarity;
 use App\Enums\WeaponType;
 use App\Enums\WeightClass;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\InventoryUpsertRequest;
 use App\Models\Companies\Company;
 use App\Models\Items\Perk;
 use App\Services\ArmorService;
@@ -80,9 +81,31 @@ class CompanyInventoryController extends Controller
         );
     } // end create()
 
-    public function store( Request $request )
+    public function store( InventoryUpsertRequest $request, Company $company )
     {
-        //
+        $validated = $request->validated();
+        
+        $service = (strtolower($validated['itemType']) == 'weapon') ? 'weaponService' : 'armorService';
+        
+        // get base item
+        $base ??= $this->{$service}->baseItem($validated['base_id']);
+        $specificItem = $this->{$service}->createSpecificItem( $validated, $base );
+        $specificItem = $this->{$service}->saveSpecificItemRelations(
+            $validated, $specificItem, $company->id, $base
+        );
+        $morphableItem = $this->{$service}->createMorphableItem($specificItem);
+        $inventoryItem = $this->{$service}->createInventoryItem($morphableItem, $company);
+//        dd($inventoryItem);
+        return redirect(
+            route('companies.inventory.index',[
+                'company'=>$company->slug
+            ])
+        )->with([
+            'status'=> [
+                'type'=>'success',
+                'message' => 'Inventory added successfully: '.($specificItem->name)
+            ]
+        ]);
     }
 
     public function show( Company $company )
@@ -95,7 +118,7 @@ class CompanyInventoryController extends Controller
         //
     }
 
-    public function update( Request $request, Company $company, string $type, InventoryItemContract $item )
+    public function update( InventoryUpsertRequest $request, Company $company, string $type, InventoryItemContract $item )
     {
         //
     }
