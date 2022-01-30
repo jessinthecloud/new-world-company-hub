@@ -42,4 +42,12 @@ class Perk extends Model
     {
         return $this->belongsToMany(BaseArmor::class)->withPivot('amount');
     }
+    
+// -- MISC
+    public static function asArrayForDropDown()
+    {
+        return static::orderBy('name')->get()->mapWithKeys(function($perk){
+            return [$perk->slug => $perk->name];
+        })->all();
+    }
 }

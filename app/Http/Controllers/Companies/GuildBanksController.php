@@ -308,16 +308,14 @@ class GuildBanksController extends Controller
         $weight_class = WeightClass::valueToAssociative();
         $rarity = Rarity::valueToAssociative();
         
-        $perks = Perk::orderBy('name')->get()->mapWithKeys(function($perk){
-            return [$perk->slug => $perk->name];
-        });
+        $perks = Perk::asArrayForDropDown();
 
         // add "Any" to the front of the filter arrays
         $armors = collect($armors)->prepend('Any', '')->all();
         $weapons = collect($weapons)->prepend('Any', '')->all();
         $weight_class = collect($weight_class)->prepend('Any', '')->all();
         $rarity = collect($rarity)->prepend('Any', '')->all();
-        $perks = $perks->prepend('Any', '')->all();
+        $perks = collect($perks)->prepend('Any', '')->all();
 
         $types = [''=>'Any', 'Weapon'=>'Weapon', 'Armor'=>'Armor'];
 

@@ -10,4 +10,12 @@ class SkillType extends Model
     {
         return $this->hasMany(Skill::class);
     }
+    
+// -- MISC
+    public static function asArrayForDropDown()
+    {
+        return static::with(['skills' => function ($query) {
+            $query->orderBy('order');
+        }])->orderBy('order')->get()->all();
+    }
 }

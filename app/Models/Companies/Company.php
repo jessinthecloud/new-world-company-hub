@@ -104,4 +104,17 @@ class Company extends Model
             ->orderBy('name')
         ;
     }
+    
+// -- MISC
+    public static function asArrayForDropDown()
+    {
+        return static::with('faction')
+            ->orderBy('name')
+            ->get()
+            ->mapWithKeys(function($company){
+            return [
+                $company->slug => $company->name . ' ('.$company->faction->name.')'
+            ];
+        })->all();
+    }
 }
