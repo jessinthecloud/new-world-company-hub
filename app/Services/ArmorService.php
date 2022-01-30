@@ -14,10 +14,6 @@ class ArmorService extends ItemService implements ItemServiceContract
     protected string $itemClass = Armor::class;
     protected string $baseItemClass = BaseArmor::class;
 
-    public function __construct()
-    {
-    }
-
     /**
      * @return array
      */

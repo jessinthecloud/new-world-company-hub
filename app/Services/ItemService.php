@@ -7,10 +7,8 @@ use App\Enums\AttributeType;
 use App\Enums\Rarity;
 use App\Enums\Tier;
 use App\Models\Items\Attribute;
-use App\Models\Items\BaseArmor;
 use App\Models\Items\BaseItem;
 use App\Models\Items\Perk;
-use App\Models\Items\Weapon;
 use Illuminate\Support\Str;
 
 abstract class ItemService implements ItemServiceContract
