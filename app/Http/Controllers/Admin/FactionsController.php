@@ -1,12 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\FactionUpsertRequest;
 use App\Models\Faction;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+
+use function dump;
+use function redirect;
+use function route;
+use function view;
 
 class FactionsController extends Controller
 {
