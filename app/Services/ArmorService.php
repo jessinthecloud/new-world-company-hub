@@ -49,25 +49,6 @@ class ArmorService extends ItemService implements ItemServiceContract
     }
 
     /**
-     * @param string $itemType
-     *
-     * @return string
-     */
-    public function itemTypeOptions( string $itemType = '' ) : string
-    {
-        $armor_type_options = '<option value=""></option>';
-        foreach ( collect( ArmorType::cases() )->sortBy( 'value' )->all() as $type ) {
-            $armor_type_options .= '<option value="' . $type->name . '"';
-            if ( strtolower( $type->value ) == strtolower( $itemType ) ) {
-                $armor_type_options .= ' SELECTED ';
-            }
-            $armor_type_options .= '>' . $type->value . '</option>';
-        }
-
-        return $armor_type_options;
-    }
-
-    /**
      * @param array                           $validated
      * @param \App\Models\Items\BaseItem|null $base
      *

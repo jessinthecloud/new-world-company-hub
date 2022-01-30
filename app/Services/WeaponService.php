@@ -33,25 +33,6 @@ class WeaponService extends ItemService implements ItemServiceContract
         })->all();   
     }
 
-    /**
-     * @param string $itemType
-     *
-     * @return string
-     */
-    public function itemTypeOptions( string $itemType='' ) : string
-    {
-        $weapon_type_options = '<option value=""></option>';
-        foreach(collect(WeaponType::cases())->sortBy('value')->all() as $type) {
-            $weapon_type_options .= '<option value="'.$type->name.'"';
-                if(strtolower($type->value) == strtolower($itemType)){
-                    $weapon_type_options .= ' SELECTED ';
-                }
-            $weapon_type_options .= '>'.$type->value.'</option>';
-        }
-        
-        return $weapon_type_options;
-    }
-
     public function initItemAttributes( array $validated, BaseItem $base=null )
     {
         $values = [];

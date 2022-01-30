@@ -129,6 +129,26 @@ abstract class ItemService implements ItemServiceContract
     }
     
     /**
+     * @param string $itemType
+     *
+     * @return string
+     */
+    public function itemTypeOptions( string $itemType ) : string
+    {
+        $enum = 'App\\Enums\\'.$itemType.'Type';
+        $item_type_options = '<option value=""></option>';
+        foreach ( collect( $enum::cases() )->sortBy( 'value' )->all() as $type ) {
+            $item_type_options .= '<option value="' . $type->name . '"';
+            if ( strtolower( $type->value ) == strtolower( $itemType ) ) {
+                $item_type_options .= ' SELECTED ';
+            }
+            $item_type_options .= '>' . $type->value . '</option>';
+        }
+
+        return $item_type_options;
+    }
+    
+    /**
      *
      * @param array       $fields
      * @param string|null $old_slug  if we are editing, make sure the slug retrieved isn't from this item

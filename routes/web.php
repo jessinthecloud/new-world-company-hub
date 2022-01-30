@@ -136,30 +136,35 @@ Route::middleware(['auth', 'company', 'character'])->group(function(){
 // # BANKER
 // #
     Route::middleware(['role:super-admin|admin|banker'])->group(function() {
-    
+        // view all of specific company's inventory
         Route::get( '/companies/{company}/inventory', 
             [CompanyInventoryController::class, 'index'] )
-            ->name('company.inventory.index')
+            ->name('companies.inventory.index')
         ;
+        // create form for inventory item for specific company
         Route::get( '/companies/{company}/inventory/create', 
             [CompanyInventoryController::class, 'create'] )
-            ->name('company.inventory.create')
+            ->name('companies.inventory.create')
         ;
+        // store inventory item for specific company
         Route::post( '/companies/{company}/inventory', 
             [CompanyInventoryController::class, 'store'] )            
-            ->name('company.inventory.store')
+            ->name('companies.inventory.store')
         ;
+        // edit form for specific inventory item for specific company
         Route::get( '/companies/{company}/inventory/{inventoryItem}/edit', 
             [CompanyInventoryController::class, 'edit'] )
-            ->name('company.inventory.edit')
+            ->name('companies.inventory.edit')
         ;
+        // update specific inventory item for specific company
         Route::put( '/companies/{company}/inventory/{inventoryItem}', 
             [CompanyInventoryController::class, 'update'] )
-            ->name('company.inventory.update')
+            ->name('companies.inventory.update')
         ;
+        // delete specific inventory item from specific company
         Route::delete( '/companies/{company}/inventory/{inventoryItem}', 
             [CompanyInventoryController::class, 'destroy'] )
-            ->name('company.inventory.destroy')
+            ->name('companies.inventory.destroy')
         ;
     });
 // ##
