@@ -37,10 +37,12 @@ class GuildBankTable extends DataTableComponent
     public array $rarity;
     public array $perks;
 
-    public string $defaultSortColumn = 'items.name';
-
-    public string $defaultSortDirection = 'asc';
+    public string $defaultSortColumn = 'items.gear_score';
+    public string $defaultSortDirection = 'desc';
+    
     private array $bindings = [];
+    
+    public bool $dumpFilters = false;
 
     /**
      * constructor is called before company can be set,
@@ -63,6 +65,9 @@ class GuildBankTable extends DataTableComponent
      */
     public function mount(GuildBank $guildBank, array $armors, array $weapons, array $weight_class, array $types, array $rarity, array $perks, Company $company=null)
     {
+        if(!empty(session('guild-bank-filters'))){
+            $this->filters = session('guild-bank-filters');
+        }
         $this->guildBank = $guildBank;
         $this->company = $company ?? $this->guildBank->company();
         $this->armor_types = $armors;
@@ -77,27 +82,27 @@ class GuildBankTable extends DataTableComponent
     {
         return [
             Column::make( 'Name', 'name' )
-                ->sortable()
-                ->searchable(),
+                ->sortable(),
+//                ->searchable(),
             Column::make( 'Gear Score', 'gear_score' )
                 ->sortable(),
-            Column::make( 'Perks', 'perks' )
+            Column::make( 'Perks', 'perks' ),
 //                ->sortable()
-                ->searchable(),
+//                ->searchable(),
             // type of item
             Column::make( 'Item Type', 'type' )
-                ->sortable()
-                ->searchable(),
+                ->sortable(),
+//                ->searchable(),
             // kind of weapon/armor
             Column::make( 'Type', 'subtype' )
-                ->sortable()
-                ->searchable(),
+                ->sortable(),
+//                ->searchable(),
             Column::make( 'Rarity', 'rarity' )
-                ->sortable()
-                ->searchable(),            
+                ->sortable(),
+//                ->searchable(),            
             Column::make( 'Weight Class', 'weight_class' )
-                ->sortable()
-                ->searchable(),
+                ->sortable(),
+//                ->searchable(),
             Column::make( 'Added At', 'created_at' )
                 ->sortable()
          ];
@@ -110,9 +115,24 @@ class GuildBankTable extends DataTableComponent
          return 'guild-bank.table-row';
     }
     
-    
-    public function filters(): array
+    public function resetFilters() : void
     {
+        parent::resetFilters();
+        
+        // clear session filters
+        session()->forget('guild-bank-filters');
+    }
+    
+    public function updatedFilters() : void
+    {
+        parent::updatedFilters();
+        
+        // keep track of filters across requests
+        session()->put('guild-bank-filters', $this->filters);
+    }
+
+    public function filters(): array
+    {    
         return [
             'item_type' => Filter::make('Item Type')
                 ->select($this->itemTypes),
@@ -128,15 +148,15 @@ class GuildBankTable extends DataTableComponent
     }
 
     public function query()
-    {
+    {        
         // livewire is no longer respecting mount()...???? so this
-        $this->guildBank ??= GuildBank::make(Auth::user()->company());
+        $this->guildBank ??= GuildBank::make(Auth::user()->company() ?? Company::find(1));
         
         $query = $this->guildBank->unionQuery();
         $this->bindings = $query->getBindings();
     
         // -- item type filter -- find based on subtypes of weapons or armor
-        $query->when($this->getFilter('item_type'), function ($query, $item_type) {
+        $query = $query->when($this->getFilter('item_type'), function ($query, $item_type) {
             // save bindings so we can attach at the end
             $this->bindings []= '%'.$item_type.'%';
 
@@ -155,6 +175,7 @@ class GuildBankTable extends DataTableComponent
         ->when($this->getFilter('armor_type'), function ($query, $armor_type) {
             // save bindings so we can attach at the end
             $this->bindings[]= '%'.$armor_type.'%';
+            
             return $query->whereRaw('items.subtype like ?');
         })
         
@@ -162,6 +183,7 @@ class GuildBankTable extends DataTableComponent
         ->when($this->getFilter('weight_class'), function ($query, $weight_class) {
             // save bindings so we can attach at the end
             $this->bindings[]= '%'.$weight_class.'%';
+            
             return $query->whereRaw('items.weight_class like ?');
         })
         
@@ -169,7 +191,23 @@ class GuildBankTable extends DataTableComponent
         ->when($this->getFilter('rarity'), function ($query, $rarity) {
             // save bindings so we can attach at the end
             $this->bindings[]= '%'.$rarity.'%';
+            
             return $query->whereRaw('items.rarity like ?');
+        })
+        // search filter
+        ->when($this->getFilter('search'), function ($query, $term) {
+            // save bindings so we can attach at the end
+            $this->bindings[]= strtolower('%'.$term.'%');
+            $this->bindings[]= strtolower('%'.$term.'%');
+            $this->bindings[]= strtolower('%'.$term.'%');
+            $this->bindings[]= strtolower('%'.$term.'%');
+            $this->bindings[]= strtolower('%'.$term.'%');
+            
+            return $query->whereRaw( 'LOWER(items.name) like ?' )
+                ->orWhereRaw( 'LOWER(items.type) like ?' )
+                ->orWhereRaw( 'LOWER(items.subtype) like ?' )
+                ->orWhereRaw( 'LOWER(items.rarity) like ?' )
+                ->orWhereRaw( 'LOWER(items.weight_class) like ?' );
         });
         
         // -- perk filter
@@ -183,7 +221,9 @@ class GuildBankTable extends DataTableComponent
                 
                 return $this->guildBank->joinPerkQuery($query, $this->bindings, $perks);
         });*/
-//ddd($query->toSql(),$this->bindings);     
+//ddd($query->toSql(),$this->bindings);
+
+//     
         // manually attach bindings because mergeBindings() does not order them properly
         return $query->setBindings($this->bindings)
         ;

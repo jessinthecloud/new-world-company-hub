@@ -17,6 +17,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         'App\GuildBank'                  => 'App\Policies\Companies\GuildBankPolicy',
+        'App\Models\Characters\Character'   => 'App\Policies\Characters\CharacterPolicy',
         'App\Models\Companies\Company'   => 'App\Policies\Companies\CompanyPolicy',
         'App\Models\Companies\Roster'    => 'App\Policies\Companies\RosterPolicy',
         'App\Models\Items\LoadoutPolicy' => 'App\Policies\Items\LoadoutPolicy',

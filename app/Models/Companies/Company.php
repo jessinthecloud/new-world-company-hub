@@ -9,6 +9,7 @@ use App\Models\Items\Armor;
 use App\Models\Items\InventoryItem;
 use App\Models\Items\Weapon;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Company extends Model
@@ -79,4 +80,11 @@ class Company extends Model
     }
     //*/
 
+    public function scopeForUser( Builder $query, $user_id )
+    {
+        return $query->with('faction')
+            ->where('user_id', '=', $user_id)
+            ->orderBy('name')
+        ;
+    }
 }

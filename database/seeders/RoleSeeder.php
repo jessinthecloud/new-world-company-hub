@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Companies\Company;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -18,37 +19,43 @@ class RoleSeeder extends Seeder
         $super = Role::updateOrCreate(['name' => 'super-admin']);
         $admin = Role::updateOrCreate(['name' => 'admin']);
         
-        // get roles from breakpoint discord
-        $response = Http::withHeaders([
-            "Authorization" => "Bot ".config('services.discord.bot_token')
-        ])
-        ->acceptJson()
-        ->get("https://discord.com/api/guilds/895006799319666718/roles")
-        ;
-        
-    //    dd($response->json());
-        
-        foreach($response->json() as $discord_role){
-            if(isset($discord_role['tags']['bot_id'])){
-                // don't add bot roles
-                continue;
+        // get roles from discord
+        $companies = Company::all();
+
+        foreach($companies as $company){
+
+            $response = Http::withHeaders([
+                  "Authorization" => "Bot ".config('services.discord.bot_token')
+              ])
+            ->acceptJson()
+            ->get("https://discord.com/api/guilds/{$company->discord_guild_id}/roles")
+            ;
+
+            //    dd($response->json());
+
+            foreach($response->json() as $discord_role){
+                if(isset($discord_role['tags']['bot_id'])){
+                    // don't add bot roles
+                    continue;
+                }
+                // team roles can have the same name on different teams
+                $role = Role::updateOrCreate([
+                    'name' => strtolower(Str::slug($discord_role['name'])),
+                    'team_id' => $company->id,
+                ]);
+dump('( '.$company->id.' ) '.$role->name.' created for team '.$role->team_id);
+                DB::table('discord_roles')->upsert(
+                    [
+                        'id'=> $discord_role['id'],
+                        'color'=> $discord_role['color'],
+                        'icon'=> $discord_role['icon'],
+                        'permissions'=> $discord_role['permissions'],
+                        'company_id'=> $company->id,
+                        'role_id' => $role->id,
+                    ],
+                    ['id'=> $discord_role['id']],
+                );
             }
-            $role = Role::updateOrCreate(['name' => strtolower(Str::slug($discord_role['name']))]);
-            
-            DB::table('discord_roles')->upsert(
-                [
-                    'id'=> $discord_role['id'],
-                    'color'=> $discord_role['color'],
-                    'icon'=> $discord_role['icon'],
-                    'permissions'=> $discord_role['permissions'],
-                    'company_id'=> 1, // breakpoint
-                    'role_id' => $role->id,
-                ],
-                [
-                    'id'=> $discord_role['id'],
-                    'role_id'=> $role->id,
-                ], 
-            );
         }
     }
 }

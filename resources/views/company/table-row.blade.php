@@ -3,7 +3,7 @@
     {{-- tailwind not doing these:--}} 
     style="white-space:normal; min-width:225px; max-width:250px; "
 >
-    {{ ucfirst($row->name) }}
+    {{ $row->name }}
 </x-livewire-tables::table.cell>
 
 <x-livewire-tables::table.cell>
@@ -11,7 +11,7 @@
 </x-livewire-tables::table.cell>
 
 <x-livewire-tables::table.cell>
-    {{ $row->name }}
+    {{ $row->class->name }}
 </x-livewire-tables::table.cell>
 
 <x-livewire-tables::table.cell>

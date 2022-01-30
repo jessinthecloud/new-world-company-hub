@@ -45,13 +45,13 @@
                     'view' => 'View Members',
                 ]"
             >
-                <x-dashboard.gated-button
+                {{--<x-dashboard.gated-button
                     :can="['import', \App\Models\Companies\Roster::class]"
                     :phpClass="\App\Models\Companies\Roster::class" 
                     :route="route('rosters.import.create')"
                 >
                     Import
-                </x-dashboard.gated-button>
+                </x-dashboard.gated-button>--}}
             </x-dashboard.resource-index>
             
             {{-- Roster --}}

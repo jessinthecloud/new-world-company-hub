@@ -10,6 +10,7 @@ use App\Models\Items\Armor;
 use App\Models\Items\InventoryItem;
 use App\Models\Items\Weapon;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -94,5 +95,14 @@ class Character extends Model
     {
         // hasOneThrough() was not working
         return $this->hasOneThrough(Faction::class, Company::class);
-    }    
+    }
+    
+// -- SCOPES
+
+    public function scopeForUser( Builder $query, $user_id )
+    {
+        return $query->where('user_id', '=', $user_id)
+            ->orderBy('name')
+            ->orderBy('level');
+    }
 }

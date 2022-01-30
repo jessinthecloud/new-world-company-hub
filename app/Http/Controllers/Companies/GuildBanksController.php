@@ -79,7 +79,8 @@ class GuildBanksController extends Controller
         return redirect(
             route('guild-banks.show',[
                 'guildBank'=>$guildBank->slug
-            ]))->with([
+            ])
+        )->with([
             'status'=> [
                 'type'=>'success',
                 'message' => 'Inventory added successfully: '.($item->name)
@@ -309,7 +310,7 @@ class GuildBanksController extends Controller
         
         $company = $guildBank->company();
 
-        $armors = ArmorType::toAssociative();
+        $armors = ArmorType::valueToAssociative();
         $weapons = WeaponType::valueToAssociative();
         $weight_class = WeightClass::valueToAssociative();
         $rarity = Rarity::valueToAssociative();
