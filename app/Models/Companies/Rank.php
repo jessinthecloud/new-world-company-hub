@@ -11,4 +11,14 @@ class Rank extends Model
     {
         return $this->hasMany(Character::class);
     }
+    
+    public static function asArrayForDropDown()
+    {
+        return static::distinct()
+            ->get()
+            ->mapWithKeys(function($model){
+                return [$model->id => $model->name];
+            })
+            ->all();
+    }
 }

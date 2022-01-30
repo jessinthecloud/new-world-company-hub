@@ -10,7 +10,6 @@ use App\Models\Characters\CharacterClass;
 use App\Models\Characters\SkillType;
 use App\Models\Companies\Company;
 use App\Models\Companies\Rank;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -24,21 +23,13 @@ class CharactersController extends Controller
 {
     public function index()
     {
-        $characters = Character::with('class.type')
-            ->orderBy('name')
-            ->orderBy('level')
-            ->get()->mapWithKeys(function($character){
-                return [$character->slug => $character->name 
-                    .' (Level '.$character->level.') ' 
-                    . $character->class->name.' ' 
-                    . $character->class->type->name
-                ];
-        })->all();
+        $characters = Character::asArrayForDropDown();
         
         dump($characters);
     }
 
     /**
+     * 
      * @param \Illuminate\Http\Request $request
      * @param string                   $action
      *
@@ -46,16 +37,7 @@ class CharactersController extends Controller
      */
     public function choose(Request $request, string $action = 'Submit') : View
     {
-        $characters = Character::orderBy('name')
-            ->orderBy('level')->get()
-            ->mapWithKeys(function($character){
-                return [
-                    $character->slug => $character->name 
-                        . (!empty($character->level)) 
-                            ? ' (Level '.$character->level.')' 
-                            : ''
-                ];
-            })->all();
+        $characters = Character::asArrayForDropDown();
         
         $form_action = route('characters.find');
         
@@ -70,6 +52,9 @@ class CharactersController extends Controller
     }
 
     /**
+     * Pass-through for sending specific model directly
+     * to edit/show/delete route
+     *
      * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\RedirectResponse
@@ -88,25 +73,13 @@ class CharactersController extends Controller
      */
     public function create() : View
     {
-        $ranks = Rank::distinct()->get()->mapWithKeys(function($rank){
-            return [$rank->id => $rank->name];
-        })->all();
+        $ranks = Rank::asArrayForDropDown();
 
-        $classes = CharacterClass::with('type')->get()
-            ->mapWithKeys(function($class){
-            return [$class->id => $class->name.' ('.$class->type->name.')'];
-        })->all();
+        $classes = CharacterClass::asArrayForDropDown();
 
-        $companies = Company::with('faction')->get()
-            ->mapWithKeys(function($company){
-            return [
-                $company->slug => $company->name . ' ('.$company->faction->name.')'
-            ];
-        })->all();
+        $companies = Company::asArrayForDropDown();
 
-        $skillTypes = SkillType::with(['skills' => function ($query) {
-            $query->orderBy('order');
-        }])->orderBy('order')->get()->all();
+        $skillTypes = SkillType::asArrayForDropDown();
         
         $weapons = WeaponType::valueToAssociative();
         asort($weapons);
@@ -124,15 +97,13 @@ class CharactersController extends Controller
     public function store( CharacterUpsertRequest $request )
     {
         $validated = $request->validated();
-//dump($validated, $character, $character->skills->pluck('pivot')->pluck('level')/*, $request*/);
+
         $character = Character::create([
             'name' => $validated['name'],
             'slug' => Str::slug($validated['name']),
             'level' => $validated['level'],
             // relations
             'character_class_id' => $validated['class'],
-//            'rank_id' => $validated['rank'],
-//            'company_id' => $validated['company'],
         ]);
         
         // update skills levels related to this character on pivot table
@@ -140,8 +111,7 @@ class CharactersController extends Controller
             // don't need to ->save()
             $character->skills()->attach($skill_id, ['level'=>$level ?? 0]);
         }
-
-//        dump($character, $character->skills->pluck('pivot')->pluck('level'));
+        
         return redirect(route('dashboard'))->with([
             'status'=> [
                 'type'=>'success',
@@ -164,24 +134,15 @@ class CharactersController extends Controller
      */
     public function edit( Character $character )
     {
-        $ranks = Rank::distinct()->get()->mapWithKeys(function($rank){
-            return [$rank->id => $rank->name];
-        })->all();
+        $ranks = Rank::asArrayForDropDown();
 
-        $classes = CharacterClass::distinct()->get()->mapWithKeys(function($class){
-            return [$class->id => $class->name];
-        })->all();
+        $classes = CharacterClass::asArrayForDropDown();
 
-        $companies = Company::with('faction')->get()
-            ->mapWithKeys(function($company){
-            return [$company->id => $company->name.' ('.$company->faction->name.')'];
-        })->all();
+        $companies = Company::asArrayForDropDown();
 
         $character = $character->load('skills', 'rank', 'company', 'class', 'user');
         
-        $skillTypes = SkillType::with(['skills' => function ($query) {
-            $query->orderBy('order');
-        }])->orderBy('order')->get()->all();
+        $skillTypes = SkillType::asArrayForDropDown();
         
         $rank_options = '<option value="'.null.'"></option>';
         foreach($ranks as $value => $text) {
@@ -251,7 +212,7 @@ class CharactersController extends Controller
     public function update( CharacterUpsertRequest $request, Character $character )
     {
         $validated = $request->validated();
-//dump($validated, $character, $character->skills->pluck('pivot')->pluck('level')/*, $request*/);
+
         $character->name = $validated['name'];
         $character->slug = isset($validated['slug']) ? Str::slug($validated['slug']) : Str::slug($validated['name']);
         $character->level = $validated['level'] ?? 0;
@@ -282,7 +243,6 @@ class CharactersController extends Controller
             $request->session()->put('character', $character);
         }
         
-//        dump($character, $character->skills->pluck('pivot')->pluck('level'));
         return redirect(route('dashboard'))->with([
             'status'=> [
                 'type'=>'success',
@@ -293,7 +253,7 @@ class CharactersController extends Controller
 
     public function destroy( Character $character )
     {
-//dd($character);    
+
         Character::destroy($character->id);
         
         return redirect(route('dashboard'))->with([

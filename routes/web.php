@@ -121,7 +121,7 @@ Route::middleware(['auth', 'company', 'character'])->group(function(){
 // #
     Route::middleware(['role:super-admin|admin'])->group(function() {
     
-        Route::resource( 'factions', \App\Http\Controllers\FactionsController::class )
+        Route::resource( 'factions', \App\Http\Controllers\Admin\FactionsController::class )
             ->except( ['index', 'show'] );
             
         Route::resource( 'companies', \App\Http\Controllers\Companies\CompaniesController::class )
@@ -233,7 +233,7 @@ Route::middleware(['auth', 'company', 'character'])->group(function(){
         ->name( 'armors.show' );
     
         // FACTION
-        Route::resource( 'factions', \App\Http\Controllers\FactionsController::class)
+        Route::resource( 'factions', \App\Http\Controllers\Admin\FactionsController::class)
             ->only(['index', 'show']);
         // COMPANY
         Route::resource( 'companies', \App\Http\Controllers\Companies\CompaniesController::class)
@@ -254,7 +254,7 @@ Route::middleware(['auth', 'company', 'character'])->group(function(){
         ->name( 'characters.choose' );
     Route::get( '/companies/choose', [\App\Http\Controllers\Companies\CompaniesController::class, 'choose'] )
         ->name( 'companies.choose' );
-    Route::get( '/factions/choose', [\App\Http\Controllers\FactionsController::class, 'choose'] )
+    Route::get( '/factions/choose', [\App\Http\Controllers\Admin\FactionsController::class, 'choose'] )
         ->name( 'factions.choose' );
     Route::get( '/loadouts/choose', [\App\Http\Controllers\Characters\LoadoutsController::class, 'choose'] )
         ->name( 'loadouts.choose' );
@@ -271,7 +271,7 @@ Route::middleware(['auth', 'company', 'character'])->group(function(){
         ->name( 'characters.find' );
     Route::post( '/companies/find', [\App\Http\Controllers\Companies\CompaniesController::class, 'find'] )
         ->name( 'companies.find' );
-    Route::post( '/factions/find', [\App\Http\Controllers\FactionsController::class, 'find'] )
+    Route::post( '/factions/find', [\App\Http\Controllers\Admin\FactionsController::class, 'find'] )
         ->name( 'factions.find' );
     Route::post( '/loadouts/find', [\App\Http\Controllers\Characters\LoadoutsController::class, 'find'] )
         ->name( 'loadouts.find' );

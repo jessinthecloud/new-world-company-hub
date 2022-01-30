@@ -22,6 +22,29 @@ class Company extends Model
      * @var array
      */
     protected $with = [];
+
+    /**
+     * Assign the site super admin as a team super admin
+     * whenever a new company is created
+     *
+     * @return void
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        // here assign this team to a global user with global default role
+        self::created(function ($model) {
+           // get session team_id for restore it later
+           $session_team_id = getPermissionsTeamId();
+           // set actual new team_id to package instance
+           setPermissionsTeamId($model);
+           // get the admin user and assign roles/permissions on new team model
+           User::findSuperAdmin()->assignRole('super-admin');
+           // restore session team_id to package instance
+           setPermissionsTeamId($session_team_id);
+        });
+    }
     
     /**
      * Get the route key for the model.
@@ -86,5 +109,18 @@ class Company extends Model
             ->where('user_id', '=', $user_id)
             ->orderBy('name')
         ;
+    }
+    
+// -- MISC
+    public static function asArrayForDropDown()
+    {
+        return static::with('faction')
+            ->orderBy('name')
+            ->get()
+            ->mapWithKeys(function($company){
+            return [
+                $company->slug => $company->name . ' ('.$company->faction->name.')'
+            ];
+        })->all();
     }
 }

@@ -30,4 +30,14 @@ class Faction extends Model
     {
         return $this->hasMany(Company::class);
     }
+    
+// -- MISC
+    public static function asArrayForDropDown()
+    {
+        return static::orderBy('name')
+            ->get()
+            ->mapWithKeys(function($faction){
+            return [$faction->slug => $faction->name];
+        })->all();
+    }
 }

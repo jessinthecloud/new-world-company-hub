@@ -8,7 +8,24 @@ class DiscordData extends Model
 {
     protected $table = 'discord_data';
     
-    protected $guarded = [];
+    /**
+     * The attributes that are not mass assignable.
+     *
+     * @var string[]
+     */
+    protected $guarded = [
+        'token',
+    ];
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'token',
+        'refresh_token',
+    ];
 
     public function user()
     {

@@ -153,7 +153,6 @@ class GuildBanksController extends Controller
     
         $model = 'App\Models\Items\\'.Str::title($validated['itemType']);
         $item = $model::where('id', '=', $validated['id'])->first();
-//dd($model, $request->validated(), $item, $item->base);
         
         $service = (strtolower($validated['itemType']) == 'weapon') ? 'weaponService' : 'armorService';
         
@@ -176,7 +175,6 @@ class GuildBanksController extends Controller
     
     public function choose(Request $request, $action=null )
     {
-//    dump('action: '.$request->action, 'item type: '.$request->itemType, 'item: '.$request->item, 'guildBank: '.$request->guildBank);
 
         $action = $request->action;
         
@@ -208,7 +206,7 @@ class GuildBanksController extends Controller
             ]);
             
             $model = 'App\Models\Items\\'.Str::title($itemType);
-//            dump('App\Models\Items\\'.Str::title($itemType), $request->guildBank,'company: ',$guildBank);
+
             $items = $model::whereRelation('company', 'slug', $guildBank?->slug ?? $guildBank)->get()->mapWithKeys(function($item){
                 return [$item->slug => $item->name];
             })->all();
@@ -246,8 +244,6 @@ class GuildBanksController extends Controller
             return [$guildBank->slug => $guildBank->name.' Guild Bank'];
         })->all();
         $form_action = route('guild-banks.find', ['action'=>$action]);
-        
-//dump('FORM ACTION: '.$form_action);
 
         return view(
             'dashboard.guild-bank.choose',
@@ -257,9 +253,6 @@ class GuildBanksController extends Controller
 
     public function find(Request $request)
     {
-//    dd('action: '.$request->action, 'item type: '.$request->itemType, 'item: '.$request->item, 'guildBank: '.$request->guildBank);
-
-//    ddd($request);
         // if editing and already chose a company,send back to choose an item to edit
         if($request->action == 'edit' && empty($request->item)){
             return redirect(
@@ -315,16 +308,14 @@ class GuildBanksController extends Controller
         $weight_class = WeightClass::valueToAssociative();
         $rarity = Rarity::valueToAssociative();
         
-        $perks = Perk::orderBy('name')->get()->mapWithKeys(function($perk){
-            return [$perk->slug => $perk->name];
-        });
+        $perks = Perk::asArrayForDropDown();
 
         // add "Any" to the front of the filter arrays
         $armors = collect($armors)->prepend('Any', '')->all();
         $weapons = collect($weapons)->prepend('Any', '')->all();
         $weight_class = collect($weight_class)->prepend('Any', '')->all();
         $rarity = collect($rarity)->prepend('Any', '')->all();
-        $perks = $perks->prepend('Any', '')->all();
+        $perks = collect($perks)->prepend('Any', '')->all();
 
         $types = [''=>'Any', 'Weapon'=>'Weapon', 'Armor'=>'Armor'];
 
@@ -350,8 +341,6 @@ class GuildBanksController extends Controller
         $model = "App\Models\Items\\".Str::studly($item_type);
         $item = $model::find($item_id);
         $count = $model::destroy($item_id);
-        
-//        dump($guildBank, $request->item, $model, $item_id, $item);
         
         if($count > 0){
             return redirect(route('guild-banks.show',[
