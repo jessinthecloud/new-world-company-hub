@@ -35,15 +35,15 @@ class CompanyInventoryController extends Controller
             [
                 'base_armor_options' => $this->armorService->baseItemsOptions(),
                 'base_weapon_options' => $this->weaponService->baseItemsOptions(),
-                'armor_type_options' => $this->armorService->itemTypeOptions(),
-                'weapon_type_options' => $this->weaponService->itemTypeOptions(),
+                'armor_type_options' => $this->armorService->itemTypeOptions('Armor'),
+                'weapon_type_options' => $this->weaponService->itemTypeOptions('Weapon'),
                 'perk_options' => $this->weaponService->perkOptions(),
                 'rarity_options' => $this->weaponService->rarityOptions(),
                 'tier_options' => $this->weaponService->tierOptions(),
                 'weight_class_options' => $this->armorService->weightClassOptions(),
                 'attribute_options' => $this->weaponService->attributeOptions(),
                 'method' => 'POST',
-                'form_action' => route('company.inventory.store', ['company'=>$company->slug]),
+                'form_action' => route('companies.inventory.store', ['company'=>$company->slug]),
                 'button_text' => 'Add Item',
             ]
         );

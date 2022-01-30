@@ -79,16 +79,20 @@ class Company extends Model
     public function armor()
     {
         return $this->hasMany(Armor::class);
-    }
-
+    }*/
+    /**
+     * @Deprecated 
+     *            
+     * @return \App\GuildBank
+     */
     public function bank()
     {
         return new GuildBank($this);
-    }*/
+    }
 
     public function inventory(  )
     {
-        return $this->morphMany(InventoryItem::class, 'ownerable');
+        return $this->morphMany( InventoryItem::class, 'ownerable');
     }
     
     /**
