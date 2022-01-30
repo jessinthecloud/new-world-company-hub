@@ -43,7 +43,7 @@
             </x-dashboard.gated-button>
         @endif
         
-        @if(Route::has($pluralEntityName.'.edit') /*&& Route::has($pluralEntityName.'.choose')*/)
+        @if(Route::has($pluralEntityName.'.edit') && $phpClass != \App\GuildBank::class)
             <x-dashboard.gated-button
                 :can="['update', $instance]"
                 :phpClass="$phpClass" 
@@ -56,7 +56,7 @@
             </x-dashboard.gated-button>
         @endif
         
-        @if(Route::has($pluralEntityName.'.destroy') 
+        {{--@if(Route::has($pluralEntityName.'.destroy') 
             && $phpClass != \App\Models\Characters\Character::class)
        
             @can('delete', $instance)
@@ -73,7 +73,7 @@
                 </x-forms.form>
             @endcan
             
-            {{--<x-dashboard.gated-button 
+            --}}{{--<x-dashboard.gated-button 
                 :can="['delete', $instance]"
                 :phpClass="$phpClass"
                 :route="route($pluralEntityName.'.destroy', [$entityName=>$instance->slug])"
@@ -81,9 +81,9 @@
                 class="bg-red-800"
             >
                 {{ $buttonTexts['delete'] ?? 'Delete' }}
-            </x-dashboard.gated-button>--}}
+            </x-dashboard.gated-button>--}}{{--
             
-        @endif
+        @endif--}}
         
         {!! $slot !!}
         

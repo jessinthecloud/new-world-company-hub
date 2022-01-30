@@ -7,7 +7,7 @@ $guildBank = new \App\GuildBank($instance->company);
 @endphp
 
 <x-livewire-tables::table.cell
-    class="max-w-sm"
+    class="max-w-sm border-l-4 border-{{ strtolower($row->rarity) }}-500"
     {{-- tailwind not doing these:--}} 
     style="white-space:normal; min-width:225px; max-width:250px; "
 >
