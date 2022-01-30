@@ -80,15 +80,6 @@ class Company extends Model
     {
         return $this->hasMany(Armor::class);
     }*/
-    /**
-     * @Deprecated 
-     *            
-     * @return \App\GuildBank
-     */
-    public function bank()
-    {
-        return new GuildBank($this);
-    }
 
     public function inventory(  )
     {

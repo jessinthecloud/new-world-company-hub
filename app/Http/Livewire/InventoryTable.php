@@ -211,10 +211,11 @@ class InventoryTable extends DataTableComponent
         ;*/
     }
     
-    /*public function getTableRowUrl($row): string
+    public function getTableRowUrl($row): string
     {
-        return route(Str::plural(strtolower($row->type)).'.show', [
-            strtolower($row->type)=>$row->slug
+        $type = Str::afterLast(strtolower($row->item->itemable_type), '\\');
+        return route(Str::plural($type).'.show', [
+            $type=>$row->item->itemable->slug
         ]);
-    }*/
+    }
 }

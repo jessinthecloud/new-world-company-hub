@@ -53,15 +53,15 @@ class Armor extends Model implements InventoryItemContract
         return $this->belongsToMany(Attribute::class, 'attribute_armor')->withPivot('amount');
     }
     
-    /*public function company()
+    public function company()
     {
-        return $this->belongsTo(Company::class);
+        return $this->asItem()->inventory()->where('ownerable_type', Company::class)->ownerable;
     }
     
     public function character()
     {
-        return $this->belongsTo(Character::class);
-    }*/
+        return $this->asItem()->inventory()->where('ownerable_type', Character::class)->ownerable;
+    }
 
     public function asItem(  )
     {
@@ -73,28 +73,7 @@ class Armor extends Model implements InventoryItemContract
      */
     public function owner() : mixed
     {
-        return $this->hasOneThrough(\App\Models\Items\InventoryItem::class, Item::class)
-            ->withPivot(['inventory_items.ownerable_id', 'inventory_items.ownerable_type']);
-    }
-    
-    /**
-     * @return mixed
-     */
-    public function company() : mixed
-    {
-        return $this->hasOneThrough(\App\Models\Items\InventoryItem::class, Item::class)
-//            ->withPivot('inventory_items.ownerable_id')
-            ->where('ownerable_type', '=', Company::class);
-    }
-    
-    /**
-     * @return mixed
-     */
-    public function character() : mixed
-    {
-        return $this->hasOneThrough(\App\Models\Items\InventoryItem::class, Item::class)
-            ->withPivot('ownerable_id')
-            ->where('ownerable_type', '=', Character::class);
+        return $this->asItem->inventory->ownerable;
     }
     
 // SCOPES ---

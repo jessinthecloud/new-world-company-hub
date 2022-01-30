@@ -53,16 +53,6 @@ class Weapon extends Model implements InventoryItemContract
     {
         return $this->belongsToMany(Attribute::class)->withPivot('amount')->distinct(); //->groupBy('attributes.id', 'amount');
     }
-    
-    /*public function company()
-    {
-        return $this->belongsTo(Company::class);
-    }
-    
-    public function character()
-    {
-        return $this->belongsTo(Character::class);
-    }*/
 
     public function mainLoadout()
     {
@@ -79,33 +69,22 @@ class Weapon extends Model implements InventoryItemContract
         return $this->morphOne(Item::class, 'itemable');
     }
     
+    public function company()
+    {
+        return $this->asItem()->inventory()->where('ownerable_type', Company::class)->ownerable;
+    }
+    
+    public function character()
+    {
+        return $this->asItem()->inventory()->where('ownerable_type', Character::class)->ownerable;
+    }
+    
     /**
      * @return mixed
      */
     public function owner() : mixed
     {
-        return $this->hasOneThrough(\App\Models\Items\InventoryItem::class, Item::class)
-            ->withPivot(['ownerable_id', 'ownerable_type']);
-    }
-    
-    /**
-     * @return mixed
-     */
-    public function company() : mixed
-    {
-        return $this->hasOneThrough(\App\Models\Items\InventoryItem::class, Item::class)
-//            ->withPivot('ownerable_id')
-            ->where('ownerable_type', '=', Company::class);
-    }
-    
-    /**
-     * @return mixed
-     */
-    public function character() : mixed
-    {
-        return $this->hasOneThrough(\App\Models\Items\InventoryItem::class, Item::class)
-            ->withPivot('ownerable_id')
-            ->where('ownerable_type', '=', Character::class);
+        return $this->asItem->inventory->ownerable;
     }
     
 // SCOPES ---
