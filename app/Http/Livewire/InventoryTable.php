@@ -100,12 +100,12 @@ class InventoryTable extends DataTableComponent
          ];
     }
     
-    /*public function rowView(): string
+    public function rowView(): string
     {
         // do not need to wrap in a <tr> 
          // Becomes /resources/views/location/to/my/row.blade.php
          return 'inventory.table-row';
-    }*/
+    }
     
     public function resetFilters() : void
     {
