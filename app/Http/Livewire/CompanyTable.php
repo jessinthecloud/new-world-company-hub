@@ -46,10 +46,8 @@ class CompanyTable extends DataTableComponent
                 ->sortable()
                 ->searchable(),
             Column::make( 'Discord Name', 'user.discord_name' )
-//                ->sortable()
                 ->searchable(),
             Column::make( 'Class', 'class.name' )
-//                ->sortable()
                 ->searchable(),
         ];
     }
@@ -71,7 +69,6 @@ class CompanyTable extends DataTableComponent
 
     public function query() : Builder
     {
-//    Character::with('user:discord_name', 'class:name')->whereRelation( 'company', 'id', $this->company->id )
         return Character::with('user', 'class')->whereRelation( 'company', 'id', $this->company->id )
             
             // -- class filter --
