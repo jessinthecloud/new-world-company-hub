@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    if(Auth::check()) {
+    if(Auth::user() !== null) {
         return redirect( 'dashboard' );
     }
     return view( 'auth.login' );
@@ -140,11 +140,7 @@ Route::middleware(['auth', 'company', 'character'])->group(function(){
 // # BANKER
 // #
     Route::middleware(['role:super-admin|admin|banker'])->group(function() {
-        // view all of specific company's inventory
-        Route::get( '/companies/{company}/inventory', 
-            [CompanyInventoryController::class, 'index'] )
-            ->name('companies.inventory.index')
-        ;
+        
         // create form for inventory item for specific company
         Route::get( '/companies/{company}/inventory/create', 
             [CompanyInventoryController::class, 'create'] )
@@ -221,6 +217,12 @@ Route::middleware(['auth', 'company', 'character'])->group(function(){
 // # SETTLER
 // #
     Route::middleware(['role:super-admin|admin|governor|consul|officer|breakpoint-member'])->group(function() {
+        
+        // view all of specific company's inventory
+        Route::get( '/companies/{company}/inventory', 
+            [CompanyInventoryController::class, 'index'] )
+            ->name('companies.inventory.index')
+        ;
         
         Route::get( '/weapons/{weapon}', [\App\Http\Controllers\Items\WeaponsController::class, 'show'] )
         ->name( 'weapons.show' );
