@@ -92,7 +92,7 @@ class CompaniesController extends Controller
     public function show(Company $company)
     {
 
-        $classes = CharacterClass::asArrayForDropDown();
+        $classes = collect(CharacterClass::asArrayForDropDown());
         
         return view('company.show', 
             compact('company', 'classes')
