@@ -14,7 +14,7 @@ class DiscordData extends Model
      * @var string[]
      */
     protected $guarded = [
-        'token',
+        'id',
     ];
 
     /**
