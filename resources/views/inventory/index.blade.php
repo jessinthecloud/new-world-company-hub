@@ -7,7 +7,7 @@
         <div id="wrapper-inner" class="max-w-7xl mx-auto lg:px-8">
             
             <x-dashboard.gated-button 
-                :can="['create', $owner]"
+                :can="['create', \App\CompanyInventory::class, $owner]"
                 :owner="$owner"
                 :route="route(
                     Str::plural($ownerType).'.inventory.create', 
@@ -15,8 +15,9 @@
                         $ownerType=>$owner->slug,
                     ]
                 )"
+                class="mb-6"
             >
-                {{ $buttonTexts['create'] ?? 'Create' }}
+                {{ $buttonTexts['create'] ?? 'Add Item to Inventory' }}
             </x-dashboard.gated-button>
             
             <livewire:inventory-table 

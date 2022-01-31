@@ -1,5 +1,5 @@
 <x-livewire-tables::table.cell
-    class="max-w-sm border-l-4 border-{{ strtolower($row->rarity) }}-500"
+    class="max-w-sm border-l-4 border-{{ strtolower($row->item->itemable->rarity) }}-500"
     {{-- tailwind not doing these:--}} 
     style="white-space:normal; min-width:225px; max-width:250px; "
 >

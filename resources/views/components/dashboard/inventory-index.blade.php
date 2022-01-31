@@ -24,7 +24,7 @@
                 ]
             )"
         >
-            {{ $buttonTexts['create'] ?? 'Create' }}
+            {{ $buttonTexts['create'] ?? 'Add Item to Inventory' }}
         </x-dashboard.gated-button>
         
             
