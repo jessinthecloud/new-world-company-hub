@@ -2,14 +2,9 @@
 
 namespace App\Http\Livewire;
 
-use App\GuildBank;
-use App\Models\Companies\Company;
-use App\Models\CompanyInventory;
 use App\Models\Items\Armor;
 use App\Models\Items\InventoryItem;
 use App\Models\Items\Weapon;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
@@ -103,8 +98,8 @@ class InventoryTable extends DataTableComponent
     public function rowView(): string
     {
         // do not need to wrap in a <tr> 
-         // Becomes /resources/views/location/to/my/row.blade.php
-         return 'inventory.table-row';
+        // Becomes /resources/views/location/to/my/row.blade.php
+        return 'inventory.table-row';
     }
     
     public function resetFilters() : void
@@ -141,74 +136,106 @@ class InventoryTable extends DataTableComponent
 
     public function query()
     {
-//    dd(InventoryItem::ownedBy($this->owner)->forTable()->get());   
-        return InventoryItem::ownedBy($this->owner)->forTable();
-        
-        // livewire is no longer respecting mount()...???? so this
-//        $this->guildBank ??= GuildBank::make(Auth::user()->company() ?? Company::find(1));
-        
-        /*$query = $this->guildBank->unionQuery();
-        $this->bindings = $query->getBindings();
-    
-        // -- item type filter -- find based on subtypes of weapons or armor
-        $query = $query->when($this->getFilter('item_type'), function ($query, $item_type) {
-            // save bindings so we can attach at the end
-            $this->bindings []= '%'.$item_type.'%';
-
-            return $query->whereRaw('items.type like ?');
-        })
-
-        // -- weapon filter
-        ->when($this->getFilter('weapon_type'), function ($query, $weapon_type) {
-            // save bindings so we can attach at the end
-            $this->bindings[]= '%'.$weapon_type.'%';
+  
+        return InventoryItem::ownedBy($this->owner)->forTable()
+            // -- item type filter -- find based on subtypes of weapons or armor
+            ->when($this->getFilter('item_type'), function ($query, $item_type) {    
+                return $query->whereRelation(
+                    'item', 'itemable_type', 'like', '%'.$item_type.'%'
+                );
+            })
             
-            return $query->whereRaw( 'items.subtype like ?');
-        })
-
-        // -- armor filter
-        ->when($this->getFilter('armor_type'), function ($query, $armor_type) {
-            // save bindings so we can attach at the end
-            $this->bindings[]= '%'.$armor_type.'%';
+            // -- weapon type filter -- find based on subtypes of weapons
+            ->when($this->getFilter('weapon_type'), function ($query, $weapon_type) {    
+                return $query
+                    ->whereRelation('item', function($query) use ($weapon_type) {
+                        return $query->whereMorphRelation(
+                            'itemable', 
+                            'App\\Models\\Items\\Weapon', 
+                            'type', 
+                            'like', 
+                            '%'.$weapon_type.'%'
+                        );
+                    });
+            })
             
-            return $query->whereRaw('items.subtype like ?');
-        })
-        
-        // -- weight class filter
-        ->when($this->getFilter('weight_class'), function ($query, $weight_class) {
-            // save bindings so we can attach at the end
-            $this->bindings[]= '%'.$weight_class.'%';
+            // -- armor type filter -- find based on subtypes of armor
+            ->when($this->getFilter('armor_type'), function ($query, $armor_type) {    
+                return $query
+                    ->whereRelation('item', function($query) use ($armor_type) {
+                        return $query->whereMorphRelation(
+                            'itemable', 
+                            'App\\Models\\Items\\Armor', 
+                            'type', 
+                            'like', 
+                            '%'.$armor_type.'%'
+                        );
+                    });
+            })
             
-            return $query->whereRaw('items.weight_class like ?');
-        })
-        
-        // -- rarity filter
-        ->when($this->getFilter('rarity'), function ($query, $rarity) {
-            // save bindings so we can attach at the end
-            $this->bindings[]= '%'.$rarity.'%';
+            // -- weight_class filter
+            ->when($this->getFilter('weight_class'), function ($query, $weight_class) {    
+                return $query
+                    ->whereRelation('item', function($query) use ($weight_class) {
+                        return $query->whereMorphRelation(
+                            'itemable', 
+                            'App\\Models\\Items\\Armor', 
+                            'weight_class', 
+                            'like', 
+                            '%'.$weight_class.'%'
+                        );
+                    });
+            })
             
-            return $query->whereRaw('items.rarity like ?');
-        })
-        // search filter
-        ->when($this->getFilter('search'), function ($query, $term) {
-            // save bindings so we can attach at the end
-            $this->bindings[]= strtolower('%'.$term.'%');
-            $this->bindings[]= strtolower('%'.$term.'%');
-            $this->bindings[]= strtolower('%'.$term.'%');
-            $this->bindings[]= strtolower('%'.$term.'%');
-            $this->bindings[]= strtolower('%'.$term.'%');
+            // -- rarity filter
+            ->when($this->getFilter('rarity'), function ($query, $rarity) {    
+                return $query
+                    ->whereRelation('item', function($query) use ($rarity) {
+                        return $query->whereMorphRelation(
+                            'itemable', 
+                            '*', 
+                            'rarity', 
+                            'like', 
+                            '%'.$rarity.'%'
+                        );
+                    });
+            })
             
-            return $query->whereRaw( 'LOWER(items.name) like ?' )
-                ->orWhereRaw( 'LOWER(items.type) like ?' )
-                ->orWhereRaw( 'LOWER(items.subtype) like ?' )
-                ->orWhereRaw( 'LOWER(items.rarity) like ?' )
-                ->orWhereRaw( 'LOWER(items.weight_class) like ?' );
-        });
-        
-        
-        // manually attach bindings because mergeBindings() does not order them properly
-        return $query->setBindings($this->bindings)
-        ;*/
+            // -- search filter
+            ->when($this->getFilter('search'), function ($query, $term) {    
+                return $query
+                    ->whereRelation('item', function($query) use ($term) {
+                        return $query->whereMorphRelation(
+                            'itemable', 
+                            '*', 
+                            'type', 
+                            'like', 
+                            '%'.$term.'%'
+                        )
+                        ->orWhereMorphRelation(
+                            'itemable', 
+                            '*', 
+                            'rarity', 
+                            'like', 
+                            '%'.$term.'%'
+                        )
+                        ->orWhereMorphRelation(
+                            'itemable', 
+                            'App\\Models\\Items\\Armor',
+                            'weight_class', 
+                            'like', 
+                            '%'.$term.'%'
+                        )
+                        ->orWhereMorphRelation(
+                            'itemable', 
+                            '*', 
+                            'name', 
+                            'like', 
+                            '%'.$term.'%'
+                        )
+                        ;
+                    });
+            });
     }
     
     public function getTableRowUrl($row): string
