@@ -1,8 +1,8 @@
-@props(['item', 'itemClass'=>null, 'owner', 'ownerType',])
+@props(['item', 'itemClass'=>null, 'inventory', 'owner', 'ownerType',])
 
 <div {{ $attributes->merge(['class' => 'flex flex-wrap']) }}>
     <x-dashboard.gated-button 
-        :can="['update', \App\CompanyInventory::class, $owner]"
+        :can="['update', $inventory]"
         :route="route(Str::plural($ownerType).'.inventory.edit', [
             $ownerType => $owner->slug,
             'inventoryItem' => $item->id
@@ -12,7 +12,7 @@
         Edit
     </x-dashboard.gated-button>
 
-    @can("delete", $owner)
+    @can("delete", $inventory)
         <x-forms.form
             action="{{  route(Str::plural($ownerType).'.inventory.destroy', [
                 $ownerType => $owner->slug,

@@ -7,7 +7,8 @@
         <div id="wrapper-inner" class="max-w-7xl mx-auto lg:px-8">
             
             <x-dashboard.gated-button 
-                :can="['create', \App\CompanyInventory::class, $owner]"
+                :can="['create', $inventory]"
+                :inventory="$inventory"
                 :owner="$owner"
                 :route="route(
                     Str::plural($ownerType).'.inventory.create', 
@@ -22,6 +23,7 @@
             
             <livewire:inventory-table 
                 :id="null"
+                :inventory="$inventory"
                 :owner="$owner"
                 :weapons="$weapons"
                 :armors="$armors"

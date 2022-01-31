@@ -4,8 +4,8 @@ namespace App;
 
 use App\Models\Companies\Company;
 
-class CompanyInventory extends Models\Items\InventoryItem
+class CompanyInventory extends Company
 {
-    protected $table = 'inventory_items';
+    protected $table = 'companies';
     protected string $ownerable_type = Company::class;
 }

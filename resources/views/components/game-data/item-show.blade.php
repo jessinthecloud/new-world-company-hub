@@ -1,9 +1,9 @@
-@props(['item', 'itemType'=>null, 'itemClass'=>null, 'owner', 'ownerType'])
+@props(['item', 'itemType'=>null, 'itemClass'=>null, 'inventory', 'owner', 'ownerType'])
 
 <div class="item-show w-full lg:w-3/4 mx-auto flex flex-wrap">
     
     <x-dashboard.gated-button 
-        :can="['view', \App\CompanyInventory::class, $owner]"
+        :can="['view', $inventory]"
         :route="route(
             Str::plural($ownerType).'.inventory.index',
             [$ownerType => $owner->slug]
@@ -17,6 +17,7 @@
     
     <x-dashboard.edit-delete-inventory-item-buttons
         :item="$item"
+        :inventory="$inventory"
         :owner="$owner"
         :ownerType="Str::afterLast(strtolower($owner::class), '\\')"
         class="w-full mt-4 justify-end"

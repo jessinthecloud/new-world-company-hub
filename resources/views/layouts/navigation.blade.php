@@ -16,8 +16,8 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     
-                    @if(Auth::check() && Auth::user()->company() !== null 
-                        && Auth::user()->can('view', \App\CompanyInventory::class, Auth::user()->company(),))
+                    @if(Auth::user()?->companyInventory() !== null 
+                        && Auth::user()->can('view', Auth::user()->companyInventory(),))
                         <x-nav-link :href="route('companies.inventory.index', [
                                 'company' => Auth::user()->company()->slug
                             ])" 
@@ -27,7 +27,7 @@
                         </x-nav-link>
                     @endif
                     
-                    @if(Auth::check() && Auth::user()->company() !== null 
+                    @if(Auth::user()?->company() !== null 
                         && Auth::user()->can('view', Auth::user()->company()))
                         <x-nav-link :href="route('companies.show', [
                                 'company' => Auth::user()->company()->slug
@@ -88,8 +88,8 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
-            @if(Auth::check() && Auth::user()->company() !== null 
-                && Auth::user()->can('view', \App\CompanyInventory::class, Auth::user()->company(),))
+            @if(Auth::user()?->companyInventory() !== null 
+                && Auth::user()->can('view', Auth::user()->companyInventory(),))
                 <x-responsive-nav-link :href="route('companies.inventory.index', [
                         'company' => Auth::user()->company()->slug
                     ])" 
@@ -99,7 +99,7 @@
                 </x-responsive-nav-link>
             @endif
             
-            @if(Auth::check() && Auth::user()->company() !== null 
+            @if(Auth::user()?->company() !== null 
                 && Auth::user()->can('view', Auth::user()->company()))
                 <x-responsive-nav-link :href="route('companies.show', [
                         'company' => Auth::user()->company()->slug

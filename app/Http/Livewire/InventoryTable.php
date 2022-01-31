@@ -14,7 +14,8 @@ class InventoryTable extends DataTableComponent
 {
     
     public $owner;
-    
+    public $inventory;
+
     // passed in as Collections and then made arrays
     /**
      * @var Armor[]
@@ -45,21 +46,24 @@ class InventoryTable extends DataTableComponent
      * so use livewire mount() to load the params sent
      *
      * @param \App\Models\Companies\Company|\App\Models\Characters\Character|null $owner
-     * @param array                              $armors
-     * @param array                              $weapons
-     * @param array                              $weight_class
-     * @param array                              $types
-     * @param array                              $rarity
-     * @param array                              $perks
+     * @param                                                                     $inventory
+     * @param array                                                               $armors
+     * @param array                                                               $weapons
+     * @param array                                                               $weight_class
+     * @param array                                                               $types
+     * @param array                                                               $rarity
+     * @param array                                                               $perks
      *
      * @return void
      */
-    public function mount($owner, array $armors, array $weapons, array $weight_class, array $types, array $rarity, array $perks)
+    public function mount($owner, $inventory, array $armors, array $weapons, array $weight_class, array $types, array $rarity, array $perks)
     {
+    
         if(!empty(session('inventory-'.$this->owner->name.'-filters'))){
             $this->filters = session('inventory-'.$this->owner->name.'-filters');
         }
-        $this->company = $owner;
+        $this->owner = $owner;
+        $this->inventory = $inventory;
         $this->armor_types = $armors;
         $this->weapon_types = $weapons;
         $this->weight_class = $weight_class;

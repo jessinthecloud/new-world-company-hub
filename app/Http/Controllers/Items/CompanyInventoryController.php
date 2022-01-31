@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Items;
 
+use App\CompanyInventory;
 use App\Contracts\InventoryItemContract;
 use App\Enums\ArmorType;
 use App\Enums\AttributeType;
@@ -66,8 +67,11 @@ class CompanyInventoryController extends Controller
     }
     
     
-    public function index(Company $company)
+    public function index(CompanyInventory $company)
     {
+        $companyInventory = $company;
+        $company = Company::find($companyInventory->id);
+        
         $armors = ArmorType::valueToAssociative();
         $weapons = WeaponType::valueToAssociative();
         $weight_class = WeightClass::valueToAssociative();
@@ -85,6 +89,7 @@ class CompanyInventoryController extends Controller
 
         return view('inventory.index', 
             [
+                'inventory' => $companyInventory,
                 'owner' => $company,
                 'ownerType' => 'company',
                 'armors' => $armors,
@@ -174,7 +179,7 @@ class CompanyInventoryController extends Controller
             );
             
         return view(
-            'dashboard.guild-bank.create-edit',
+            'dashboard.inventory.create-edit',
             [
                 'existing_perk_options'=>$existing_perk_options,
                 'existing_attribute_options'=>$existing_attribute_options,

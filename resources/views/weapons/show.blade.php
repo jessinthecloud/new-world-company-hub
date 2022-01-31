@@ -9,6 +9,7 @@
                 :item="$weapon"
                 :itemType="'Weapon'"
                 :owner="$weapon->owner()"
+                :inventory="$weapon->ownerInventory()"
                 :ownerType="Str::afterLast(strtolower($weapon->owner()::class), '\\')"
             >
                 <x-game-data.item-details 

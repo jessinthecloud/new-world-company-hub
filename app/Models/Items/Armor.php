@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class Armor extends Model implements InventoryItemContract
 {
@@ -74,6 +75,16 @@ class Armor extends Model implements InventoryItemContract
     public function owner() : mixed
     {
         return $this->asItem->inventory->ownerable;
+    }
+    
+    /**
+     * @return mixed
+     */
+    public function ownerInventory() : mixed
+    {
+        $type = Str::afterLast($this->asItem->inventory->ownerable_type,'\\').'Inventory';
+        
+        return $type::find($this->asItem->inventory->ownerable->id);
     }
     
 // SCOPES ---

@@ -68,6 +68,7 @@
                 :title="'Guild Bank'"
                 :ownerType="'company'"
                 :owner="$company ?? null"
+                :inventory="$companyInventory ?? null"
                 :buttonTexts="[
                     'viewAll' => 'View Inventory',
                     'create' => 'Add to Inventory',

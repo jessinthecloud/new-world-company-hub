@@ -1,6 +1,6 @@
-@props(['ownerType', 'owner', 'inventoryItem'=>null, 'title', 'buttonTexts'=>[],])
+@props(['inventory', 'ownerType', 'owner', 'inventoryItem'=>null, 'title', 'buttonTexts'=>[],])
 
-@can('viewAny')
+@can('viewAny', \App\CompanyInventory::class)
     <x-dashboard.section
         :title="$title"
         class=""
@@ -16,7 +16,7 @@
         </x-dashboard.gated-button>
         
         <x-dashboard.gated-button 
-            :can="['create', \App\CompanyInventory::class, $owner]"
+            :can="['create', $inventory]"
             :route="route(
                 Str::plural($ownerType).'.inventory.create', 
                 [

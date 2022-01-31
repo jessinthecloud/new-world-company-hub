@@ -11,6 +11,7 @@
                 :item="$armor"
                 :itemType="'Armor'"
                 :owner="$armor->owner()"
+                :inventory="$armor->ownerInventory()"
                 :ownerType="Str::afterLast(strtolower($armor->owner()::class), '\\')"
             >
                 <x-game-data.item-details 

@@ -48,7 +48,7 @@ class InventoryUpsertRequest extends FormRequest
 
     public function authorize() : bool
     {
-        return $this->user()->can('update', \App\CompanyInventory::class, $this->user()->company());
+        return $this->user()->can('update', $this->user()->companyInventory());
     }
     
     /**

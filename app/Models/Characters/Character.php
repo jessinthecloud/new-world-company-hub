@@ -2,6 +2,7 @@
 
 namespace App\Models\Characters;
 
+use App\CompanyInventory;
 use App\Models\Companies\Company;
 use App\Models\Companies\Position;
 use App\Models\Companies\Rank;
@@ -25,7 +26,7 @@ class Character extends Model
      *
      * @var array
      */
-    protected $with = ['company', 'rank'];
+    protected $with = ['companyInventory', 'company', 'rank'];
     
     /**
      * Get the route key for the model.
@@ -47,6 +48,11 @@ class Character extends Model
     public function company()
     {
         return $this->belongsTo(Company::class);
+    }
+    
+    public function companyInventory()
+    {
+        return $this->belongsTo(CompanyInventory::class);
     }
 
     public function rank()
