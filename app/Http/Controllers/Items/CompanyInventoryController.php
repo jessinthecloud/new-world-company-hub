@@ -4,16 +4,19 @@ namespace App\Http\Controllers\Items;
 
 use App\Contracts\InventoryItemContract;
 use App\Enums\ArmorType;
+use App\Enums\AttributeType;
 use App\Enums\Rarity;
 use App\Enums\WeaponType;
 use App\Enums\WeightClass;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\InventoryUpsertRequest;
 use App\Models\Companies\Company;
+use App\Models\Items\InventoryItem;
 use App\Models\Items\Perk;
 use App\Services\ArmorService;
 use App\Services\WeaponService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class CompanyInventoryController extends Controller
 {
@@ -108,23 +111,143 @@ class CompanyInventoryController extends Controller
         ]);
     }
 
-    public function show( Company $company )
+    public function edit( Company $company, InventoryItem $inventoryItem )
     {
-        //
+//        dump($inventoryItem);
+        
+        // get item specifics
+        $item = $inventoryItem->item->itemable;
+        $itemType = Str::afterLast($item::class, '\\');
+        
+        $perks = Perk::orderBy('name')->distinct()->get()->mapWithKeys(function($perk){
+            return [$perk->slug => $perk->name];
+        });
+        // existing perks
+        $existing_perk_options = $this->weaponService->existingPerkOptions($item->perks->all(), $perks->sortBy('name')->all());
+
+        // existing attributes
+        [$existing_attribute_amounts, $existing_attribute_options] = 
+            $this->weaponService->existingAttributeOptions(
+                $item->attributes->all(), 
+                collect(AttributeType::cases())->sortBy('value')->all()
+            );
+            
+        return view(
+            'dashboard.guild-bank.create-edit',
+            [
+                'existing_perk_options'=>$existing_perk_options,
+                'existing_attribute_options'=>$existing_attribute_options,
+                'existing_attribute_amounts'=>$existing_attribute_amounts,
+                'item' => $item,
+                'itemType' => $itemType,
+                'isWeapon' => strtolower($itemType) == 'weapon' ? 1 : 0,
+                'isArmor' => strtolower($itemType) == 'armor' ? 1 : 0,
+                'newEntry' => isset($item?->base?->id) ? 0 : 1,
+                'base_armor_options' => $this->armorService->baseItemsOptions($item),
+                'base_weapon_options' => $this->weaponService->baseItemsOptions($item),
+                'armor_type_options' => $this->armorService->itemTypeOptions($itemType),
+                'weapon_type_options' => $this->weaponService->itemTypeOptions($itemType),
+                'perk_options' => $this->weaponService->perkOptions($perks->sortBy('name')->all()),
+                'rarity_options' => $this->weaponService->rarityOptions($item->rarity),
+                'tier_options' => $this->weaponService->tierOptions($item->tier),
+                'weight_class_options' => $this->armorService->weightClassOptions($item->weight_class ?? ''),
+                'attribute_options' => $this->weaponService->attributeOptions(),
+                'method' => 'PUT',
+                'form_action' => route('companies.inventory.update', [
+                    'company'=>$company->slug,
+                    'inventoryItem'=>$inventoryItem->id,
+                ]),
+                'button_text' => 'Edit Item',
+            ]
+        );
     }
 
-    public function edit( Company $company, string $type, InventoryItemContract $item )
+    public function update( InventoryUpsertRequest $request, Company $company, InventoryItem $inventoryItem )
     {
-        //
+        // get item specifics
+        $specificItem = $inventoryItem->item->itemable;
+        $specificItemType = Str::afterLast($specificItem::class, '\\');
+        
+        $service = (strtolower($specificItemType) == 'weapon') ? 'weaponService' : 'armorService';
+        
+        // Retrieve the validated input data...
+        $validated = $request->validated();
+        
+        // update instanced item
+        // get base item
+        $base ??= $this->{$service}->baseItem($validated['base_id']);
+        $specificItem = $this->{$service}->updateSpecificItem( $validated, $specificItem, $base );
+        $specificItem = $this->{$service}->saveSpecificItemRelations(
+            $validated, $specificItem, $company->id, $base
+        );
+        $morphableItem = $this->{$service}->updateMorphableItem($specificItem);
+        $inventoryItem = $this->{$service}->updateInventoryItem($morphableItem, $company);
+
+        return redirect(
+            route('companies.inventory.index',[
+                'company'=>$company->slug
+            ])
+        )->with([
+            'status'=> [
+                'type'=>'success',
+                'message' => 'Inventory edited successfully: '.($specificItem->name)
+            ]
+        ]);
     }
 
-    public function update( InventoryUpsertRequest $request, Company $company, string $type, InventoryItemContract $item )
+    public function destroy( Company $company, InventoryItem $inventoryItem )
     {
-        //
-    }
-
-    public function destroy( Company $company, string $type, InventoryItemContract $item )
-    {
-        //
+        $specificItem = $inventoryItem->item->itemable;
+        
+        // delete specific item
+        if(!$specificItem->delete()){
+            return redirect(
+                route('companies.inventory.index',[
+                    'company'=>$company->slug
+                ])
+            )->with([
+                'status'=> [
+                    'type'=>'error',
+                    'message' => 'Inventory deletion failed for '.$specificItem->name.' (ID: '.$specificItem->id.')',
+                ]
+            ]);
+        }
+        // delete item
+        if(!$inventoryItem->item->delete()){
+            return redirect(
+                route('companies.inventory.index',[
+                    'company'=>$company->slug
+                ])
+            )->with([
+                'status'=> [
+                    'type'=>'error',
+                    'message' => 'Inventory deletion failed for Item '.$inventoryItem->item->id,
+                ]
+            ]);
+        }
+        // delete inventory item
+        if(!$inventoryItem->delete()){
+            return redirect(
+                route('companies.inventory.index',[
+                    'company'=>$company->slug
+                ])
+            )->with([
+                'status'=> [
+                    'type'=>'error',
+                    'message' => 'Inventory deletion failed for Inventory Item '.$inventoryItem->id,
+                ]
+            ]);
+        }
+        
+        return redirect(
+            route('companies.inventory.index',[
+                'company'=>$company->slug
+            ])
+        )->with([
+            'status'=> [
+                'type'=>'success',
+                'message' => 'Inventory deleted successfully: '.($specificItem->name)
+            ]
+        ]);
     }
 }

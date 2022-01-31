@@ -298,7 +298,7 @@ $slug.'%',
         );
     }
     
-    public function updateItem(array $validated, InventoryItemContract $item, BaseItem $base=null)
+    public function updateSpecificItem(array $validated, InventoryItemContract $item, BaseItem $base=null)
     {
         $item->update(
             $this->initItemAttributes($validated, $base)
@@ -322,5 +322,26 @@ $slug.'%',
             'ownerable_type' => $owner::class,
             'ownerable_id' => $owner->id,
         ]);
+    }
+    
+    public function updateMorphableItem( $specificItem )
+    {
+        $specificItem->asItem->update([
+            'itemable_type' => $specificItem::class,
+            'itemable_id' => $specificItem->id,
+        ]);
+        
+        return $specificItem->asItem;
+    }
+    
+    public function updateInventoryItem( $item, $owner )
+    {
+        $item->inventory->update([
+            'item_id' => $item->id,
+            'ownerable_type' => $owner::class,
+            'ownerable_id' => $owner->id,
+        ]);
+        
+        return $item->inventory;
     }
 }
