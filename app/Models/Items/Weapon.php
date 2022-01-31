@@ -53,16 +53,6 @@ class Weapon extends Model implements InventoryItemContract
     {
         return $this->belongsToMany(Attribute::class)->withPivot('amount')->distinct(); //->groupBy('attributes.id', 'amount');
     }
-    
-    public function company()
-    {
-        return $this->belongsTo(Company::class);
-    }
-    
-    public function character()
-    {
-        return $this->belongsTo(Character::class);
-    }
 
     public function mainLoadout()
     {
@@ -73,15 +63,28 @@ class Weapon extends Model implements InventoryItemContract
     {
         return $this->hasMany(Loadout::class, 'offhand_id');
     }
-
+    
     public function asItem(  )
     {
-        return $this->morphMany(Item::class, 'itemable');
+        return $this->morphOne(Item::class, 'itemable');
     }
     
-    public function asInventoryItem(  )
+    public function company()
     {
-        return $this->morphMany(InventoryItem::class, 'ownable');
+        return $this->asItem()->inventory()->where('ownerable_type', Company::class)->ownerable;
+    }
+    
+    public function character()
+    {
+        return $this->asItem()->inventory()->where('ownerable_type', Character::class)->ownerable;
+    }
+    
+    /**
+     * @return mixed
+     */
+    public function owner() : mixed
+    {
+        return $this->asItem->inventory->ownerable;
     }
     
 // SCOPES ---
@@ -104,11 +107,5 @@ class Weapon extends Model implements InventoryItemContract
     
 // -- MISC 
 
-    /**
-     * @return mixed
-     */
-    public function ownedBy() : mixed
-    {
-        return $this->company ?? $this->character() ?? null;
-    }
+    
 }

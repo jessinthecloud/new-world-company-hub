@@ -55,22 +55,25 @@ class Armor extends Model implements InventoryItemContract
     
     public function company()
     {
-        return $this->belongsTo(Company::class);
+        return $this->asItem()->inventory()->where('ownerable_type', Company::class)->ownerable;
     }
     
     public function character()
     {
-        return $this->belongsTo(Character::class);
+        return $this->asItem()->inventory()->where('ownerable_type', Character::class)->ownerable;
     }
-    
+
     public function asItem(  )
     {
-        return $this->morphMany(Item::class, 'itemable');
+        return $this->morphOne(Item::class, 'itemable');
     }
     
-    public function asInventoryItem(  )
+    /**
+     * @return mixed
+     */
+    public function owner() : mixed
     {
-        return $this->morphMany(InventoryItem::class, 'ownable');
+        return $this->asItem->inventory->ownerable;
     }
     
 // SCOPES ---
@@ -84,11 +87,4 @@ class Armor extends Model implements InventoryItemContract
         return $query->where('slug', 'like' , $slug.'%');
     }
 
-    /**
-     * @return mixed
-     */
-    public function ownedBy() : mixed
-    {
-        return $this->company ?? $this->character() ?? null;
-    }
 }

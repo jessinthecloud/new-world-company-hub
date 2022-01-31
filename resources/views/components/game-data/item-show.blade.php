@@ -1,13 +1,12 @@
-@props(['item', 'itemType'=>null, 'itemClass'=>null, 'guildBank', 'guildBankClass'=>\App\GuildBank::class,])
+@props(['item', 'itemType'=>null, 'itemClass'=>null, 'owner', 'ownerType'])
 
 <div class="item-show w-full lg:w-3/4 mx-auto flex flex-wrap">
     
     <x-dashboard.gated-button 
-        :can="['view', $guildBank]"
-        :phpClass="$guildBankClass"
+        :can="['view', \App\CompanyInventory::class, $owner]"
         :route="route(
-            'guild-banks.show',
-            ['guildBank'=>$guildBank->slug]
+            Str::plural($ownerType).'.inventory.index',
+            [$ownerType => $owner->slug]
         )"
          class="mb-6"
     >
@@ -16,11 +15,10 @@
 
     {{ $slot }}
     
-    <x-dashboard.edit-delete-bank-item-buttons
+    <x-dashboard.edit-delete-inventory-item-buttons
         :item="$item"
-        :itemType="$itemType ?? $item->type"
-        :guildBank="$guildBank"
-        :guildBankClass="$guildBankClass"
+        :owner="$owner"
+        :ownerType="Str::afterLast(strtolower($owner::class), '\\')"
         class="w-full mt-4 justify-end"
     />
 </div>

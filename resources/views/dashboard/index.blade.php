@@ -25,7 +25,7 @@
             md:grid-cols-2
             lg:px-8 lg:gap-6 lg:grid-cols-3
         ">
-                {{-- Faction --}}
+            {{-- Faction --}}
             <x-dashboard.resource-index
                 :title="'Faction'"
                 :phpClass="\App\Models\Faction::class" 
@@ -62,19 +62,17 @@
                 :pluralEntityName="'rosters'"
                 :instance="$roster ?? null"
             />--}}
-                        
-            {{-- Guild Bank --}}
-            <x-dashboard.resource-index
+            
+            {{-- Inventory --}}
+            <x-dashboard.inventory-index
                 :title="'Guild Bank'"
-                :phpClass="\App\GuildBank::class" 
-                :entityName="'guildBank'"
-                :pluralEntityName="'guild-banks'"
-                :instance="$guildBank ?? null"
+                :ownerType="'company'"
+                :owner="$company ?? null"
                 :buttonTexts="[
-                    'view' => 'View Guild Bank',
-                    'create' => 'Add to Guild Bank',
-                    'edit' => 'Edit Item in Guild Bank',
-                    'delete' => 'Delete Item from Guild Bank',
+                    'viewAll' => 'View Inventory',
+                    'create' => 'Add to Inventory',
+                    'edit' => 'Edit Item in Inventory',
+                    'delete' => 'Delete Item from Inventory',
                 ]"
             />
             
@@ -96,7 +94,7 @@
                 :instance="$loadout ?? null"
             />--}}
             
-            {{-- Weapon --}}
+            {{-- Weapon --}}{{--
             <x-dashboard.resource-index
                 :title="'Weapons'"
                 :phpClass="\App\Models\Items\Weapon::class" 
@@ -105,14 +103,14 @@
                 :instance="$weapon ?? null"
             />
             
-            {{-- Armor --}}
+            --}}{{-- Armor --}}{{--
             <x-dashboard.resource-index
                 :title="'Armor'"
                 :phpClass="\App\Models\Items\Armor::class" 
                 :entityName="'armor'"
                 :pluralEntityName="'armors'"
                 :instance="$armor ?? null"
-            />
+            />--}}
         </div>
     @endempty
 

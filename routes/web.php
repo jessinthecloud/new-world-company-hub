@@ -100,16 +100,20 @@ Route::middleware(['auth', 'company', 'character'])->group(function(){
     
     
     // BASE ARMOR
-    Route::resource( 'base-armors', \App\Http\Controllers\Items\BaseArmorsController::class);
-    // BASE WEAPON
-    Route::resource( 'base-weapons', \App\Http\Controllers\Items\BaseWeaponsController::class);
+//    Route::resource( 'base-armors', \App\Http\Controllers\Items\BaseArmorsController::class);
+//    // BASE WEAPON
+//    Route::resource( 'base-weapons', \App\Http\Controllers\Items\BaseWeaponsController::class);
     
             
 // ###################################
 // ## SUPER ADMIN
 // ##
     Route::middleware(['role:super-admin'])->group(function() {
-    
+        // convert all existing items to Inventory Items 
+        Route::get( '/items/convert', 
+            [CompanyInventoryController::class, 'convertAll'] )
+            ->name('companies.inventory.convertAll')
+        ;
         
     }); // end super admin
 // ##
@@ -136,30 +140,35 @@ Route::middleware(['auth', 'company', 'character'])->group(function(){
 // # BANKER
 // #
     Route::middleware(['role:super-admin|admin|banker'])->group(function() {
-    
+        // view all of specific company's inventory
         Route::get( '/companies/{company}/inventory', 
             [CompanyInventoryController::class, 'index'] )
-            ->name('company.inventory')
+            ->name('companies.inventory.index')
         ;
+        // create form for inventory item for specific company
         Route::get( '/companies/{company}/inventory/create', 
             [CompanyInventoryController::class, 'create'] )
-            ->name('company.inventory.create')
+            ->name('companies.inventory.create')
         ;
+        // store inventory item for specific company
         Route::post( '/companies/{company}/inventory', 
             [CompanyInventoryController::class, 'store'] )            
-            ->name('company.inventory.store')
+            ->name('companies.inventory.store')
         ;
-        Route::get( '/companies/{company}/inventory/{type}/{item}/edit', 
+        // edit form for specific inventory item for specific company
+        Route::get( '/companies/{company}/inventory/{inventoryItem}/edit', 
             [CompanyInventoryController::class, 'edit'] )
-            ->name('company.inventory.edit')
+            ->name('companies.inventory.edit')
         ;
-        Route::put( '/companies/{company}/inventory/{type}/{item}', 
+        // update specific inventory item for specific company
+        Route::put( '/companies/{company}/inventory/{inventoryItem}', 
             [CompanyInventoryController::class, 'update'] )
-            ->name('company.inventory.update')
+            ->name('companies.inventory.update')
         ;
-        Route::delete( '/companies/{company}/inventory/{type}/{item}', 
+        // delete specific inventory item from specific company
+        Route::delete( '/companies/{company}/inventory/{inventoryItem}', 
             [CompanyInventoryController::class, 'destroy'] )
-            ->name('company.inventory.destroy')
+            ->name('companies.inventory.destroy')
         ;
     });
 // ##
@@ -200,19 +209,6 @@ Route::middleware(['auth', 'company', 'character'])->group(function(){
         
         Route::resource( 'rosters', \App\Http\Controllers\Companies\RostersController::class )
             ->except( ['create', 'index', 'show'] );
-            
-        Route::resource( 'guild-banks', \App\Http\Controllers\Companies\GuildBanksController::class)
-            ->except(['create', 'store', 'index', 'show', 'destroy'])
-            ->parameters([
-                'guild-banks' => 'guildBank'
-            ]);
-        Route::get( 'guild-banks/{guildBank}/create', [\App\Http\Controllers\Companies\GuildBanksController::class, 'create'])
-            ->name('guild-banks.create');
-        Route::post( 'guild-banks/{guildBank}/create', [\App\Http\Controllers\Companies\GuildBanksController::class, 'store'])
-            ->name('guild-banks.store');
-            
-        Route::delete( 'guild-banks/{guildBank}', [\App\Http\Controllers\Companies\GuildBanksController::class, 'destroy'])
-            ->name('guild-banks.destroy');
             
         Route::delete( 'companies/{company}/member/{character}', [\App\Http\Controllers\Companies\CompanyMembersController::class, 'destroy'])
             ->name('company.members.destroy');
@@ -262,8 +258,6 @@ Route::middleware(['auth', 'company', 'character'])->group(function(){
         ->name( 'base-weapons.choose' );
     Route::get( '/rosters/choose', [\App\Http\Controllers\Companies\RostersController::class, 'choose'] )
         ->name( 'rosters.choose' );
-    Route::get( '/guild-banks/choose', [\App\Http\Controllers\Companies\GuildBanksController::class, 'choose'] )
-        ->name( 'guild-banks.choose' );
     
 // ## FIND
     // find model chosen from drop down
@@ -279,16 +273,6 @@ Route::middleware(['auth', 'company', 'character'])->group(function(){
         ->name( 'base-weapons.find' );
     Route::post( '/rosters/find', [\App\Http\Controllers\Companies\RostersController::class, 'find'] )
         ->name( 'rosters.find' );
-    Route::post( '/guild-banks/find', [\App\Http\Controllers\Companies\GuildBanksController::class, 'find'] )
-        ->name( 'guild-banks.find' );
-        
-        
-    // GUILD BANK
-    Route::get( 'guild-banks/{guildBank}', [\App\Http\Controllers\Companies\GuildBanksController::class, 'show'])
-        ->name('guild-banks.show');
-    // if guildbank (company slug) is not in URL, defaults to current logged-in user's selected company to create one
-    Route::get( 'guild-bank/', [\App\Http\Controllers\Companies\GuildBanksController::class, 'show'])
-        ->name('guild-banks.show.single');
         
 });
 // ##
