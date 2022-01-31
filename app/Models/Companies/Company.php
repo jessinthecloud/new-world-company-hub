@@ -2,12 +2,9 @@
 
 namespace App\Models\Companies;
 
-use App\GuildBank;
 use App\Models\Characters\Character;
 use App\Models\Faction;
-use App\Models\Items\Armor;
 use App\Models\Items\InventoryItem;
-use App\Models\Items\Weapon;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;

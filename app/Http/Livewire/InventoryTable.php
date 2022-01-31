@@ -41,12 +41,8 @@ class InventoryTable extends DataTableComponent
     public bool $dumpFilters = false;
 
     /**
-     * constructor is called before company can be set,
+     * constructor is called before owner can be set,
      * so use livewire mount() to load the params sent
-     * 
-     * -- livewire is no longer calling mount() first, so ????
-     *      have it create a GuildBank as needed with static constructor
-     *      I can't be bothered with the JS BS right now tbh
      *
      * @param \App\Models\Companies\Company|\App\Models\Characters\Character|null $owner
      * @param array                              $armors

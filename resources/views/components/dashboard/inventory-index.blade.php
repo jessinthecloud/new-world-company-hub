@@ -6,7 +6,7 @@
         class=""
     >
         <x-dashboard.gated-button
-            :can="['viewAll', null]"
+            :can="['viewAll', \App\CompanyInventory::class]"
             :phpClass="null"
             :route="route(Str::plural($ownerType).'.inventory.index',[
                 $ownerType => $owner->slug,
@@ -16,7 +16,7 @@
         </x-dashboard.gated-button>
         
         <x-dashboard.gated-button 
-            :can="['create', $owner]"
+            :can="['create', \App\CompanyInventory::class, $owner]"
             :route="route(
                 Str::plural($ownerType).'.inventory.create', 
                 [

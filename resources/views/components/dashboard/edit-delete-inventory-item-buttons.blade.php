@@ -2,7 +2,7 @@
 
 <div {{ $attributes->merge(['class' => 'flex flex-wrap']) }}>
     <x-dashboard.gated-button 
-        :can="['update', $owner]"
+        :can="['update', \App\CompanyInventory::class, $owner]"
         :route="route(Str::plural($ownerType).'.inventory.edit', [
             $ownerType => $owner->slug,
             'inventoryItem' => $item->id

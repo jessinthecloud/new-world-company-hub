@@ -39,7 +39,7 @@
             </x-dashboard.gated-button>
         @endif
         
-        @if(Route::has($pluralEntityName.'.edit') && $phpClass != \App\GuildBank::class)
+        @if(Route::has($pluralEntityName.'.edit'))
             <x-dashboard.gated-button
                 :can="['update', $instance]"
                 :phpClass="$phpClass" 

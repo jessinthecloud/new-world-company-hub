@@ -99,8 +99,8 @@ class CompanyInventoryController extends Controller
 
     /**
      * form to add items to bank
-     * 
-     * @param \App\GuildBank $guildBank
+     *
+     * @param \App\Models\Companies\Company $company
      *
      * @return \Illuminate\Contracts\View\View
      */

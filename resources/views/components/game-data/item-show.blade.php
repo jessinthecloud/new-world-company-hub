@@ -3,7 +3,7 @@
 <div class="item-show w-full lg:w-3/4 mx-auto flex flex-wrap">
     
     <x-dashboard.gated-button 
-        :can="['view', $owner]"
+        :can="['view', \App\CompanyInventory::class, $owner]"
         :route="route(
             Str::plural($ownerType).'.inventory.index',
             [$ownerType => $owner->slug]
