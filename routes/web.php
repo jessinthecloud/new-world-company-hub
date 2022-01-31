@@ -109,7 +109,11 @@ Route::middleware(['auth', 'company', 'character'])->group(function(){
 // ## SUPER ADMIN
 // ##
     Route::middleware(['role:super-admin'])->group(function() {
-    
+        // convert all existing items to Inventory Items 
+        Route::get( '/items/convert', 
+            [CompanyInventoryController::class, 'convertAll'] )
+            ->name('companies.inventory.convertAll')
+        ;
         
     }); // end super admin
 // ##

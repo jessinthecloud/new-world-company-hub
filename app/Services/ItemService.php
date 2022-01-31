@@ -244,12 +244,11 @@ $slug.'%',
     /**
      * @param array                                $validated
      * @param \App\Contracts\InventoryItemContract $item
-     * @param string                               $company_id
      * @param \App\Models\Items\BaseItem|null      $base
      *
      * @return \App\Contracts\InventoryItemContract
      */
-    public function saveSpecificItemRelations( array $validated, InventoryItemContract $item, string $company_id, BaseItem $base=null )
+    public function saveSpecificItemRelations( array $validated, InventoryItemContract $item, BaseItem $base=null )
     {
         if(isset($base)) {
             // attach to base item

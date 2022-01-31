@@ -11,8 +11,10 @@ use App\Enums\WeightClass;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\InventoryUpsertRequest;
 use App\Models\Companies\Company;
+use App\Models\Items\Armor;
 use App\Models\Items\InventoryItem;
 use App\Models\Items\Perk;
+use App\Models\Items\Weapon;
 use App\Services\ArmorService;
 use App\Services\WeaponService;
 use Illuminate\Http\Request;
@@ -24,6 +26,45 @@ class CompanyInventoryController extends Controller
     {
          
     }
+
+    public function convertAll()
+    {
+        $company = Company::where('slug', 'breakpoint')->first();
+        $weapons = Weapon::all();
+        foreach($weapons as $weapon) {
+            if(is_null($weapon->asItem)) {
+                $this->convert( $company, 'Weapon', $weapon );
+            }
+        }
+        $armors = Armor::all();
+        foreach($armors as $armor) {
+            if(is_null($armor->asItem)){
+                $this->convert($company, 'Armor', $armor);
+            }
+        }
+        
+        return redirect(
+            route('companies.inventory.index',[
+                'company'=>$company->slug
+            ])
+        )->with([
+            'status'=> [
+                'type'=>'success',
+                'message' => 'Inventory items converted successfully.'
+            ]
+        ]);
+    }
+    
+    protected function convert(Company $company, string $type, InventoryItemContract $item)
+    {
+        if(!is_null($item->asItem)) {
+            return;
+        }
+        $service = (strtolower($type) == 'weapon') ? 'weaponService' : 'armorService';
+        $morphableItem = $this->{$service}->createMorphableItem($item);
+        $inventoryItem = $this->{$service}->createInventoryItem($morphableItem, $company);        
+    }
+    
     
     public function index(Company $company)
     {
@@ -94,7 +135,7 @@ class CompanyInventoryController extends Controller
         $base ??= $this->{$service}->baseItem($validated['base_id']);
         $specificItem = $this->{$service}->createSpecificItem( $validated, $base );
         $specificItem = $this->{$service}->saveSpecificItemRelations(
-            $validated, $specificItem, $company->id, $base
+            $validated, $specificItem, $base
         );
         $morphableItem = $this->{$service}->createMorphableItem($specificItem);
         $inventoryItem = $this->{$service}->createInventoryItem($morphableItem, $company);
@@ -178,7 +219,7 @@ class CompanyInventoryController extends Controller
         $base ??= $this->{$service}->baseItem($validated['base_id']);
         $specificItem = $this->{$service}->updateSpecificItem( $validated, $specificItem, $base );
         $specificItem = $this->{$service}->saveSpecificItemRelations(
-            $validated, $specificItem, $company->id, $base
+            $validated, $specificItem, $base
         );
         $morphableItem = $this->{$service}->updateMorphableItem($specificItem);
         $inventoryItem = $this->{$service}->updateInventoryItem($morphableItem, $company);
