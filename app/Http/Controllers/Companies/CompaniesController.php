@@ -22,18 +22,14 @@ class CompaniesController extends Controller
 {
     public function index()
     {
-        $companies = Company::with('faction')->orderBy('name')->get()->mapWithKeys(function($company){
-            return [$company->slug => $company->name.' ('.$company->faction->name.')'];
-        })->all();
+        $companies = Company::asArrayForDropDown();
         
         dump($companies);
     }
 
     public function choose()
     {
-        $companies = Company::with('faction')->orderBy('name')->get()->mapWithKeys(function($company){
-            return [$company->slug => $company->name.' ('.$company->faction->name.')'];
-        })->all();
+        $companies = Company::asArrayForDropDown();
         $form_action = route('companies.find');
 
         return view(
@@ -59,9 +55,7 @@ class CompaniesController extends Controller
      */
     public function create() : View
     {
-        $factions = Faction::orderBy('name')->get()->mapWithKeys(function($faction){
-            return [$faction->slug => $faction->name];
-        })->all();
+        $factions = Faction::asArrayForDropDown();
 
         $form_action = route('companies.store');
         $button_text = 'Create';
@@ -97,14 +91,8 @@ class CompaniesController extends Controller
      */
     public function show(Company $company)
     {
-//        dump(Auth::user()->getRoleNames()->all(), Auth::user()->getAllPermissions()->pluck('name')->all());
-        $classes = CharacterClass::orderBy('name')->get()->mapWithKeys(function($class){
-            return [$class->id => $class->name];
-        });/*
-        
-        $weapons = BaseWeapon::orderBy( 'name')->get()->mapWithKeys(function($class){
-            return [$class->id => $class->name];
-        });*/
+
+        $classes = collect(CharacterClass::asArrayForDropDown());
         
         return view('company.show', 
             compact('company', 'classes')
@@ -122,9 +110,7 @@ class CompaniesController extends Controller
     {
         $company = $company->load('faction');
 
-        $factions = Faction::distinct()->get()->mapWithKeys(function($faction){
-            return [$faction->slug => $faction->name];
-        })->all();
+        $factions = Faction::asArrayForDropDown();
 
         $faction_options = '';
         foreach($factions as $value => $text) {

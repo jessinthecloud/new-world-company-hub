@@ -80,6 +80,11 @@ class User extends Authenticatable
     {
         return $this->character()?->rank;
     }
+    
+    public function companyInventory()
+    {
+        return $this->character()?->companyInventory();
+    }
 
     public function company()
     {

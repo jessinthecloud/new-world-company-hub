@@ -2,8 +2,6 @@
 
 namespace App\Providers;
 
-use App\Policies\EventPolicy;
-use App\Policies\PositionPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -15,9 +13,10 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'App\GuildBank'                  => 'App\Policies\Companies\GuildBankPolicy',
+        'App\CompanyInventory'            => 'App\Policies\Companies\CompanyInventoryPolicy',
         'App\Models\Characters\Character'   => 'App\Policies\Characters\CharacterPolicy',
         'App\Models\Companies\Company'   => 'App\Policies\Companies\CompanyPolicy',
+        
         'App\Models\Companies\Roster'    => 'App\Policies\Companies\RosterPolicy',
         'App\Models\Items\LoadoutPolicy' => 'App\Policies\Items\LoadoutPolicy',
         'App\Models\Items\WeaponPolicy'  => 'App\Policies\Items\WeaponPolicy',
@@ -45,7 +44,7 @@ class AuthServiceProvider extends ServiceProvider
          * @see https://spatie.be/docs/laravel-permission/v5/basic-usage/super-admin
          */
         Gate::before( function ( $user, $ability ) {
-            return $user->hasRole( ['super-admin','dev'] ) ? true : null;
+            return $user->hasRole( ['super-admin'] ) ? true : null;
         } );
     }
 }

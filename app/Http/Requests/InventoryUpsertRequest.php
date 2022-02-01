@@ -9,25 +9,24 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 
-class InventoryRequest extends FormRequest
+class InventoryUpsertRequest extends FormRequest
 {
     public function rules() : array
     {
 //    dd($this->request);
         return [
             'id'           => [],
-            'base_id'           => [],
-            'base_slug'           => ['string', 'nullable'],
-            'slug'              => ['string', 'nullable'],
-            'itemType'          => ['string', 'nullable'],
-            'item'              => [
+            'base_id'      => [],
+            'base_slug'    => ['string', 'nullable'],
+            'slug'         => ['string', 'nullable'],
+            'itemType'     => ['string', 'nullable'],
+            'item'         => [
                 /*Rule::requiredIf(function () {
                     return empty($this->name);
                 }),*/
             ],
             // always input
             'gear_score'         => ['required', 'numeric'],
-            // rarity always input
             'rarity'             => ['required_without:custom_rarity', /*new Enum(Rarity::class)*/],
             'custom_rarity'      => ['required_without:rarity', /*new Enum(Rarity::class)*/],
             
@@ -49,7 +48,7 @@ class InventoryRequest extends FormRequest
 
     public function authorize() : bool
     {
-        return true;
+        return $this->user()->can('update', $this->user()->companyInventory());
     }
     
     /**

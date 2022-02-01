@@ -2,11 +2,10 @@
 
 namespace App\Models\Companies;
 
-use App\GuildBank;
+use App\CompanyInventory;
 use App\Models\Characters\Character;
 use App\Models\Faction;
-use App\Models\Items\Armor;
-use App\Models\Items\Weapon;
+use App\Models\Items\InventoryItem;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -70,7 +69,7 @@ class Company extends Model
         $this->hasMany(Event::class);
     }
     
-    public function weapons()
+    /*public function weapons()
     {
         return $this->hasMany(Weapon::class);
     }
@@ -78,11 +77,16 @@ class Company extends Model
     public function armor()
     {
         return $this->hasMany(Armor::class);
+    }*/
+
+    public function inventoryItem(  )
+    {
+        return $this->morphMany( InventoryItem::class, 'ownerable');
     }
 
-    public function bank()
+    public function inventory()
     {
-        return new GuildBank($this);
+        return new CompanyInventory($this->attributes);
     }
     
     /**
@@ -103,5 +107,18 @@ class Company extends Model
             ->where('user_id', '=', $user_id)
             ->orderBy('name')
         ;
+    }
+    
+// -- MISC
+    public static function asArrayForDropDown()
+    {
+        return static::with('faction')
+            ->orderBy('name')
+            ->get()
+            ->mapWithKeys(function($company){
+            return [
+                $company->slug => $company->name . ' ('.$company->faction->name.')'
+            ];
+        })->all();
     }
 }

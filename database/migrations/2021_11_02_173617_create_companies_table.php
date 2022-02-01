@@ -19,7 +19,7 @@ create unique index companies_discord_guild_id_uindex
             $table->bigIncrements( 'id' );
             $table->string('name');
             $table->string('slug')->unique();
-            $table->string('discord_guild_id')->unique();
+            $table->string('discord_guild_id')->nullable()->unique();
             $table->foreignId('faction_id')->constrained();
             $table->timestamps();
         } );

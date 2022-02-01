@@ -19,31 +19,18 @@ class WeaponService extends ItemService implements ItemServiceContract
      */
     public function getAllBaseItems() : array
     {
-        return BaseWeapon::bankable()->orderBy('name')->orderBy('tier')->distinct()->get()->mapWithKeys(function($base_weapon){
+        return BaseWeapon::bankable()
+            ->orderBy('name')
+            ->orderBy('tier')
+            ->distinct()
+            ->get()->mapWithKeys(function($base_weapon){
         $wtype = $base_weapon->type;
-        $type = !empty($wtype) ? constant("App\Enums\WeaponType::$wtype")->value : null;
+        $type = !empty($wtype) 
+            ? constant("App\Enums\WeaponType::$wtype")->value 
+            : null;
         
             return [$base_weapon->slug => $base_weapon->name . " ($type) Tier ".$base_weapon->tier];
         })->all();   
-    }
-
-    /**
-     * @param string $itemType
-     *
-     * @return string
-     */
-    public function itemTypeOptions( string $itemType='' ) : string
-    {
-        $weapon_type_options = '<option value=""></option>';
-        foreach(collect(WeaponType::cases())->sortBy('value')->all() as $type) {
-            $weapon_type_options .= '<option value="'.$type->name.'"';
-                if(strtolower($type->value) == strtolower($itemType)){
-                    $weapon_type_options .= ' SELECTED ';
-                }
-            $weapon_type_options .= '>'.$type->value.'</option>';
-        }
-        
-        return $weapon_type_options;
     }
 
     public function initItemAttributes( array $validated, BaseItem $base=null )

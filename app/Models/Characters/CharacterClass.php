@@ -15,4 +15,14 @@ class CharacterClass extends Model
     {
         return $this->hasMany(Character::class);
     }
+    
+    public static function asArrayForDropDown()
+    {
+        return static::with('type')
+            ->get()
+            ->mapWithKeys(function($model){
+                return [$model->id => $model->name.' ('.$model->type->name.')'];
+            })
+            ->all();
+    }
 }

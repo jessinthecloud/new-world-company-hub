@@ -8,6 +8,8 @@ use App\Enums\Rarity;
 use App\Enums\Tier;
 use App\Models\Items\Attribute;
 use App\Models\Items\BaseItem;
+use App\Models\Items\InventoryItem;
+use App\Models\Items\Item;
 use App\Models\Items\Perk;
 use Illuminate\Support\Str;
 
@@ -129,6 +131,26 @@ abstract class ItemService implements ItemServiceContract
     }
     
     /**
+     * @param string $itemType
+     *
+     * @return string
+     */
+    public function itemTypeOptions( string $itemType ) : string
+    {
+        $enum = 'App\\Enums\\'.$itemType.'Type';
+        $item_type_options = '<option value=""></option>';
+        foreach ( collect( $enum::cases() )->sortBy( 'value' )->all() as $type ) {
+            $item_type_options .= '<option value="' . $type->name . '"';
+            if ( strtolower( $type->value ) == strtolower( $itemType ) ) {
+                $item_type_options .= ' SELECTED ';
+            }
+            $item_type_options .= '>' . $type->value . '</option>';
+        }
+
+        return $item_type_options;
+    }
+    
+    /**
      *
      * @param array       $fields
      * @param string|null $old_slug  if we are editing, make sure the slug retrieved isn't from this item
@@ -213,12 +235,11 @@ abstract class ItemService implements ItemServiceContract
     /**
      * @param array                                $validated
      * @param \App\Contracts\InventoryItemContract $item
-     * @param string                               $company_id
      * @param \App\Models\Items\BaseItem|null      $base
      *
      * @return \App\Contracts\InventoryItemContract
      */
-    public function saveItemRelations( array $validated, InventoryItemContract $item, string $company_id, BaseItem $base=null )
+    public function saveSpecificItemRelations( array $validated, InventoryItemContract $item, BaseItem $base=null )
     {
         if(isset($base)) {
             // attach to base item
@@ -255,26 +276,62 @@ abstract class ItemService implements ItemServiceContract
             }
         }
         
-        // attach to bank
-        $item->company()->associate($company_id);
         $item->save();
         
         return $item;
     }
     
-    public function createItem(array $validated, BaseItem $base=null)
+    public function createSpecificItem(array $validated, BaseItem $base=null)
     {
         return $this->itemClass::create(
             $this->initItemAttributes($validated, $base)
         );
     }
     
-    public function updateItem(array $validated, InventoryItemContract $item, BaseItem $base=null)
+    public function updateSpecificItem(array $validated, InventoryItemContract $item, BaseItem $base=null)
     {
         $item->update(
             $this->initItemAttributes($validated, $base)
         );
         
         return $item;
+    }
+
+    public function createMorphableItem( $specificItem )
+    {
+        return Item::create([
+            'itemable_type' => $specificItem::class,
+            'itemable_id' => $specificItem->id,
+        ]);
+    }
+    
+    public function createInventoryItem( $item, $owner )
+    {
+        return InventoryItem::create([
+            'item_id' => $item->id,
+            'ownerable_type' => $owner::class,
+            'ownerable_id' => $owner->id,
+        ]);
+    }
+    
+    public function updateMorphableItem( $specificItem )
+    {
+        $specificItem->asItem->update([
+            'itemable_type' => $specificItem::class,
+            'itemable_id' => $specificItem->id,
+        ]);
+        
+        return $specificItem->asItem;
+    }
+    
+    public function updateInventoryItem( $item, $owner )
+    {
+        $item->inventory->update([
+            'item_id' => $item->id,
+            'ownerable_type' => $owner::class,
+            'ownerable_id' => $owner->id,
+        ]);
+        
+        return $item->inventory;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\CompanyInventory;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -27,7 +28,7 @@ class DashboardController extends Controller
             'character'   => $user->character(),
             'faction'     => $user->faction(),
             'company'     => $user->company(),
-            'guildBank'   => $user->company()?->bank(),
+            'companyInventory' => CompanyInventory::find($user->company()->id),
             'rank'        => $user->rank(),
             'characters'  => $user->characters,
             'loadout'     => $user->character()?->loadout,

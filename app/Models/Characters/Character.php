@@ -2,11 +2,13 @@
 
 namespace App\Models\Characters;
 
+use App\CompanyInventory;
 use App\Models\Companies\Company;
 use App\Models\Companies\Position;
 use App\Models\Companies\Rank;
 use App\Models\Faction;
 use App\Models\Items\Armor;
+use App\Models\Items\InventoryItem;
 use App\Models\Items\Weapon;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
@@ -47,6 +49,11 @@ class Character extends Model
     {
         return $this->belongsTo(Company::class);
     }
+    
+    public function companyInventory()
+    {
+        return isset($this->company) ? $this->company->inventory() : null;
+    }
 
     public function rank()
     {
@@ -73,7 +80,7 @@ class Character extends Model
         return $this->hasMany(Position::class);
     }
     
-    public function weapons()
+    /*public function weapons()
     {
         return $this->hasMany(Weapon::class);
     }
@@ -81,6 +88,24 @@ class Character extends Model
     public function armor()
     {
         return $this->hasMany(Armor::class);
+    }*/
+    
+    public function inventory(  )
+    {
+        return $this->morphMany(InventoryItem::class, 'ownerable');
+    }
+
+    public static function asArrayForDropDown()
+    {
+        return static::forDropDown()
+            ->get()
+            ->mapWithKeys(function($character){
+                return [$character->slug => $character->name 
+                    .( $character->level > 0 ? ' (Level '.$character->level.') ' : '') 
+                    . $character->class->name
+                ];
+            })
+            ->all();
     }
     
 // -- DISTANT RELATIONSHIPS
@@ -96,6 +121,13 @@ class Character extends Model
     public function scopeForUser( Builder $query, $user_id )
     {
         return $query->where('user_id', '=', $user_id)
+            ->orderBy('name')
+            ->orderBy('level');
+    }
+
+    public function scopeForDropDown( $query )
+    {
+        return $query->with('class')
             ->orderBy('name')
             ->orderBy('level');
     }

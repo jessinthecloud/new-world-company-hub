@@ -9,7 +9,7 @@ interface ItemServiceContract
 {
     public function baseItemsOptions(InventoryItemContract $item=null) : string;
 
-    public function itemTypeOptions(string $itemType='') : string;
+    public function itemTypeOptions(string $itemType) : string;
 
     public function getAllBaseItems() : array;
     
@@ -17,7 +17,7 @@ interface ItemServiceContract
 
     public function initItemAttributes( array $validated, BaseItem $base=null );
     
-    public function createItem(array $validated, BaseItem $base=null);
+    public function createSpecificItem(array $validated, BaseItem $base=null);
 
     public function baseItemBySlug(string $slug) : ?BaseItem;
 }

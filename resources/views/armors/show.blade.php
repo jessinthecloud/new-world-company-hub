@@ -10,7 +10,9 @@
             <x-game-data.item-show
                 :item="$armor"
                 :itemType="'Armor'"
-                :guildBank="new \App\GuildBank($armor->company)"
+                :owner="$armor->owner()"
+                :inventory="$armor->ownerInventory()"
+                :ownerType="Str::afterLast(strtolower($armor->owner()::class), '\\')"
             >
                 <x-game-data.item-details 
                     :item="$armor"

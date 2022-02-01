@@ -15,14 +15,12 @@
             </x-dashboard.gated-button>
         @endif
 
-        @if(Route::has($pluralEntityName.'.show') && Route::has($pluralEntityName.'.choose')  
+        @if(Route::has($pluralEntityName.'.show')  
             && $phpClass != \App\Models\Characters\Character::class)
             <x-dashboard.gated-button
                 :can="['view', $instance]"
                 :phpClass="$phpClass" 
-                :route="isset($instance) 
-                    ? route($pluralEntityName.'.show', [$entityName=>$instance->slug]) 
-                    : route($pluralEntityName.'.choose', ['action'=>'show'])"
+                :route="route($pluralEntityName.'.show', [$entityName=>$instance->slug])"
                 :instance="$instance"
             >
                 {{ $buttonTexts['view'] ?? 'View' }}
@@ -35,55 +33,22 @@
                 :can="['create', $phpClass]"
                 :phpClass="$phpClass"
                 {{--:route="route($pluralEntityName.'.create')"--}}
-                :route="isset($instance) 
-                    ? route($pluralEntityName.'.create', [$entityName=>$instance->slug]) 
-                    : route($pluralEntityName.'.choose', ['action'=>'create'])"
+                :route="route($pluralEntityName.'.create', [$entityName=>$instance->slug])"
             >
                 {{ $buttonTexts['create'] ?? 'Create' }}
             </x-dashboard.gated-button>
         @endif
         
-        @if(Route::has($pluralEntityName.'.edit') && $phpClass != \App\GuildBank::class)
+        @if(Route::has($pluralEntityName.'.edit'))
             <x-dashboard.gated-button
                 :can="['update', $instance]"
                 :phpClass="$phpClass" 
-                :route="isset($instance) 
-                    ? route($pluralEntityName.'.edit', [$entityName=>$instance->slug]) 
-                    : route($pluralEntityName.'.choose', ['action'=>'edit'])"
+                :route="route($pluralEntityName.'.edit', [$entityName=>$instance->slug])"
                 :instance="$instance"
             >
                 {{ $buttonTexts['edit'] ?? 'Edit' }}
             </x-dashboard.gated-button>
         @endif
-        
-        {{--@if(Route::has($pluralEntityName.'.destroy') 
-            && $phpClass != \App\Models\Characters\Character::class)
-       
-            @can('delete', $instance)
-                <x-forms.form
-                    action="{{ $form_action ?? '' }}"
-                    :method="$method ?? null"
-                    class="flex flex-wrap justify-start"
-                >
-                    <x-slot name="button">
-                        <x-button class="bg-red-800">
-                            Delete
-                        </x-button>
-                    </x-slot>
-                </x-forms.form>
-            @endcan
-            
-            --}}{{--<x-dashboard.gated-button 
-                :can="['delete', $instance]"
-                :phpClass="$phpClass"
-                :route="route($pluralEntityName.'.destroy', [$entityName=>$instance->slug])"
-                :instance="$instance"
-                class="bg-red-800"
-            >
-                {{ $buttonTexts['delete'] ?? 'Delete' }}
-            </x-dashboard.gated-button>--}}{{--
-            
-        @endif--}}
         
         {!! $slot !!}
         

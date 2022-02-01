@@ -2,6 +2,7 @@
 
 namespace App\Models\Items;
 
+use App\CompanyInventory;
 use App\Contracts\InventoryItemContract;
 use App\Models\Characters\Character;
 use App\Models\Companies\Company;
@@ -9,6 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class Armor extends Model implements InventoryItemContract
 {
@@ -55,22 +57,35 @@ class Armor extends Model implements InventoryItemContract
     
     public function company()
     {
-        return $this->belongsTo(Company::class);
+        return $this->asItem()->inventory()->where('ownerable_type', Company::class)->ownerable;
     }
     
     public function character()
     {
-        return $this->belongsTo(Character::class);
+        return $this->asItem()->inventory()->where('ownerable_type', Character::class)->ownerable;
     }
-    
+
     public function asItem(  )
     {
-        return $this->morphMany(Item::class, 'itemable');
+        return $this->morphOne(Item::class, 'itemable');
     }
     
-    public function asInventoryItem(  )
+    /**
+     * @return mixed
+     */
+    public function owner() : mixed
     {
-        return $this->morphMany(InventoryItem::class, 'ownable');
+        return $this->asItem->inventory->ownerable;
+    }
+    
+    /**
+     * @return mixed
+     */
+    public function ownerInventory() : mixed
+    {
+        $type = "\\App\\".Str::afterLast($this->asItem->inventory->ownerable_type,'\\').'Inventory';
+        
+        return $type::find($this->asItem->inventory->ownerable->id);
     }
     
 // SCOPES ---
@@ -84,11 +99,4 @@ class Armor extends Model implements InventoryItemContract
         return $query->where('slug', 'like' , $slug.'%');
     }
 
-    /**
-     * @return mixed
-     */
-    public function ownedBy() : mixed
-    {
-        return $this->company ?? $this->character() ?? null;
-    }
 }
