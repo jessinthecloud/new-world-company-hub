@@ -16,8 +16,8 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     
-                    @if(Auth::user()?->companyInventory() !== null 
-                        && Auth::user()->can('view', Auth::user()->companyInventory(),))
+                    @if(Auth::user()?->character()?->companyInventory() !== null 
+                        && Auth::user()->can('view', Auth::user()->character()?->companyInventory(),))
                         <x-nav-link :href="route('companies.inventory.index', [
                                 'company' => Auth::user()->company()->slug
                             ])" 

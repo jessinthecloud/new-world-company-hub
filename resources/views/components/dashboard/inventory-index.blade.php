@@ -6,7 +6,7 @@
         class=""
     >
         <x-dashboard.gated-button
-            :can="['viewAll', \App\CompanyInventory::class]"
+            :can="['view', $inventory]"
             :phpClass="null"
             :route="route(Str::plural($ownerType).'.inventory.index',[
                 $ownerType => $owner->slug,

@@ -83,7 +83,7 @@ class User extends Authenticatable
     
     public function companyInventory()
     {
-        return $this->character()?->companyInventory;
+        return $this->character()?->companyInventory();
     }
 
     public function company()

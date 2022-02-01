@@ -2,6 +2,7 @@
 
 namespace App\Models\Companies;
 
+use App\CompanyInventory;
 use App\Models\Characters\Character;
 use App\Models\Faction;
 use App\Models\Items\InventoryItem;
@@ -78,9 +79,14 @@ class Company extends Model
         return $this->hasMany(Armor::class);
     }*/
 
-    public function inventory(  )
+    public function inventoryItem(  )
     {
         return $this->morphMany( InventoryItem::class, 'ownerable');
+    }
+
+    public function inventory()
+    {
+        return new CompanyInventory($this->attributes);
     }
     
     /**

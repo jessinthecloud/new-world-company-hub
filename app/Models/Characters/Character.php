@@ -26,7 +26,7 @@ class Character extends Model
      *
      * @var array
      */
-    protected $with = ['companyInventory', 'company', 'rank'];
+    protected $with = ['company', 'rank'];
     
     /**
      * Get the route key for the model.
@@ -52,7 +52,7 @@ class Character extends Model
     
     public function companyInventory()
     {
-        return $this->belongsTo(CompanyInventory::class);
+        return isset($this->company) ? $this->company->inventory() : null;
     }
 
     public function rank()
