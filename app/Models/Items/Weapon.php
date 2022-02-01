@@ -2,6 +2,7 @@
 
 namespace App\Models\Items;
 
+use App\CompanyInventory;
 use App\Contracts\InventoryItemContract;
 use App\Models\Characters\Character;
 use App\Models\Characters\Loadout;
@@ -93,7 +94,7 @@ class Weapon extends Model implements InventoryItemContract
      */
     public function ownerInventory() : mixed
     {
-        $type = Str::afterLast($this->asItem->inventory->ownerable_type,'\\').'Inventory';
+        $type = "\\App\\".Str::afterLast($this->asItem->inventory->ownerable_type,'\\').'Inventory';
         
         return $type::find($this->asItem->inventory->ownerable->id);
     }
