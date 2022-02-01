@@ -137,7 +137,6 @@ abstract class ItemService implements ItemServiceContract
      */
     public function createUniqueSlug(array $fields, string $old_slug=null) : string
     {
-//dump($fields, 'old slug: '.$old_slug);
         $slug = $fields['type'] . ' ' . $fields['name'] . ' ' 
             . ( !empty( $fields['rarity'] ) ? ' ' . $fields['rarity'] : '' ) 
             . ( !empty( $fields['tier'] ) ? ' t' . $fields['tier'] : '' )
@@ -145,24 +144,16 @@ abstract class ItemService implements ItemServiceContract
         ;
         $slug = Str::slug( $slug );
         // see if slug exists in table 
-         $db_slugs = $this->itemClass::similarSlugs($slug.'%')->get();
+         $db_slugs = $this->itemClass::similarSlugs($slug.'%')->orderBy('slug')->get();
 
          $slug_count = $db_slugs->count();
-        
-/*dump(
-'new slug: '.$slug,
-"db slugs:",$db_slugs,
-$slug.'%',
-"slug before checking: $slug", 
-"slug count: $slug_count"
-); */       
         
         if( !$db_slugs->contains($old_slug) && $slug_count > 0 ){
             // the found slug is not from the item we're editing,
             // so make this one unique
-            $slug .= '-x'.($slug_count+1);
+            $slug_number = Str::afterLast($db_slugs->last()->slug, '-x');
+            $slug .= '-x'.(intval($slug_number)+1);
         }
-
         return $slug;
     }
 
