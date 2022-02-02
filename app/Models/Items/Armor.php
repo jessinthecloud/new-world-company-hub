@@ -95,6 +95,19 @@ class Armor extends Model implements InventoryItemContract
             ->whereRelation('company', 'id', $company->id);
     }
     
+    public function scopeRawForInventory($query, InventoryItem $inventoryItem)
+    {
+        return $this->select(DB::raw('armors.id as id, armors.slug as slug, armors.name as name, armors.type as subtype, armors.rarity, armors.gear_score, armors.weight_class, "Armor" as type, armors.created_at as created_at'))
+            ->whereRelation('company', 'id', $inventoryItem->id);
+    }
+    
+    public function scopeRawForGearScore($query/*, Item $item*/)
+    {
+        return $this->select(DB::raw('id, gear_score'))
+//            ->whereRelation('asItem', 'id', $item->id)
+            ;
+    }
+    
     public function scopeSimilarSlugs(Builder $query, string $slug){
         return $query->where('slug', 'like' , $slug.'%');
     }

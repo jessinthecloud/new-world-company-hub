@@ -102,7 +102,7 @@ class Weapon extends Model implements InventoryItemContract
 // SCOPES ---
     public function scopeRawForCompany($query, Company $company)
     {
-        return $this->select(DB::raw('weapons.id as id, weapons.slug as slug, weapons.name as name, weapons.type as subtype, weapons.rarity, weapons.gear_score, null as weight_class, "Weapon" as type, weapons.created_at as created_at'))
+        return $this->select(DB::raw('weapons.id as id, weapons.slug as slug, weapons.name as name, weapons.type as itemable_type, weapons.rarity, weapons.gear_score, null as weight_class, "Weapon" as type, weapons.created_at as created_at'))
             ->whereRelation('company', 'id', $company->id);
             
             /*return $this->select(DB::raw('weapons.id as id, weapons.slug as slug, weapons.name as name, weapons.type as subtype, weapons.rarity, weapons.gear_score, null as weight_class, "Weapon" as type, perks.id as perk_id, perks.slug as perk_slug, perks.name as perk_name, perks.perk_type as perk_type, perks.description as perk_desc, perks.icon as perk_icon'))
@@ -111,6 +111,13 @@ class Weapon extends Model implements InventoryItemContract
             ->join('perks', 'perk_weapon.perk_id', '=', 'perks.id')
             ->groupBy('slug', 'perk_slug')
             ;*/
+    }
+    
+    public function scopeRawForGearScore($query/*, Item $item*/)
+    {
+        return $this->select(DB::raw('id,gear_score'))
+//            ->whereRelation('asItem', 'id', $item->id)
+            ;
     }
     
     public function scopeSimilarSlugs(Builder $query, string $slug){
