@@ -4,6 +4,12 @@ namespace App\Traits;
 
 trait IsEnum
 {
+    // for dealing with dynamic names
+    public static function valueFromName(string $name)
+    {
+        return defined(self::class."::$name") ? constant(self::class."::$name")->value : null;
+    }
+
     public static function getAllValues() : array
     {
         return array_map(
