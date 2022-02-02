@@ -53,7 +53,7 @@ class Weapon extends Model implements InventoryItemContract
     
     public function attributes()
     {
-        return $this->belongsToMany(Attribute::class)->withPivot('amount')->distinct(); //->groupBy('attributes.id', 'amount');
+        return $this->belongsToMany(Attribute::class)->withPivot('amount');
     }
 
     public function mainLoadout()

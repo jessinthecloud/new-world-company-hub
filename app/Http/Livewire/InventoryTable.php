@@ -83,6 +83,7 @@ class InventoryTable extends DataTableComponent
             Column::make( 'Gear Score', 'item.itemable.gear_score' ),
 //                ->sortable(),
             Column::make( 'Perks', 'item.itemable.perks' ),
+            Column::make( 'Attributes', 'item.itemable.attributes' ),
             // type of item
             Column::make( 'Item Type', 'item.itemable.type' ),
 //                ->sortable(),

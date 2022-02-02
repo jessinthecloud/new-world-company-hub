@@ -11,7 +11,7 @@ class Attribute extends Model
      *
      * @var array
      */
-    protected $with = [];
+    protected $with = ['weapons', 'armors'];
     
     /**
      * Get the route key for the model.
@@ -28,8 +28,8 @@ class Attribute extends Model
         return $this->belongsToMany(Weapon::class)->withPivot('amount');
     }
     
-    public function armor()
+    public function armors()
     {
-        return $this->belongsToMany(Armor::class)->withPivot('amount');
+        return $this->belongsToMany(Armor::class, 'attribute_armor')->withPivot('amount');
     }
 }

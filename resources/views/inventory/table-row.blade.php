@@ -24,13 +24,30 @@
     style="white-space:normal; min-width:200px; ">
 
     @php 
-        $itemtable = Str::plural(strtolower(Str::afterLast($row->item->itemable_type,'\\')));
+        $itemtable = $row->item->itemable->getTable();
         $perk_names = App\Models\Items\Perk::whereRelation(
             $itemtable, $itemtable.'.id', '=', $row->item->itemable->id
         )->orderBy('name')->get();
     @endphp
 
     {!! $perk_names->pluck('name')->implode(', <BR>') !!}
+</x-livewire-tables::table.cell>
+
+<x-livewire-tables::table.cell 
+    class="!whitespace-normal"
+    {{-- tailwind not doing these:--}} 
+    style="white-space:normal; min-width:200px; ">
+
+    @php
+    $attrs = $row->item->itemable->attributes;
+    $attr_arr = [];
+    foreach($attrs as $attr){
+        $attr_arr []= $attr->pivot?->amount.' '.\App\Enums\AttributeType::valueFromName($attr->name);
+    }
+    sort($attr_arr)
+    @endphp
+
+    {!! implode(', <BR>', $attr_arr) !!}
 </x-livewire-tables::table.cell>
 
 <x-livewire-tables::table.cell>
