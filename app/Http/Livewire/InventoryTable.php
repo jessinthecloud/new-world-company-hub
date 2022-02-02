@@ -4,7 +4,10 @@ namespace App\Http\Livewire;
 
 use App\Models\Items\Armor;
 use App\Models\Items\InventoryItem;
+use App\Models\Items\Item;
 use App\Models\Items\Weapon;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
@@ -75,23 +78,24 @@ class InventoryTable extends DataTableComponent
     public function columns(): array
     {
         return [
-            Column::make( 'Name', 'item.itemable.name' )
-                ->sortable(),
-            Column::make( 'Gear Score', 'item.itemable.gear_score' )
-                ->sortable(),
+            Column::make( 'Name', 'item.itemable.name' ),
+//                ->sortable(),
+            Column::make( 'Gear Score', 'item.itemable.gear_score' ),
+//                ->sortable(),
             Column::make( 'Perks', 'item.itemable.perks' ),
+            Column::make( 'Attributes', 'item.itemable.attributes' ),
             // type of item
-            Column::make( 'Item Type', 'item.itemable.type' )
-                ->sortable(),
+            Column::make( 'Item Type', 'item.itemable.type' ),
+//                ->sortable(),
             // kind of weapon/armor
-            Column::make( 'Type', 'item.itemable_type' )
-                ->sortable(),
-            Column::make( 'Rarity', 'item.itemable.rarity' )
-                ->sortable(),
-            Column::make( 'Weight Class', 'item.itemable.weight_class' )
-                ->sortable(),
+            Column::make( 'Type', 'item.itemable_type' ),
+//                ->sortable(),
+            Column::make( 'Rarity', 'item.itemable.rarity' ),
+//                ->sortable(),
+            Column::make( 'Weight Class', 'item.itemable.weight_class' ),
+//                ->sortable(),
             Column::make( 'Added At', 'item.itemable.created_at' )
-                ->sortable()
+//                ->sortable()
          ];
     }
     
