@@ -173,6 +173,18 @@ abstract class ItemService implements ItemServiceContract
         if( !$db_slugs->contains($old_slug) && $slug_count > 0 ){
             // the found slug is not from the item we're editing,
             // so make this one unique
+            
+            // we can't rely on the DB order because the string 10 comes before 9
+            // make sure we only order by the number after -x
+            $db_slugs = $db_slugs->sort(function($slugA, $slugB){
+                $suffixA = intval(Str::afterLast($slugA->slug, '-x'));
+                $suffixB = intval(Str::afterLast($slugB->slug, '-x'));
+                if ($suffixA == $suffixB) {
+                    return 0;
+                }
+                return ($suffixA < $suffixB) ? -1 : 1;
+            });
+          
             $slug_number = Str::afterLast($db_slugs->last()->slug, '-x');
             $slug .= '-x'.(intval($slug_number)+1);
         }
