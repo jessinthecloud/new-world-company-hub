@@ -113,9 +113,9 @@ abstract class ItemService implements ItemServiceContract
      *
      * @return string
      */
-    public function baseItemsOptions(InventoryItemContract $item=null) : string
+    public function baseItemsOptions(InventoryItemContract $item=null, bool $for_bank=true) : string
     {
-        $base_item = $this->getAllBaseItems();
+        $base_item = $this->getAllBaseItems($for_bank);
 
         $base_item_options = '<option value=""></option>';
         foreach($base_item as $value => $text) {

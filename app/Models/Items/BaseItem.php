@@ -30,7 +30,8 @@ abstract class BaseItem extends Model
     }
 
 // -- SCOPES
-
+    
+    /** @method bankable() */
     public function scopeBankable(Builder $query)
     {
         return $this

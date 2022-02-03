@@ -58,16 +58,31 @@ class LoadoutsController extends Controller
      */
     public function create() : View
     {
-        $weapons = BaseWeapon::orderBy( 'name')->get()->mapWithKeys(function($weapon){
-            return [$weapon->id => $weapon->name.' ('.$weapon->type->name.')'];
-        })->all();
-        
-        $form_action = route('loadouts.store');
-        $button_text = 'Add';
-
         return view(
             'dashboard.loadout.create-edit',
-            compact('weapons', 'form_action', 'button_text')
+            [
+                'equipment_slots' => [
+                    'main' => [],
+                    'offhand' => [],
+                    'head' => [],
+                    'chest' => [],
+                    'legs' => [],
+                    'feet' => [],
+                    'hands' => [],
+                    'neck' => [],
+                    'ring' => [],
+                    'earring' => [],
+                    'shield' => [],
+                ],
+                'perk_options' => $this->weaponService->perkOptions(),
+                'rarity_options' => $this->weaponService->rarityOptions(),
+                'tier_options' => $this->weaponService->tierOptions(),
+                'weight_class_options' => $this->armorService->weightClassOptions(),
+                'attribute_options' => $this->weaponService->attributeOptions(),
+                'method' => 'POST',
+                'form_action' => route('loadouts.store'),
+                'button_text' => 'Add',
+            ]
         );
     }
 
