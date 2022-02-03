@@ -87,13 +87,13 @@
             />
             
             {{-- Loadout --}}
-            {{--<x-dashboard.resource-index
+            <x-dashboard.resource-index
                 :title="'Loadout'"
                 :phpClass="\App\Models\Characters\Loadout::class" 
                 :entityName="'loadout'"
                 :pluralEntityName="'loadouts'"
                 :instance="$loadout ?? null"
-            />--}}
+            />
             
             {{-- Weapon --}}{{--
             <x-dashboard.resource-index

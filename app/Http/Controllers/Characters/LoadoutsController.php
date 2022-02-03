@@ -7,6 +7,8 @@ use App\Http\Requests\LoadoutUpsertRequest;
 use App\Models\Characters\Character;
 use App\Models\Characters\Loadout;
 use App\Models\Items\BaseWeapon;
+use App\Services\ArmorService;
+use App\Services\WeaponService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
@@ -17,20 +19,24 @@ use function view;
 
 class LoadoutsController extends Controller
 {
+    public function __construct(
+        protected ArmorService $armorService, 
+        protected WeaponService $weaponService
+    ) 
+    {
+         
+    }
+    
     public function index()
     {
-        $loadouts = Loadout::with('character','main','offhand')->orderBy('name')->orderBy('weight')->get()->mapWithKeys(function($loadout){
-            return [$loadout->id => $loadout->name . ' (Main: '.$loadout->main->name.' -- Offhand: '.$loadout->off?->name.')'];
-        })->all();
+        $loadouts = Loadout::asArrayForDropDown();
         
         dump($loadouts);
     }
     
     public function choose()
     {
-        $loadouts = Loadout::orderBy('name')->orderBy('weight')->get()->mapWithKeys(function($loadout){
-            return [$loadout->id => $loadout->name];
-        })->all();
+        $loadouts = Loadout::asArrayForDropDown();
         $form_action = route('loadouts.find');
 
         return view(
@@ -52,10 +58,6 @@ class LoadoutsController extends Controller
      */
     public function create() : View
     {
-        $characters = Character::with('class')->orderBy('name')->get()->mapWithKeys(function($class){
-            return [$class->id => $class->name];
-        })->all();
-
         $weapons = BaseWeapon::orderBy( 'name')->get()->mapWithKeys(function($weapon){
             return [$weapon->id => $weapon->name.' ('.$weapon->type->name.')'];
         })->all();
@@ -65,7 +67,7 @@ class LoadoutsController extends Controller
 
         return view(
             'dashboard.loadout.create-edit',
-            compact('weapons', 'characters', 'form_action', 'button_text')
+            compact('weapons', 'form_action', 'button_text')
         );
     }
 
