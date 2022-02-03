@@ -13,10 +13,20 @@ class CreateLoadoutsTable extends Migration
 
             $table->string('name')->nullable();
             $table->unsignedFloat('weight')->nullable();
+            $table->unsignedInteger('gear_score')->nullable();
             // class via character
             $table->foreignId('character_id')->constrained();
-//            $table->foreignId('main_hand_id')->constrained('weapons');
-//            $table->foreignId('offhand_id')->constrained('weapons');
+            $table->foreignId('main_hand_id')->constrained('inventory_items');
+            $table->foreignId('offhand_id')->constrained('inventory_items');
+            $table->foreignId('head_id')->nullable()->constrained('inventory_items');
+            $table->foreignId('chest_id')->nullable()->constrained('inventory_items');
+            $table->foreignId('legs_id')->nullable()->constrained('inventory_items');
+            $table->foreignId('feet_id')->nullable()->constrained('inventory_items');
+            $table->foreignId('hands_id')->nullable()->constrained('inventory_items');
+            $table->foreignId('neck_id')->nullable()->constrained('inventory_items');
+            $table->foreignId('ring_id')->nullable()->constrained('inventory_items');
+            $table->foreignId('earring_id')->nullable()->constrained('inventory_items');
+            $table->foreignId('shield_id')->nullable()->constrained('inventory_items');
 
             $table->timestamps();
         } );
