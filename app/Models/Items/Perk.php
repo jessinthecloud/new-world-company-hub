@@ -2,6 +2,7 @@
 
 namespace App\Models\Items;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Perk extends Model
@@ -41,6 +42,13 @@ class Perk extends Model
     public function baseArmor()
     {
         return $this->belongsToMany(BaseArmor::class)->withPivot('amount');
+    }
+// -- SCOPES
+    
+    /** @method forSearch() */
+    public function scopeForSearch( Builder $query, string $term )
+    {
+        return $query->where('name', 'like', $term);
     }
     
 // -- MISC

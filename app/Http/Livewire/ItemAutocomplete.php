@@ -13,16 +13,22 @@ use App\Models\Items\BaseWeapon;
 class ItemAutocomplete extends Autocomplete
 {
     protected $listeners = ['valueSelected'];
+    public bool $bank = true;
 
     public function valueSelected($item)
     {
 //        $this->emitUp('userSelected', $item);
-        
     }
 
     public function query() {
-        return BaseArmor::rawForBankSearch('%'.$this->search.'%') 
+        if($this->bank){
+            return BaseArmor::rawForBankSearch('%'.$this->search.'%')
                 ->union(BaseWeapon::rawForBankSearch('%'.$this->search.'%'))
+                ->orderBy('name');
+        }
+        
+        return BaseArmor::rawForSearch('%'.$this->search.'%')
+                ->union(BaseWeapon::rawForSearch('%'.$this->search.'%'))
                 ->orderBy('name');
     }
 }

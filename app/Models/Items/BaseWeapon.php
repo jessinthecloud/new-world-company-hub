@@ -39,6 +39,7 @@ class BaseWeapon extends BaseItem
     }
     
 // -- SCOPES
+    /** @method rawForBankSearch() */
     public function scopeRawForBankSearch( Builder $query, string $term )
     {
         return $this->select(DB::raw('base_weapons.id as id, base_weapons.slug as slug, base_weapons.name as name, base_weapons.type as subtype, base_weapons.rarity, base_weapons.gear_score, null as weight_class, "Weapon" as type'))
@@ -49,6 +50,15 @@ class BaseWeapon extends BaseItem
             ->where('name', 'not like', '@%')
             // no items under tier 5
             ->where('tier', '>=', 5)
+        ;
+    }
+    /** @method rawForSearch() */
+    public function scopeRawForSearch( Builder $query, string $term )
+    {
+        return $this->select(DB::raw('base_weapons.id as id, base_weapons.slug as slug, base_weapons.name as name, base_weapons.type as subtype, base_weapons.rarity, base_weapons.gear_score, null as weight_class, "Weapon" as type'))
+            ->where('base_weapons.name', 'like', $term)
+            // no test items
+            ->where('name', 'not like', '@%')
         ;
     }
     

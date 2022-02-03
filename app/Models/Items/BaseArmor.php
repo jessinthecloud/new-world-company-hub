@@ -39,6 +39,16 @@ class BaseArmor extends BaseItem
             ->where('tier', '>=', 5)
         ;
     }
+    
+    /** @method rawForSearch() */
+    public function scopeRawForSearch( Builder $query, string $term )
+    {
+        return $this->select(DB::raw('base_armors.id as id, base_armors.slug as slug, base_armors.name as name, base_armors.type as subtype, base_armors.rarity, base_armors.gear_score, null as weight_class, "Weapon" as type'))
+            ->where('base_armors.name', 'like', $term)
+            // no test items
+            ->where('name', 'not like', '@%')
+        ;
+    }
 
 
 // -- MISC
