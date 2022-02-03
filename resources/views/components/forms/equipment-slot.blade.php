@@ -33,7 +33,7 @@
     
     <div id="perks-attr-wrapper" class="w-full flex flex-wrap justify-start">
         <div class="perks border-r-2 border-slate-50 pr-4 mr-4">
-            <h3>Perks:</h3>
+            <h4 class="mb-1">Perks:</h4>
             
              @if(!empty($existingPerkOptions))
                 @foreach($existingPerkOptions as $id => $options)
@@ -66,7 +66,7 @@
         </div>
         
         <div class="attributes ml-4">
-            <h3>Attributes:</h3>
+            <h4 class="mb-1">Attributes:</h4>
             
             @if(!empty($existingAttributeOptions))
                 @foreach($existingAttributeOptions as $id => $options)
