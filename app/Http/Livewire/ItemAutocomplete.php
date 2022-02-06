@@ -19,6 +19,7 @@ class ItemAutocomplete extends Autocomplete
     public ?string $type = null;
     // limit search by item subtype
     public ?string $subtype = null;
+    public string $equipSlotName;
 
     public function valueSelected($item)
     {
