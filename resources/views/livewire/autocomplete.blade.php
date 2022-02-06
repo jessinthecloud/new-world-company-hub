@@ -58,7 +58,7 @@
             itemName: $refs.results.children[highlightedIndex].getAttribute('data-result-itemName'),
             itemType: $refs.results.children[highlightedIndex].getAttribute('data-result-itemType'),
             itemSlug: $refs.results.children[highlightedIndex].getAttribute('data-result-itemSlug'),
-            inputName: this.getAttribute('name')
+            inputName: $refs.results.children[highlightedIndex].getAttribute('data-result-inputName'),
           })"
           class="
             w-full h-full rounded-md py-2 px-3
@@ -79,7 +79,9 @@
               wire:key="{{ $index }}"
               x-on:click.stop="$dispatch('value-selected', {
                 itemId: {{ $result->id }},
-                itemName: '{{ $result->name }}',
+                {{-- item names with single quotes is creating JS errors
+                no idea why {{ }} is not already escaping the quotes with htmlspecialchars() --}}
+                itemName: '{{ htmlspecialchars($result->name, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401) }}',
                 itemType: '{{ $result->type }}',
                 itemSlug: '{{ $result->slug }}',
                 inputName: '{{ $equipSlotName }}'
