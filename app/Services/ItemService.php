@@ -39,7 +39,7 @@ abstract class ItemService implements ItemServiceContract
         $existing_perk_options = [];
         $i=0;
         foreach($item_perks as $perk){
-            // allow $perks to be array of slugs
+            // allow $item_perks to be array of slugs
             $slug = ($perk instanceof Perk) ? $perk->slug : $perk;
             
             $existing_perk_options [$i]= '<option value=""></option>';
@@ -57,26 +57,34 @@ abstract class ItemService implements ItemServiceContract
     }
 
     /**
-     * @param array $item_attributes
-     * @param array $attributes - array of AttributeType sorted by value
+     * @param array $item_attributes - array of Attributes or array of Attribute slug strings
+     * @param array $attributes      - array of AttributeType sorted by value
+     * @param array $amounts         - optionally pass amounts as array of integers
      *
      * @return array[]
      */
-    public function existingAttributeOptions( array $item_attributes, array $attributes ) : array
+    public function existingAttributeOptions( array $item_attributes, array $attributes, array $amounts=[] ) : array
     {
         $existing_attribute_options = [];
         $existing_attribute_amounts = [];
+        $i=0;
         foreach($item_attributes as $attribute){
-            $existing_attribute_amounts [$attribute->id]= $attribute->pivot->amount;
-            $existing_attribute_options [$attribute->id]= '<option value=""></option>';
+            // allow $item_attributes to be an array of strings
+            $name = ($attribute instanceof Attribute) ? $attribute->name : $attribute;
+            $amount = ($attribute instanceof Attribute) ? $attribute->pivot->amount : ($amounts[$i] ?? 0);
+       
+            $existing_attribute_amounts [$i]= $amount;
+            $existing_attribute_options [$i]= '<option value=""></option>';
             foreach($attributes as $type) {
-                $existing_attribute_options [$attribute->id].= '<option value="'.$type->name.'"';
-                    if($type->name == $attribute->name){
-                        $existing_attribute_options [$attribute->id].= ' SELECTED ';
+                $existing_attribute_options [$i].= '<option value="'.$type->name.'"';
+                    if($type->name == $name){
+                        $existing_attribute_options [$i].= ' SELECTED ';
                     }
-                $existing_attribute_options [$attribute->id].= '>'.$type->value.'</option>';
+                $existing_attribute_options [$i].= '>'.$type->value.'</option>';
             }
+            $i++;
         }
+         
         return [$existing_attribute_amounts, $existing_attribute_options];
     }
 

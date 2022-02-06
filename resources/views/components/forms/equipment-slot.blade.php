@@ -1,4 +1,4 @@
-@props([ 'title', 'name', 'required'=>false, 'type'=>null, 'subtype'=>null, 'item', 'perkOptions', 'rarityOptions', 'tierOptions', 'attributeOptions', 'existingPerkOptions'=> [], 'existingAttributeAmounts' =>[]])
+@props([ 'title', 'name', 'required'=>false, 'type'=>null, 'subtype'=>null, 'item', 'perkOptions', 'rarityOptions', 'tierOptions', 'attributeOptions', 'existingPerkOptions'=> [], 'existingAttributeOptions'=> [], 'existingAttributeAmounts' =>[]])
 
 {{-- TODO: ADD NAME PREFIX TO ALL FIELDS --}}
 
@@ -76,7 +76,7 @@
             <h4 class="mb-1">Attributes:</h4>
 
             @if(!empty($existingAttributeOptions))
-                @foreach($existingAttributeOptions as $id => $options)
+                @foreach($existingAttributeOptions as $index => $options)
                     <div id="{{ $name }}-existing-attr-wrapper" class="block w-full flex flex-wrap justify-start items-end">
                         <x-forms.field :name="$name.'_attribute_amounts[]'">
                             <x-forms.input
@@ -84,7 +84,7 @@
                                     class=""
                                     type="text"
                                     name="{{ $name }}_attribute_amounts[]"
-                                    value="{{ $existingAttributeAmounts[$id] }}"
+                                    value="{{ $existingAttributeAmounts[$index] }}"
                                     size="10"
                                     :required="false"
                                     placeholder="Amount"

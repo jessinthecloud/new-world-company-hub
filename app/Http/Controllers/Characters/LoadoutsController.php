@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Characters;
 
 use App\Enums\ArmorType;
+use App\Enums\AttributeType;
 use App\Enums\WeaponType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoadoutUpsertRequest;
@@ -219,18 +220,27 @@ class LoadoutsController extends Controller
                     Perk::asArrayForDropDown(),
                 );
                 
-                // existing attrs
-                /*$equipment_slots[$name]['existing_attribute_options'] = $this->weaponService->existingPerkOptions(
-                    old($name.'_perks[]'),
+                // existing perks
+                $equipment_slots[$name]['existing_perk_options'] = $this->weaponService->existingPerkOptions(
+                    array_filter(old($name.'_perks')),
                     Perk::asArrayForDropDown(),
-                );*/
+                );
+                
+                // existing attributes
+                [$existing_attribute_amounts, $existing_attribute_options] = 
+                $this->weaponService->existingAttributeOptions(
+                    array_filter(old($name.'_attrs')),
+                    collect(AttributeType::cases())->sortBy('value')->all(),
+                    array_filter(old($name.'_attribute_amounts')),
+                );
+                $equipment_slots[$name]['existing_attribute_options'] = $existing_attribute_options;
+                $equipment_slots[$name]['existing_attribute_amounts'] = $existing_attribute_amounts;
             }
         }
     
         return view(
             'dashboard.loadout.create-edit',
             [
-                'existing_perk_options'=>$existing_perk_options ?? [],
                 'equipment_slots' => $equipment_slots,
 //                'perk_options' => $this->weaponService->perkOptions(selected: old('perks') ?? []),
                 'perk_options' => $this->weaponService->perkOptions(),
