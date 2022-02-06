@@ -44,7 +44,7 @@
             @if(!empty($existingPerkOptions))
                 @foreach($existingPerkOptions as $id => $options)
                     <div id="{{ $name }}-existing-perks-wrapper"
-                         class="block w-full flex flex-wrap justify-start items-end">
+                         class="existing-perks-wrapper block w-full flex flex-wrap justify-start items-end">
                         <x-forms.field :name="$name.'_perks'" class="mb-6">
                             <x-forms.select name="{{ $name }}_perks[]" id="{{ $name }}_perks"
                                             :values="null"
@@ -55,7 +55,7 @@
                 @endforeach
             @endif
 
-            <div id="perks-wrapper" class="block w-full flex flex-wrap justify-start items-end">
+            <div id="{{ $name }}-perks-wrapper" class="perks-wrapper block w-full flex flex-wrap justify-start items-end">
                 <x-forms.field :name="$name.'_perks'" class="mb-6">
                     <x-forms.select name="{{ $name }}_perks[]" id="{{ $name }}_perks"
                                     :values="$perks ?? null"
@@ -64,11 +64,11 @@
                 </x-forms.field>
             </div>
 
-            <div id="appended-perks">
+            <div id="{{ $name }}-appended-perks" class="appended-perks">
 
             </div>
 
-            <x-button id="add-perk" type="button" class="mb-4">Add Another Perk</x-button>
+            <x-button id="{{ $name }}-add-perk" type="button" class="add-perk mb-4">Add Another Perk</x-button>
 
         </div>
 
@@ -77,7 +77,7 @@
 
             @if(!empty($existingAttributeOptions))
                 @foreach($existingAttributeOptions as $id => $options)
-                    <div id="attr-wrapper" class="block w-full flex flex-wrap justify-start items-end">
+                    <div id="{{ $name }}-existing-attr-wrapper" class="block w-full flex flex-wrap justify-start items-end">
                         <x-forms.field :name="$name.'_attribute_amounts[]'">
                             <x-forms.input
                                     id="{{ $name }}_attribute_amounts"
@@ -102,7 +102,7 @@
                 @endforeach
             @endif
 
-            <div id="attr-wrapper" class="block w-full flex flex-wrap justify-start items-end">
+            <div id="{{ $name }}-attr-wrapper" class="attr-wrapper block w-full flex flex-wrap justify-start items-end">
                 <x-forms.field :name="$name.'_attribute_amounts[]'">
                     <x-forms.input
                             id="{{ $name }}_attribute_amounts"
@@ -123,11 +123,11 @@
                 </x-forms.field>
             </div>
 
-            <div id="appended-attrs">
+            <div id="{{ $name }}-appended-attrs" class="appended-attrs">
 
             </div>
 
-            <x-button id="add-attr" type="button" class="mb-4">Add Another Attribute</x-button>
+            <x-button id="{{ $name }}-add-attr" type="button" class="add-attr mb-4">Add Another Attribute</x-button>
 
         </div>
 
