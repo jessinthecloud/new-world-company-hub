@@ -54,9 +54,9 @@ class LoadoutUpsertRequest extends FormRequest
 
             // perks
             $rules['perks.'.$item] = ['array', 'nullable'];
-            $rules['perks.*.'.$item] = ['exists:perks,slug', 'nullable'];
+            $rules['perks.'.$item.'.*'] = ['exists:perks,slug', 'nullable'];
             $rules['attrs.'.$item] = ['array', 'nullable'];
-            $rules['attribute_amounts.*.'.$item] = ['required_with:attributes', 'numeric', 'nullable'];
+            $rules['attribute_amounts.'.$item.'.*'] = ['required_with:attributes', 'numeric', 'nullable'];
             
 //            if ( $item == 'main' || $item == 'offhand' || $item == 'shield' ) {
                 /*// is weapon
@@ -91,9 +91,9 @@ class LoadoutUpsertRequest extends FormRequest
 
             // perks
             $rules['perks.'.$item] = ['array', 'nullable'];
-            $rules['perks.*.'.$item] = ['exists:perks,slug', 'nullable'];
+            $rules['perks.'.$item.'.*'] = ['exists:perks,slug', 'nullable'];
             $rules['attrs.'.$item] = ['array', 'nullable'];
-            $rules['attribute_amounts.*.'.$item] = ['required_with:attributes', 'numeric', 'nullable'];
+            $rules['attribute_amounts.'.$item.'.*'] = ['required_with:attributes', 'numeric', 'nullable'];
             
 //            if ( $item == 'main' || $item == 'offhand' || $item == 'shield' ) {
                 /*// is weapon
