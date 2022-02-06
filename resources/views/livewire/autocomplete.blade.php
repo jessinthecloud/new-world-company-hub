@@ -41,7 +41,12 @@
       },
   }">
   <div
-    x-on:value-selected="updateSelected($event.detail.id, $event.detail.name, $event.detail.type, $event.detail.slug)">
+    x-on:value-selected="updateSelected(
+        $event.detail.id, 
+        $event.detail.name, 
+        $event.detail.type, 
+        $event.detail.slug
+    )">
         <input
           wire:model.debounce.300ms="search"
           x-on:keydown.arrow-down.stop.prevent="highlightNext()"

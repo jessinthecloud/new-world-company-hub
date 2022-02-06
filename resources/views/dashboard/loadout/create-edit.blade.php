@@ -62,6 +62,8 @@
                 <x-forms.equipment-slot
                     :title="ucfirst($name)"
                     :name="$name"
+                    :type="$equipment['type'] ?? null"
+                    :subtype="$equipment['subtype'] ?? null"
                     :item="$equipment['item'] ?? null"
                     :perkOptions="$perk_options"
                     :rarityOptions="$rarity_options"

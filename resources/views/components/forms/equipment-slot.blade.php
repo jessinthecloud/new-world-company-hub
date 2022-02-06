@@ -1,4 +1,4 @@
-@props([ 'title', 'name', 'item', 'perkOptions', 'rarityOptions', 'tierOptions', 'attributeOptions', 'existingPerkOptions'=> [], 'existingAttributeAmounts' =>[]])
+@props([ 'title', 'name', 'type'=>null, 'subtype'=>null, 'item', 'perkOptions', 'rarityOptions', 'tierOptions', 'attributeOptions', 'existingPerkOptions'=> [], 'existingAttributeAmounts' =>[]])
 
 {{-- TODO: ADD NAME PREFIX TO ALL FIELDS --}}
 
@@ -20,7 +20,12 @@
     
     <x-forms.field :name="$name" class="mb-6 w-3/4 lg:w-1/2">
         <x-forms.label for="{{ $name }}" :required="true">Item:</x-forms.label>
-        <livewire:item-autocomplete :search="isset($item) ? $item->name : ''"/>
+        <livewire:item-autocomplete 
+            :search="isset($item) ? $item->name : ''" 
+            :type="$type ?? null"
+            :subtype="$subtype ?? null"
+            :bank="false"
+        />
     </x-forms.field>
     
     <x-forms.field :name="'rarity'" class="mb-6 mr-4" x-cloak x-show="!newEntry">
