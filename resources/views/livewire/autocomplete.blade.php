@@ -70,7 +70,10 @@
               wire:key="{{ $index }}"
               x-on:click.stop="$dispatch('value-selected', {
                 id: {{ $result->id }},
-                name: '{{ $result->name }}',
+                {{-- item names with single quotes is creating JS errors
+                no idea why {{ }} is not already escaping quotes
+                htmlspecialchars() does not work here --}}
+                name: '{{ addslashes($result->name) }}',
                 type: '{{ $result->type }}',
                 slug: '{{ $result->slug }}'
               })"
