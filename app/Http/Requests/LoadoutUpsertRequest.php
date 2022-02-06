@@ -35,6 +35,7 @@ class LoadoutUpsertRequest extends FormRequest
             'gear_score' => ['required', 'numeric'],
             'weight'     => ['nullable', 'numeric', 'max:10000'],
 //            'character'  => ['required', 'integer', 'exists:characters,id'],
+            'equipment_slot_name' => [],
         ];
         
         // TODO: refactor required vs optional checks
@@ -46,7 +47,7 @@ class LoadoutUpsertRequest extends FormRequest
             $rules[ $item . '_base_id' ] = [];
             $rules[ $item . '_base_slug' ] = ['string', 'nullable'];
             // entered fields
-            $rules[ $item . '_equipment_slot_name' ] = ['required',];
+            $rules[ $item . '_item_name' ] = ['required',];
             $rules[ $item . '_gear_score' ] = ['required', 'numeric'];
             $rules[ $item . '_rarity' ] = ['required', /*new Enum(Rarity::class)*/];
             $rules[$item . '_tier'] = ['nullable', /*new Enum(Tier::class),*/ ];

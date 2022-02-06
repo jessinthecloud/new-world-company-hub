@@ -1,7 +1,5 @@
 @props([ 'title', 'name', 'required'=>false, 'type'=>null, 'subtype'=>null, 'item', 'perkOptions', 'raritys', 'tierOptions', 'attributeOptions', 'existingPerkOptions'=> [], 'existingAttributeOptions'=> [], 'existingAttributeAmounts' =>[]])
 
-{{-- TODO: ADD NAME PREFIX TO ALL FIELDS --}}
-
 <div class="equipment-slot w-full flex flex-wrap justify-start border rounded-md p-6 mt-6 mb-6">
     <h2 class="w-full mb-6">{{ $title }}</h2>
 
@@ -18,14 +16,14 @@
         />
     </x-forms.field>
 
-    <x-forms.field :name="$name.'_equipment_slot_name'" class="mb-6 w-3/4 lg:w-1/2">
-        <x-forms.label for="{{ $name }}_equipment_slot_name'" :required="$required">Item:</x-forms.label>
+    <x-forms.field :name="$name.'_item_name'" class="mb-6 w-3/4 lg:w-1/2">
+        <x-forms.label for="{{ $name }}_item_name'" :required="$required">Item:</x-forms.label>
         <livewire:item-autocomplete
-                :search="old($name.'_equipment_slot_name') ?? (isset($item) ? $item->name.'_equipment_slot_name' : '')"
+                :search="old($name.'_item_name') ?? (isset($item) ? $item->name.'_item_name' : '')"
                 :type="$type ?? null"
                 :subtype="$subtype ?? null"
                 :bank="false"
-                :equipSlotName="$name.'_equipment_slot_name'"
+                :equipSlotName="$name.'_item_name'"
         />
     </x-forms.field>
 
@@ -133,6 +131,8 @@
 
     </div>
     <!-- end perks-attr-wrapper -->
+    
+    <input type="hidden" name="equipment_slot_name[]" value="{{ $name }}"/>
 
     <input id="{{ $name }}-base-model-id" type="hidden" name="{{ $name }}_base_id"
            value="{{ isset($item) && isset($item->base) ? $item->base->id : '' }}"/>

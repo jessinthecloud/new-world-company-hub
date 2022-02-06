@@ -243,7 +243,6 @@ class LoadoutsController extends Controller
             'dashboard.loadout.create-edit',
             [
                 'equipment_slots' => $equipment_slots,
-//                'perk_options' => $this->weaponService->perkOptions(selected: old('perks') ?? []),
                 'perk_options' => $this->weaponService->perkOptions(),
                 'raritys' => Rarity::valueToAssociative(),
                 'tier_options' => $this->weaponService->tierOptions(),
@@ -260,6 +259,11 @@ class LoadoutsController extends Controller
     {
         $validated = $request->validated();
 dd($validated);
+        
+        // todo: loop slot names to create items
+        
+        // todo: attach items to loadout in designated slot
+
         $loadout = Loadout::create([
             'name' => $validated['name'],
             'weight' => $validated['weight'],
