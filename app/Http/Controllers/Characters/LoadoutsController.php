@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Characters;
 
 use App\Enums\ArmorType;
+use App\Enums\WeaponType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoadoutUpsertRequest;
 use App\Models\Characters\Character;
@@ -66,46 +67,57 @@ class LoadoutsController extends Controller
                     'main' => [
                         'type' => 'weapon',
                         'subtype'=>null,
+                        'required' => true,
                     ],
                     'offhand' => [
                         'type' => 'weapon',
                         'subtype'=>null,
+                        'required' => true,
                     ],
                     'head' => [
                         'type' => 'armor',
                         'subtype'=>ArmorType::from('Helmet')->name,
+                        'required' => true,
                     ],
                     'chest' => [
                         'type' => 'armor',
                         'subtype'=>ArmorType::from('Chest')->name,
+                        'required' => true,
                     ],
                     'legs' => [
                         'type' => 'armor',
                         'subtype'=>ArmorType::from('Pants')->name,
+                        'required' => true,
                     ],
                     'feet' => [
                         'type' => 'armor',
                         'subtype'=>ArmorType::from('Shoes')->name,
+                        'required' => true,
                     ],
                     'hands' => [
                         'type' => 'armor',
                         'subtype'=>ArmorType::from('Gloves')->name,
+                        'required' => true,
                     ],
                     'neck' => [
                         'type' => 'armor',
                         'subtype'=>ArmorType::from('Amulet')->name,
+                        'required' => true,
                     ],
                     'ring' => [
                         'type' => 'armor',
                         'subtype'=>ArmorType::from('Ring')->name,
+                        'required' => true,
                     ],
                     'earring' => [
                         'type' => 'armor',
                         'subtype'=>ArmorType::from('Earring')->name,
+                        'required' => true,
                     ],
                     'shield' => [
                         'type' => 'weapon',
-                        'subtype'=>null,
+                        'subtype'=>WeaponType::Shield->value,
+                        'required' => false,
                     ],
                 ],
                 'perk_options' => $this->weaponService->perkOptions(),
@@ -123,7 +135,7 @@ class LoadoutsController extends Controller
     public function store( LoadoutUpsertRequest $request )
     {
         $validated = $request->validated();
-//dump($validated, $loadout, $loadout->weapons->pluck('pivot')->pluck('level')/*, $request*/);
+dd($validated);
         $loadout = Loadout::create([
             'name' => $validated['name'],
             'weight' => $validated['weight'],

@@ -1,4 +1,4 @@
-@props([ 'title', 'name', 'type'=>null, 'subtype'=>null, 'item', 'perkOptions', 'rarityOptions', 'tierOptions', 'attributeOptions', 'existingPerkOptions'=> [], 'existingAttributeAmounts' =>[]])
+@props([ 'title', 'name', 'required'=>false, 'type'=>null, 'subtype'=>null, 'item', 'perkOptions', 'rarityOptions', 'tierOptions', 'attributeOptions', 'existingPerkOptions'=> [], 'existingAttributeAmounts' =>[]])
 
 {{-- TODO: ADD NAME PREFIX TO ALL FIELDS --}}
 
@@ -6,7 +6,7 @@
     <h2 class="w-full mb-6">{{ $title }}</h2>
 
     <x-forms.field :name="$name.'_gear_score'" class="mb-6 mr-4">
-        <x-forms.label for="{{ $name }}_gear_score" :required="true">Gear Score:</x-forms.label>
+        <x-forms.label for="{{ $name }}_gear_score" :required="$required">Gear Score:</x-forms.label>
         <x-forms.input
                 id="{{ $name }}_gear_score"
                 class=""
@@ -14,14 +14,14 @@
                 name="{{ $name }}_gear_score"
                 value="{{ old($name.'_gear_score') ?? (isset($item) ? $item->gear_score : '') }}"
                 size="10"
-                :required="true"
+                :required="$required"
         />
     </x-forms.field>
 
     <x-forms.field :name="$name" class="mb-6 w-3/4 lg:w-1/2">
-        <x-forms.label for="{{ $name }}" :required="true">Item:</x-forms.label>
+        <x-forms.label for="{{ $name }}" :required="$required">Item:</x-forms.label>
         <livewire:item-autocomplete
-                :search="isset($item) ? $item->name : ''"
+                :search="old($name) ?? (isset($item) ? $item->name : '')"
                 :type="$type ?? null"
                 :subtype="$subtype ?? null"
                 :bank="false"
@@ -30,10 +30,10 @@
     </x-forms.field>
 
     <x-forms.field :name="$name.'_rarity'" class="mb-6 mr-4">
-        <x-forms.label for="{{ $name }}_rarity" :required="true">Rarity:</x-forms.label>
+        <x-forms.label for="{{ $name }}_rarity" :required="$required">Rarity:</x-forms.label>
         <x-forms.select name="{{ $name }}_rarity" id="{{ $name }}_rarity"
                         :values="$raritys ?? null"
-                        :required="true"
+                        :required="$required"
         >{!! $rarityOptions ?? '' !!}</x-forms.select>
     </x-forms.field>
 
