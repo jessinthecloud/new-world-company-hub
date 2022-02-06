@@ -214,25 +214,19 @@ class LoadoutsController extends Controller
             // loop equip types
             foreach($equipment_slots as $name => $info) {
                 // get old values
-//dump($name, old($name.'_perks'));                
+//dump(request()->old(), $name, old('perks')[$name]);                
                 // existing perks
                 $equipment_slots[$name]['existing_perk_options'] = $this->weaponService->existingPerkOptions(
-                    array_filter(old($name.'_perks')),
-                    Perk::asArrayForDropDown(),
-                );
-                
-                // existing perks
-                $equipment_slots[$name]['existing_perk_options'] = $this->weaponService->existingPerkOptions(
-                    array_filter(old($name.'_perks')),
+                    array_filter(old('perks')[$name]),
                     Perk::asArrayForDropDown(),
                 );
                 
                 // existing attributes
                 [$existing_attribute_amounts, $existing_attribute_options] = 
                 $this->weaponService->existingAttributeOptions(
-                    array_filter(old($name.'_attrs')),
+                    array_filter(old('attrs')[$name]),
                     collect(AttributeType::cases())->sortBy('value')->all(),
-                    array_filter(old($name.'_attribute_amounts')),
+                    array_filter(old('attribute_amounts')[$name]),
                 );
                 $equipment_slots[$name]['existing_attribute_options'] = $existing_attribute_options;
                 $equipment_slots[$name]['existing_attribute_amounts'] = $existing_attribute_amounts;
@@ -258,9 +252,12 @@ class LoadoutsController extends Controller
     public function store( LoadoutUpsertRequest $request )
     {
         $validated = $request->validated();
-dd($validated);
         
         // todo: loop slot names to create items
+        foreach($validated['equipment_slot_name'] as $equipment_slot){
+            
+        }
+dd($this->request->all(), $validated);
         
         // todo: attach items to loadout in designated slot
 

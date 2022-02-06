@@ -25,8 +25,6 @@
                 // add another perk field set
                 $(this).siblings('.appended-perks').append($(this).siblings('.perks-wrapper').clone());
             });
-
-            
         });
 
                     function getName(item){

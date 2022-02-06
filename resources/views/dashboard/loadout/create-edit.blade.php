@@ -32,14 +32,14 @@
                 />
             </x-forms.field>--}}
             
-            <x-forms.field :name="'gear_score'" class="mb-6 mr-4">
-                <x-forms.label for="gear_score" :required="true">Character Gear Score:</x-forms.label>
+            <x-forms.field :name="'gear_score_character'" class="mb-6 mr-4">
+                <x-forms.label for="gear_score_character" :required="true">Character Gear Score:</x-forms.label>
                 <x-forms.input 
-                    id="gear_score"
+                    id="gear_score_character"
                     class=""
                     type="text"
-                    name="gear_score" 
-                    value="{{ old('gear_score') ?? (isset($item) ? $item->gear_score : '') }}"
+                    name="gear_score[character]" 
+                    value="{{ old('gear_score')['character'] ?? (isset($item) ? $item->gear_score : '') }}"
                     size="10"
                     :required="true" 
                 />

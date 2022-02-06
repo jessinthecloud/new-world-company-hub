@@ -32,84 +32,84 @@ class LoadoutUpsertRequest extends FormRequest
 
         $rules = [
 //            'name'       => ['string', 'max:255', 'nullable'],
-            'gear_score' => ['required', 'numeric'],
+            'gear_score.character' => ['required', 'numeric'],
             'weight'     => ['nullable', 'numeric', 'max:10000'],
 //            'character'  => ['required', 'integer', 'exists:characters,id'],
-            'equipment_slot_name' => [],
+            'equipment_slot_names' => ['array'],
         ];
         
         // TODO: refactor required vs optional checks
         foreach ( $required_equipment as $item ) {
             // fields for edit
-            $rules[ $item . '_id' ] = ['nullable', 'integer', 'exists:inventory_items,id'];
-            $rules[ $item . '_slug' ] = ['string', 'nullable'];
+            $rules[ 'id.'.$item] = ['nullable', 'integer', 'exists:inventory_items,id'];
+            $rules[ 'slug.'.$item] = ['string', 'nullable'];
             // auto filled fields
-            $rules[ $item . '_base_id' ] = [];
-            $rules[ $item . '_base_slug' ] = ['string', 'nullable'];
+            $rules[ 'base_id.'.$item] = [];
+            $rules[ 'base_slug.'.$item] = ['string', 'nullable'];
             // entered fields
-            $rules[ $item . '_item_name' ] = ['required',];
-            $rules[ $item . '_gear_score' ] = ['required', 'numeric'];
-            $rules[ $item . '_rarity' ] = ['required', /*new Enum(Rarity::class)*/];
-            $rules[$item . '_tier'] = ['nullable', /*new Enum(Tier::class),*/ ];
+            $rules[$item] = ['required',];
+            $rules[ 'gear_score.'.$item] = ['required', 'numeric'];
+            $rules[ 'rarity.'.$item] = ['required', /*new Enum(Rarity::class)*/];
+            $rules['tier.'.$item] = ['nullable', /*new Enum(Tier::class),*/ ];
 
             // perks
-            $rules[$item . '_perks'] = ['array', 'nullable'];
-            $rules[$item . '_perks.*'] = ['exists:perks,slug', 'nullable'];
-            $rules[$item . '_attrs'] = ['array', 'nullable'];
-            $rules[$item . '_attribute_amounts.*'] = ['required_with:attributes', 'numeric', 'nullable'];
+            $rules['perks.'.$item] = ['array', 'nullable'];
+            $rules['perks.*.'.$item] = ['exists:perks,slug', 'nullable'];
+            $rules['attrs.'.$item] = ['array', 'nullable'];
+            $rules['attribute_amounts.*.'.$item] = ['required_with:attributes', 'numeric', 'nullable'];
             
 //            if ( $item == 'main' || $item == 'offhand' || $item == 'shield' ) {
                 /*// is weapon
-                $rules[$item . '_weapon_type'] = [
+                $rules['weapon_type'] = [
                     //'required_if:is_weapon,true', 
                     //new Enum(WeaponType::class),
                     'required',
                 ];*/
 //            } else {
                 /*// is armor
-                $rules[$item . '_armor_type']= [
+                $rules['armor_type']= [
                     //'required_if:is_armor,true', 
                     //new Enum(ArmorType::class),
                     'required',
                 ];*/
-//                $rules[$item . '_weight_class'] = ['required', /*new Enum(WeightClass::class)*/];
+//                $rules['weight_class'] = ['required', /*new Enum(WeightClass::class)*/];
 //            }
         }
         
         foreach ( $other_equipment as $item ) {
             // fields for edit
-            $rules[ $item . '_id' ] = ['nullable', 'integer', 'exists:inventory_items,id'];
-            $rules[ $item . '_slug' ] = ['string', 'nullable'];
-            // auto filled fields
-            $rules[ $item . '_base_id' ] = [];
-            $rules[ $item . '_base_slug' ] = ['string', 'nullable'];
+            $rules[ 'id.'.$item] = ['nullable', 'integer', 'exists:inventory_items,id'];
+            $rules[ 'slug.'.$item] = ['string', 'nullable'];
+            // automatically filled fields
+            $rules[ 'base_id.'.$item] = [];
+            $rules[ 'base_slug.'.$item] = ['string', 'nullable'];
             // entered fields
             $rules[ $item ] = ['nullable',];
-            $rules[ $item . '_gear_score' ] = ['nullable', 'numeric'];
-            $rules[ $item . '_rarity' ] = ['nullable', /*new Enum(Rarity::class)*/];
-            $rules[$item . '_tier'] = ['nullable', /*new Enum(Tier::class),*/ ];
+            $rules[ 'gear_score.'.$item] = ['nullable', 'numeric'];
+            $rules[ 'rarity.'.$item] = ['nullable', /*new Enum(Rarity::class)*/];
+            $rules['tier.'.$item] = ['nullable', /*new Enum(Tier::class),*/ ];
 
             // perks
-            $rules[$item . '_perks'] = ['array', 'nullable'];
-            $rules[$item . '_perks.*'] = ['exists:perks,slug', 'nullable'];
-            $rules[$item . '_attrs'] = ['array', 'nullable'];
-            $rules[$item . '_attribute_amounts.*'] = ['required_with:attributes', 'numeric', 'nullable'];
+            $rules['perks.'.$item] = ['array', 'nullable'];
+            $rules['perks.*.'.$item] = ['exists:perks,slug', 'nullable'];
+            $rules['attrs.'.$item] = ['array', 'nullable'];
+            $rules['attribute_amounts.*.'.$item] = ['required_with:attributes', 'numeric', 'nullable'];
             
 //            if ( $item == 'main' || $item == 'offhand' || $item == 'shield' ) {
                 /*// is weapon
-                $rules[$item . '_weapon_type'] = [
+                $rules['weapon_type'] = [
                     //'required_if:is_weapon,true', 
                     //new Enum(WeaponType::class),
                     'nullable',
                 ];*/
 //            } else {
                 /*// is armor
-                $rules[$item . '_armor_type']= [
+                $rules['armor_type']= [
                     //'required_if:is_armor,true', 
                     //new Enum(ArmorType::class),
                     'nullable',
                 ];*/
-//                $rules[$item . '_weight_class'] = ['required', /*new Enum(WeightClass::class)*/];
+//                $rules['weight_class'] = ['required', /*new Enum(WeightClass::class)*/];
 //            }
         }
 
