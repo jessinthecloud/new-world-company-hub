@@ -15,32 +15,42 @@ use Illuminate\Support\Str;
 
 abstract class ItemService implements ItemServiceContract
 {
+    /**
+     * @param array|null $perks     array of Perks
+     * @param array      $selected  array of slugs of selected perks 
+     *
+     * @return string
+     */
     public function perkOptions( array $perks=null ) : string
     {
-        $perks ??= Perk::orderBy('name')->distinct()->get()->mapWithKeys(function($perk){
-            return [$perk->slug => $perk->name];
-        })->all();
+        $perks ??= Perk::asArrayForDropDown();
 
-        $perk_options = '<option value=""></option>';
-        foreach($perks as $value => $text) {
-            $perk_options .= '<option value="'.$value.'">'.$text.'</option>';
-        }
-        
-        return $perk_options;
+        return Perk::selectOptions($perks);
     }
 
+    /**
+     * @param array $item_perks array of Perks or Perk slug strings
+     * @param array $perks      
+     *
+     * @return array
+     */
     public function existingPerkOptions( array $item_perks, array $perks ) : array
     {
         $existing_perk_options = [];
+        $i=0;
         foreach($item_perks as $perk){
-            $existing_perk_options [$perk->id]= '<option value=""></option>';
+            // allow $perks to be array of slugs
+            $slug = ($perk instanceof Perk) ? $perk->slug : $perk;
+            
+            $existing_perk_options [$i]= '<option value=""></option>';
             foreach($perks as $value => $text) {
-                $existing_perk_options [$perk->id].= '<option value="'.$value.'"';
-                    if($value == $perk->slug){
-                        $existing_perk_options [$perk->id].= ' SELECTED ';
+                $existing_perk_options [$i].= '<option value="'.$value.'"';
+                    if($value == $slug){
+                        $existing_perk_options [$i].= ' SELECTED ';
                     }
-                $existing_perk_options [$perk->id].= '>'.$text.'</option>';
+                $existing_perk_options [$i].= '>'.$text.'</option>';
             }
+            $i++;
         }
         
         return $existing_perk_options;

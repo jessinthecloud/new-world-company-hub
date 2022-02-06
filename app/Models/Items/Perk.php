@@ -52,10 +52,26 @@ class Perk extends Model
     }
     
 // -- MISC
-    public static function asArrayForDropDown()
+    public static function asArrayForDropDown() : array
     {
         return static::orderBy('name')->get()->mapWithKeys(function($perk){
             return [$perk->slug => $perk->name];
         })->all();
+    }
+    
+    public static function selectOptions(array $models=null, array $selected=[]) : string
+    {
+        $models ??= static::asArrayForDropDown();
+        
+        $options = '<option value=""></option>'."\n";
+        foreach($models as $value => $text) {
+//            $options .= '<option value="'.$value.'">'.$text.'</option>';
+            $options .= '<option value="'.$value.'"';
+                if(in_array($value, $selected)){
+                    $options .= ' SELECTED ';
+                }
+            $options .= '>'.$text.'</option>'."\n";
+        }
+        return $options;
     }
 }

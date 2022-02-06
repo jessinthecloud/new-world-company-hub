@@ -9,6 +9,7 @@ use App\Http\Requests\LoadoutUpsertRequest;
 use App\Models\Characters\Character;
 use App\Models\Characters\Loadout;
 use App\Models\Items\BaseWeapon;
+use App\Models\Items\Perk;
 use App\Services\ArmorService;
 use App\Services\WeaponService;
 use Illuminate\Contracts\View\View;
@@ -60,66 +61,178 @@ class LoadoutsController extends Controller
      */
     public function create() : View
     {
+        $equipment_slots = [
+            'main' => [
+                'type' => 'weapon',
+                'subtype'=>null,
+                'required' => true,
+                'fields' => [
+                    'tier' => null,
+                    'rarity' => null,
+                    'perks' => [],
+                    'attributes' => [],
+                    'gear_score' => null,
+                    'name' => null,
+                ],
+            ],
+            'offhand' => [
+                'type' => 'weapon',
+                'subtype'=>null,
+                'required' => true,
+                'fields' => [
+                    'tier' => null,
+                    'rarity' => null,
+                    'perks' => [],
+                    'attributes' => [],
+                    'gear_score' => null,
+                    'name' => null,
+                ],
+            ],
+            'head' => [
+                'type' => 'armor',
+                'subtype'=>ArmorType::from('Helmet')->name,
+                'required' => true,
+                'fields' => [
+                    'tier' => null,
+                    'rarity' => null,
+                    'perks' => [],
+                    'attributes' => [],
+                    'gear_score' => null,
+                    'name' => null,
+                ],
+            ],
+            'chest' => [
+                'type' => 'armor',
+                'subtype'=>ArmorType::from('Chest')->name,
+                'required' => true,
+                'fields' => [
+                    'tier' => null,
+                    'rarity' => null,
+                    'perks' => [],
+                    'attributes' => [],
+                    'gear_score' => null,
+                    'name' => null,
+                ],
+            ],
+            'legs' => [
+                'type' => 'armor',
+                'subtype'=>ArmorType::from('Pants')->name,
+                'required' => true,
+                'fields' => [
+                    'tier' => null,
+                    'rarity' => null,
+                    'perks' => [],
+                    'attributes' => [],
+                    'gear_score' => null,
+                    'name' => null,
+                ],
+            ],
+            'feet' => [
+                'type' => 'armor',
+                'subtype'=>ArmorType::from('Shoes')->name,
+                'required' => true,
+                'fields' => [
+                    'tier' => null,
+                    'rarity' => null,
+                    'perks' => [],
+                    'attributes' => [],
+                    'gear_score' => null,
+                    'name' => null,
+                ],
+            ],
+            'hands' => [
+                'type' => 'armor',
+                'subtype'=>ArmorType::from('Gloves')->name,
+                'required' => true,
+                'fields' => [
+                    'tier' => null,
+                    'rarity' => null,
+                    'perks' => [],
+                    'attributes' => [],
+                    'gear_score' => null,
+                    'name' => null,
+                ],
+            ],
+            'neck' => [
+                'type' => 'armor',
+                'subtype'=>ArmorType::from('Amulet')->name,
+                'required' => true,
+                'fields' => [
+                    'tier' => null,
+                    'rarity' => null,
+                    'perks' => [],
+                    'attributes' => [],
+                    'gear_score' => null,
+                    'name' => null,
+                ],
+            ],
+            'ring' => [
+                'type' => 'armor',
+                'subtype'=>ArmorType::from('Ring')->name,
+                'required' => true,
+                'fields' => [
+                    'tier' => null,
+                    'rarity' => null,
+                    'perks' => [],
+                    'attributes' => [],
+                    'gear_score' => null,
+                    'name' => null,
+                ],
+            ],
+            'earring' => [
+                'type' => 'armor',
+                'subtype'=>ArmorType::from('Earring')->name,
+                'required' => true,
+                'fields' => [
+                    'tier' => null,
+                    'rarity' => null,
+                    'perks' => [],
+                    'attributes' => [],
+                    'gear_score' => null,
+                    'name' => null,
+                ],
+            ],
+            'shield' => [
+                'type' => 'weapon',
+                'subtype'=>WeaponType::Shield->value,
+                'required' => false,
+                'fields' => [
+                    'tier' => null,
+                    'rarity' => null,
+                    'perks' => [],
+                    'attributes' => [],
+                    'gear_score' => null,
+                    'name' => null,
+                ],
+            ],
+        ];
+        // on failed submission
+        if(!empty(old())){
+//dump(request()->old());
+            // loop equip types
+            foreach($equipment_slots as $name => $info) {
+                // get old values
+//dump($name, old($name.'_perks'));                
+                // existing perks
+                $equipment_slots[$name]['existing_perk_options'] = $this->weaponService->existingPerkOptions(
+                    array_filter(old($name.'_perks')),
+                    Perk::asArrayForDropDown(),
+                );
+                
+                // existing attrs
+                /*$equipment_slots[$name]['existing_attribute_options'] = $this->weaponService->existingPerkOptions(
+                    old($name.'_perks[]'),
+                    Perk::asArrayForDropDown(),
+                );*/
+            }
+        }
+    
         return view(
             'dashboard.loadout.create-edit',
             [
-                'equipment_slots' => [
-                    'main' => [
-                        'type' => 'weapon',
-                        'subtype'=>null,
-                        'required' => true,
-                    ],
-                    'offhand' => [
-                        'type' => 'weapon',
-                        'subtype'=>null,
-                        'required' => true,
-                    ],
-                    'head' => [
-                        'type' => 'armor',
-                        'subtype'=>ArmorType::from('Helmet')->name,
-                        'required' => true,
-                    ],
-                    'chest' => [
-                        'type' => 'armor',
-                        'subtype'=>ArmorType::from('Chest')->name,
-                        'required' => true,
-                    ],
-                    'legs' => [
-                        'type' => 'armor',
-                        'subtype'=>ArmorType::from('Pants')->name,
-                        'required' => true,
-                    ],
-                    'feet' => [
-                        'type' => 'armor',
-                        'subtype'=>ArmorType::from('Shoes')->name,
-                        'required' => true,
-                    ],
-                    'hands' => [
-                        'type' => 'armor',
-                        'subtype'=>ArmorType::from('Gloves')->name,
-                        'required' => true,
-                    ],
-                    'neck' => [
-                        'type' => 'armor',
-                        'subtype'=>ArmorType::from('Amulet')->name,
-                        'required' => true,
-                    ],
-                    'ring' => [
-                        'type' => 'armor',
-                        'subtype'=>ArmorType::from('Ring')->name,
-                        'required' => true,
-                    ],
-                    'earring' => [
-                        'type' => 'armor',
-                        'subtype'=>ArmorType::from('Earring')->name,
-                        'required' => true,
-                    ],
-                    'shield' => [
-                        'type' => 'weapon',
-                        'subtype'=>WeaponType::Shield->value,
-                        'required' => false,
-                    ],
-                ],
+                'existing_perk_options'=>$existing_perk_options ?? [],
+                'equipment_slots' => $equipment_slots,
+//                'perk_options' => $this->weaponService->perkOptions(selected: old('perks') ?? []),
                 'perk_options' => $this->weaponService->perkOptions(),
                 'rarity_options' => $this->weaponService->rarityOptions(),
                 'tier_options' => $this->weaponService->tierOptions(),

@@ -18,14 +18,14 @@
         />
     </x-forms.field>
 
-    <x-forms.field :name="$name" class="mb-6 w-3/4 lg:w-1/2">
-        <x-forms.label for="{{ $name }}" :required="$required">Item:</x-forms.label>
+    <x-forms.field :name="$name.'_equipment_slot_name'" class="mb-6 w-3/4 lg:w-1/2">
+        <x-forms.label for="{{ $name }}_equipment_slot_name'" :required="$required">Item:</x-forms.label>
         <livewire:item-autocomplete
-                :search="old($name) ?? (isset($item) ? $item->name : '')"
+                :search="old($name.'_equipment_slot_name') ?? (isset($item) ? $item->name.'_equipment_slot_name' : '')"
                 :type="$type ?? null"
                 :subtype="$subtype ?? null"
                 :bank="false"
-                :equipSlotName="$name"
+                :equipSlotName="$name.'_equipment_slot_name'"
         />
     </x-forms.field>
 
@@ -42,7 +42,7 @@
             <h4 class="mb-1">Perks:</h4>
 
             @if(!empty($existingPerkOptions))
-                @foreach($existingPerkOptions as $id => $options)
+                @foreach($existingPerkOptions as $options)
                     <div id="{{ $name }}-existing-perks-wrapper"
                          class="existing-perks-wrapper block w-full flex flex-wrap justify-start items-end">
                         <x-forms.field :name="$name.'_perks'" class="mb-6">
