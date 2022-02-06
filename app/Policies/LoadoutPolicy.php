@@ -60,15 +60,15 @@ class LoadoutPolicy
             )
             ||
             (
-                $user->can('create own company loadouts')/* 
+                $user->can('create own company loadouts') 
                 &&
-                $user->company()->id == $loadout->company->id*/
+                $user->company()->id == $user->loadout()->company->id
             )
             ||
             (
-                $user->can('create own faction loadouts')/* 
+                $user->can('create own faction loadouts') 
                 &&
-                $user->faction()->id == $loadout->company->faction->id*/
+                $user->faction()->id == $user->loadout()->company->faction->id
             )
         );
     }
