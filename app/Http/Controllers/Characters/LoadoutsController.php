@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Characters;
 
+use App\Enums\ArmorType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoadoutUpsertRequest;
 use App\Models\Characters\Character;
@@ -62,17 +63,50 @@ class LoadoutsController extends Controller
             'dashboard.loadout.create-edit',
             [
                 'equipment_slots' => [
-                    'main' => [],
-                    'offhand' => [],
-                    'head' => [],
-                    'chest' => [],
-                    'legs' => [],
-                    'feet' => [],
-                    'hands' => [],
-                    'neck' => [],
-                    'ring' => [],
-                    'earring' => [],
-                    'shield' => [],
+                    'main' => [
+                        'type' => 'weapon',
+                        'subtype'=>null,
+                    ],
+                    'offhand' => [
+                        'type' => 'weapon',
+                        'subtype'=>null,
+                    ],
+                    'head' => [
+                        'type' => 'armor',
+                        'subtype'=>ArmorType::from('Helmet')->name,
+                    ],
+                    'chest' => [
+                        'type' => 'armor',
+                        'subtype'=>ArmorType::from('Chest')->name,
+                    ],
+                    'legs' => [
+                        'type' => 'armor',
+                        'subtype'=>ArmorType::from('Pants')->name,
+                    ],
+                    'feet' => [
+                        'type' => 'armor',
+                        'subtype'=>ArmorType::from('Shoes')->name,
+                    ],
+                    'hands' => [
+                        'type' => 'armor',
+                        'subtype'=>ArmorType::from('Gloves')->name,
+                    ],
+                    'neck' => [
+                        'type' => 'armor',
+                        'subtype'=>ArmorType::from('Amulet')->name,
+                    ],
+                    'ring' => [
+                        'type' => 'armor',
+                        'subtype'=>ArmorType::from('Ring')->name,
+                    ],
+                    'earring' => [
+                        'type' => 'armor',
+                        'subtype'=>ArmorType::from('Earring')->name,
+                    ],
+                    'shield' => [
+                        'type' => 'weapon',
+                        'subtype'=>null,
+                    ],
                 ],
                 'perk_options' => $this->weaponService->perkOptions(),
                 'rarity_options' => $this->weaponService->rarityOptions(),
