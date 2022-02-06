@@ -80,8 +80,9 @@
               x-on:click.stop="$dispatch('value-selected', {
                 itemId: {{ $result->id }},
                 {{-- item names with single quotes is creating JS errors
-                no idea why {{ }} is not already escaping the quotes with htmlspecialchars() --}}
-                itemName: '{{ htmlspecialchars($result->name, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401) }}',
+                no idea why {{ }} is not already escaping quotes
+                htmlspecialchars() does not work here --}}
+                itemName: '{{ addslashes($result->name) }}',
                 itemType: '{{ $result->type }}',
                 itemSlug: '{{ $result->slug }}',
                 inputName: '{{ $equipSlotName }}'
