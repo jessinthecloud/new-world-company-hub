@@ -67,7 +67,7 @@
                     :item="$equipment['item'] ?? null"
                     :required="$equipment['required'] ?? null"
                     :perkOptions="$perk_options"
-                    :rarityOptions="$rarity_options"
+                    :raritys="$raritys"
                     :tierOptions="$tier_options"
                     :attributeOptions="$attribute_options"
                     :existingPerkOptions="$equipment['existing_perk_options'] ?? []"

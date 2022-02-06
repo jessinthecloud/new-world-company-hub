@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Characters;
 
 use App\Enums\ArmorType;
 use App\Enums\AttributeType;
+use App\Enums\Rarity;
 use App\Enums\WeaponType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoadoutUpsertRequest;
@@ -244,7 +245,7 @@ class LoadoutsController extends Controller
                 'equipment_slots' => $equipment_slots,
 //                'perk_options' => $this->weaponService->perkOptions(selected: old('perks') ?? []),
                 'perk_options' => $this->weaponService->perkOptions(),
-                'rarity_options' => $this->weaponService->rarityOptions(),
+                'raritys' => Rarity::valueToAssociative(),
                 'tier_options' => $this->weaponService->tierOptions(),
                 'weight_class_options' => $this->armorService->weightClassOptions(),
                 'attribute_options' => $this->weaponService->attributeOptions(),

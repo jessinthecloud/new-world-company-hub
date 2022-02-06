@@ -1,4 +1,4 @@
-@props([ 'title', 'name', 'required'=>false, 'type'=>null, 'subtype'=>null, 'item', 'perkOptions', 'rarityOptions', 'tierOptions', 'attributeOptions', 'existingPerkOptions'=> [], 'existingAttributeOptions'=> [], 'existingAttributeAmounts' =>[]])
+@props([ 'title', 'name', 'required'=>false, 'type'=>null, 'subtype'=>null, 'item', 'perkOptions', 'raritys', 'tierOptions', 'attributeOptions', 'existingPerkOptions'=> [], 'existingAttributeOptions'=> [], 'existingAttributeAmounts' =>[]])
 
 {{-- TODO: ADD NAME PREFIX TO ALL FIELDS --}}
 
@@ -34,7 +34,7 @@
         <x-forms.select name="{{ $name }}_rarity" id="{{ $name }}_rarity"
                         :values="$raritys ?? null"
                         :required="$required"
-        >{!! $rarityOptions ?? '' !!}</x-forms.select>
+        ></x-forms.select>
     </x-forms.field>
 
     <div id="{{ $name }}-perks-attr-wrapper" class="w-full flex flex-wrap justify-start">

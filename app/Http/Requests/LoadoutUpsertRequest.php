@@ -46,7 +46,7 @@ class LoadoutUpsertRequest extends FormRequest
             $rules[ $item . '_base_id' ] = [];
             $rules[ $item . '_base_slug' ] = ['string', 'nullable'];
             // entered fields
-            $rules[ $item ] = ['required',];
+            $rules[ $item . '_equipment_slot_name' ] = ['required',];
             $rules[ $item . '_gear_score' ] = ['required', 'numeric'];
             $rules[ $item . '_rarity' ] = ['required', /*new Enum(Rarity::class)*/];
             $rules[$item . '_tier'] = ['nullable', /*new Enum(Tier::class),*/ ];
