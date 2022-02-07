@@ -224,7 +224,7 @@ abstract class ItemService implements ItemServiceContract
         
         $rarity_input = $validated['rarity'];
         $values['rarity']= !empty($rarity_input) 
-            ? constant("App\Enums\Rarity::$rarity_input")?->value 
+            ? Rarity::from($rarity_input)?->value 
             : $base->rarity ?? null;
             
         $tier_input = $validated['tier'];

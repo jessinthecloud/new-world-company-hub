@@ -148,7 +148,7 @@
         value="{{ old('id')[$name] ?? (isset($item) ? $item->id : '') }}"
     />
     <input type="hidden" 
-        name="slug" 
+        name="slug[{{$name}}]" 
         value="{{ old('slug')[$name] ?? (isset($item) ? $item->slug : '') }}"
     />
     <input id="{{ $name }}-itemType" type="hidden" 

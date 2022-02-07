@@ -43,6 +43,7 @@ class LoadoutUpsertRequest extends FormRequest
             // fields for edit
             $rules[ 'id.'.$item] = ['nullable', 'integer', 'exists:inventory_items,id'];
             $rules[ 'slug.'.$item] = ['string', 'nullable'];
+            $rules[ 'itemType.'.$item] = ['string', 'nullable'];
             // auto filled fields
             $rules[ 'base_id.'.$item] = [];
             $rules[ 'base_slug.'.$item] = ['string', 'nullable'];
@@ -56,7 +57,7 @@ class LoadoutUpsertRequest extends FormRequest
             $rules['perks.'.$item] = ['array', 'nullable'];
             $rules['perks.*.'.$item] = ['exists:perks,slug', 'nullable'];
             $rules['attrs.'.$item] = ['array', 'nullable'];
-            $rules['attribute_amounts.*.'.$item] = ['required_with:attributes', 'numeric', 'nullable'];
+            $rules['attribute_amounts.'.$item.'.*'] = ['required_with:attributes', 'numeric', 'nullable'];
             
 //            if ( $item == 'main' || $item == 'offhand' || $item == 'shield' ) {
                 /*// is weapon
@@ -80,6 +81,7 @@ class LoadoutUpsertRequest extends FormRequest
             // fields for edit
             $rules[ 'id.'.$item] = ['nullable', 'integer', 'exists:inventory_items,id'];
             $rules[ 'slug.'.$item] = ['string', 'nullable'];
+            $rules[ 'itemType.'.$item] = ['string', 'nullable'];
             // automatically filled fields
             $rules[ 'base_id.'.$item] = [];
             $rules[ 'base_slug.'.$item] = ['string', 'nullable'];
@@ -93,7 +95,7 @@ class LoadoutUpsertRequest extends FormRequest
             $rules['perks.'.$item] = ['array', 'nullable'];
             $rules['perks.*.'.$item] = ['exists:perks,slug', 'nullable'];
             $rules['attrs.'.$item] = ['array', 'nullable'];
-            $rules['attribute_amounts.*.'.$item] = ['required_with:attributes', 'numeric', 'nullable'];
+            $rules['attribute_amounts.'.$item.'.*'] = ['required_with:attributes', 'numeric', 'nullable'];
             
 //            if ( $item == 'main' || $item == 'offhand' || $item == 'shield' ) {
                 /*// is weapon
