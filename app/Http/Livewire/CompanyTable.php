@@ -6,6 +6,7 @@ use App\Models\Characters\Character;
 use App\Models\Companies\Company;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filter;
@@ -74,5 +75,12 @@ class CompanyTable extends DataTableComponent
             // -- class filter --
             ->when($this->getFilter('class'), fn ($query, $class) => $query->whereRelation('class', 'id', $class))
             ;
+    }
+    
+    public function getTableRowUrl($row): string
+    {
+        return route('loadouts.show', [
+            'loadout'=>$row->loadout->id,
+        ]);
     }
 }

@@ -326,7 +326,9 @@ class LoadoutsController extends Controller
 
     public function show( Loadout $loadout )
     {
-        //
+        return view('loadouts.show', [
+            'loadout' => $loadout,
+        ]);
     }
 
     /**
