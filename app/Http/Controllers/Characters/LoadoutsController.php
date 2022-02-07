@@ -253,7 +253,7 @@ class LoadoutsController extends Controller
     {
         $validated = $request->validated();
 
-dump($request->all(), $validated, '=========');
+//dump($request->all(), $validated, '=========');
         $inventory = [];
         // loop slot names to create items
         foreach($validated['equipment_slot_names'] as $equipment_slot){
@@ -282,10 +282,10 @@ dump($request->all(), $validated, '=========');
                 'tier' => null,
                 'slug' => $slug,
             ];
-dump('VALUES',$values);
+//dump('VALUES',$values);
             $service = (strtolower($itemType) == 'weapon') ? 'weaponService' : 'armorService';// get base item
             $base = $this->{$service}->baseItem($base_id);
-            $values [strtolower($itemType).'_type']= $base->type;
+            $values [strtolower($itemType).'_type']= $base?->type;
             $specificItem = $this->{$service}->createSpecificItem( $values, $base );
             $specificItem = $this->{$service}->saveSpecificItemRelations(
                 $values, $specificItem, $base
@@ -293,7 +293,7 @@ dump('VALUES',$values);
             $morphableItem = $this->{$service}->createMorphableItem($specificItem);
             $inventory[$equipment_slot]= $this->{$service}->createInventoryItem($morphableItem, request()->user()->character());
     //        dd($inventoryItem);
-            dump($equipment_slot, $inventory[$equipment_slot]);
+//            dump($equipment_slot, $inventory[$equipment_slot]);
         }
         $loadout = Loadout::create([
                'weight' => $weight ?? null,
@@ -312,8 +312,8 @@ dump('VALUES',$values);
                'earring_id' => $inventory['earring']->id,
                'shield_id' => $inventory['shield']->id,
            ]);
-           dump($loadout);
-        die;
+//           dump($loadout);
+//        die;
 
 
         return redirect(route('dashboard'))->with([
