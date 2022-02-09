@@ -96,7 +96,7 @@ class Weapon extends Model implements InventoryItemContract
     {
         $type = "\\App\\".Str::afterLast($this->asItem->inventory->ownerable_type,'\\').'Inventory';
         
-        return $type::find($this->asItem->inventory->ownerable->id);
+        return class_exists($type) ? $type::find($this->asItem->inventory->ownerable->id) : null;
     }
     
 // SCOPES ---

@@ -43,6 +43,7 @@ class LoadoutUpsertRequest extends FormRequest
             // fields for edit
             $rules[ 'id.'.$item] = ['nullable', 'integer', 'exists:inventory_items,id'];
             $rules[ 'slug.'.$item] = ['string', 'nullable'];
+            $rules[ 'itemType.'.$item] = ['string', 'nullable'];
             // auto filled fields
             $rules[ 'base_id.'.$item] = [];
             $rules[ 'base_slug.'.$item] = ['string', 'nullable'];
@@ -80,6 +81,7 @@ class LoadoutUpsertRequest extends FormRequest
             // fields for edit
             $rules[ 'id.'.$item] = ['nullable', 'integer', 'exists:inventory_items,id'];
             $rules[ 'slug.'.$item] = ['string', 'nullable'];
+            $rules[ 'itemType.'.$item] = ['string', 'nullable'];
             // automatically filled fields
             $rules[ 'base_id.'.$item] = [];
             $rules[ 'base_slug.'.$item] = ['string', 'nullable'];

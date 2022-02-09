@@ -252,24 +252,70 @@ class LoadoutsController extends Controller
     public function store( LoadoutUpsertRequest $request )
     {
         $validated = $request->validated();
-        
-        // todo: loop slot names to create items
-        foreach($validated['equipment_slot_name'] as $equipment_slot){
-            
-        }
-dd($this->request->all(), $validated);
-        
-        // todo: attach items to loadout in designated slot
 
+//dump($request->all(), $validated, '=========');
+        $inventory = [];
+        // loop slot names to create items
+        foreach($validated['equipment_slot_names'] as $equipment_slot){
+            
+            $itemType = $validated['itemType'][$equipment_slot];
+            $gear_score = $validated['gear_score'][$equipment_slot];
+            $rarity = $validated['rarity'][$equipment_slot];
+            $perks = $validated['perks'][$equipment_slot];
+            $attribute_amounts = $validated['attribute_amounts'][$equipment_slot];
+            $attrs = $validated['attrs'][$equipment_slot];
+            $base_id = $validated['base_id'][$equipment_slot];
+            $base_slug = $validated['base_slug'][$equipment_slot];
+            $id = $validated['id'][$equipment_slot];
+            $slug = $validated['slug'][$equipment_slot];
+            
+            $values = [
+                'itemType' => $itemType,
+                'gear_score' => $gear_score,
+                'rarity' => $rarity,
+                'perks' => $perks,
+                'attribute_amounts' => $attribute_amounts,
+                'attrs' => $attrs,
+                'base_id' => $base_id,
+                'base_slug' => $base_slug,
+                'id' => $id,
+                'tier' => null,
+                'slug' => $slug,
+            ];
+//dump('VALUES',$values);
+            $service = (strtolower($itemType) == 'weapon') ? 'weaponService' : 'armorService';// get base item
+            $base = $this->{$service}->baseItem($base_id);
+            $values [strtolower($itemType).'_type']= $base?->type;
+            $specificItem = $this->{$service}->createSpecificItem( $values, $base );
+            $specificItem = $this->{$service}->saveSpecificItemRelations(
+                $values, $specificItem, $base
+            );
+            $morphableItem = $this->{$service}->createMorphableItem($specificItem);
+            $inventory[$equipment_slot]= $this->{$service}->createInventoryItem($morphableItem, request()->user()->character());
+    //        dd($inventoryItem);
+//            dump($equipment_slot, $inventory[$equipment_slot]);
+        }
         $loadout = Loadout::create([
-            'name' => $validated['name'],
-            'weight' => $validated['weight'],
-            // relations
-            'character_id' => $validated['character'],
-            'main_hand_id' => $validated['main_hand'],
-            'offhand_id' => $validated['offhand'],
-        ]);
-        
+               'weight' => $weight ?? null,
+               'gear_score' => $validated['gear_score']['character'],
+               // relations
+               'character_id' => request()->user()->character()->id,
+               'main_hand_id' => $inventory['main']->id,
+               'offhand_id' => $inventory['offhand']->id,
+               'head_id' => $inventory['head']->id,
+               'chest_id' => $inventory['chest']->id,
+               'legs_id' => $inventory['legs']->id,
+               'feet_id' => $inventory['feet']->id,
+               'hands_id' => $inventory['hands']->id,
+               'neck_id' => $inventory['neck']->id,
+               'ring_id' => $inventory['ring']->id,
+               'earring_id' => $inventory['earring']->id,
+               'shield_id' => $inventory['shield']->id,
+           ]);
+//           dump($loadout);
+//        die;
+
+
         return redirect(route('dashboard'))->with([
             'status'=> [
                 'type'=>'success',
@@ -280,7 +326,9 @@ dd($this->request->all(), $validated);
 
     public function show( Loadout $loadout )
     {
-        //
+        return view('loadouts.show', [
+            'loadout' => $loadout,
+        ]);
     }
 
     /**
