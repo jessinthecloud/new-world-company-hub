@@ -22,7 +22,13 @@ enum GearCheckThreshold : int
     case Acceptable = 600; // >= 600 <= 609
     case Good = 610; // >= 610 <= 619
     case Excellent = 620; // and up
-    
+
+    /**
+     * Determine gear rating color
+     * @param $score
+     *
+     * @return string
+     */
     public function color($score) : string
     {
         return match(true) 
@@ -40,8 +46,15 @@ enum GearCheckThreshold : int
             default => '#FF0000', // Fail
         };
     }
-    
-    public function rating($score) : string
+
+    /**
+     * Determine if the gear score is high enough to pass the ready check 
+     * 
+     * @param $score
+     *
+     * @return bool
+     */
+    public function passes($score) : bool
     {
         return $score >= GearCheckThreshold::VeryLow;
     }
