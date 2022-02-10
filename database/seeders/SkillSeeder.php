@@ -9,7 +9,7 @@ class SkillSeeder extends Seeder
 {
     public function run()
     {
-        DB::table('skills')->insert([
+        DB::table('skills')->upsert([
            [
            'name' => 'Weaponsmithing',
            'slug' => 'weaponsmithing',
@@ -274,6 +274,6 @@ class SkillSeeder extends Seeder
            'created_at' => now(),
            'updated_at' => now(),
            ],
-       ]);
+       ], ['slug']);
     }
 }

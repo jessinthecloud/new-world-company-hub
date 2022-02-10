@@ -9,7 +9,7 @@ class ClassSeeder extends Seeder
 {
     public function run()
     {
-        DB::table('character_classes')->insert([
+        DB::table('character_classes')->upsert([
            /*[
                'name' => 'Mage',
                'description' => 'Healer Mage',
@@ -59,6 +59,6 @@ class ClassSeeder extends Seeder
                'created_at' => now(),
                'updated_at' => now(),
            ],
-       ]);
+       ], ['name']);
     }
 }
