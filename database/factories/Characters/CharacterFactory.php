@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\Characters;
 
 use App\Models\Characters\Character;
 use App\Models\Characters\CharacterClass;
@@ -43,8 +43,8 @@ class CharacterFactory extends Factory
             'name' => $this->faker->name(),
             'slug' => $this->faker->slug(),
             'level' => $this->faker->numberBetween(1, 100),
-            'character_class_id' => CharacterClass::inRandomOrder()->take(1)->id,
-            'company_id' => Company::inRandomOrder()->take(1)->id,
+            'character_class_id' => CharacterClass::inRandomOrder()->first()->id,
+            'company_id' => Company::inRandomOrder()->first()->id,
             'user_id' => User::factory(),
             'rank_id' => 4, //Rank::all()->random()->id,
         ];
