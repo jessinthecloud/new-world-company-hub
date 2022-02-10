@@ -1,38 +1,39 @@
 <?php
 
-use App\Enums\Rarity;
+namespace App\Enums;
+
 use App\Traits\HasClassConstants;
 use App\Traits\IsEnum;
 
-enum GearCheckThreshold : int
+enum GearCheckThreshold: int
 {
-    use HasClassConstants, IsEnum; 
-    
+    use HasClassConstants, IsEnum;
+
     // number is the low end of++ the range
     /**
      * X 0 - 544 Too Low
-     * 545-595 Very Low 
+     * 545-595 Very Low
      * 596-599 Low
      * 600-609 Acceptable
      * 610-619 Good
      * 620-625 Excellent
      */
-    case VeryLow = 545; // >= 545 <= 595
-    case Low = 596; // >= 596 <= 599
+    case VeryLow = 545;    // >= 545 <= 595
+    case Low = 596;        // >= 596 <= 599
     case Acceptable = 600; // >= 600 <= 609
-    case Good = 610; // >= 610 <= 619
-    case Excellent = 620; // and up
+    case Good = 610;       // >= 610 <= 619
+    case Excellent = 620;  // and up
 
     /**
      * Determine gear rating color
+     *
      * @param $score
      *
      * @return string
      */
-    public function color($score) : string
+    public static function color( $score ) : string
     {
-        return match(true) 
-        {
+        return match ( true ) {
             // Very Low
             $score <= GearCheckThreshold::Low && $score >= GearCheckThreshold::VeryLow => '#575750',
             // Low
@@ -48,13 +49,13 @@ enum GearCheckThreshold : int
     }
 
     /**
-     * Determine if the gear score is high enough to pass the ready check 
-     * 
+     * Determine if the gear score is high enough to pass the ready check
+     *
      * @param $score
      *
      * @return bool
      */
-    public function passes($score) : bool
+    public static function passes( $score ) : bool
     {
         return $score >= GearCheckThreshold::VeryLow;
     }
