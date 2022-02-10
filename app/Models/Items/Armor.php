@@ -50,7 +50,7 @@ class Armor extends Model implements InventoryItemContract
         return $this->belongsToMany(Perk::class);
     }
     
-    public function attributes()
+    public function itemAttributes()
     {
         return $this->belongsToMany(Attribute::class, 'attribute_armor')->withPivot('amount');
     }
@@ -107,9 +107,18 @@ class Armor extends Model implements InventoryItemContract
 //            ->whereRelation('asItem', 'id', $item->id)
             ;
     }
-    
+// -- SCOPES    
     public function scopeSimilarSlugs(Builder $query, string $slug){
         return $query->where('slug', 'like' , $slug.'%');
     }
-
+// -- MISC
+    public function numberOfUnusedPerkSlots(  )
+    {
+        $used_perk_slots = count($this->perks->all()) + count($this->itemAttributes->all());
+        if($used_perk_slots < $this->base->num_perk_slots){
+            return $this->base->num_perk_slots - $used_perk_slots;
+        }
+        
+        return null;
+    }
 }
