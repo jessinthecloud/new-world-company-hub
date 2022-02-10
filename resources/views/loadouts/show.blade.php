@@ -1,27 +1,21 @@
 <x-app-layout>
     <x-slot name="title">
-        Loadout / {{ Str::title($loadout->character->name) }}
+        Loadout / {{ $character_name }}
     </x-slot>
     
     <div class="py-12">
         <div id="wrapper-inner" class="max-w-7xl mx-auto flex flex-wrap sm:px-6 lg:px-8">
-            <x-game-data.item-show
-                :item="$loadout->main"
-                :itemType="'Weapon'"
-                :owner="$loadout->main->item->itemable->owner()"
-                :inventory="$loadout->main->item->itemable->ownerInventory()"
-                :ownerType="Str::afterLast(strtolower($loadout->main->item->itemable->owner()::class), '\\')"
-            >
-                <x-game-data.item-details 
-                    :item="$loadout->main->item->itemable"
-                    :rarityColor="\App\Enums\Rarity::from($loadout->main->item->itemable->rarity)->color()"
-                    :rarity="$loadout->rarity"
-                    :itemAttributes="$loadout->main->attributes?->map(function($attribute){
-                        return \App\Enums\AttributeType::fromName($attribute->name)->value;
-                    })->all()"
-                    :emptySlots="$empty_slots ?? null"
-                />
-            </x-game-data.item-show>
+            <h2 class="mb-4 flex flex-wrap items-center lg:flex-nowrap">
+                Overall Gear Score: <strong class="ml-2">{{ $gear_score }}</strong>
+                @if(!empty($loadout_check))
+                    <x-utils.icons.checkmark class="ml-2 text-acceptable-800"/>
+                @else
+                    <x-utils.icons.xmark class="ml-2 text-toolow-700"/>
+                @endif
+            </h2>
+            @foreach($equipment_slot as $equipment)
+                <x-game-data.loadout-details :equipment="$equipment" />
+            @endforeach
         </div>
     </div>
 

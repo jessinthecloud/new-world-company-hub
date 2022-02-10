@@ -355,6 +355,7 @@ class LoadoutsController extends Controller
         $ownerType = Str::afterLast(strtolower($owner::class), '\\');
         $character_name = Str::title($loadout->character->name);
         $gear_score = $loadout->gear_score;
+        $loadout_check = GearCheckThreshold::passes($gear_score);
         $inventory = $loadout->main->item->itemable->ownerInventory();
 
         $equipment_slot = [];
@@ -412,6 +413,7 @@ class LoadoutsController extends Controller
     
         return view('loadouts.show', [
             'loadout' => $loadout,
+            'loadout_check' => $loadout_check,
             'gear_score' => $gear_score,
             'character_name' => $character_name,
             'owner' => $owner,
