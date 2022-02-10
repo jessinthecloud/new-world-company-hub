@@ -44,6 +44,69 @@ class Loadout extends Model
     {
         return $this->belongsTo( InventoryItem::class, 'head_id');
     }
+
+    public function head(  )
+    {
+        return $this->helmet();
+    }
+    
+    public function chest()
+    {
+        return $this->belongsTo( InventoryItem::class, 'chest_id');
+    }
+    
+    public function legs()
+    {
+        return $this->belongsTo( InventoryItem::class, 'legs_id');
+    }
+    public function pants()
+    {
+        return $this->belongsTo( InventoryItem::class, 'legs_id');
+    }
+    
+    public function feet()
+    {
+        return $this->belongsTo( InventoryItem::class, 'feet_id');
+    }
+        public function shoes()
+        {
+            return $this->belongsTo( InventoryItem::class, 'feet_id');
+        }
+        public function boots()
+        {
+            return $this->belongsTo( InventoryItem::class, 'feet_id');
+        }
+    
+    public function hands()
+    {
+        return $this->belongsTo( InventoryItem::class, 'hands_id');
+    }
+        public function gloves(  )
+        {
+            return $this->belongsTo( InventoryItem::class, 'hands_id');
+        }
+    
+    public function neck()
+    {
+        return $this->belongsTo( InventoryItem::class, 'neck_id');
+    }
+        public function amulet(  )
+        {
+            return $this->belongsTo( InventoryItem::class, 'neck_id');
+        }
+    
+    public function ring()
+    {
+        return $this->belongsTo( InventoryItem::class, 'ring_id');
+    }
+    public function earring()
+    {
+        return $this->belongsTo( InventoryItem::class, 'earring_id');
+    }
+    public function shield()
+    {
+        return $this->belongsTo( InventoryItem::class, 'shield_id');
+    }
     
 // -- SCOPES 
 
