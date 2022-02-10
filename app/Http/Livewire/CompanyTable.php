@@ -79,8 +79,8 @@ class CompanyTable extends DataTableComponent
     
     public function getTableRowUrl($row): string
     {
-        return route('loadouts.show', [
+        return isset($row->loadout) ? route('loadouts.show', [
             'loadout'=>$row->loadout->id,
-        ]);
+        ]) : '#';
     }
 }
