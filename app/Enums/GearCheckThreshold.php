@@ -82,6 +82,6 @@ enum GearCheckThreshold: int
      */
     public static function passes( $score ) : bool
     {
-        return $score >= GearCheckThreshold::VeryLow;
+        return $score >= GearCheckThreshold::VeryLow->value;
     }
 }
