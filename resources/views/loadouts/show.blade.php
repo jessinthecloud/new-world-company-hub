@@ -2,7 +2,7 @@
     <x-slot name="title">
         Loadout / {{ Str::title($loadout->character->name) }}
     </x-slot>
-    <?php dump($loadout->main->item->itemable->owner()::class, Str::afterLast(strtolower($loadout->main->item->itemable->owner()::class), '\\')); ?>
+    
     <div class="py-12">
         <div id="wrapper-inner" class="max-w-7xl mx-auto flex flex-wrap sm:px-6 lg:px-8">
             <x-game-data.item-show

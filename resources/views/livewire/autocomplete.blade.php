@@ -35,7 +35,7 @@
         this.search = itemName;
         this.open = false;
         this.highlightedIndex = 0;
-console.log(inputName);        
+       
         document.getElementById(inputName+'-base-model-id').value = itemId;
         document.getElementById(inputName+'-base-model-slug').value = itemSlug;
         document.getElementById(inputName+'-itemType').value = itemType;

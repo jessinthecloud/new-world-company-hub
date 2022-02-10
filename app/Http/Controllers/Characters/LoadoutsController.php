@@ -17,6 +17,8 @@ use App\Services\WeaponService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Str;
+
 use function dump;
 use function redirect;
 use function route;
@@ -282,18 +284,34 @@ class LoadoutsController extends Controller
                 'tier' => null,
                 'slug' => $slug,
             ];
-//dump('VALUES',$values);
-            $service = (strtolower($itemType) == 'weapon') ? 'weaponService' : 'armorService';// get base item
-            $base = $this->{$service}->baseItem($base_id);
-            $values [strtolower($itemType).'_type']= $base?->type;
-            $specificItem = $this->{$service}->createSpecificItem( $values, $base );
-            $specificItem = $this->{$service}->saveSpecificItemRelations(
-                $values, $specificItem, $base
-            );
-            $morphableItem = $this->{$service}->createMorphableItem($specificItem);
-            $inventory[$equipment_slot]= $this->{$service}->createInventoryItem($morphableItem, request()->user()->character());
-    //        dd($inventoryItem);
-//            dump($equipment_slot, $inventory[$equipment_slot]);
+            if(isset($itemType)) {
+                $service = ( strtolower( $itemType ) == 'weapon' ) ? 'weaponService' : 'armorService';// get base item
+                $base = $this->{$service}->baseItem( $base_id );
+                $values [ strtolower( $itemType ) . '_type' ] = $base?->type ?? '';
+//dump( 'VALUES', $values );
+                $specificItem = $this->{$service}->createSpecificItem( $values, $base );
+                $specificItem = $this->{$service}->saveSpecificItemRelations(
+                    $values,
+                    $specificItem,
+                    $base
+                );
+                $morphableItem = $this->{$service}->createMorphableItem( $specificItem );
+                $inventory[ $equipment_slot ] = $this->{$service}->createInventoryItem(
+                    $morphableItem,
+                    request()->user()->character()
+                );
+                //        dd($inventoryItem);
+                //            dump($equipment_slot, $inventory[$equipment_slot]);
+            }
+        }
+        if(!isset($inventory['main'])){
+            // TODO: make this more helpful or catch it earlier
+            return redirect()->back()->with([
+                'status'=> [
+                    'type'=>'error',
+                    'message' => 'Loadout creation failed unexpectedly. Please try again.'
+                ]
+            ]);
         }
         $loadout = Loadout::create([
                'weight' => $weight ?? null,
@@ -310,12 +328,11 @@ class LoadoutsController extends Controller
                'neck_id' => $inventory['neck']->id,
                'ring_id' => $inventory['ring']->id,
                'earring_id' => $inventory['earring']->id,
-               'shield_id' => $inventory['shield']->id,
+               'shield_id' => isset($inventory['shield']) ? $inventory['shield']->id : null,
            ]);
 //           dump($loadout);
 //        die;
-
-
+        
         return redirect(route('dashboard'))->with([
             'status'=> [
                 'type'=>'success',
@@ -326,6 +343,11 @@ class LoadoutsController extends Controller
 
     public function show( Loadout $loadout )
     {
+        dump(
+        $loadout->main->item->itemable->owner()::class, 
+        Str::afterLast(strtolower($loadout->main->item->itemable->owner()::class), '\\')
+        );
+    
         return view('loadouts.show', [
             'loadout' => $loadout,
         ]);
