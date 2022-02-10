@@ -1,7 +1,7 @@
 @props(['equipment'])
 
-<div class="item-wrapper w-full mx-auto flex flex-wrap border border-{{ $equipment['gear_check_label'] }}-400">
-    <div class="item-heading w-full flex flex-wrap gap-4 items-center bg-{{$equipment['gear_check_label']}}-300 p-4 text-gray-800 {{--text-shadow--}}
+<div class="item-wrapper w-full mx-auto flex flex-wrap border border-{{ $equipment['rarity'] }}-300">
+    <div class="item-heading w-full flex flex-wrap gap-4 items-center bg-{{$equipment['rarity']}}-100 p-4 text-gray-800 {{--text-shadow--}}
     lg:flex-nowrap
     lg:text-lg
     "> 
@@ -32,12 +32,12 @@
         <div class="item-type mr-6">
             {{ $equipment['equippableItem']->type }}
         </div>
-        <div class="item-rarity font-bold text-shadow-sm text-{{ $equipment['rarity'] }}-400">
+        <div class="item-rarity font-bold">
             {{ $equipment['equippableItem']->rarity }}
         </div>
     </div>
     @if(!empty($equipment['perks_list']) && !empty($equipment['attributes_list']))
-        <div class="attr-perk w-full flex flex-wrap bg-{{$equipment['gear_check_label']}}-50 ">
+        <div class="attr-perk w-full flex flex-wrap bg-{{$equipment['rarity']}}-50 ">
             <div class="spacer w-24 h-6"></div>
             @if(!empty($equipment['perks_list']))
                 <div class="w-full py-2 px-4 lg:w-auto lg:py-4">
