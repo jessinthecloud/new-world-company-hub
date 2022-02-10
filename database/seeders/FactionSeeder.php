@@ -9,7 +9,7 @@ class FactionSeeder extends Seeder
 {
     public function run()
     {
-        DB::table('factions')->insert([
+        DB::table('factions')->upsert([
             [
                 'name' => 'Marauders', 
                 'slug' => 'marauders', 
@@ -28,6 +28,6 @@ class FactionSeeder extends Seeder
                  'created_at' => now(),
                  'updated_at' => now(),
             ],
-        ]);
+        ], ['slug']);
     }
 }
