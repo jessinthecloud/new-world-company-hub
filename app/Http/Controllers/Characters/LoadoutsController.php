@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Characters;
 
 use App\Enums\ArmorType;
 use App\Enums\AttributeType;
+use App\Enums\GearCheckThreshold;
 use App\Enums\Rarity;
 use App\Enums\WeaponType;
 use App\Http\Controllers\Controller;
@@ -16,7 +17,6 @@ use App\Services\ArmorService;
 use App\Services\WeaponService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Str;
 
 use function dump;
@@ -26,46 +26,17 @@ use function view;
 
 class LoadoutsController extends Controller
 {
+    /**
+     * @var array[]
+     */
+    private array $equipment_slots;
+
     public function __construct(
         protected ArmorService $armorService, 
         protected WeaponService $weaponService
-    ) 
+    )
     {
-         
-    }
-    
-    public function index()
-    {
-        $loadouts = Loadout::asArrayForDropDown();
-        
-        dump($loadouts);
-    }
-    
-    public function choose()
-    {
-        $loadouts = Loadout::asArrayForDropDown();
-        $form_action = route('loadouts.find');
-
-        return view(
-            'dashboard.loadout.choose',
-            compact('loadouts', 'form_action')
-        );
-    }
-
-    public function find(Request $request)
-    {
-//    ddd($request);
-        return redirect(route('loadouts.'.$request->action, ['loadout'=>$request->loadout]));
-    }
-
-    /**
-     * Show Loadout create form
-     *
-     * @return \Illuminate\Contracts\View\View
-     */
-    public function create() : View
-    {
-        $equipment_slots = [
+        $this->equipment_slots = [
             'main' => [
                 'type' => 'weapon',
                 'subtype'=>null,
@@ -210,15 +181,49 @@ class LoadoutsController extends Controller
                 ],
             ],
         ];
+    }
+    
+    public function index()
+    {
+        $loadouts = Loadout::asArrayForDropDown();
+        
+        dump($loadouts);
+    }
+    
+    public function choose()
+    {
+        $loadouts = Loadout::asArrayForDropDown();
+        $form_action = route('loadouts.find');
+
+        return view(
+            'dashboard.loadout.choose',
+            compact('loadouts', 'form_action')
+        );
+    }
+
+    public function find(Request $request)
+    {
+//    ddd($request);
+        return redirect(route('loadouts.'.$request->action, ['loadout'=>$request->loadout]));
+    }
+
+    /**
+     * Show Loadout create form
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function create() : View
+    {
+        
         // on failed submission
         if(!empty(old())){
 //dump(request()->old());
             // loop equip types
-            foreach($equipment_slots as $name => $info) {
+            foreach($this->equipment_slots as $name => $info) {
                 // get old values
 //dump(request()->old(), $name, old('perks')[$name]);                
                 // existing perks
-                $equipment_slots[$name]['existing_perk_options'] = $this->weaponService->existingPerkOptions(
+                $this->equipment_slots[$name]['existing_perk_options'] = $this->weaponService->existingPerkOptions(
                     array_filter(old('perks')[$name]),
                     Perk::asArrayForDropDown(),
                 );
@@ -230,15 +235,15 @@ class LoadoutsController extends Controller
                     collect(AttributeType::cases())->sortBy('value')->all(),
                     array_filter(old('attribute_amounts')[$name]),
                 );
-                $equipment_slots[$name]['existing_attribute_options'] = $existing_attribute_options;
-                $equipment_slots[$name]['existing_attribute_amounts'] = $existing_attribute_amounts;
+                $this->equipment_slots[$name]['existing_attribute_options'] = $existing_attribute_options;
+                $this->equipment_slots[$name]['existing_attribute_amounts'] = $existing_attribute_amounts;
             }
         }
     
         return view(
             'dashboard.loadout.create-edit',
             [
-                'equipment_slots' => $equipment_slots,
+                'equipment_slots' => $this->equipment_slots,
                 'perk_options' => $this->weaponService->perkOptions(),
                 'raritys' => Rarity::valueToAssociative(),
                 'tier_options' => $this->weaponService->tierOptions(),
@@ -343,13 +348,76 @@ class LoadoutsController extends Controller
 
     public function show( Loadout $loadout )
     {
-        dump(
-        $loadout->main->item->itemable->owner()::class, 
-        Str::afterLast(strtolower($loadout->main->item->itemable->owner()::class), '\\')
-        );
+//        dump($loadout);
+//        dump($loadout->main->item->itemable->ownerInventory());
+
+        $owner = $loadout->main->item->itemable->owner();
+        $ownerType = Str::afterLast(strtolower($owner::class), '\\');
+        $character_name = Str::title($loadout->character->name);
+        $gear_score = $loadout->gear_score;
+        $inventory = $loadout->main->item->itemable->ownerInventory();
+
+        $equipment_slot = [];
+        foreach(array_keys($this->equipment_slots) as $slot_name){
+//dump('slot name: '.$slot_name);
+//dump($loadout->$slot_name);  
+            /*if(!isset($loadout->$slot_name)){
+                continue;
+            }  */  
+            
+            // InventoryItem models  
+            $equipment_slot[$slot_name]['inventoryItem'] = $loadout->$slot_name;
+            // item subtype
+            $equipment_slot[$slot_name]['itemType'] = isset($loadout->$slot_name) ? $loadout->$slot_name->item->itemable::class : null;
+            // Item Model
+            $equipment_slot[$slot_name]['item'] = $loadout->$slot_name?->item;
+            // specific item
+            $equipment_slot[$slot_name]['equippableItem'] = $loadout->$slot_name?->item->itemable;
+            $equip_item = $equipment_slot[$slot_name]['equippableItem'];
+            // rarity color
+            $equipment_slot[$slot_name]['rarityColor'] = isset($equip_item) 
+                ? Rarity::from( $equip_item->rarity)->color()
+                : null;
+            // rarity
+            $equipment_slot[$slot_name]['rarity'] = strtolower($equip_item?->rarity);
+            // attributes
+            $equipment_slot[$slot_name]['attributes_list'] = isset($equip_item) 
+                ? implode(', ',$equip_item->itemAttributes->unique()->map(function($attribute){
+                    return $attribute->pivot->amount.' '.AttributeType::fromName($attribute->name)->value;
+                })->all())
+                : [];
+                
+            $equipment_slot[$slot_name]['perks_list'] = isset($equip_item) 
+                ? implode(', ', $equip_item->perks->unique()->pluck('name')->all())
+                : [];
+            
+            // empty perk slots
+            $equipment_slot[$slot_name]['used_perk_slots'] = $equip_item?->numberOfUnusedPerkSlots();
+            
+            // gear check
+            $equipment_slot[$slot_name]['gear_check_color'] = isset($equip_item) 
+                ? GearCheckThreshold::color($equip_item->gear_score)
+                : null;
+            $equipment_slot[$slot_name]['gear_check_label'] = isset($equip_item) 
+                ? strtolower(GearCheckThreshold::getName($equip_item->gear_score))
+                : null;
+            $equipment_slot[$slot_name]['gear_check_status'] = isset($equip_item) 
+                ? GearCheckThreshold::passes($equip_item->gear_score)
+                : null;
+          
+            // remove empty slots
+            $equipment_slot[$slot_name] = array_filter($equipment_slot[$slot_name]);
+        }
+        $equipment_slot = array_filter($equipment_slot);
     
         return view('loadouts.show', [
             'loadout' => $loadout,
+            'gear_score' => $gear_score,
+            'character_name' => $character_name,
+            'owner' => $owner,
+            'ownerType' => $ownerType,
+            'inventory' => $inventory,
+            'equipment_slot' => $equipment_slot,
         ]);
     }
 
@@ -415,8 +483,8 @@ class LoadoutsController extends Controller
 
     public function update( LoadoutUpsertRequest $request, Loadout $loadout )
     {
-        $validated = $request->validated();
-//dump($validated, $loadout, $loadout->weapons->pluck('pivot')->pluck('level')/*, $request*/);
+/*        $validated = $request->validated();
+//dump($validated, $loadout, $loadout->weapons->pluck('pivot')->pluck('level'));
         $loadout->name = $validated['name'];
         $loadout->weight = $validated['weight'];
         // relations
@@ -431,7 +499,7 @@ class LoadoutsController extends Controller
                 'type'=>'success',
                 'message' => 'Loadout updated successfully'
             ]
-        ]);
+        ]);*/
     }
 
     public function destroy( Loadout $loadout )
