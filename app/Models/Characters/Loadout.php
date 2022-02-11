@@ -3,6 +3,7 @@
 namespace App\Models\Characters;
 
 use App\Models\Companies\Company;
+use App\Models\GearCheck;
 use App\Models\Items\BaseWeapon;
 use App\Models\Items\InventoryItem;
 use App\Models\User;
@@ -106,6 +107,16 @@ class Loadout extends Model
     public function shield()
     {
         return $this->belongsTo( InventoryItem::class, 'shield_id');
+    }
+
+    public function gearCheck(  )
+    {
+        return $this->hasOne(GearCheck::class);
+    }
+
+    public function approved(  )
+    {
+        return $this->has('gearCheck')->count() > 0;
     }
     
 // -- SCOPES 

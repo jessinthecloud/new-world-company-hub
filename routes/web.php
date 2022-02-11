@@ -186,6 +186,8 @@ Route::middleware( ['auth', 'company', 'character'] )->group( function () {
 // # CONSUL
 // #
     Route::middleware( ['role:super-admin|admin|governor|consul'] )->group( function () {
+        Route::post( '/loadouts/approve/{loadout}', \App\Http\Controllers\GearCheckController::class )
+            ->name( 'loadouts.approve' );
     } );
 // ##
 // ## END CONSUL

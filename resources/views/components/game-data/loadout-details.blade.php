@@ -11,27 +11,27 @@
     <td class="p-2 item-gear-score font-bold">
         {{ $equipment['equippableItem']->gear_score }}
     </td>
-    {{-- attributes --}}
-    <td class="p-2 ">
-        @if(!empty($equipment['attributes_list']))
-            {!! $equipment['attributes_list'] !!}
-        @endif
-    </td>
     {{-- type --}}
     <td class="p-2 item-type">
         {{ $equipment['equippableItem']->type }}
     </td>
-    {{-- weight class --}}
-    <td class="p-2 item-weight-class italic">
-    @isset($equipment['equippableItem']->weight_class)
-        {{ $equipment['equippableItem']->weight_class }}
-        @endisset
+    {{-- attributes --}}
+    <td class="p-2 ">
+    @if(!empty($equipment['attributes_list']))
+        {!! $equipment['attributes_list'] !!}
+        @endif
     </td>
     {{-- perks --}}
     <td class="p-2 ">
-        @if(!empty($equipment['perks_list']))
-            {!! $equipment['perks_list'] !!}
+    @if(!empty($equipment['perks_list']))
+        {!! $equipment['perks_list'] !!}
         @endif
+    </td>
+    {{-- weight class --}}
+    <td class="p-2 item-weight-class italic">
+        @isset($equipment['equippableItem']->weight_class)
+            {{ $equipment['equippableItem']->weight_class }}
+        @endisset
     </td>
     {{-- rarity --}}
     <td class="p-2 item-rarity font-bold">

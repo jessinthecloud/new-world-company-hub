@@ -132,4 +132,23 @@ class LoadoutPolicy
     {
         return false;
     }
+    
+    public function approve( User $user, Loadout $loadout ) : bool
+    {
+        return (
+            $user->can('approve loadouts')
+            ||
+            (
+                $user->can('approve own company loadouts') 
+                &&
+                $user->company()->id == $loadout->company->id
+            )
+            ||
+            (
+                $user->can('approve own faction loadouts') 
+                &&
+                $user->faction()->id == $loadout->company->faction->id
+            )
+        );
+    }
 }
