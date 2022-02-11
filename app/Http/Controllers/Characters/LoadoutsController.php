@@ -358,13 +358,13 @@ class LoadoutsController extends Controller
         $loadout_check = GearCheckThreshold::passes($gear_score);
         $inventory = $loadout->main->item->itemable->ownerInventory();
 
+        $weapon_slot = [];
+        $armor_slot = [];
+        $jewelry_slot = [];
         $equipment_slot = [];
+        $jewelry = ['neck', 'ring', 'earring'];
         foreach(array_keys($this->equipment_slots) as $slot_name){
-//dump('slot name: '.$slot_name);
-//dump($loadout->$slot_name);  
-            /*if(!isset($loadout->$slot_name)){
-                continue;
-            }  */  
+
             
             // InventoryItem models  
             $equipment_slot[$slot_name]['inventoryItem'] = $loadout->$slot_name;
@@ -383,13 +383,13 @@ class LoadoutsController extends Controller
             $equipment_slot[$slot_name]['rarity'] = strtolower($equip_item?->rarity);
             // attributes
             $equipment_slot[$slot_name]['attributes_list'] = isset($equip_item) 
-                ? implode(', ',$equip_item->itemAttributes->unique()->map(function($attribute){
+                ? implode('<BR>',$equip_item->itemAttributes->unique()->map(function($attribute){
                     return $attribute->pivot->amount.' '.AttributeType::fromName($attribute->name)->value;
                 })->all())
                 : [];
                 
             $equipment_slot[$slot_name]['perks_list'] = isset($equip_item) 
-                ? implode(', ', $equip_item->perks->unique()->pluck('name')->all())
+                ? implode('<BR>', $equip_item->perks->unique()->pluck('name')->all())
                 : [];
             
             // empty perk slots
@@ -408,7 +408,22 @@ class LoadoutsController extends Controller
           
             // remove empty slots
             $equipment_slot[$slot_name] = array_filter($equipment_slot[$slot_name]);
+            
+            if(isset($equipment_slot[$slot_name]['itemType'])) {
+                if ( str_contains( strtolower( $equipment_slot[ $slot_name ]['itemType'] ), 'weapon' ) ) {
+                    $weapon_slot [] = $equipment_slot[ $slot_name ];
+                } else {
+                    if(in_array($slot_name, $jewelry)){
+                        $jewelry_slot [] = $equipment_slot[ $slot_name ];
+                    }
+                    else{
+                        $armor_slot [] = $equipment_slot[ $slot_name ];
+                    }
+                }
+            }
         }
+        $weapon_slot = array_filter($weapon_slot);
+        $armor_slot = array_filter($armor_slot);
         $equipment_slot = array_filter($equipment_slot);
     
         return view('loadouts.show', [
@@ -419,7 +434,9 @@ class LoadoutsController extends Controller
             'owner' => $owner,
             'ownerType' => $ownerType,
             'inventory' => $inventory,
-            'equipment_slot' => $equipment_slot,
+            'jewelry_slot' => $jewelry_slot,
+            'armor_slot' => $armor_slot,
+            'weapon_slot' => $weapon_slot,
         ]);
     }
 

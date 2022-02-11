@@ -11,10 +11,6 @@
     <td class="p-2 item-gear-score font-bold">
         {{ $equipment['equippableItem']->gear_score }}
     </td>
-    {{-- name --}}
-    <td class="p-2 item-name">
-        {{ $equipment['equippableItem']->name }}
-    </td>
     {{-- attributes --}}
     <td class="p-2 ">
         @if(!empty($equipment['attributes_list']))
