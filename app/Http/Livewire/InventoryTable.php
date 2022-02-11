@@ -217,7 +217,7 @@ class InventoryTable extends DataTableComponent
                             'like', 
                             '%'.$term.'%'
                         )
-                        /*->orWhereMorphRelation(
+                        ->orWhereMorphRelation(
                             'itemable', 
                             '*', 
                             'rarity', 
@@ -246,7 +246,7 @@ class InventoryTable extends DataTableComponent
                                     $query->where('name', 'like', '%'.$term.'%');
                                 });
                             }
-                        )*/
+                        )
                         ->orWhereMorphRelation(
                             'itemable', 
                             '*',
