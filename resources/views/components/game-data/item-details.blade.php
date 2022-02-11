@@ -51,11 +51,11 @@
         </div>
     @endisset
     
-    @isset($item->attributes)
+    @isset($item->itemAttributes)
         <div class="w-full py-2 px-4 lg:w-1/2 lg:py-4">
             <h2 class="w-full">Attributes</h2>
             <ul>
-                @foreach($item->attributes->unique() as $index => $attribute)
+                @foreach($item->itemAttributes->unique() as $index => $attribute)
                     <li class="mb-2">{{ $attribute->pivot->amount }} {{ $itemAttributes[$index] }}</li>
                 @endforeach
             </ul>
