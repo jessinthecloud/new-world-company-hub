@@ -2,7 +2,7 @@
     <x-slot name="title">
         <strong class="ml-2">{{ $gear_score }}</strong> 
         <span class="ml-2">/ Loadout</span> 
-        @if($loadout->approved()) <span class="ml-2 text-green-500"><x-utils.icons.checkmark/></span> @endif
+        <x-utils.icons.war-ready :loadout="$loadout"/>
     </x-slot>
     
     <div class="py-6">
