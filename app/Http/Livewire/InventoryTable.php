@@ -6,6 +6,7 @@ use App\Models\Items\Armor;
 use App\Models\Items\InventoryItem;
 use App\Models\Items\Item;
 use App\Models\Items\Weapon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -216,7 +217,7 @@ class InventoryTable extends DataTableComponent
                             'like', 
                             '%'.$term.'%'
                         )
-                        ->orWhereMorphRelation(
+                        /*->orWhereMorphRelation(
                             'itemable', 
                             '*', 
                             'rarity', 
@@ -236,6 +237,25 @@ class InventoryTable extends DataTableComponent
                             'name', 
                             'like', 
                             '%'.$term.'%'
+                        )
+                        ->orWhereMorphRelation(
+                            'itemable', 
+                            '*',
+                            function(Builder $query) use ($term) {
+                                $query->whereHas('perks', function($query) use ($term) {
+                                    $query->where('name', 'like', '%'.$term.'%');
+                                });
+                            }
+                        )*/
+                        ->orWhereMorphRelation(
+                            'itemable', 
+                            '*',
+                            function(Builder $query) use ($term) {
+                                $query->whereHas('itemAttributes', function($query) use ($term) {
+                                    // name is the weird attribute abbrev
+                                    $query->where('slug', 'like', '%'.$term.'%');
+                                });
+                            }
                         )
                         ;
                     });
