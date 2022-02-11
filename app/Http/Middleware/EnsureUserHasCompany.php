@@ -39,7 +39,7 @@ class EnsureUserHasCompany
         switch(true){
             case $companies->count() === 0:
                 // no match -> send away/send message to register app
-                abort(403, 'Your discord server is not registered with this application.');
+                abort(403, 'Your discord server is not registered with this application, or you may have logged in with the wrong discord account.');
             case $companies->count() == 1: 
                 // single match -> set as selected team
                 // see : https://spatie.be/docs/laravel-permission/v5/basic-usage/teams-permissions#working-with-teams-permissions
