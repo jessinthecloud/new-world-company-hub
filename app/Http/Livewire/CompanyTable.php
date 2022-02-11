@@ -67,6 +67,8 @@ class CompanyTable extends DataTableComponent
         return [
             'class' => Filter::make('Class')
                 ->select($this->classes),
+            'gear' => Filter::make('Gear')
+                ->select([''=>'Any', 'war'=>'War Ready']),
         ];
     }
 
@@ -76,6 +78,9 @@ class CompanyTable extends DataTableComponent
             
             // -- class filter --
             ->when($this->getFilter('class'), fn ($query, $class) => $query->whereRelation('class', 'id', $class))
+            
+            // -- war ready filter --
+            ->when($this->getFilter('gear'), fn ($query, $gearCheck) => $query->whereHas('loadout.gearCheck'))
             ;
     }
     
