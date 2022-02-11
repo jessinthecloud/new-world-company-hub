@@ -28,7 +28,7 @@ class ArmorsController extends Controller
 
     public function show( Request $request, Armor $armor )
     {
-        $armor = $armor->load('perks', 'attributes');
+        $armor = $armor->load('perks', 'itemAttributes');
         
         $rarity_color = Rarity::from($armor->rarity)->color();
         $attributes = $armor->itemAttributes->map(function($attribute){
