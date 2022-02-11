@@ -50,7 +50,7 @@ class Armor extends Model implements InventoryItemContract
         return $this->belongsToMany(Perk::class);
     }
     
-    public function attributes()
+    public function itemAttributes()
     {
         return $this->belongsToMany(Attribute::class, 'attribute_armor')->withPivot('amount');
     }

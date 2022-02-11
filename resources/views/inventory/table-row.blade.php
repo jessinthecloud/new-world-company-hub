@@ -39,7 +39,7 @@
     style="white-space:normal; min-width:200px; ">
 
     @php
-    $attrs = $row->item->itemable->attributes;
+    $attrs = $row->item->itemable->itemAttributes;
     $attr_arr = [];
     foreach($attrs as $attr){
         $attr_arr []= $attr->pivot?->amount.' '.\App\Enums\AttributeType::valueFromName($attr->name);

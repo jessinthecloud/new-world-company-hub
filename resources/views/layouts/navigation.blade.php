@@ -56,6 +56,9 @@
                     </x-slot>
 
                     <x-slot name="content">
+                        @if(Auth::user()?->hasRole('super-admin'))
+                            <x-dropdown-link :href="url('/dashboard/telescope')" class="font-bold">Telescope</x-dropdown-link>
+                        @endif
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf

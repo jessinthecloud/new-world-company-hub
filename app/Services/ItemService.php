@@ -284,7 +284,7 @@ abstract class ItemService implements ItemServiceContract
                 foreach($attributes as $attribute){
                     $attrs_to_sync [$attribute->id] = ['amount' => $amounts[$attribute->slug]];
                 }
-                $item->attributes()->sync($attrs_to_sync);
+                $item->itemAttributes()->sync( $attrs_to_sync);
             }
         }
         
