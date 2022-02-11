@@ -43,6 +43,7 @@ class CompanyTable extends DataTableComponent
     public function columns() : array
     {
         return [
+            Column::make( 'War Ready', 'character.loadout.approved' ),
             Column::make( 'Name', 'name' )
                 ->sortable()
                 ->searchable(),
@@ -50,6 +51,7 @@ class CompanyTable extends DataTableComponent
                 ->searchable(),
             Column::make( 'Class', 'class.name' )
                 ->searchable(),
+            Column::make( 'Registered', 'character.created_at' ),
         ];
     }
     
@@ -70,7 +72,7 @@ class CompanyTable extends DataTableComponent
 
     public function query() : Builder
     {
-        return Character::with('user', 'class')->whereRelation( 'company', 'id', $this->company->id )
+        return Character::with('user', 'class', 'loadout')->whereRelation( 'company', 'id', $this->company->id )
             
             // -- class filter --
             ->when($this->getFilter('class'), fn ($query, $class) => $query->whereRelation('class', 'id', $class))

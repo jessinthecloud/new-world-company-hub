@@ -1,4 +1,10 @@
 <x-livewire-tables::table.cell
+    class="center"
+>
+    <x-utils.icons.war-ready :loadout="$row->loadout"/>
+</x-livewire-tables::table.cell>
+
+<x-livewire-tables::table.cell
     class="max-w-sm"
     {{-- tailwind not doing these:--}} 
     style="white-space:normal; min-width:225px; max-width:250px; "

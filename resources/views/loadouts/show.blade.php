@@ -2,7 +2,7 @@
     <x-slot name="title">
         <strong class="ml-2">{{ $gear_score }}</strong> 
         <span class="ml-2">/ Loadout</span> 
-        <x-utils.icons.war-ready :loadout="$loadout"/>
+        <x-utils.icons.war-ready :loadout="$loadout" class=""ml-2/>
     </x-slot>
     
     <div class="py-6">
