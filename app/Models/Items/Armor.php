@@ -85,7 +85,7 @@ class Armor extends Model implements InventoryItemContract
     {
         $type = "\\App\\".Str::afterLast($this->asItem->inventory->ownerable_type,'\\').'Inventory';
         
-        return $type::find($this->asItem->inventory->ownerable->id);
+        return class_exists($type) ? $type::find($this->asItem->inventory->ownerable->id) : null;
     }
     
 // SCOPES ---
@@ -107,9 +107,18 @@ class Armor extends Model implements InventoryItemContract
 //            ->whereRelation('asItem', 'id', $item->id)
             ;
     }
-    
+// -- SCOPES    
     public function scopeSimilarSlugs(Builder $query, string $slug){
         return $query->where('slug', 'like' , $slug.'%');
     }
-
+// -- MISC
+    public function numberOfUnusedPerkSlots(  )
+    {
+        $used_perk_slots = count($this->perks->all()) + count($this->itemAttributes->all());
+        if($used_perk_slots < $this->base->num_perk_slots){
+            return $this->base->num_perk_slots - $used_perk_slots;
+        }
+        
+        return null;
+    }
 }

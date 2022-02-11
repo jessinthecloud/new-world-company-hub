@@ -2,6 +2,7 @@
 
 namespace App\Models\Items;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Perk extends Model
@@ -42,12 +43,35 @@ class Perk extends Model
     {
         return $this->belongsToMany(BaseArmor::class)->withPivot('amount');
     }
+// -- SCOPES
+    
+    /** @method forSearch() */
+    public function scopeForSearch( Builder $query, string $term )
+    {
+        return $query->where('name', 'like', $term);
+    }
     
 // -- MISC
-    public static function asArrayForDropDown()
+    public static function asArrayForDropDown() : array
     {
         return static::orderBy('name')->get()->mapWithKeys(function($perk){
             return [$perk->slug => $perk->name];
         })->all();
+    }
+    
+    public static function selectOptions(array $models=null, array $selected=[]) : string
+    {
+        $models ??= static::asArrayForDropDown();
+        
+        $options = '<option value=""></option>'."\n";
+        foreach($models as $value => $text) {
+//            $options .= '<option value="'.$value.'">'.$text.'</option>';
+            $options .= '<option value="'.$value.'"';
+                if(in_array($value, $selected)){
+                    $options .= ' SELECTED ';
+                }
+            $options .= '>'.$text.'</option>'."\n";
+        }
+        return $options;
     }
 }

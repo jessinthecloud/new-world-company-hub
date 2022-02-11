@@ -30,27 +30,35 @@
           behavior: 'smooth'
         });
       },
-      updateSelected(id, name, type, slug) {
-        this.selected = id;
-        this.search = name;
+      updateSelected(itemId, itemName, itemType, itemSlug, inputName) {
+        this.selected = itemId;
+        this.search = itemName;
         this.open = false;
         this.highlightedIndex = 0;
-        document.getElementById('base-model-id').value = id;
-        document.getElementById('base-model-slug').value = slug;
-        document.getElementById('itemType').value = type;
+       
+        document.getElementById(inputName+'-base-model-id').value = itemId;
+        document.getElementById(inputName+'-base-model-slug').value = itemSlug;
+        document.getElementById(inputName+'-itemType').value = itemType;
       },
   }">
   <div
-    x-on:value-selected="updateSelected($event.detail.id, $event.detail.name, $event.detail.type, $event.detail.slug)">
+    x-on:value-selected="updateSelected(
+        $event.detail.itemId, 
+        $event.detail.itemName, 
+        $event.detail.itemType, 
+        $event.detail.itemSlug,
+        $event.detail.inputName
+    )">
         <input
           wire:model.debounce.300ms="search"
           x-on:keydown.arrow-down.stop.prevent="highlightNext()"
           x-on:keydown.arrow-up.stop.prevent="highlightPrevious()"
           x-on:keydown.enter.stop.prevent="$dispatch('value-selected', {
-            id: $refs.results.children[highlightedIndex].getAttribute('data-result-id'),
-            name: $refs.results.children[highlightedIndex].getAttribute('data-result-name'),
-            type: $refs.results.children[highlightedIndex].getAttribute('data-result-type'),
-            slug: $refs.results.children[highlightedIndex].getAttribute('data-result-slug')
+            itemId: $refs.results.children[highlightedIndex].getAttribute('data-result-itemId'),
+            itemName: $refs.results.children[highlightedIndex].getAttribute('data-result-itemName'),
+            itemType: $refs.results.children[highlightedIndex].getAttribute('data-result-itemType'),
+            itemSlug: $refs.results.children[highlightedIndex].getAttribute('data-result-itemSlug'),
+            inputName: $refs.results.children[highlightedIndex].getAttribute('data-result-inputName'),
           })"
           class="
             w-full h-full rounded-md py-2 px-3
@@ -59,6 +67,7 @@
             focus:ring-indigo-200 
             focus:ring-opacity-50
           "
+          name="{{ $equipSlotName }}"
           >
 
     <div
@@ -69,22 +78,24 @@
             <li
               wire:key="{{ $index }}"
               x-on:click.stop="$dispatch('value-selected', {
-                id: {{ $result->id }},
+                itemId: {{ $result->id }},
                 {{-- item names with single quotes is creating JS errors
                 no idea why {{ }} is not already escaping quotes
                 htmlspecialchars() does not work here --}}
-                name: '{{ addslashes($result->name) }}',
-                type: '{{ $result->type }}',
-                slug: '{{ $result->slug }}'
+                itemName: '{{ addslashes($result->name) }}',
+                itemType: '{{ $result->type }}',
+                itemSlug: '{{ $result->slug }}',
+                inputName: '{{ $equipSlotName }}'
               })"
               :class="{
                 'bg-indigo-400': {{ $index }} === highlightedIndex,
                 'text-white': {{ $index }} === highlightedIndex
               }"
-              data-result-id="{{ $result->id }}"
-              data-result-name="{{ $result->name }}"
-              data-result-type="{{ $result->type }}"
-              data-result-slug="{{ $result->slug }}"
+              data-result-itemId="{{ $result->id }}"
+              data-result-itemName="{{ $result->name }}"
+              data-result-itemType="{{ $result->type }}"
+              data-result-itemSlug="{{ $result->slug }}"
+              data-result-inputName="{{ $equipSlotName }}"
             >
                 <span>
                   {{ $result->name }} ({{ $result->type }})

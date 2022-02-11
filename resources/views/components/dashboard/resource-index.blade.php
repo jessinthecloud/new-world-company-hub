@@ -15,7 +15,7 @@
             </x-dashboard.gated-button>
         @endif
 
-        @if(Route::has($pluralEntityName.'.show')  
+        @if(isset($instance) && Route::has($pluralEntityName.'.show')  
             && $phpClass != \App\Models\Characters\Character::class)
             <x-dashboard.gated-button
                 :can="['view', $instance]"
@@ -33,13 +33,13 @@
                 :can="['create', $phpClass]"
                 :phpClass="$phpClass"
                 {{--:route="route($pluralEntityName.'.create')"--}}
-                :route="route($pluralEntityName.'.create', [$entityName=>$instance->slug])"
+                :route="route($pluralEntityName.'.create', [$entityName=>$instance?->slug])"
             >
                 {{ $buttonTexts['create'] ?? 'Create' }}
             </x-dashboard.gated-button>
         @endif
         
-        @if(Route::has($pluralEntityName.'.edit'))
+        @if(isset($instance) && Route::has($pluralEntityName.'.edit'))
             <x-dashboard.gated-button
                 :can="['update', $instance]"
                 :phpClass="$phpClass" 

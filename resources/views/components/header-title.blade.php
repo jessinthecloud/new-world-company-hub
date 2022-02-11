@@ -1,7 +1,7 @@
 @props(['title'])
 
 <h2 class="font-semibold text-xl text-gray-800 leading-tight flex justify-between">
-    <span>{{ $title ?? '' }}</span>
+    <div class="flex-grow flex flex-wrap">{{ $title ?? '' }}</div>
     @if( session('character') !== null )
         <span id="character-heading" class="text-gray-600">
             @if(session('character')->rank !== null)

@@ -90,7 +90,7 @@ class Character extends Model
         return $this->hasMany(Armor::class);
     }*/
     
-    public function inventory(  )
+    public function inventoryItem(  )
     {
         return $this->morphMany(InventoryItem::class, 'ownerable');
     }

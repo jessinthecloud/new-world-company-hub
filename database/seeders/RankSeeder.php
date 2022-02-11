@@ -9,7 +9,7 @@ class RankSeeder extends Seeder
 {
     public function run()
     {
-        DB::table('ranks')->insert([
+        DB::table('ranks')->upsert([
            [
                'name' => 'Governor',
                'description' => 'Company Owner',
@@ -38,6 +38,6 @@ class RankSeeder extends Seeder
                'created_at' => now(),
                'updated_at' => now(),
            ],
-       ]);
+       ], ['name']);
     }
 }
