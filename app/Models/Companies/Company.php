@@ -86,7 +86,7 @@ class Company extends Model
 
     public function inventory()
     {
-        return new CompanyInventory($this->itemAttributes);
+        return new CompanyInventory($this->attributes);
     }
     
     /**
