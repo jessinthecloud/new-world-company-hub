@@ -11,6 +11,7 @@
         "laravel/framework": "^8.65",
         "laravel/sanctum": "^2.11",
         "laravel/socialite": "^5.2",
+        "laravel/telescope": "^4.7",
         "laravel/tinker": "^2.5",
         "livewire/livewire": "^2.8",
         "maatwebsite/excel": "^3.1",

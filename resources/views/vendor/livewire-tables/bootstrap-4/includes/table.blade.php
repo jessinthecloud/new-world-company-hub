@@ -33,7 +33,7 @@
                         :direction="$column->column() ? $sorts[$column->column()] ?? null : null"
                         :text="$column->text() ?? ''"
                         :class="$column->class() ?? ''"
-                        :customAttributes="$column->attributes()"
+                        :customAttributes="$column->itemAttributes()"
                     />
                 @endif
             @endif

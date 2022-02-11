@@ -31,7 +31,7 @@ class ArmorsController extends Controller
         $armor = $armor->load('perks', 'attributes');
         
         $rarity_color = Rarity::from($armor->rarity)->color();
-        $attributes = $armor->attributes->map(function($attribute){
+        $attributes = $armor->itemAttributes->map(function($attribute){
             return AttributeType::fromName($attribute->name)->value;
         })->all();
         
@@ -40,7 +40,7 @@ class ArmorsController extends Controller
             : $armor->type;
         
         // empty perk slots
-        $used_perk_slots = count($armor->perks->all()) + count($armor->attributes->all());
+        $used_perk_slots = count($armor->perks->all()) + count($armor->itemAttributes->all());
         if($used_perk_slots < $armor->base->num_perk_slots){
             $empty_slots = $armor->base->num_perk_slots - $used_perk_slots;
         }
