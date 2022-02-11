@@ -94,6 +94,7 @@ class PermissionSeeder extends Seeder
         Permission::updateOrCreate(['name' => 'create loadouts']);
         Permission::updateOrCreate(['name' => 'edit loadouts']);
         Permission::updateOrCreate(['name' => 'delete loadouts']);
+        Permission::updateOrCreate(['name' => 'approve loadouts']);
         // their own
         Permission::updateOrCreate(['name' => 'view own loadouts']);
         Permission::updateOrCreate(['name' => 'create own loadouts']);
@@ -104,11 +105,13 @@ class PermissionSeeder extends Seeder
         Permission::updateOrCreate(['name' => 'create own company loadouts']);
         Permission::updateOrCreate(['name' => 'edit own company loadouts']);
         Permission::updateOrCreate(['name' => 'delete own company loadouts']);
+        Permission::updateOrCreate(['name' => 'approve own company loadouts']);
         // their factions'
         Permission::updateOrCreate(['name' => 'view own faction loadouts']);
         Permission::updateOrCreate(['name' => 'create own faction loadouts']);
         Permission::updateOrCreate(['name' => 'edit own faction loadouts']);
         Permission::updateOrCreate(['name' => 'delete own faction loadouts']);
+        Permission::updateOrCreate(['name' => 'approve own faction loadouts']);
         
     // -- rosters --
         // all
