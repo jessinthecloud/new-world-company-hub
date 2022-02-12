@@ -259,7 +259,7 @@ abstract class ItemService implements ItemServiceContract
      */
     public function baseItem($id) : ?BaseItem
     {
-        return $this->baseItemClass::where('id', '=', $id)->first();
+        return $this->baseItemClass::where('id', '=', $id)->firstOrFail();
     }
 
     /**
