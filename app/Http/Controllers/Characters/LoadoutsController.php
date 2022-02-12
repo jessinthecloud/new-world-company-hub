@@ -89,6 +89,19 @@ class LoadoutsController extends Controller
                     'name' => null,
                 ],
             ],
+            'hands' => [
+                'type' => 'armor',
+                'subtype'=>ArmorType::from('Gloves')->name,
+                'required' => true,
+                'fields' => [
+                    'tier' => null,
+                    'rarity' => null,
+                    'perks' => [],
+                    'attributes' => [],
+                    'gear_score' => null,
+                    'name' => null,
+                ],
+            ],
             'legs' => [
                 'type' => 'armor',
                 'subtype'=>ArmorType::from('Pants')->name,
@@ -105,19 +118,6 @@ class LoadoutsController extends Controller
             'feet' => [
                 'type' => 'armor',
                 'subtype'=>ArmorType::from('Shoes')->name,
-                'required' => true,
-                'fields' => [
-                    'tier' => null,
-                    'rarity' => null,
-                    'perks' => [],
-                    'attributes' => [],
-                    'gear_score' => null,
-                    'name' => null,
-                ],
-            ],
-            'hands' => [
-                'type' => 'armor',
-                'subtype'=>ArmorType::from('Gloves')->name,
                 'required' => true,
                 'fields' => [
                     'tier' => null,
@@ -364,7 +364,6 @@ class LoadoutsController extends Controller
         $equipment_slot = [];
         $jewelry = ['neck', 'ring', 'earring'];
         foreach(array_keys($this->equipment_slots) as $slot_name){
-
             
             // InventoryItem models  
             $equipment_slot[$slot_name]['inventoryItem'] = $loadout->$slot_name;

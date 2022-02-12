@@ -93,6 +93,7 @@
                 :entityName="'loadout'"
                 :pluralEntityName="'loadouts'"
                 :instance="$loadout ?? null"
+                :routeParamValue="$loadout?->id"
             />
             
             {{-- Weapon --}}{{--
