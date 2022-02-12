@@ -10,8 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 class SetSessionCharacter
 {
-    public function __construct(protected DiscordService $discordService) { }
-
     /**
      * Handle an incoming request.
      *
