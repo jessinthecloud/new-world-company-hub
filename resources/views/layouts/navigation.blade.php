@@ -122,6 +122,9 @@
             </div>
 
             <div class="mt-3 space-y-1">
+                @if(Auth::user()?->hasRole('super-admin'))
+                    <x-responsive-nav-link :href="url('/dashboard/telescope')" class="font-bold">Telescope</x-responsive-nav-link>
+                @endif
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
