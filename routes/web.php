@@ -10,6 +10,7 @@ use App\Http\Controllers\Companies\CompanyMembersController;
 use App\Http\Controllers\Companies\ImportRosterController;
 use App\Http\Controllers\Companies\RostersController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\GearCheckController;
 use App\Http\Controllers\Items\ArmorsController;
 use App\Http\Controllers\Items\CompanyInventoryController;
 use App\Http\Controllers\Items\WeaponsController;
@@ -186,7 +187,8 @@ Route::middleware( ['auth', 'company', 'character'] )->group( function () {
 // # CONSUL
 // #
     Route::middleware( ['role:super-admin|admin|governor|consul'] )->group( function () {
-        Route::post( '/loadouts/approve/{loadout}', \App\Http\Controllers\GearCheckController::class )
+        // approve gear check
+        Route::post( '/loadouts/approve/{loadout}', [GearCheckController::class => 'approve'] )
             ->name( 'loadouts.approve' );
     } );
 // ##
@@ -248,8 +250,11 @@ Route::middleware( ['auth', 'company', 'character'] )->group( function () {
 
         Route::resource( 'rosters', RostersController::class )
             ->only( ['index', 'show'] );
-
-
+        
+        // gear check approval removal (could be from editing)
+        Route::delete( '/loadouts/{loadout}', [GearCheckController::class => 'destroy'] )
+            ->name( 'loadouts.destroy' );
+        
 // ## CHOOSE
         // choose from drop down
         Route::get( '/characters/choose/{action?}', [CharactersController::class, 'choose'] )
