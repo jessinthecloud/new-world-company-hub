@@ -7,7 +7,7 @@ use App\Services\DiscordService;
 use Closure;
 use Illuminate\Http\Request;
 
-class EnsureUserHasCompany
+class SetSessionCompany
 {
     public function __construct(protected DiscordService $discordService) { }
 

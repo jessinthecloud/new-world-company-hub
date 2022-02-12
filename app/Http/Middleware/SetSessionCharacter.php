@@ -8,7 +8,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class EnsureUserHasCharacter
+class SetSessionCharacter
 {
     public function __construct(protected DiscordService $discordService) { }
 
