@@ -37,7 +37,9 @@ class GearCheckController extends Controller
             ]);
         }
         
-        return redirect(route('dashboard'))->with([
+        return redirect(route('companies.show', [
+            'company'=>$approver->company()->slug
+        ]))->with([
             'status'=> [
                 'type'=>'success',
                 'message' => 'Loadout approved successfully.'
