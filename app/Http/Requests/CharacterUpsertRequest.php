@@ -21,16 +21,6 @@ class CharacterUpsertRequest extends FormRequest
            'rank' => ['nullable', 'numeric', 'exists:ranks,id'], 
            'class' => ['required', 'numeric', 'exists:character_classes,id'],
            'company' => ['nullable', 'numeric', 'exists:companies,id'],
-           'mainhand' => [
-                'required', 
-                'string',
-                Rule::in(WeaponType::getAllValues()),
-            ], 
-           'offhand' =>[
-                'required', 
-                'string',
-                Rule::in(WeaponType::getAllValues()),
-            ], 
            // define the valid array keys (skill ids) 
            'skills' => ['array:'.$valid_skill_ids_string, 'nullable'],
         ];

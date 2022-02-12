@@ -17,17 +17,7 @@ class CharacterCreationRequest extends FormRequest
         $rules = [
            'name' => ['required', 'string', 'max:255'], 
            'slug' => ['nullable', 'string', 'max:255'],
-//           'level' => ['required', 'numeric', 'max:60'], 
-           'mainhand' => [
-                'required', 
-                'string',
-                Rule::in(WeaponType::getAllValues()),
-            ], 
-           'offhand' =>[
-                'required', 
-                'string',
-                Rule::in(WeaponType::getAllValues()),
-            ], 
+//           'level' => ['required', 'numeric', 'max:60'],
            'class' => ['required', 'numeric', 'exists:character_classes,id'],
            // define the valid array keys (skill ids) 
            'skills' => ['array:'.$valid_skill_ids_string, 'nullable'],
