@@ -61,7 +61,7 @@ class GearCheckController extends Controller
     public function destroy(Request $request, Loadout $loadout)
     {
         $char = $loadout->character;
-        $status = $loadout->delete();
+        $status = $loadout->gearCheck->delete();
 
         if(!$status){
             return redirect(route('loadouts.show', ['loadout'=>$loadout->id]))->with([
