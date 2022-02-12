@@ -41,7 +41,7 @@ class GearCheckController extends Controller
         // todo: create GearCheck Event?
         
         return redirect(route('companies.show', [
-            'company'=>$approver->company()->slug
+            'company'=>$approver->company->slug
         ]))->with([
             'status'=> [
                 'type'=>'success',
@@ -85,7 +85,7 @@ class GearCheckController extends Controller
         Log::info("{$char->name}'s gear check approval was removed {$remove_reason}.");
         
         return redirect(route('companies.show', [
-            'company'=>$disapprover->company()->slug
+            'company'=>$disapprover->company->slug
         ]))->with([
             'status'=> [
                 'type'=>'success',

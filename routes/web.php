@@ -252,7 +252,7 @@ Route::middleware( ['auth', 'company', 'character'] )->group( function () {
             ->only( ['index', 'show'] );
         
         // gear check approval removal (could be from editing)
-        Route::delete( '/loadouts/{loadout}', [GearCheckController::class => 'destroy'] )
+        Route::delete( '/loadouts/{loadout}', [GearCheckController::class, 'destroy'] )
             ->name( 'loadouts.destroy' );
         
 // ## CHOOSE
