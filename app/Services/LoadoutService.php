@@ -4,9 +4,12 @@ namespace App\Services;
 
 use App\Enums\ArmorType;
 use App\Enums\AttributeType;
+use App\Enums\GearCheckThreshold;
+use App\Enums\Rarity;
 use App\Enums\WeaponType;
 use App\Exceptions\MissingLoadoutSlotException;
 use App\Models\Characters\Character;
+use App\Models\Characters\Loadout;
 use App\Models\Items\Perk;
 
 class LoadoutService
@@ -208,7 +211,6 @@ class LoadoutService
         foreach ( $validated['equipment_slot_names'] as $equipment_slot ) {
             if ( !isset( $validated['itemType'][ $equipment_slot ] ) ) {
                 continue;
-//                throw new \App\Exceptions\MissingLoadoutSlotException("$equipment_slot slot not found.");
             }
             $inventory[ $equipment_slot ] = $this->createItemForSlot(
                 $character,
@@ -252,5 +254,96 @@ class LoadoutService
             $morphableItem,
             $character
         );
+    }
+
+    /**
+     * @param \App\Models\Characters\Loadout $loadout
+     *
+     * @return array
+     */
+    public function populateEquipmentSlotGroups( Loadout $loadout )
+    {
+        $jewelry = ['neck', 'ring', 'earring'];
+        $equipment_slot = [];
+        $weapon_slot = [];
+        $armor_slot = [];
+        $jewelry_slot = [];
+        
+        foreach ( array_keys( $this->equipmentSlots ) as $slot_name ) {
+            $equipment_slot[ $slot_name ] = $this->populateEquipmentSlotGroup(
+                $loadout, 
+                $this->equipmentSlots[ $slot_name ],
+                $slot_name
+            );
+
+            if ( isset( $equipment_slot[ $slot_name ]['itemType'] ) ) {
+                if ( str_contains( strtolower( $equipment_slot[ $slot_name ]['itemType'] ), 'weapon' ) ) {
+                    $weapon_slot [] = $equipment_slot[ $slot_name ];
+                } else {
+                    if ( in_array( $slot_name, $jewelry ) ) {
+                        $jewelry_slot [] = $equipment_slot[ $slot_name ];
+                    } else {
+                        $armor_slot [] = $equipment_slot[ $slot_name ];
+                    }
+                }
+            }
+        }
+        $weapon_slot = array_filter( $weapon_slot );
+        $armor_slot = array_filter( $armor_slot );
+        $jewelry_slot = array_filter( $jewelry_slot );
+        
+        return [$weapon_slot, $armor_slot, $jewelry_slot];
+    }
+    
+    protected function populateEquipmentSlotGroup(Loadout $loadout, array $slot, string $slot_name) {
+
+        // InventoryItem models  
+        $slot['inventoryItem'] = $loadout->$slot_name;
+        // item subtype
+        $slot['itemType'] = isset( $loadout->$slot_name ) ? $loadout->$slot_name->item->itemable::class : null;
+        // Item Model
+        $slot['item'] = $loadout->$slot_name?->item;
+        // specific item
+        $slot['equippableItem'] = $loadout->$slot_name?->item->itemable;
+        $equip_item = $slot['equippableItem'];
+        // rarity color
+        $slot['rarityColor'] = isset( $equip_item )
+            ? Rarity::from( $equip_item->rarity )->color()
+            : null;
+        // rarity
+        $slot['rarity'] = strtolower( $equip_item?->rarity );
+        // attributes
+        $slot['attributes_list'] = isset( $equip_item )
+            ? implode(
+                '<BR>',
+                $equip_item->itemAttributes->unique()->map( function ( $attribute ) {
+                    return $attribute->pivot->amount . ' ' . AttributeType::fromName( $attribute->name )->value;
+                } )->all()
+            )
+            : [];
+            
+        // perks list
+        $slot['perks_list'] = isset( $equip_item )
+            ? implode( '<BR>', $equip_item->perks->unique()->pluck( 'name' )->all() )
+            : [];
+
+        // empty perk slots
+        $slot['used_perk_slots'] = $equip_item?->numberOfUnusedPerkSlots();
+
+        // gear check
+        $slot['gear_check_color'] = isset( $equip_item )
+            ? GearCheckThreshold::color( $equip_item->gear_score )
+            : null;
+        $slot['gear_check_label'] = isset( $equip_item )
+            ? strtolower( GearCheckThreshold::getName( $equip_item->gear_score ) )
+            : null;
+        $slot['gear_check_status'] = isset( $equip_item )
+            ? GearCheckThreshold::passes( $equip_item->gear_score )
+            : null;
+
+        // remove empty slots
+        $slot = array_filter( $slot );
+        
+        return $slot;
     }
 }

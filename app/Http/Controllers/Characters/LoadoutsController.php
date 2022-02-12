@@ -114,21 +114,7 @@ class LoadoutsController extends Controller
              ] )
              ->withInput()
              ;
-        } /*catch (MissingLoadoutSlotException $e) {
-            Log::warning( 'Loadout creation failed: ' . $e->getMessage() );
-            
-            $message = 'Loadout creation failed unexpectedly. Please try again.'
-                .(config('app.env')!=='production' ? ' -- '.$e->getMessage() : '');
-                
-            return redirect()->back()->with( [
-                 'status' => [
-                     'type'    => 'error',
-                     'message' => $message,
-                 ],
-             ] )
-             ->withInput()
-             ;
-        }*/
+        }
 
         $loadout = Loadout::create( [
             'weight'       => $weight ?? null,
@@ -160,9 +146,6 @@ class LoadoutsController extends Controller
 
     public function show( Loadout $loadout )
     {
-//        dump($loadout);
-//        dump($loadout->main->item->itemable->ownerInventory());
-
         $owner = $loadout->main->item->itemable->owner();
         $ownerType = Str::afterLast( strtolower( $owner::class ), '\\' );
         $character_name = Str::title( $loadout->character->name );
@@ -170,74 +153,8 @@ class LoadoutsController extends Controller
         $loadout_check = GearCheckThreshold::passes( $gear_score );
         $inventory = $loadout->main->item->itemable->ownerInventory();
 
-        $weapon_slot = [];
-        $armor_slot = [];
-        $jewelry_slot = [];
-        $equipment_slot = [];
-        $jewelry = ['neck', 'ring', 'earring'];
-        foreach ( array_keys( $this->loadoutService->equipmentSlots ) as $slot_name ) {
-            // InventoryItem models  
-            $equipment_slot[ $slot_name ]['inventoryItem'] = $loadout->$slot_name;
-            // item subtype
-            $equipment_slot[ $slot_name ]['itemType'] = isset( $loadout->$slot_name ) ? $loadout->$slot_name->item->itemable::class : null;
-            // Item Model
-            $equipment_slot[ $slot_name ]['item'] = $loadout->$slot_name?->item;
-            // specific item
-            $equipment_slot[ $slot_name ]['equippableItem'] = $loadout->$slot_name?->item->itemable;
-            $equip_item = $equipment_slot[ $slot_name ]['equippableItem'];
-            // rarity color
-            $equipment_slot[ $slot_name ]['rarityColor'] = isset( $equip_item )
-                ? Rarity::from( $equip_item->rarity )->color()
-                : null;
-            // rarity
-            $equipment_slot[ $slot_name ]['rarity'] = strtolower( $equip_item?->rarity );
-            // attributes
-            $equipment_slot[ $slot_name ]['attributes_list'] = isset( $equip_item )
-                ? implode(
-                    '<BR>',
-                    $equip_item->itemAttributes->unique()->map( function ( $attribute ) {
-                        return $attribute->pivot->amount . ' ' . AttributeType::fromName( $attribute->name )->value;
-                    } )->all()
-                )
-                : [];
-
-            $equipment_slot[ $slot_name ]['perks_list'] = isset( $equip_item )
-                ? implode( '<BR>', $equip_item->perks->unique()->pluck( 'name' )->all() )
-                : [];
-
-            // empty perk slots
-            $equipment_slot[ $slot_name ]['used_perk_slots'] = $equip_item?->numberOfUnusedPerkSlots();
-
-            // gear check
-            $equipment_slot[ $slot_name ]['gear_check_color'] = isset( $equip_item )
-                ? GearCheckThreshold::color( $equip_item->gear_score )
-                : null;
-            $equipment_slot[ $slot_name ]['gear_check_label'] = isset( $equip_item )
-                ? strtolower( GearCheckThreshold::getName( $equip_item->gear_score ) )
-                : null;
-            $equipment_slot[ $slot_name ]['gear_check_status'] = isset( $equip_item )
-                ? GearCheckThreshold::passes( $equip_item->gear_score )
-                : null;
-
-            // remove empty slots
-            $equipment_slot[ $slot_name ] = array_filter( $equipment_slot[ $slot_name ] );
-
-            if ( isset( $equipment_slot[ $slot_name ]['itemType'] ) ) {
-                if ( str_contains( strtolower( $equipment_slot[ $slot_name ]['itemType'] ), 'weapon' ) ) {
-                    $weapon_slot [] = $equipment_slot[ $slot_name ];
-                } else {
-                    if ( in_array( $slot_name, $jewelry ) ) {
-                        $jewelry_slot [] = $equipment_slot[ $slot_name ];
-                    } else {
-                        $armor_slot [] = $equipment_slot[ $slot_name ];
-                    }
-                }
-            }
-        }
-        $weapon_slot = array_filter( $weapon_slot );
-        $armor_slot = array_filter( $armor_slot );
-        $equipment_slot = array_filter( $equipment_slot );
-
+        [$weapon_slot, $armor_slot, $jewelry_slot] = $this->loadoutService->populateEquipmentSlotGroups($loadout);
+        
         return view( 'loadouts.show', [
             'loadout'        => $loadout,
             'loadout_check'  => $loadout_check,
