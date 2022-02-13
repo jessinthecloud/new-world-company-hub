@@ -161,7 +161,7 @@
     />
     <input id="{{ $name }}-itemType" type="hidden" 
         name="itemType[{{$name}}]" 
-        value="{{ old('itemType')[$name] ?? $itemType ?? '' }}"
+        value="{{ old('itemType')[$name] ?? $itemType ?? $type ?? '' }}"
     />
 
 </div>

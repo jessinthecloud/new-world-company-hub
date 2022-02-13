@@ -11,6 +11,7 @@ use App\Exceptions\MissingLoadoutSlotException;
 use App\Models\Characters\Character;
 use App\Models\Characters\Loadout;
 use App\Models\Items\Perk;
+use Illuminate\Support\Str;
 
 class LoadoutService
 {
@@ -47,7 +48,7 @@ class LoadoutService
             ],
             'head'    => [
                 'type'     => 'armor',
-                'subtype'  => ArmorType::from( 'Helmet' )->name,
+                'subtype'  => ArmorType::from('Helmet')->name,
                 'required' => true,
                 'fields'   => [
                     'tier'       => null,
@@ -60,7 +61,7 @@ class LoadoutService
             ],
             'chest'   => [
                 'type'     => 'armor',
-                'subtype'  => ArmorType::from( 'Chest' )->name,
+                'subtype'  => ArmorType::from('Chest')->name,
                 'required' => true,
                 'fields'   => [
                     'tier'       => null,
@@ -73,7 +74,7 @@ class LoadoutService
             ],
             'hands'   => [
                 'type'     => 'armor',
-                'subtype'  => ArmorType::from( 'Gloves' )->name,
+                'subtype'  => ArmorType::from('Gloves')->name,
                 'required' => true,
                 'fields'   => [
                     'tier'       => null,
@@ -86,7 +87,7 @@ class LoadoutService
             ],
             'legs'    => [
                 'type'     => 'armor',
-                'subtype'  => ArmorType::from( 'Pants' )->name,
+                'subtype'  => ArmorType::from('Pants')->name,
                 'required' => true,
                 'fields'   => [
                     'tier'       => null,
@@ -99,7 +100,7 @@ class LoadoutService
             ],
             'feet'    => [
                 'type'     => 'armor',
-                'subtype'  => ArmorType::from( 'Shoes' )->name,
+                'subtype'  => ArmorType::from('Shoes')->name,
                 'required' => true,
                 'fields'   => [
                     'tier'       => null,
@@ -112,7 +113,7 @@ class LoadoutService
             ],
             'neck'    => [
                 'type'     => 'armor',
-                'subtype'  => ArmorType::from( 'Amulet' )->name,
+                'subtype'  => ArmorType::from('Amulet')->name,
                 'required' => true,
                 'fields'   => [
                     'tier'       => null,
@@ -125,7 +126,7 @@ class LoadoutService
             ],
             'ring'    => [
                 'type'     => 'armor',
-                'subtype'  => ArmorType::from( 'Ring' )->name,
+                'subtype'  => ArmorType::from('Ring')->name,
                 'required' => true,
                 'fields'   => [
                     'tier'       => null,
@@ -138,7 +139,7 @@ class LoadoutService
             ],
             'earring' => [
                 'type'     => 'armor',
-                'subtype'  => ArmorType::from( 'Earring' )->name,
+                'subtype'  => ArmorType::from('Earring')->name,
                 'required' => true,
                 'fields'   => [
                     'tier'       => null,
@@ -192,29 +193,31 @@ class LoadoutService
             ],
         ],
      */
-    public function getDropdownValuesFromLoadout( Loadout $loadout )
+    public function getDropdownValuesFromLoadout(Loadout $loadout)
     {
         $values = [];
-        
+
         // loop equip types
         foreach ( $this->equipmentSlots as $name => $info ) {
-            if(!isset($loadout->$name)){
+            if ( !isset($loadout->$name) ) {
                 continue;
             }
             $values['perks'][ $name ] = $loadout->$name->item->itemable->perks->pluck("slug")->all();
             $values['attrs'][ $name ] = $loadout->$name->item->itemable->itemAttributes->pluck("name")->all();
             $values['attribute_amounts'][ $name ] = $loadout->$name->item->itemable->itemAttributes
-                ->map(function($attr){
+                ->map(function ($attr) {
                     return $attr->pivot->amount;
                 })->all();
             // related item
             $values['item'][ $name ] = $loadout->$name->item->itemable;
             // rarity
-            $values['rarity'][ $name ] = $loadout->$name->item->itemable->rarity;  
+            $values['rarity'][ $name ] = $loadout->$name->item->itemable->rarity;
             // existing rarity
-            $this->equipmentSlots[ $name ]['existing_rarity_options'] = Rarity::selectOptions(selected: [$values['rarity'][ $name ]]);
+            $this->equipmentSlots[ $name ]['existing_rarity_options'] = Rarity::selectOptions(
+                selected: [$values['rarity'][ $name ]]
+            );
         }
-        
+
         return $values;
     }
 
@@ -226,50 +229,56 @@ class LoadoutService
      *
      * @return void
      */
-    public function populateDropdowns( ItemService $itemService, array $values = [] )
+    public function populateDropdowns(ItemService $itemService, array $values = [])
     {
         // loop equip types
         foreach ( $this->equipmentSlots as $name => $info ) {
             // get old values
-            
+
             // existing perks
             $this->equipmentSlots[ $name ]['existing_perk_options'] = $itemService->existingPerkOptions(
-                array_filter( $values['perks'][ $name ] ?? [] ),
+                array_filter($values['perks'][ $name ] ?? []),
                 Perk::asArrayForDropDown(),
             );
 
             // existing attributes
             [$existing_attribute_amounts, $existing_attribute_options] =
                 $itemService->existingAttributeOptions(
-                    array_filter( $values['attrs'][ $name ] ?? [] ),
-                    collect( AttributeType::cases() )->sortBy( 'value' )->all(),
-                    array_filter( $values['attribute_amounts'][ $name ] ?? []),
+                    array_filter($values['attrs'][ $name ] ?? []),
+                    collect(AttributeType::cases())->sortBy('value')->all(),
+                    array_filter($values['attribute_amounts'][ $name ] ?? []),
                 );
             $this->equipmentSlots[ $name ]['existing_attribute_options'] = $existing_attribute_options;
             $this->equipmentSlots[ $name ]['existing_attribute_amounts'] = $existing_attribute_amounts;
-            
-            $this->equipmentSlots[ $name ]['item'] = isset($values['item']) 
-                ? ($values['item'][ $name ] ?? null) 
+
+            $this->equipmentSlots[ $name ]['item'] = isset($values['item'])
+                ? ( $values['item'][ $name ] ?? null )
                 : null;
         }
     }
 
     /**
-     * @param array                            $validated
-     * @param \App\Models\Characters\Character $character
+     * @param array                               $validated
+     * @param \App\Models\Characters\Character    $character
+     * @param \App\Models\Characters\Loadout|null $loadout
      *
      * @return array
      */
-    public function createItemsForSlots( array $validated, Character $character ) : array
+    public function updateOrCreateItemsForSlots(array $validated, Character $character, Loadout $loadout = null) : array
     {
         $inventory = [];
-        
+
         // loop slot names to create items
         foreach ( $validated['equipment_slot_names'] as $equipment_slot ) {
-            if ( !isset( $validated['itemType'][ $equipment_slot ] ) ) {
+            if ( !isset($validated['itemType'][ $equipment_slot ]) 
+                || $loadout->$equipment_slot?->item == null ) {
                 continue;
             }
-            $inventory[ $equipment_slot ] = $this->createItemForSlot(
+
+            // if loadout, update instead
+            $method = isset($loadout) ? 'updateItemForSlot' : 'createItemForSlot';
+
+            $inventory[ $equipment_slot ] = $this->$method(
                 $character,
                 $equipment_slot,
                 [
@@ -284,33 +293,52 @@ class LoadoutService
                     'id'                => $validated['id'][ $equipment_slot ],
                     'slug'              => $validated['slug'][ $equipment_slot ],
                     'tier'              => null,
-                ]
+                ],
+                $loadout->$equipment_slot?->item?->itemable
             );
         }
-        
+
         return $inventory;
     }
 
-    public function createItemForSlot( Character $character, string $equipment_slot, array $values )
+    public function createItemForSlot(Character $character, string $equipment_slot, array $values)
     {
-        $service = ( strtolower( $values['itemType'] ) == 'weapon' ) ? 'weaponService' : 'armorService';
-        
-        $base = $this->{$service}->baseItem( $values['base_id'] );
-        $values [ strtolower( $values['itemType'] ) . '_type' ] = $base->type ?? '';
+        $service = ( strtolower($values['itemType']) == 'weapon' ) ? 'weaponService' : 'armorService';
 
-        $specificItem = $this->{$service}->createSpecificItem( $values, $base );
+        $base = $this->{$service}->baseItem($values['base_id']);
+        $values [ strtolower($values['itemType']) . '_type' ] = $base->type ?? '';
+
+        $specificItem = $this->{$service}->createSpecificItem($values, $base);
         $specificItem = $this->{$service}->saveSpecificItemRelations(
             $values,
             $specificItem,
             $base
         );
-        
-        $morphableItem = $this->{$service}->createMorphableItem( $specificItem );
-        
+
+        $morphableItem = $this->{$service}->createMorphableItem($specificItem);
+
         return $this->{$service}->createInventoryItem(
             $morphableItem,
             $character
         );
+    }
+
+    public function updateItemForSlot(Character $character, string $equipment_slot, array $values, $specificItem)
+    {
+        $service = ( strtolower($values['itemType']) == 'weapon' ) ? 'weaponService' : 'armorService';
+
+        $base = $this->{$service}->baseItem($values['base_id']);
+        $values [ strtolower($values['itemType']) . '_type' ] = $base->type ?? '';
+
+        $specificItem = $this->{$service}->updateSpecificItem($values, $specificItem, $base);
+        $specificItem = $this->{$service}->saveSpecificItemRelations(
+            $values,
+            $specificItem,
+            $base
+        );
+        $morphableItem = $this->{$service}->updateMorphableItem($specificItem);
+
+        return $this->{$service}->updateInventoryItem($morphableItem, $character);
     }
 
     /**
@@ -318,26 +346,26 @@ class LoadoutService
      *
      * @return array
      */
-    public function populateEquipmentSlotGroups( Loadout $loadout )
+    public function populateEquipmentSlotGroups(Loadout $loadout)
     {
         $jewelry = ['neck', 'ring', 'earring'];
         $equipment_slot = [];
         $weapon_slot = [];
         $armor_slot = [];
         $jewelry_slot = [];
-        
-        foreach ( array_keys( $this->equipmentSlots ) as $slot_name ) {
+
+        foreach ( array_keys($this->equipmentSlots) as $slot_name ) {
             $equipment_slot[ $slot_name ] = $this->populateEquipmentSlotGroup(
-                $loadout, 
+                $loadout,
                 $this->equipmentSlots[ $slot_name ],
                 $slot_name
             );
 
-            if ( isset( $equipment_slot[ $slot_name ]['itemType'] ) ) {
-                if ( str_contains( strtolower( $equipment_slot[ $slot_name ]['itemType'] ), 'weapon' ) ) {
+            if ( isset($equipment_slot[ $slot_name ]['itemType']) ) {
+                if ( str_contains(strtolower($equipment_slot[ $slot_name ]['itemType']), 'weapon') ) {
                     $weapon_slot [] = $equipment_slot[ $slot_name ];
                 } else {
-                    if ( in_array( $slot_name, $jewelry ) ) {
+                    if ( in_array($slot_name, $jewelry) ) {
                         $jewelry_slot [] = $equipment_slot[ $slot_name ];
                     } else {
                         $armor_slot [] = $equipment_slot[ $slot_name ];
@@ -345,62 +373,92 @@ class LoadoutService
                 }
             }
         }
-        $weapon_slot = array_filter( $weapon_slot );
-        $armor_slot = array_filter( $armor_slot );
-        $jewelry_slot = array_filter( $jewelry_slot );
-        
+        $weapon_slot = array_filter($weapon_slot);
+        $armor_slot = array_filter($armor_slot);
+        $jewelry_slot = array_filter($jewelry_slot);
+
         return [$weapon_slot, $armor_slot, $jewelry_slot];
     }
-    
-    protected function populateEquipmentSlotGroup(Loadout $loadout, array $slot, string $slot_name) {
 
+    protected function populateEquipmentSlotGroup(Loadout $loadout, array $slot, string $slot_name)
+    {
         // InventoryItem models  
         $slot['inventoryItem'] = $loadout->$slot_name;
         // item subtype
-        $slot['itemType'] = isset( $loadout->$slot_name ) ? $loadout->$slot_name->item->itemable::class : null;
+        $slot['itemType'] = isset($loadout->$slot_name) ? $loadout->$slot_name->item->itemable::class : null;
         // Item Model
         $slot['item'] = $loadout->$slot_name?->item;
         // specific item
         $slot['equippableItem'] = $loadout->$slot_name?->item->itemable;
         $equip_item = $slot['equippableItem'];
         // rarity color
-        $slot['rarityColor'] = isset( $equip_item )
-            ? Rarity::from( $equip_item->rarity )->color()
+        $slot['rarityColor'] = isset($equip_item)
+            ? Rarity::from($equip_item->rarity)->color()
             : null;
         // rarity
-        $slot['rarity'] = strtolower( $equip_item?->rarity );
+        $slot['rarity'] = strtolower($equip_item?->rarity);
         // attributes
-        $slot['attributes_list'] = isset( $equip_item )
+        $slot['attributes_list'] = isset($equip_item)
             ? implode(
                 '<BR>',
-                $equip_item->itemAttributes->unique()->map( function ( $attribute ) {
-                    return $attribute->pivot->amount . ' ' . AttributeType::fromName( $attribute->name )->value;
-                } )->all()
+                $equip_item->itemAttributes->unique()->map(function ($attribute) {
+                    return $attribute->pivot->amount . ' ' . AttributeType::fromName($attribute->name)->value;
+                })->all()
             )
             : [];
-            
+
         // perks list
-        $slot['perks_list'] = isset( $equip_item )
-            ? implode( '<BR>', $equip_item->perks->unique()->pluck( 'name' )->all() )
+        $slot['perks_list'] = isset($equip_item)
+            ? implode('<BR>', $equip_item->perks->unique()->pluck('name')->all())
             : [];
 
         // empty perk slots
         $slot['used_perk_slots'] = $equip_item?->numberOfUnusedPerkSlots();
 
         // gear check
-        $slot['gear_check_color'] = isset( $equip_item )
-            ? GearCheckThreshold::color( $equip_item->gear_score )
+        $slot['gear_check_color'] = isset($equip_item)
+            ? GearCheckThreshold::color($equip_item->gear_score)
             : null;
-        $slot['gear_check_label'] = isset( $equip_item )
-            ? strtolower( GearCheckThreshold::getName( $equip_item->gear_score ) )
+        $slot['gear_check_label'] = isset($equip_item)
+            ? strtolower(GearCheckThreshold::getName($equip_item->gear_score))
             : null;
-        $slot['gear_check_status'] = isset( $equip_item )
-            ? GearCheckThreshold::passes( $equip_item->gear_score )
+        $slot['gear_check_status'] = isset($equip_item)
+            ? GearCheckThreshold::passes($equip_item->gear_score)
             : null;
 
         // remove empty slots
-        $slot = array_filter( $slot );
-        
+        $slot = array_filter($slot);
+
         return $slot;
     }
+
+    /**
+     * @param \App\Models\Characters\Loadout $loadout
+     * @param array                          $validated
+     *
+     * @return bool
+     */
+    public function isGearCheckStillValid(Loadout $loadout, array $validated) : bool
+    {
+    dump($validated);
+        foreach ( array_keys($this->equipmentSlots) as $slot_name ) {
+            if ( !$this->hasSameBaseItem($slot_name, $loadout, $validated[ $slot_name ] ?? null) ) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * @param string                         $slot_name
+     * @param \App\Models\Characters\Loadout $loadout
+     * @param                                $validated
+     *
+     * @return bool
+     */
+    public function hasSameBaseItem(string $slot_name, Loadout $loadout, $validated) : bool
+    {
+        return $loadout->$slot_name?->base?->id === $validated?->base?->id;
+    }
+
 }
