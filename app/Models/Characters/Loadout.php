@@ -21,10 +21,10 @@ class Loadout extends Model
         return $this->belongsTo(Character::class);
     }
     
-    public function user()
+    /*public function user()
     {
         return $this->hasOneThrough(User::class, Character::class);
-    }
+    }*/
 
     public function company(  )
     {

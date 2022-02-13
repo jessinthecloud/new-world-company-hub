@@ -56,7 +56,7 @@ class LoadoutPolicy
             $user->can('create loadouts')
             ||
             (
-                $user->can('create own loadouts') && $user->loadouts->count() < 1 
+                $user->can('create own loadouts') && $user->loadouts?->count() < 1 
             )
             ||
             (

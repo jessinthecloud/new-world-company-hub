@@ -36,7 +36,7 @@
                 @endforeach
             </table>
             
-{{--            @if(!Auth::user()->is($loadout->user))--}}
+            @if(!Auth::user()->is($loadout->character->user) || Auth::user()->can('approve loadouts'))
                 {{-- if current user is not the owner, 
                 see if they can approve/disapprove gear--}}
                 @if(!$loadout->approved())
@@ -63,7 +63,7 @@
                         Remove War Approval
                     </x-utils.gated-button-form>
                 @endif
-{{--            @endif--}}
+            @endif
         </div>
     </div>
 
