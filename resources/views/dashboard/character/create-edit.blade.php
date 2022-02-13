@@ -104,7 +104,7 @@
             
             <x-slot name="button">
                 <div class="flex flex-wrap flex-grow justify-start">
-                    <x-button>{{ $button_text }}</x-button>
+                    <x-button class="self-center">{{ $button_text }}</x-button>
                 </div>
             </x-slot>
             

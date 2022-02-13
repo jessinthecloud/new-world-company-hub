@@ -113,8 +113,10 @@ class DiscordService
         if(empty($rank) && in_array('breakpoint-member', $roles)){
             $rank = Rank::where('name', 'Settler')->first();
             $character = $user->characters->where('company_id', $company_id)->first();
-            $character->rank_id = $rank->id;
-            $character->save();
+            if(isset($character)){
+                $character->rank_id = $rank->id;
+                $character->save();
+            }
         }
         
         if($user->isSuperAdmin()){
