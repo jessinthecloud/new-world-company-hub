@@ -220,8 +220,8 @@ class LoadoutsController extends Controller
     {
         $validated = $request->validated();
         
-        $originalLoadout = new Loadout($loadout->getAttributes());
-    
+        $originalBaseItems = $this->loadoutService->getBaseItems($loadout);
+   
         try {
             $inventory = $this->loadoutService->updateOrCreateItemsForSlots(
                 $validated,
@@ -255,10 +255,14 @@ class LoadoutsController extends Controller
              'earring_id'   => $inventory['earring']->id,
              'shield_id'    => isset($inventory['shield']) ? $inventory['shield']->id : null,
          ]);
-       
-         // check if any item was changed -> delete gear check if so
-        $valid_gear_check = $this->loadoutService->isGearCheckStillValid($originalLoadout, $loadout);
+         
+         $newBaseItems = $this->loadoutService->getBaseItems($loadout);
 
+        $valid_gear_check = !$loadout->approved() || $this->loadoutService->isGearCheckStillValid(
+                $originalBaseItems,
+                $newBaseItems
+            );
+        
         $status = [
             'type'    => 'success',
             'message' => 'Loadout edited successfully',

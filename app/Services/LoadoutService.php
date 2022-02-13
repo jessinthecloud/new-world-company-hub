@@ -430,6 +430,17 @@ class LoadoutService
         // remove empty slots
         return array_filter($slot);
     }
+    
+    public function getBaseItems(Loadout $loadout) : array
+    {
+        $baseItems = [];
+        foreach(array_keys($this->equipmentSlots) as $slot_name){
+            $baseItems [$slot_name]= isset($loadout->$slot_name) 
+                ? $loadout->$slot_name->item->itemable->base
+                : null;
+        }
+        return $baseItems;
+    }
 
     /**
      * @param \App\Models\Characters\Loadout $originalLoadout
@@ -437,15 +448,14 @@ class LoadoutService
      *
      * @return bool
      */
-    public function isGearCheckStillValid(Loadout $originalLoadout, Loadout $newLoadout) : bool
+    public function isGearCheckStillValid(array $originalBaseItems, array $newBaseItems) : bool
     {
-        if( !isset($newLoadout->gearCheck)){
-            // gear not checked yet
-            return true;
-        }
-        
         foreach ( array_keys($this->equipmentSlots) as $slot_name ) {
-            if ( !$this->hasSameBaseItem($slot_name, $originalLoadout, $newLoadout) ) {
+            if(!isset($originalBaseItems[$slot_name]) || !isset($newBaseItems[$slot_name])){
+                continue;
+            }
+            
+            if ( !$this->hasSameBaseItem($originalBaseItems[$slot_name], $newBaseItems[$slot_name]) ) {
                 return false;
             }
         }
@@ -454,18 +464,14 @@ class LoadoutService
     }
 
     /**
-     * @param string                         $slot_name
-     * @param \App\Models\Characters\Loadout $originalLoadout
-     * @param \App\Models\Characters\Loadout $newLoadout
+     * @param \App\Models\Items\BaseItem $originalBaseItem
+     * @param \App\Models\Items\BaseItem $newBaseItem
      *
      * @return bool
      */
-    public function hasSameBaseItem(string $slot_name, Loadout $originalLoadout, Loadout $newLoadout) : bool
+    public function hasSameBaseItem(BaseItem $originalBaseItem, BaseItem $newBaseItem) : bool
     {
-        $originalBase = $originalLoadout->$slot_name?->item?->itemable?->base;
-        $newBase = $newLoadout->$slot_name?->item?->itemable?->base;
-
-        return (isset($originalLoadout->$slot_name) && isset($newLoadout->$slot_name)) ? $originalBase->is($newBase) : true;
+        return $originalBaseItem->is($newBaseItem);
     }
 
 }
