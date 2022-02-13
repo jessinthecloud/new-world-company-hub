@@ -8,7 +8,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class SetSessionLoadout
+class SetCharacterLoadout
 {
     public function __construct(protected DiscordService $discordService) { }
 
@@ -32,6 +32,6 @@ class SetSessionLoadout
         }
         
         // create a loadout
-        return redirect(route('loadouts.login.create', ['login'=>1]));
+        return redirect(route('loadouts.create', ['login'=>1]));
     }
 }

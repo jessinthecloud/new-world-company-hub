@@ -69,6 +69,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'company' => \App\Http\Middleware\SetSessionCompany::class,
         'character' => \App\Http\Middleware\SetSessionCharacter::class,
-        'loadout' => \App\Http\Middleware\SetSessionLoadout::class,
+        'loadout' => \App\Http\Middleware\SetCharacterLoadout::class,
     ];
 }

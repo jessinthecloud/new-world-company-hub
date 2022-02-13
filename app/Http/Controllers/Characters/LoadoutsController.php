@@ -12,6 +12,7 @@ use App\Models\Characters\Character;
 use App\Models\Characters\Loadout;
 use App\Models\Items\BaseWeapon;
 use App\Models\Items\Perk;
+use App\Providers\RouteServiceProvider;
 use App\Services\ArmorService;
 use App\Services\LoadoutService;
 use App\Services\WeaponService;
@@ -39,7 +40,7 @@ class LoadoutsController extends Controller
         protected LoadoutService $loadoutService,
     ) {
     }
-
+    
     public function index()
     {
         $loadouts = Loadout::asArrayForDropDown();
@@ -89,7 +90,7 @@ class LoadoutsController extends Controller
                 'weight_class_options' => $this->armorService->weightClassOptions(),
                 'attribute_options'    => $this->weaponService->attributeOptions(),
                 'method'               => 'POST',
-                'form_action'          => route( 'loadouts.store' ),
+                'form_action'          => route( 'loadouts.store', ['login'=>$request->query('login')] ),
                 'button_text'          => 'Add',
             ]
         );
@@ -135,6 +136,15 @@ class LoadoutsController extends Controller
         ] );
 
         // todo: fire Event?
+        
+        if($request->query('login')){
+            return redirect(RouteServiceProvider::DASHBOARD)->with( [
+               'status' => [
+                   'type'    => 'success',
+                   'message' => 'Loadout created successfully',
+               ],
+           ] );
+        }
 
         return redirect( route( 'dashboard' ) )->with( [
            'status' => [
