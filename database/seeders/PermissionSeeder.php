@@ -196,10 +196,13 @@ class PermissionSeeder extends Seeder
       
     // -- company members
         // all 
+        Permission::updateOrCreate(['name' => 'import company members']);
         Permission::updateOrCreate(['name' => 'export company members']);
         // their companies'
+        Permission::updateOrCreate(['name' => 'import own company members']);
         Permission::updateOrCreate(['name' => 'export own company members']);
         // their factions'
+        Permission::updateOrCreate(['name' => 'import own faction company members']);
         Permission::updateOrCreate(['name' => 'export own faction company members']);
         
     // -- miscellaneous
