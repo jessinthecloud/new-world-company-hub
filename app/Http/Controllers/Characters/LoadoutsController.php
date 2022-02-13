@@ -88,10 +88,6 @@ class LoadoutsController extends Controller
                'message' => 'You must create a loadout before accessing the dashboard.',
            ]);
         }
-        /*$request->session()->flash('status' => [
-           'type'    => 'info',
-           'message' => 'You must create a loadout before accessing the dashboard.',
-       ]);*/
 
         return view(
             'dashboard.loadout.create-edit',
@@ -152,15 +148,12 @@ class LoadoutsController extends Controller
         // todo: fire Event?
 
         if ( $request->query('login') ) {
-            return redirect(RouteServiceProvider::DASHBOARD)->with([
-               'status' => [
-                   'type'    => 'success',
-                   'message' => 'Loadout created successfully',
-               ],
-           ]);
+            // update session character
+            $request->user()->character()->refresh();
+            $request->session()->put('character', $request->user()->character());
         }
 
-        return redirect(route('dashboard'))->with([
+        return redirect(RouteServiceProvider::DASHBOARD)->with([
               'status' => [
                   'type'    => 'success',
                   'message' => 'Loadout created successfully',
