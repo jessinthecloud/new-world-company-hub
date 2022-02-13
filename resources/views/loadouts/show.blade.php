@@ -2,6 +2,7 @@
     <x-slot name="title">
         <strong class="ml-2">{{ $gear_score }}</strong> 
         <span class="ml-2">/ Loadout</span> 
+        <span class="ml-2">/ {{ $loadout->character->name }}</span> 
         <x-utils.icons.war-ready :loadout="$loadout" class=""ml-2/>
     </x-slot>
     
@@ -53,8 +54,8 @@
                 @else
                     <x-utils.gated-button-form
                         :can="['delete', $loadout]"
-                        :route-name="'loadouts.destroy'"
-                        :route=" route('loadouts.destroy', [
+                        :route-name="'loadouts.gear-check.destroy'"
+                        :route=" route('loadouts.gear-check.destroy', [
                             'loadout' => $loadout->id,
                         ])"
                         :method="'DELETE'"
