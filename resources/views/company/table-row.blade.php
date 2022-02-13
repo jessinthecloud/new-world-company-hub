@@ -25,7 +25,7 @@
 </x-livewire-tables::table.cell>
 
 <x-livewire-tables::table.cell>
-    @isset($row->loadout))
+    @isset($row->loadout)
         <x-dashboard.gated-button
             :can="['view', $row->loadout]"
             :route-name="'loadouts.show'"
