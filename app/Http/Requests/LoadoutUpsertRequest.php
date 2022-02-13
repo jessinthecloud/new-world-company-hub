@@ -9,7 +9,7 @@ class LoadoutUpsertRequest extends FormRequest
 {
     public function authorize() : bool
     {
-        $loadout = Loadout::find($this->route('loadout'));
+        $loadout = Loadout::find($this->route('loadout'))->first();
 
         return isset($loadout) 
             ? $this->user()->can('update', $loadout) 

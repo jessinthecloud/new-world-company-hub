@@ -10,7 +10,7 @@ class CompanyUpsertRequest extends FormRequest
 {
     public function authorize() : bool
     {
-        $company = Company::find($this->route('company'));
+        $company = Company::find($this->route('company'))->first();
 
         return isset($company) 
             ? $this->user()->can('update', $company) 

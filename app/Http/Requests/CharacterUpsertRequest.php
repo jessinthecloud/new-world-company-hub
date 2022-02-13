@@ -12,7 +12,7 @@ class CharacterUpsertRequest extends FormRequest
 {
     public function authorize() : bool
     {
-        $character = Character::find($this->route('character'));
+        $character = Character::find($this->route('character'))->first();
 
         return isset($character) 
             ? $this->user()->can('update', $character) 

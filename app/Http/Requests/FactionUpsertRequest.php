@@ -9,7 +9,7 @@ class FactionUpsertRequest extends FormRequest
 {
     public function authorize() : bool
     {
-        $faction = Faction::find($this->route('faction'));
+        $faction = Faction::find($this->route('faction'))->first();
 
         return isset($faction) 
             ? $this->user()->can('update', $faction) 
