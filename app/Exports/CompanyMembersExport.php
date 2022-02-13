@@ -30,9 +30,7 @@ class CompanyMembersExport implements FromQuery, WithHeadings, WithMapping, Shou
     {
         return [
             'Name',
-            'Discord',
             'Class',
-            'Registered',
         ];
     }
 
@@ -45,9 +43,7 @@ class CompanyMembersExport implements FromQuery, WithHeadings, WithMapping, Shou
     {
         return [
             $character->name,
-            $character->user->discord?->name,
             $character->class->name,
-            Carbon::createFromFormat('Y-m-d H:i:s', $character->created_at)->format('F j, Y g:i:s A'),
         ];
     }
 
