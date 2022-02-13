@@ -76,7 +76,7 @@ class LoadoutsController extends Controller
         if ( !empty( $request->old() ) ) {
             // on failed submission
             // populate the old form data
-            $this->loadoutService->populateSlots( $this->weaponService, $request->old() );
+            $this->loadoutService->populateDropdowns( $this->weaponService, $request->old() );
         }
 
         return view(
@@ -172,49 +172,37 @@ class LoadoutsController extends Controller
     /**
      * Loadout edit form
      *
+     * @param \Illuminate\Http\Request       $request
      * @param \App\Models\Characters\Loadout $loadout
      *
      * @return \Illuminate\Contracts\View\View
      */
-    public function edit( Loadout $loadout )
+    public function edit( Request $request, Loadout $loadout )
     {
-        $characters = Character::with( 'class' )->orderBy( 'name' )->get()->mapWithKeys( function ( $class ) {
-            return [$class->id => $class->name];
-        } )->all();
+        // on failed submission
+        // get from 
+        $values = empty($request->old()) 
+            ? $this->loadoutService->getDropdownValuesFromLoadout($loadout) 
+            : $request->old();
+        
+        // populate the old form data
+        $this->loadoutService->populateDropdowns( $this->weaponService, $values );
 
-        $loadout = $loadout->load( 'main', 'offhand', 'character' );
-
-        $weapons = BaseWeapon::orderBy( 'name' )->get()->mapWithKeys( function ( $weapon ) {
-            return [$weapon->id => $weapon->name . ' (' . $weapon->type->name . ')'];
-        } )->all();
-
-        $character_options = '';
-        foreach ( $characters as $value => $text ) {
-            $character_options .= '<option value="' . $value . '"';
-            if ( $loadout->character->id === $value ) {
-                $character_options .= ' SELECTED ';
-            }
-            $character_options .= '>' . $text . '</option>';
-        }
-
-        $main_options = '';
-        foreach ( $weapons as $value => $text ) {
-            $main_options .= '<option value="' . $value . '"';
-            if ( $loadout->main->id === $value ) {
-                $main_options .= ' SELECTED ';
-            }
-            $main_options .= '>' . $text . '</option>';
-        }
-
-        $offhand_options = '';
-        foreach ( $weapons as $value => $text ) {
-            $offhand_options .= '<option value="' . $value . '"';
-            if ( $loadout->offhand->id === $value ) {
-                $offhand_options .= ' SELECTED ';
-            }
-            $offhand_options .= '>' . $text . '</option>';
-        }
-
+        return view(
+            'dashboard.loadout.create-edit',
+            [
+                'equipment_slots'      => $this->loadoutService->equipmentSlots,
+                'perk_options'         => $this->weaponService->perkOptions(),
+                'raritys'              => Rarity::valueToAssociative(),
+                'tier_options'         => $this->weaponService->tierOptions(),
+                'weight_class_options' => $this->armorService->weightClassOptions(),
+                'attribute_options'    => $this->weaponService->attributeOptions(),
+                'method'               => 'POST',
+                'form_action'          => route( 'loadouts.store' ),
+                'button_text'          => 'Add',
+            ]
+        );
+        
         return view(
             'dashboard.loadout.create-edit',
             [

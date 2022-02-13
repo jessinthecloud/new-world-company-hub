@@ -165,35 +165,92 @@ class LoadoutService
         ];
     }
 
+    /*
+        'itemType'          => $validated['itemType'][ $equipment_slot ],
+        'gear_score'        => $validated['gear_score'][ $equipment_slot ],
+        'rarity'            => $validated['rarity'][ $equipment_slot ],
+        'perks'             => $validated['perks'][ $equipment_slot ] ?? [],
+        'attribute_amounts' => $validated['attribute_amounts'][ $equipment_slot ] ?? null,
+        'attrs'             => $validated['attrs'][ $equipment_slot ] ?? [],
+        'base_id'           => $validated['base_id'][ $equipment_slot ],
+        'base_slug'         => $validated['base_slug'][ $equipment_slot ],
+        'id'                => $validated['id'][ $equipment_slot ],
+        'slug'              => $validated['slug'][ $equipment_slot ],
+        'tier'              => null,
+    
+        'main_hand'    => [
+            'type'     => 'weapon',
+            'subtype'  => null,
+            'required' => true,
+            'fields'   => [
+                'tier'       => null,
+                'rarity'     => null,
+                'perks'      => [],
+                'attributes' => [],
+                'gear_score' => null,
+                'name'       => null,
+            ],
+        ],
+     */
+    public function getDropdownValuesFromLoadout( Loadout $loadout )
+    {
+        $values = [];
+        
+        // loop equip types
+        foreach ( $this->equipmentSlots as $name => $info ) {
+            if(!isset($loadout->$name)){
+                continue;
+            }
+            $values['perks'][ $name ] = $loadout->$name->item->itemable->perks->pluck("slug")->all();
+            $values['attrs'][ $name ] = $loadout->$name->item->itemable->itemAttributes->pluck("name")->all();
+            $values['attribute_amounts'][ $name ] = $loadout->$name->item->itemable->itemAttributes
+                ->map(function($attr){
+                    return $attr->pivot->amount;
+                })->all();
+            // related item
+            $values['item'][ $name ] = $loadout->$name->item->itemable;
+            // rarity
+            $values['rarity'][ $name ] = $loadout->$name->item->itemable->rarity;  
+            // existing rarity
+            $this->equipmentSlots[ $name ]['existing_rarity_options'] = Rarity::selectOptions(selected: [$values['rarity'][ $name ]]);
+        }
+        
+        return $values;
+    }
+
     /**
      * Populate the old form data
      *
      * @param \App\Services\ItemService $itemService
-     * @param array                     $old
+     * @param array                     $values
      *
      * @return void
      */
-    public function populateSlots( ItemService $itemService, array $old = [] )
+    public function populateDropdowns( ItemService $itemService, array $values = [] )
     {
         // loop equip types
         foreach ( $this->equipmentSlots as $name => $info ) {
             // get old values
-
+            
             // existing perks
             $this->equipmentSlots[ $name ]['existing_perk_options'] = $itemService->existingPerkOptions(
-                array_filter( $old( 'perks' )[ $name ] ),
+                array_filter( $values['perks'][ $name ] ?? [] ),
                 Perk::asArrayForDropDown(),
             );
 
             // existing attributes
             [$existing_attribute_amounts, $existing_attribute_options] =
                 $itemService->existingAttributeOptions(
-                    array_filter( $old( 'attrs' )[ $name ] ),
+                    array_filter( $values['attrs'][ $name ] ?? [] ),
                     collect( AttributeType::cases() )->sortBy( 'value' )->all(),
-                    array_filter( $old( 'attribute_amounts' )[ $name ] ),
+                    array_filter( $values['attribute_amounts'][ $name ] ?? []),
                 );
             $this->equipmentSlots[ $name ]['existing_attribute_options'] = $existing_attribute_options;
             $this->equipmentSlots[ $name ]['existing_attribute_amounts'] = $existing_attribute_amounts;
+            
+            $this->equipmentSlots[ $name ]['item'] = isset($values['item']) 
+                ? ($values['item'][ $name ] ?? null) 
+                : null;
         }
     }
 

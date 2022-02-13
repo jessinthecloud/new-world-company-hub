@@ -39,7 +39,7 @@
                     class=""
                     type="text"
                     name="gear_score[character]" 
-                    value="{{ old('gear_score')['character'] ?? (isset($item) ? $item->gear_score : '') }}"
+                    value="{{ old('gear_score')['character'] ?? (isset($loadout) ? $loadout->gear_score : '') }}"
                     size="10"
                     :required="true" 
                 />
@@ -73,6 +73,7 @@
                     :existingPerkOptions="$equipment['existing_perk_options'] ?? []"
                     :existingAttributeOptions="$equipment['existing_attribute_options'] ?? []"
                     :existingAttributeAmounts="$equipment['existing_attribute_amounts'] ?? []"
+                    :existingRarityOptions="$equipment['existing_rarity_options'] ?? []"
                 />
             @endforeach
             
