@@ -58,7 +58,7 @@ Route::middleware( ['auth'] )->group( function () {
         ->name( 'companies.login.choose' );
 } );
 
-Route::middleware( ['auth', 'company'] )->group( function () {
+Route::middleware( ['auth', 'company',] )->group( function () {
 // character is chosen on login
     Route::get( '/characters/{character}/login',
                 [CharacterLoginController::class, 'login']
@@ -78,7 +78,16 @@ Route::middleware( ['auth', 'company'] )->group( function () {
         ->name( 'characters.login.store' );
 } );
 
-Route::middleware( ['auth', 'company', 'character'] )->group( function () {
+Route::middleware( ['auth', 'company', 'character',] )->group( function () {
+    Route::get( '/loadouts/create', [LoadoutsController::class, 'create']
+    )
+        ->name( 'loadouts.create' );
+    Route::post( '/loadouts', [LoadoutsController::class, 'store']
+    )
+        ->name( 'loadouts.store' );
+} );
+
+Route::middleware( ['auth', 'company', 'character', 'loadout'] )->group( function () {
     // dashboard
     Route::get( '/dashboard', [DashboardController::class, 'index'] )
         ->name( 'dashboard' );
@@ -242,7 +251,7 @@ Route::middleware( ['auth', 'company', 'character'] )->group( function () {
 
         // LOADOUT
         Route::resource( 'loadouts', LoadoutsController::class )
-            ->except( ['index'] );
+            ->except( ['index', 'create', 'store'] );
         Route::get( '/loadouts/choose', [LoadoutsController::class, 'choose'] )
             ->name( 'loadouts.choose' );
         Route::post( '/loadouts/find', [LoadoutsController::class, 'find'] )
