@@ -28,7 +28,7 @@ class WeaponsController extends Controller
 
     public function show( Request $request, Weapon $weapon )
     {
-        $weapon = $weapon->load('perks', 'attributes');
+        $weapon = $weapon->load('perks', 'itemAttributes');
         
         $rarity_color = Rarity::from($weapon->rarity)->color();
         $attributes = $weapon->itemAttributes->map(function($attribute){
