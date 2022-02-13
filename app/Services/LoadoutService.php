@@ -10,6 +10,7 @@ use App\Enums\WeaponType;
 use App\Exceptions\MissingLoadoutSlotException;
 use App\Models\Characters\Character;
 use App\Models\Characters\Loadout;
+use App\Models\Items\BaseItem;
 use App\Models\Items\Perk;
 use Illuminate\Support\Str;
 
@@ -270,8 +271,9 @@ class LoadoutService
 
         // loop slot names to create items
         foreach ( $validated['equipment_slot_names'] as $equipment_slot ) {
-            if ( !isset($validated['itemType'][ $equipment_slot ]) 
-                || $loadout->$equipment_slot?->item == null ) {
+
+            if ( !isset($validated['base_id'][ $equipment_slot ]) 
+                || (isset($loadout) && $loadout->$equipment_slot?->item == null) ) {
                 continue;
             }
 
@@ -294,7 +296,7 @@ class LoadoutService
                     'slug'              => $validated['slug'][ $equipment_slot ],
                     'tier'              => null,
                 ],
-                $loadout->$equipment_slot?->item?->itemable
+                $loadout?->$equipment_slot?->item?->itemable
             );
         }
 
@@ -307,7 +309,6 @@ class LoadoutService
 
         $base = $this->{$service}->baseItem($values['base_id']);
         $values [ strtolower($values['itemType']) . '_type' ] = $base->type ?? '';
-
         $specificItem = $this->{$service}->createSpecificItem($values, $base);
         $specificItem = $this->{$service}->saveSpecificItemRelations(
             $values,
@@ -346,7 +347,7 @@ class LoadoutService
      *
      * @return array
      */
-    public function populateEquipmentSlotGroups(Loadout $loadout)
+    public function populateEquipmentSlotGroups(Loadout $loadout) : array
     {
         $jewelry = ['neck', 'ring', 'earring'];
         $equipment_slot = [];
@@ -380,7 +381,7 @@ class LoadoutService
         return [$weapon_slot, $armor_slot, $jewelry_slot];
     }
 
-    protected function populateEquipmentSlotGroup(Loadout $loadout, array $slot, string $slot_name)
+    protected function populateEquipmentSlotGroup(Loadout $loadout, array $slot, string $slot_name) : array
     {
         // InventoryItem models  
         $slot['inventoryItem'] = $loadout->$slot_name;
@@ -427,38 +428,44 @@ class LoadoutService
             : null;
 
         // remove empty slots
-        $slot = array_filter($slot);
-
-        return $slot;
+        return array_filter($slot);
     }
 
     /**
-     * @param \App\Models\Characters\Loadout $loadout
-     * @param array                          $validated
+     * @param \App\Models\Characters\Loadout $originalLoadout
+     * @param \App\Models\Characters\Loadout $newLoadout
      *
      * @return bool
      */
-    public function isGearCheckStillValid(Loadout $loadout, array $validated) : bool
+    public function isGearCheckStillValid(Loadout $originalLoadout, Loadout $newLoadout) : bool
     {
-    dump($validated);
+        if( !isset($newLoadout->gearCheck)){
+            // gear not checked yet
+            return true;
+        }
+        
         foreach ( array_keys($this->equipmentSlots) as $slot_name ) {
-            if ( !$this->hasSameBaseItem($slot_name, $loadout, $validated[ $slot_name ] ?? null) ) {
+            if ( !$this->hasSameBaseItem($slot_name, $originalLoadout, $newLoadout) ) {
                 return false;
             }
         }
+        
         return true;
     }
 
     /**
      * @param string                         $slot_name
-     * @param \App\Models\Characters\Loadout $loadout
-     * @param                                $validated
+     * @param \App\Models\Characters\Loadout $originalLoadout
+     * @param \App\Models\Characters\Loadout $newLoadout
      *
      * @return bool
      */
-    public function hasSameBaseItem(string $slot_name, Loadout $loadout, $validated) : bool
+    public function hasSameBaseItem(string $slot_name, Loadout $originalLoadout, Loadout $newLoadout) : bool
     {
-        return $loadout->$slot_name?->base?->id === $validated?->base?->id;
+        $originalBase = $originalLoadout->$slot_name?->item?->itemable?->base;
+        $newBase = $newLoadout->$slot_name?->item?->itemable?->base;
+
+        return (isset($originalLoadout->$slot_name) && isset($newLoadout->$slot_name)) ? $originalBase->is($newBase) : true;
     }
 
 }

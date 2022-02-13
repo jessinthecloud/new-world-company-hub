@@ -219,6 +219,9 @@ class LoadoutsController extends Controller
     public function update(LoadoutUpsertRequest $request, Loadout $loadout)
     {
         $validated = $request->validated();
+        
+        $originalLoadout = new Loadout($loadout->getAttributes());
+    
         try {
             $inventory = $this->loadoutService->updateOrCreateItemsForSlots(
                 $validated,
@@ -237,9 +240,6 @@ class LoadoutsController extends Controller
                 ->withInput();
         }
 
-        // check if any item was changed -> delete gear check if so
-        $valid_gear_check = $this->loadoutService->isGearCheckStillValid($loadout, $inventory);
-
         $loadout->update([
              'weight'       => $weight ?? null,
              'gear_score'   => $validated['gear_score']['character'],
@@ -255,6 +255,9 @@ class LoadoutsController extends Controller
              'earring_id'   => $inventory['earring']->id,
              'shield_id'    => isset($inventory['shield']) ? $inventory['shield']->id : null,
          ]);
+       
+         // check if any item was changed -> delete gear check if so
+        $valid_gear_check = $this->loadoutService->isGearCheckStillValid($originalLoadout, $loadout);
 
         $status = [
             'type'    => 'success',
