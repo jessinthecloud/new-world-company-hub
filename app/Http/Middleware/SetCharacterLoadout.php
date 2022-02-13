@@ -27,6 +27,11 @@ class SetCharacterLoadout
             redirect(route('login'));
         }
         
+        // make sure char info is up-to-date
+        if($request->user()->character()->isDirty()){
+            $request->user()->character()->refresh();
+        }
+    
         if(!empty($request->user()->character()->loadout)){
             return $next($request);
         }
