@@ -25,7 +25,7 @@
 </x-livewire-tables::table.cell>
 
 <x-livewire-tables::table.cell>
-    @if(Route::has('loadouts.show') && isset($row->loadout))
+    @isset($row->loadout))
         <x-dashboard.gated-button
             :can="['view', $row->loadout]"
             :route-name="'loadouts.show'"
@@ -33,7 +33,7 @@
                 'loadout'=>$row->loadout?->id,
             ])"
         ></x-dashboard.gated-button>
-    @endif
+    @endisset
 </x-livewire-tables::table.cell>
 
 <x-livewire-tables::table.cell>

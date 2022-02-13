@@ -54,7 +54,7 @@ class CompanyTable extends DataTableComponent
                 ->searchable(),
             Column::make( 'Registered', 'character.created_at' ),
             Column::make( 'Loadout' )
-                ->hideIf(Auth::user()->cannot('view own company loadouts')),
+                ->hideIf(Auth::user()->cannot('view own company loadouts', $this->company)),
             Column::make( 'Kick' )
                 ->hideIf(Auth::user()->cannot('removeMembers', $this->company)),
         ];
