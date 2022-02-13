@@ -16,6 +16,8 @@ class Loadout extends Model
     
     protected $guarded=['id'];
     
+    protected $with = ['gearCheck'];
+    
     public function character()
     {
         return $this->belongsTo(Character::class);
@@ -116,7 +118,7 @@ class Loadout extends Model
 
     public function approved(  )
     {
-        return $this->has('gearCheck')->count() > 0;
+        return isset($this->gearCheck);
     }
     
 // -- SCOPES 
