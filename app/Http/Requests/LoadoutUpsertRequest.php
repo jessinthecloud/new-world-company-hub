@@ -2,13 +2,18 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Characters\Loadout;
 use Illuminate\Foundation\Http\FormRequest;
 
 class LoadoutUpsertRequest extends FormRequest
 {
     public function authorize() : bool
     {
-        return $this->user()->can('update', $this->user()->loadout());
+        $loadout = Loadout::find($this->route('loadout'))->first();
+
+        return isset($loadout) 
+            ? $this->user()->can('update', $loadout) 
+            : $this->user()->can('create', Loadout::class);
     }
     
     public function rules() : array

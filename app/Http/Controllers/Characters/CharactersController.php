@@ -80,9 +80,6 @@ class CharactersController extends Controller
         $companies = Company::asArrayForDropDown();
 
         $skillTypes = SkillType::asArrayForDropDown();
-        
-        $weapons = WeaponType::valueToAssociative();
-        asort($weapons);
     
         $form_action = route('characters.store');
         $button_text = 'Add';
@@ -90,7 +87,7 @@ class CharactersController extends Controller
         return view(
             'dashboard.character.create-edit', 
             compact('ranks', 'skillTypes', 'classes', 
-                'companies', 'form_action', 'button_text', 'weapons')
+                'companies', 'form_action', 'button_text')
         );
     }
 
@@ -171,27 +168,6 @@ class CharactersController extends Controller
             $company_options .= '>'.$text.'</option>';
         }
         
-        $weapons = WeaponType::valueToAssociative();
-        asort($weapons);
-      
-        $mainhand_options = '<option value=""></option>';
-        foreach($weapons as $value => $text) {
-            $mainhand_options .= '<option value="'.$value.'"';
-            if($character->mainhand === $value){
-                $mainhand_options .= ' SELECTED ';
-            }
-            $mainhand_options .= '>'.$text.'</option>';
-        }
-        
-        $offhand_options = '<option value=""></option>';
-        foreach($weapons as $value => $text) {
-            $offhand_options .= '<option value="'.$value.'"';
-            if($character->offhand === $value){
-                $offhand_options .= ' SELECTED ';
-            }
-            $offhand_options .= '>'.$text.'</option>';
-        }
-        
         return view(
             'dashboard.character.create-edit', 
             [
@@ -200,8 +176,6 @@ class CharactersController extends Controller
                 'rank_options' => $rank_options,
                 'class_options' => $class_options,
                 'company_options' => $company_options,
-                'mainhand_options' => $mainhand_options,
-                'offhand_options' => $offhand_options,
                 'method' => 'PUT',
                 'form_action' => route('characters.update', ['character'=>$character]), 
                 'button_text' => 'Edit',
@@ -216,8 +190,6 @@ class CharactersController extends Controller
         $character->name = $validated['name'];
         $character->slug = isset($validated['slug']) ? Str::slug($validated['slug']) : Str::slug($validated['name']);
         $character->level = $validated['level'] ?? 0;
-        $character->mainhand = $validated['mainhand'];
-        $character->offhand = $validated['offhand'];
         
         // relations
         $character->class()->associate($validated['class']);

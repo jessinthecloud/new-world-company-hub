@@ -57,6 +57,7 @@ class BaseWeapon extends BaseItem
     public function scopeRawForSearch( Builder $query, string $term )
     {
         return $query->select(DB::raw('base_weapons.id as id, base_weapons.slug as slug, base_weapons.name as name, base_weapons.type as subtype, base_weapons.rarity, base_weapons.gear_score, null as weight_class, "Weapon" as type'))
+            ->distinct()
             ->where('base_weapons.name', 'like', $term)
             // no test items
             ->where('name', 'not like', '@%')
@@ -75,6 +76,7 @@ class BaseWeapon extends BaseItem
     public function scopeRawForLoadout( Builder $query, string $term, string $type )
     {
         return $query->select(DB::raw('base_weapons.id as id, base_weapons.slug as slug, base_weapons.name as name, base_weapons.type as subtype, base_weapons.rarity, base_weapons.gear_score, null as weight_class, "Weapon" as type'))
+            ->distinct()
             ->where('base_weapons.name', 'like', $term)
             // only for specific equipment slot
             ->where('type', '=', $type)
@@ -95,6 +97,7 @@ class BaseWeapon extends BaseItem
     public function scopeForLoadout( Builder $query, string $term, string $type )
     {
         return $query->select(DB::raw('base_weapons.id as id, base_weapons.slug as slug, base_weapons.name as name, base_weapons.type as subtype, base_weapons.rarity, base_weapons.gear_score, null as weight_class, "Weapon" as type'))
+            ->distinct()
             ->where('base_weapons.name', 'like', $term)
             // only for specific equipment slot
             ->where('base_weapons.type', '=', $type)

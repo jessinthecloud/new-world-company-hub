@@ -65,29 +65,6 @@
                 />
             </x-forms.field>--}}
             
-            <div class="w-full flex flex-wrap">
-                <div class="mainhand w-full flex flex-col p4 lg:w-1/3">
-                    <h3 class="mb-2">Main Hand</h3>
-                    <x-forms.field :name="'mainhand'" class="mb-6">
-                        <x-forms.label for="mainhand" :required="true">Weapon:</x-forms.label>
-                        <x-forms.select name="mainhand" id="mainhand"
-                            :values="$weapons ?? null"
-                            :required="true"
-                        >{!! $mainhand_options ?? '' !!}</x-forms.select>
-                    </x-forms.field>
-                </div>   
-                <div class="offhand w-full flex flex-col p4 lg:w-1/3"> 
-                    <h3 class="mb-2">Off Hand</h3>
-                    <x-forms.field :name="'offhand'" class="mb-6">
-                        <x-forms.label for="offhand" :required="true">Weapon:</x-forms.label>
-                        <x-forms.select name="offhand" id="offhand"
-                            :values="$weapons ?? null"
-                            :required="true"
-                        >{!! $offhand_options ?? '' !!}</x-forms.select>
-                    </x-forms.field>
-                </div>
-            </div>
-            
             {{--<div class="character-skills border rounded-md p-6 mt-6 mb-6">
                 <h3 class="mb-6">Skill Levels</h3>
                 @foreach($skillTypes as $skillType)

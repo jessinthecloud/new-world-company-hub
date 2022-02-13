@@ -10,6 +10,7 @@ use App\Http\Controllers\Companies\CompanyMembersController;
 use App\Http\Controllers\Companies\ImportRosterController;
 use App\Http\Controllers\Companies\RostersController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\GearCheckController;
 use App\Http\Controllers\Items\ArmorsController;
 use App\Http\Controllers\Items\CompanyInventoryController;
 use App\Http\Controllers\Items\WeaponsController;
@@ -57,7 +58,7 @@ Route::middleware( ['auth'] )->group( function () {
         ->name( 'companies.login.choose' );
 } );
 
-Route::middleware( ['auth', 'company'] )->group( function () {
+Route::middleware( ['auth', 'company',] )->group( function () {
 // character is chosen on login
     Route::get( '/characters/{character}/login',
                 [CharacterLoginController::class, 'login']
@@ -77,7 +78,16 @@ Route::middleware( ['auth', 'company'] )->group( function () {
         ->name( 'characters.login.store' );
 } );
 
-Route::middleware( ['auth', 'company', 'character'] )->group( function () {
+Route::middleware( ['auth', 'company', 'character',] )->group( function () {
+    Route::get( '/loadouts/create', [LoadoutsController::class, 'create']
+    )
+        ->name( 'loadouts.create' );
+    Route::post( '/loadouts', [LoadoutsController::class, 'store']
+    )
+        ->name( 'loadouts.store' );
+} );
+
+Route::middleware( ['auth', 'company', 'character', 'loadout'] )->group( function () {
     // dashboard
     Route::get( '/dashboard', [DashboardController::class, 'index'] )
         ->name( 'dashboard' );
@@ -186,7 +196,8 @@ Route::middleware( ['auth', 'company', 'character'] )->group( function () {
 // # CONSUL
 // #
     Route::middleware( ['role:super-admin|admin|governor|consul'] )->group( function () {
-        Route::post( '/loadouts/approve/{loadout}', \App\Http\Controllers\GearCheckController::class )
+        // approve gear check
+        Route::post( '/loadouts/approve/{loadout}', [GearCheckController::class, 'approve'] )
             ->name( 'loadouts.approve' );
     } );
 // ##
@@ -240,7 +251,7 @@ Route::middleware( ['auth', 'company', 'character'] )->group( function () {
 
         // LOADOUT
         Route::resource( 'loadouts', LoadoutsController::class )
-            ->except( ['index'] );
+            ->except( ['index', 'create', 'store'] );
         Route::get( '/loadouts/choose', [LoadoutsController::class, 'choose'] )
             ->name( 'loadouts.choose' );
         Route::post( '/loadouts/find', [LoadoutsController::class, 'find'] )
@@ -248,8 +259,11 @@ Route::middleware( ['auth', 'company', 'character'] )->group( function () {
 
         Route::resource( 'rosters', RostersController::class )
             ->only( ['index', 'show'] );
-
-
+        
+        // gear check approval removal (could be from editing)
+        Route::delete( '/loadouts/{loadout}', [GearCheckController::class, 'destroy'] )
+            ->name( 'loadouts.destroy' );
+        
 // ## CHOOSE
         // choose from drop down
         Route::get( '/characters/choose/{action?}', [CharactersController::class, 'choose'] )

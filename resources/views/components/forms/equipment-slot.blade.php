@@ -1,4 +1,4 @@
-@props([ 'title', 'name', 'required'=>false, 'type'=>null, 'subtype'=>null, 'item', 'perkOptions', 'raritys', 'tierOptions', 'attributeOptions', 'existingPerkOptions'=> [], 'existingAttributeOptions'=> [], 'existingAttributeAmounts' =>[]])
+@props([ 'title', 'name', 'required'=>false, 'type'=>null, 'subtype'=>null, 'item', 'perkOptions', 'raritys', 'tierOptions', 'attributeOptions', 'existingPerkOptions'=> [], 'existingAttributeOptions'=> [], 'existingAttributeAmounts' =>[], 'existingRarityOptions'=>[]])
 
 <div class="equipment-slot w-full flex flex-wrap justify-start border rounded-md p-6 mt-6 mb-6">
     <h2 class="w-full mb-6">{{ $title }}</h2>
@@ -29,11 +29,19 @@
 
     <x-forms.field :name="'rarity-'.$name" class="mb-6 mr-4">
         <x-forms.label for="rarity-{{$name}}" :required="$required">Rarity:</x-forms.label>
+        @if(!empty($existingRarityOptions))
+            <x-forms.select name="rarity[{{$name}}]" id="rarity-{{$name}}"
+            :values="$raritys ?? null"
+            :index="$name"
+            :required="$required"
+        >{!! $existingRarityOptions ?? '' !!}</x-forms.select>
+        @else
         <x-forms.select name="rarity[{{$name}}]" id="rarity-{{$name}}"
-                        :values="$raritys ?? null"
-                        :index="$name"
-                        :required="$required"
+            :values="$raritys ?? null"
+            :index="$name"
+            :required="$required"
         ></x-forms.select>
+        @endif
     </x-forms.field>
 
     <div id="{{ $name }}-perks-attr-wrapper" class="w-full flex flex-wrap justify-start">
@@ -153,7 +161,7 @@
     />
     <input id="{{ $name }}-itemType" type="hidden" 
         name="itemType[{{$name}}]" 
-        value="{{ old('itemType')[$name] ?? $itemType ?? '' }}"
+        value="{{ old('itemType')[$name] ?? $itemType ?? $type ?? '' }}"
     />
 
 </div>

@@ -44,6 +44,7 @@ class BaseArmor extends BaseItem
     public function scopeRawForSearch( Builder $query, string $term )
     {
         return $this->select(DB::raw('base_armors.id as id, base_armors.slug as slug, base_armors.name as name, base_armors.type as subtype, base_armors.rarity, base_armors.gear_score, null as weight_class, "Armor" as type'))
+            ->distinct()
             ->where('base_armors.name', 'like', $term)
             // no test items
             ->where('name', 'not like', '@%')
@@ -66,6 +67,7 @@ class BaseArmor extends BaseItem
                 'base_armors.id as id, base_armors.slug as slug, base_armors.name as name, base_armors.type as subtype, base_armors.rarity, base_armors.gear_score, null as weight_class, "Armor" as type'
             )
         )
+            ->distinct()
             // only for specific equipment slot
             ->where('base_armors.type', '=', $type)
             ->where( 'base_armors.name', 'like', $term )

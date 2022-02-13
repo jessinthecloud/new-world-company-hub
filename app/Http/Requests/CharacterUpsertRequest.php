@@ -3,12 +3,22 @@
 namespace App\Http\Requests;
 
 use App\Enums\WeaponType;
+use App\Models\Characters\Character;
 use App\Models\Characters\Skill;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 class CharacterUpsertRequest extends FormRequest
 {
+    public function authorize() : bool
+    {
+        $character = Character::find($this->route('character'))->first();
+
+        return isset($character) 
+            ? $this->user()->can('update', $character) 
+            : $this->user()->can('create', Character::class);
+    }
+
     public function rules() : array
     {
         // get skill ids from table as comma delimited string
@@ -21,16 +31,6 @@ class CharacterUpsertRequest extends FormRequest
            'rank' => ['nullable', 'numeric', 'exists:ranks,id'], 
            'class' => ['required', 'numeric', 'exists:character_classes,id'],
            'company' => ['nullable', 'numeric', 'exists:companies,id'],
-           'mainhand' => [
-                'required', 
-                'string',
-                Rule::in(WeaponType::getAllValues()),
-            ], 
-           'offhand' =>[
-                'required', 
-                'string',
-                Rule::in(WeaponType::getAllValues()),
-            ], 
            // define the valid array keys (skill ids) 
            'skills' => ['array:'.$valid_skill_ids_string, 'nullable'],
         ];

@@ -14,17 +14,17 @@ class Loadout extends Model
 {
     use HasFactory;
     
-    protected $guarded=[];
+    protected $guarded=['id'];
     
     public function character()
     {
         return $this->belongsTo(Character::class);
     }
     
-    public function user()
+    /*public function user()
     {
         return $this->hasOneThrough(User::class, Character::class);
-    }
+    }*/
 
     public function company(  )
     {

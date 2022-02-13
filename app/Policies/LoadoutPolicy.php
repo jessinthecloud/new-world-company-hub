@@ -33,7 +33,7 @@ class LoadoutPolicy
             (
                 $user->can('view own loadouts') 
                 &&
-                $user->id == $loadout->user->id
+                $user->id == $loadout->character->user->id
             )
             ||
             (
@@ -56,7 +56,7 @@ class LoadoutPolicy
             $user->can('create loadouts')
             ||
             (
-                $user->can('create own loadouts')
+                $user->can('create own loadouts') && $user->loadouts?->count() < 1 
             )
             ||
             (
@@ -81,7 +81,7 @@ class LoadoutPolicy
             (
                 $user->can('edit own loadouts') 
                 &&
-                $user->id == $loadout->user->id
+                $user->id == $loadout->character->user->id
             )
             ||
             (
@@ -106,7 +106,7 @@ class LoadoutPolicy
             (
                 $user->can('delete own loadouts') 
                 &&
-                $user->id == $loadout->user->id
+                $user->id == $loadout->character->user->id
             )
             ||
             (
