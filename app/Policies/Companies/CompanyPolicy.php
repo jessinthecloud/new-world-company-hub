@@ -162,7 +162,7 @@ class CompanyPolicy
                         $user->can('import own company members')
                         &&
                         (
-                            $user->character()->where('company.id', $company->id)->count() > 0
+                            $user->character()->where('company_id', $company->id)->count() > 0
                         )
                     )
                     ||
@@ -191,7 +191,7 @@ class CompanyPolicy
                         $user->can('export own company members')
                         &&
                         (
-                            $user->character()->where('company.id', $company->id)->count() > 0
+                            $user->character()->where('company_id', $company->id)->count() > 0
                         )
                     )
                     ||
