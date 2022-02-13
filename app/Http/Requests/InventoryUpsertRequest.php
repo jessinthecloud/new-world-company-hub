@@ -2,15 +2,15 @@
 
 namespace App\Http\Requests;
 
-use App\Enums\ArmorType;
-use App\Enums\AttributeType;
-use App\Enums\WeaponType;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\Enum;
 
 class InventoryUpsertRequest extends FormRequest
 {
+    public function authorize() : bool
+    {
+        return $this->user()->hasRole('banker');
+    }
+
     public function rules() : array
     {
 //    dd($this->request);
@@ -44,11 +44,6 @@ class InventoryUpsertRequest extends FormRequest
             'tier'               => [/*new Enum(Tier::class),*/ 'nullable'],
             'weight_class'       => ['nullable', /*new Enum(WeightClass::class)*/],
         ];
-    }
-
-    public function authorize() : bool
-    {
-        return $this->user()->can('update', $this->user()->companyInventory());
     }
     
     /**

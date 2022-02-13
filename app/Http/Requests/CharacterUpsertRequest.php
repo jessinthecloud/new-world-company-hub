@@ -3,12 +3,22 @@
 namespace App\Http\Requests;
 
 use App\Enums\WeaponType;
+use App\Models\Characters\Character;
 use App\Models\Characters\Skill;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 class CharacterUpsertRequest extends FormRequest
 {
+    public function authorize() : bool
+    {
+        $character = Character::find($this->route('character'));
+
+        return isset($character) 
+            ? $this->user()->can('update', $character) 
+            : $this->user()->can('create', Character::class);
+    }
+
     public function rules() : array
     {
         // get skill ids from table as comma delimited string
