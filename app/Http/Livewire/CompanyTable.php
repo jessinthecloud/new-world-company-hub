@@ -90,4 +90,10 @@ class CompanyTable extends DataTableComponent
             'loadout'=>$row->loadout->id,
         ]) : '#';
     }
+    
+    // essentially useless, since the table is wrapped in a bunch of garbage first
+    public function setTableClass(): ?string
+    {
+        return 'w-full';
+    }
 }

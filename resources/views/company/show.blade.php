@@ -16,11 +16,13 @@
                 Export to Excel
             </x-dashboard.gated-button>
         
-            <livewire:company-table 
-                :id="null" 
-                :company="$company" 
-                :classes="$classes"
-            />
+            <div class="w-full">
+                <livewire:company-table 
+                    :id="null" 
+                    :company="$company" 
+                    :classes="$classes"
+                />
+            </div>
         </div>
     </div>
 
