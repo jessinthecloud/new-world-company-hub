@@ -25,26 +25,27 @@
 </x-livewire-tables::table.cell>
 
 <x-livewire-tables::table.cell>
-    @if(Route::has('company.members.destroy'))
-        @can("removeMembers", $row->company)
-            <x-forms.form
-                action="{{  route('company.members.destroy', [
-                    'company' => $row->company->slug,
-                    'character' => $row->slug,
-                ]) }}"
-                :method="'DELETE'"
-                class="mt-2"
-            >
-                <x-slot name="button">
-                    <x-button 
-                        name="action" 
-                        value="delete" 
-                        class="bg-red-800"
-                    >
-                        Remove
-                    </x-button>
-                </x-slot>
-            </x-forms.form>
-        @endcan
+    @if(Route::has('loadouts.show') && isset($row->loadout))
+        <x-dashboard.gated-button
+            :can="['view', $row->loadout]"
+            :route-name="'loadouts.show'"
+            :route="route('loadouts.show', [
+                'loadout'=>$row->loadout?->id,
+            ])"
+        ></x-dashboard.gated-button>
     @endif
+</x-livewire-tables::table.cell>
+
+<x-livewire-tables::table.cell>
+    <x-utils.gated-button-form
+        :can="['removeMembers', $row->company]"
+        :method="'DELETE'"
+        :route-name="'company.members.destroy'"
+        :route=" route('company.members.destroy', [
+            'company' => $row->company->slug,
+            'character' => $row->slug,
+        ])"
+    >
+        Kick
+    </x-utils.gated-button-form>
 </x-livewire-tables::table.cell>

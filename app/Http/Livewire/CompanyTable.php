@@ -6,6 +6,7 @@ use App\Models\Characters\Character;
 use App\Models\Companies\Company;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
@@ -52,6 +53,10 @@ class CompanyTable extends DataTableComponent
             Column::make( 'Class', 'class.name' )
                 ->searchable(),
             Column::make( 'Registered', 'character.created_at' ),
+            Column::make( 'Loadout' )
+                ->hideIf(Auth::user()->cannot('view own company loadouts')),
+            Column::make( 'Kick' )
+                ->hideIf(Auth::user()->cannot('removeMembers', $this->company)),
         ];
     }
     
@@ -84,16 +89,4 @@ class CompanyTable extends DataTableComponent
             ;
     }
     
-    public function getTableRowUrl($row): string
-    {
-        return isset($row->loadout) ? route('loadouts.show', [
-            'loadout'=>$row->loadout->id,
-        ]) : '#';
-    }
-    
-    // essentially useless, since the table is wrapped in a bunch of garbage first
-    public function setTableClass(): ?string
-    {
-        return 'w-full';
-    }
 }
