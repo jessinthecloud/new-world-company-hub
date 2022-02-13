@@ -267,7 +267,7 @@ Route::middleware( ['auth', 'company', 'character', 'loadout'] )->group( functio
         
         // gear check approval removal (could be from editing)
         Route::delete( '/loadouts/{loadout}', [GearCheckController::class, 'destroy'] )
-            ->name( 'loadouts.destroy' );
+            ->name( 'loadouts.gear-check.destroy' );
         
 // ## CHOOSE
         // choose from drop down
