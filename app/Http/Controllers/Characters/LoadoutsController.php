@@ -191,28 +191,16 @@ class LoadoutsController extends Controller
         return view(
             'dashboard.loadout.create-edit',
             [
+                'loadout'=>$loadout,
                 'equipment_slots'      => $this->loadoutService->equipmentSlots,
                 'perk_options'         => $this->weaponService->perkOptions(),
                 'raritys'              => Rarity::valueToAssociative(),
                 'tier_options'         => $this->weaponService->tierOptions(),
                 'weight_class_options' => $this->armorService->weightClassOptions(),
                 'attribute_options'    => $this->weaponService->attributeOptions(),
-                'method'               => 'POST',
-                'form_action'          => route( 'loadouts.store' ),
-                'button_text'          => 'Add',
-            ]
-        );
-        
-        return view(
-            'dashboard.loadout.create-edit',
-            [
-                'loadout'           => $loadout,
-                'character_options' => $character_options,
-                'main_options'      => $main_options,
-                'offhand_options'   => $offhand_options,
-                'method'            => 'PUT',
-                'form_action'       => route( 'loadouts.update', ['loadout' => $loadout] ),
-                'button_text'       => 'Edit',
+                'method'               => 'PUT',
+                'form_action'          => route( 'loadouts.update', ['loadout'=>$loadout] ),
+                'button_text'          => 'Edit',
             ]
         );
     }

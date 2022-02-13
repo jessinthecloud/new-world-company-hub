@@ -32,6 +32,6 @@ class SetSessionLoadout
         }
         
         // create a loadout
-        return redirect(route('loadouts.login.create'));
+        return redirect(route('loadouts.login.create', ['login'=>1]));
     }
 }
