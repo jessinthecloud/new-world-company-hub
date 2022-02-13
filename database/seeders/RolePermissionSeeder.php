@@ -93,6 +93,7 @@ class RolePermissionSeeder extends Seeder
                 'edit own company rosters',
 
                 'view own company loadouts',
+                'approve own company loadouts',
 
                 'view own company events',
                 'create own company events',
@@ -149,6 +150,7 @@ class RolePermissionSeeder extends Seeder
             
             'view own company characters',
             'view own company loadouts',
+            'approve own company loadouts',
             
             'view own company guildbanks',
             

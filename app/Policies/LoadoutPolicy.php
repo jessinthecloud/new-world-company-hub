@@ -39,13 +39,13 @@ class LoadoutPolicy
             (
                 $user->can('view own company loadouts') 
                 &&
-                $user->company()->id == $loadout->company->id
+                $user->company()->id == $loadout->character->company->id
             )
             ||
             (
                 $user->can('view own faction loadouts') 
                 &&
-                $user->faction()->id == $loadout->company->faction->id
+                $user->faction()->id == $loadout->character->company->faction->id
             )
         );
     }
@@ -87,13 +87,13 @@ class LoadoutPolicy
             (
                 $user->can('edit own company loadouts') 
                 &&
-                $user->company()->id == $loadout->company->id
+                $user->company()->id == $loadout->character->company->id
             )
             ||
             (
                 $user->can('edit own faction loadouts') 
                 &&
-                $user->faction()->id == $loadout->company->faction->id
+                $user->faction()->id == $loadout->character->company->faction->id
             )
         );
     }
@@ -112,13 +112,13 @@ class LoadoutPolicy
             (
                 $user->can('delete own company loadouts') 
                 &&
-                $user->company()->id == $loadout->company->id
+                $user->company()->id == $loadout->character->company->id
             )
             ||
             (
                 $user->can('delete own faction loadouts') 
                 &&
-                $user->faction()->id == $loadout->company->faction->id
+                $user->faction()->id == $loadout->character->company->faction->id
             )
         );
     }
@@ -141,14 +141,19 @@ class LoadoutPolicy
             (
                 $user->can('approve own company loadouts') 
                 &&
-                $user->company()->id == $loadout->company->id
+                $user->company()->id == $loadout->character->company->id
             )
             ||
             (
                 $user->can('approve own faction loadouts') 
                 &&
-                $user->faction()->id == $loadout->company->faction->id
+                $user->faction()->id == $loadout->character->company->faction->id
             )
         );
+    }
+    
+    public function disapprove( User $user, Loadout $loadout ) : bool
+    {
+        return $this->approve($user, $loadout);
     }
 }

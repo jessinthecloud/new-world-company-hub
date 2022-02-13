@@ -8,7 +8,6 @@
     
     <div class="py-6">
         <div id="wrapper-inner" class="max-w-4xl mx-auto flex flex-wrap justify-end sm:px-6 lg:px-8">
-        
             <x-dashboard.gated-button
                 :can="['update', $loadout]"
                 :route-name="'loadouts.edit'"
@@ -53,7 +52,7 @@
                     </x-utils.gated-button-form>
                 @else
                     <x-utils.gated-button-form
-                        :can="['delete', $loadout]"
+                        :can="['approve', $loadout]"
                         :route-name="'loadouts.gear-check.destroy'"
                         :route=" route('loadouts.gear-check.destroy', [
                             'loadout' => $loadout->id,
