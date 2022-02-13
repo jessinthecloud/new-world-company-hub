@@ -106,35 +106,6 @@ class CompanyPolicy
             )
         );
     }
-    
-    public function import( User $user, Company $company ) : bool
-    {
-        return (
-            $user->can(['import members']) 
-            ||
-            (
-                !empty($user->characters->all())
-                &&
-                (
-                    (
-                        $user->can('import own company members')
-                        &&
-                        (
-                            $user->character()->where('company.id', $company->id)->count() > 0
-                        )
-                    )
-                    ||
-                    (
-                        $user->can('import own faction members') 
-                        &&
-                        (
-                            $user->character()->where('company.faction.id', $company->faction->id)->count() > 0
-                        )
-                    )
-                )
-            ) 
-        );
-    }
 
     public function delete( User $user, Company $company ) : bool
     {
@@ -160,6 +131,8 @@ class CompanyPolicy
     {
         return false;
     }
+
+// ## MEMBER ACTIONS #############
     
     public function removeMembers( User $user, Company $company ) : bool
     {
@@ -173,6 +146,64 @@ class CompanyPolicy
                 &&
                 ($user->characters->where('company.id', $company->id)->count() > 0) 
             )
+        );
+    }
+    
+    public function import( User $user, Company $company ) : bool
+    {
+        return (
+            $user->can(['import company members']) 
+            ||
+            (
+                !empty($user->characters->all())
+                &&
+                (
+                    (
+                        $user->can('import own company members')
+                        &&
+                        (
+                            $user->character()->where('company.id', $company->id)->count() > 0
+                        )
+                    )
+                    ||
+                    (
+                        $user->can('import own faction company members') 
+                        &&
+                        (
+                            $user->character()->where('company.faction.id', $company->faction->id)->count() > 0
+                        )
+                    )
+                )
+            ) 
+        );
+    }
+    
+    public function export( User $user, Company $company ) : bool
+    {
+        return (
+            $user->can(['export company members']) 
+            ||
+            (
+                !empty($user->characters->all())
+                &&
+                (
+                    (
+                        $user->can('export own company members')
+                        &&
+                        (
+                            $user->character()->where('company.id', $company->id)->count() > 0
+                        )
+                    )
+                    ||
+                    (
+                        $user->can('export own faction company members') 
+                        &&
+                        (
+                            $user->character()->where('company.faction.id', $company->faction->id)->count() > 0
+                        )
+                    )
+                )
+            ) 
         );
     }
 }
