@@ -15,3 +15,5 @@ yarn-error.log
 /.vscode
 *.sql
 /.env*
+/hs_err_pid16608.log
+/hs_err_pid14392.log

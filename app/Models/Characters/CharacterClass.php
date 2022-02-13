@@ -18,10 +18,9 @@ class CharacterClass extends Model
     
     public static function asArrayForDropDown()
     {
-        return static::with('type')
-            ->get()
+        return static::distinct('name')->get()
             ->mapWithKeys(function($model){
-                return [$model->id => $model->name.' ('.$model->type->name.')'];
+                return [$model->id => $model->name];
             })
             ->all();
     }

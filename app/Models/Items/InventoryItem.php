@@ -2,6 +2,7 @@
 
 namespace App\Models\Items;
 
+use App\Models\Characters\Loadout;
 use App\Models\Companies\Company;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -25,6 +26,11 @@ class InventoryItem extends Model
     public function item(  )
     {
         return $this->belongsTo(Item::class);
+    }
+
+    public function loadouts(  )
+    {
+        return $this->hasMany(Loadout::class);
     }
     
 // -- SCOPES

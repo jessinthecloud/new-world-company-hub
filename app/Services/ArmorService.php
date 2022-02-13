@@ -15,12 +15,21 @@ class ArmorService extends ItemService implements ItemServiceContract
     protected string $baseItemClass = BaseArmor::class;
 
     /**
+     * @param bool $for_bank
+     *
      * @return array
      */
-    public function getAllBaseItems() : array
+    public function getAllBaseItems(bool $for_bank=true) : array
     {
-        return BaseArmor::bankable()->orderBy( 'name' )->orderBy( 'tier' )->distinct()
-            ->orderBy( 'name' )
+        if($for_bank){
+            $query = BaseArmor::bankable();
+        }
+        else{
+            $query = BaseArmor::query();
+        }
+        
+        return $query->orderBy('name')
+            ->orderBy( 'tier' )->distinct()
             ->get()->mapWithKeys( function ( $base_armor ) {
                 $wtype = $base_armor->type;
                 $type = !empty( $wtype ) ? constant( "App\Enums\ArmorType::$wtype" )->value : null;

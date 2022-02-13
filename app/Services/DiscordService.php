@@ -65,7 +65,7 @@ class DiscordService
     
     public function fetchUserGuilds( User $user)
     {
-        return Cache::remember('user_'.$user->id.'_guilds', 900, 
+        return Cache::remember('user_'.$user->id.'_guilds', 90, 
             function() use($user) {
                 return Http::withHeaders([
                    "Authorization" => "Bearer " . $user->discord->token
@@ -79,7 +79,7 @@ class DiscordService
 
     public function fetchGuildMember( User $user, string $guild_id)
     {
-        return Cache::remember('user_'.$user->id.'_guild_'.$guild_id.'_member', 900, 
+        return Cache::remember('user_'.$user->id.'_guild_'.$guild_id.'_member', 90, 
             function() use($user, $guild_id) {
                 return Http::withHeaders([
                    "Authorization" => "Bearer " . $user->discord->token

@@ -28,10 +28,10 @@ class WeaponsController extends Controller
 
     public function show( Request $request, Weapon $weapon )
     {
-        $weapon = $weapon->load('perks', 'attributes');
+        $weapon = $weapon->load('perks', 'itemAttributes');
         
         $rarity_color = Rarity::from($weapon->rarity)->color();
-        $attributes = $weapon->attributes->map(function($attribute){
+        $attributes = $weapon->itemAttributes->map(function($attribute){
             return AttributeType::fromName($attribute->name)->value;
         })->all();
         
@@ -40,7 +40,7 @@ class WeaponsController extends Controller
             : $weapon->type;
         
         // empty perk slots
-        $used_perk_slots = count($weapon->perks->all()) + count($weapon->attributes->all());
+        $used_perk_slots = count($weapon->perks->all()) + count($weapon->itemAttributes->all());
         if($used_perk_slots < $weapon->base->num_perk_slots){
             $empty_slots = $weapon->base->num_perk_slots - $used_perk_slots;
         }

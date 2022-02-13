@@ -1,6 +1,5 @@
 @props(['item', 'rarity', 'rarityColor', 'itemAttributes', 'emptySlots'])
 
-<!--            --><?php //dump($item); ?>
 <div class="item-wrapper w-full mx-auto flex flex-wrap border border-{{ $rarity }}-700">
     <div class="item-heading w-full flex flex-wrap gap-4 items-center bg-gradient-to-b from-gray-700 via-{{$rarity}}-800 to-{{$rarity}}-800 p-4 text-gray-200 text-shadow
     lg:flex-nowrap
@@ -51,12 +50,12 @@
         </div>
     @endisset
     
-    @isset($item->attributes)
+    @isset($item->itemAttributes)
         <div class="w-full py-2 px-4 lg:w-1/2 lg:py-4">
             <h2 class="w-full">Attributes</h2>
             <ul>
-                @foreach($item->attributes->unique() as $index => $attribute)
-                    <li class="mb-2">{{ $attribute->pivot->amount }} {{ $itemAttributes[$index] }}</li>
+                @foreach($item->itemAttributes->unique() as $index => $attribute)
+                    <li class="mb-2">{{ $attribute->pivot->amount }} {{ $itemAttributes[$index] ?? '' }}</li>
                 @endforeach
             </ul>
         </div>

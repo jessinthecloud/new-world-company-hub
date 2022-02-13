@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Characters\Character;
+use App\Models\Characters\Loadout;
 use App\Models\Companies\Company;
 use App\Models\Companies\Event;
 use App\Models\Companies\Rank;
@@ -63,6 +64,11 @@ class User extends Authenticatable
     {
         return $this->hasOne( DiscordData::class);
     }
+
+    public function loadouts(  )
+    {
+        return $this->hasManyThrough(Loadout::class, Character::class);
+    }
     
 // -- MISC - NOT relationships
 
@@ -94,6 +100,11 @@ class User extends Authenticatable
     public function faction()
     {
         return $this->character()?->company?->faction;
+    }
+    
+    public function loadout()
+    {
+        return $this->character()?->loadout;
     }
     
 // -- DISTANT RELATIONSHIPS

@@ -174,7 +174,7 @@ class CompanyInventoryController extends Controller
         // existing attributes
         [$existing_attribute_amounts, $existing_attribute_options] = 
             $this->weaponService->existingAttributeOptions(
-                $item->attributes->all(), 
+                $item->itemAttributes->all(), 
                 collect(AttributeType::cases())->sortBy('value')->all()
             );
             

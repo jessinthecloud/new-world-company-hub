@@ -9,7 +9,7 @@ class SkillTypeSeeder extends Seeder
 {
     public function run()
     {
-        DB::table('skill_types')->insert([
+        DB::table('skill_types')->upsert([
            [
                'name' => 'Crafting',
                'slug' => 'crafting',
@@ -42,6 +42,6 @@ class SkillTypeSeeder extends Seeder
                'created_at' => now(),
                'updated_at' => now(),
            ],
-        ]);
+        ], ['slug']);
     }
 }

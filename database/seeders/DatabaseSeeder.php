@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
     {
     
         // event types 
-        EventType::create([
+        EventType::upsert([[
             'name' => 'War',
             'slug' => 'war',
             'description' => '',
@@ -29,15 +29,15 @@ class DatabaseSeeder extends Seeder
             'name' => 'Chest Run',
             'slug' => 'chest-run',
             'description' => '',
-        ]);
+        ]], ['slug']);
 
         $this->call([
             PermissionSeeder::class,
             FactionSeeder::class,
-                        CompanySeeder::class,
-                        RoleSeeder::class,
-                        RolePermissionSeeder::class,
-                        ClassTypeSeeder::class,
+            CompanySeeder::class,
+            RoleSeeder::class,
+            RolePermissionSeeder::class,
+            ClassTypeSeeder::class,
             SkillTypeSeeder::class,
             RankSeeder::class,
             ClassSeeder::class,
@@ -48,7 +48,7 @@ class DatabaseSeeder extends Seeder
             BaseArmorSeeder::class,
 //            ConsumableSeeder::class,
 //            LoadoutSeeder::class,
-            CharacterSeeder::class,
+//            CharacterSeeder::class,
             UserSeeder::class,
             WeaponSeeder::class,
             ArmorSeeder::class,

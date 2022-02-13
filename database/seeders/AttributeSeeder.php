@@ -19,6 +19,6 @@ class AttributeSeeder extends Seeder
                 'slug' => Str::slug($type->value),
             ];
         }
-        DB::table('attributes')->insert($insert);
+        DB::table('attributes')->upsert($insert, ['slug']);
     }
 }

@@ -22,7 +22,7 @@ class RolePermissionSeeder extends Seeder
             'view users', 'create users', 'edit users', 'delete users',
             'view guildbanks', 'create guildbanks', 'edit guildbanks', 'delete guildbanks',
             'view company members', 'create company members', 'edit company members', 
-            'remove company members',
+            'remove company members', 'approve loadouts',
         );
         $dev = $all_roles->where('name', '=', 'dev')->first();
         $dev->givePermissionTo(
@@ -35,7 +35,7 @@ class RolePermissionSeeder extends Seeder
             'view users', 'create users', 'edit users', 'delete users',
             'view guildbanks', 'create guildbanks', 'edit guildbanks', 'delete guildbanks',
             'view company members', 'create company members', 'edit company members', 
-            'remove company members',
+            'remove company members', 'approve loadouts',
         );
     // -- ADMIN
         $admin = $all_roles->where('name', '=', 'admin')->first();
@@ -49,7 +49,7 @@ class RolePermissionSeeder extends Seeder
             'view users', 'edit users cosmetic info',
             'view guildbanks', 'create guildbanks', 'edit guildbanks',
             'view company members', 'create company members', 'edit company members', 
-            'remove company members',
+            'remove company members', 'approve loadouts',
         );
     // -- BANKER
         $banker = $all_roles->where('name', '=', 'banker')->first();

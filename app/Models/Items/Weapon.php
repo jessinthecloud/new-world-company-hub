@@ -51,7 +51,7 @@ class Weapon extends Model implements InventoryItemContract
         return $this->belongsToMany(Perk::class)->distinct(); //->groupBy('perks.id');
     }
     
-    public function attributes()
+    public function itemAttributes()
     {
         return $this->belongsToMany(Attribute::class)->withPivot('amount');
     }
@@ -96,7 +96,7 @@ class Weapon extends Model implements InventoryItemContract
     {
         $type = "\\App\\".Str::afterLast($this->asItem->inventory->ownerable_type,'\\').'Inventory';
         
-        return $type::find($this->asItem->inventory->ownerable->id);
+        return class_exists($type) ? $type::find($this->asItem->inventory->ownerable->id) : null;
     }
     
 // SCOPES ---
@@ -125,6 +125,14 @@ class Weapon extends Model implements InventoryItemContract
     }
     
 // -- MISC 
-
+    public function numberOfUnusedPerkSlots(  )
+    {
+        $used_perk_slots = count($this->perks->all()) + count($this->itemAttributes->all());
+        if($used_perk_slots < $this->base->num_perk_slots){
+            return $this->base->num_perk_slots - $used_perk_slots;
+        }
+        
+        return null;
+    }
     
 }

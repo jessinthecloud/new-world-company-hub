@@ -38,6 +38,7 @@ class RoleSeeder extends Seeder
                     // don't add bot roles
                     continue;
                 }
+              
                 // team roles can have the same name on different teams
                 $role = Role::updateOrCreate([
                     'name' => strtolower(Str::slug($discord_role['name'])),

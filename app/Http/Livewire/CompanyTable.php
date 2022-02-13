@@ -6,6 +6,7 @@ use App\Models\Characters\Character;
 use App\Models\Companies\Company;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filter;
@@ -42,6 +43,7 @@ class CompanyTable extends DataTableComponent
     public function columns() : array
     {
         return [
+            Column::make( 'War Ready', 'character.loadout.approved' ),
             Column::make( 'Name', 'name' )
                 ->sortable()
                 ->searchable(),
@@ -49,6 +51,7 @@ class CompanyTable extends DataTableComponent
                 ->searchable(),
             Column::make( 'Class', 'class.name' )
                 ->searchable(),
+            Column::make( 'Registered', 'character.created_at' ),
         ];
     }
     
@@ -64,15 +67,27 @@ class CompanyTable extends DataTableComponent
         return [
             'class' => Filter::make('Class')
                 ->select($this->classes),
+            'gear' => Filter::make('Gear')
+                ->select([''=>'Any', 'war'=>'War Ready']),
         ];
     }
 
     public function query() : Builder
     {
-        return Character::with('user', 'class')->whereRelation( 'company', 'id', $this->company->id )
+        return Character::with('user', 'class', 'loadout')->whereRelation( 'company', 'id', $this->company->id )
             
             // -- class filter --
             ->when($this->getFilter('class'), fn ($query, $class) => $query->whereRelation('class', 'id', $class))
+            
+            // -- war ready filter --
+            ->when($this->getFilter('gear'), fn ($query, $gearCheck) => $query->whereHas('loadout.gearCheck'))
             ;
+    }
+    
+    public function getTableRowUrl($row): string
+    {
+        return isset($row->loadout) ? route('loadouts.show', [
+            'loadout'=>$row->loadout->id,
+        ]) : '#';
     }
 }
