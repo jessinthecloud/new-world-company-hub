@@ -115,6 +115,15 @@ class Company extends Model
         ;
     }
     
+    /** @method withMembers() */
+    public function scopeWithMembers( Builder $query )
+    {
+        return $query->with('characters')
+            ->whereRelation('characters', 'company_id', '=', $this->id)
+            ->orderBy('name')
+        ;
+    }
+    
 // -- MISC
     public static function asArrayForDropDown()
     {
@@ -126,5 +135,10 @@ class Company extends Model
                 $company->slug => $company->name . ' ('.$company->faction->name.')'
             ];
         })->all();
+    }
+
+    public function members()
+    {
+        return $this->characters;
     }
 }
