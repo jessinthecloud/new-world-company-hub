@@ -10,15 +10,15 @@
             {{-- (not the form method attribute) --}}
             :method="$method ?? null"
             :button-text="$button_text"
-            class=""
+            class="flex flex-wrap justify-start"
         >
-            <x-forms.field :name="'character'" class="mb-6">
+            {{--<x-forms.field :name="'character'" class="mb-6">
                 <x-forms.label for="character" :required="true">Character:</x-forms.label>
                 <x-forms.select name="character" id="character"
                                 :values="$characters ?? null"
                                 :required="true"
                 >{!! $character_options ?? '' !!}</x-forms.select>
-            </x-forms.field>
+            </x-forms.field>--}}
         
             {{--<x-forms.field :name="'name'">
                 <x-forms.label for="name">Loadout Name:</x-forms.label>
@@ -31,9 +31,22 @@
                     
                 />
             </x-forms.field>--}}
-
-            <x-forms.field :name="'weight'">
-                <x-forms.label for="weight" :required="true">Weight:</x-forms.label>
+         
+            <x-forms.field :name="'gear_score_character'" class="mb-6 mr-4">
+                <x-forms.label for="gear_score_character" :required="true">Character Gear Score:</x-forms.label>
+                <x-forms.input 
+                    id="gear_score_character"
+                    class=""
+                    type="text"
+                    name="gear_score[character]" 
+                    value="{{ old('gear_score')['character'] ?? (isset($loadout) ? $loadout->gear_score : '') }}"
+                    size="10"
+                    :required="true" 
+                />
+            </x-forms.field>
+            
+            {{--<x-forms.field :name="'weight'">
+                <x-forms.label for="weight" :required="false">Weight:</x-forms.label>
                 <x-forms.input
                     id="weight"
                     class=""
@@ -43,25 +56,26 @@
                     value="{{ old('weight') ?? $loadout->weight ?? '' }}"
                     :required="true"
                 />
-            </x-forms.field>
+            </x-forms.field>--}}
             
-            <div class="w-full"></div>
-            
-            <x-forms.field :name="'main'" class="mr-4 mb-6">
-                <x-forms.label for="main" :required="true">Main Hand:</x-forms.label>
-                <x-forms.select name="main" id="main"
-                    :values="$weapons ?? null"
-                    :required="true"
-                >{!! $main_options ?? '' !!}</x-forms.select>
-            </x-forms.field>
-
-            <x-forms.field :name="'offhand'" class="mb-6">
-                <x-forms.label for="offhand" :required="true">Off Hand:</x-forms.label>
-                <x-forms.select name="offhand" id="offhand"
-                    :values="$weapons ?? null"
-                    :required="true"
-                >{!! $offhand_options ?? '' !!}</x-forms.select>
-            </x-forms.field>
+            @foreach($equipment_slots as $name => $equipment)
+                <x-forms.equipment-slot
+                    :title="ucfirst($name)"
+                    :name="$name"
+                    :type="$equipment['type'] ?? null"
+                    :subtype="$equipment['subtype'] ?? null"
+                    :item="$equipment['item'] ?? null"
+                    :required="$equipment['required'] ?? null"
+                    :perkOptions="$perk_options"
+                    :raritys="$raritys"
+                    :tierOptions="$tier_options"
+                    :attributeOptions="$attribute_options"
+                    :existingPerkOptions="$equipment['existing_perk_options'] ?? []"
+                    :existingAttributeOptions="$equipment['existing_attribute_options'] ?? []"
+                    :existingAttributeAmounts="$equipment['existing_attribute_amounts'] ?? []"
+                    :existingRarityOptions="$equipment['existing_rarity_options'] ?? []"
+                />
+            @endforeach
             
         </x-forms.form>
     </x-dashboard.section>

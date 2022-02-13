@@ -4,6 +4,7 @@ namespace App\Models\Companies;
 
 use App\CompanyInventory;
 use App\Models\Characters\Character;
+use App\Models\Characters\Loadout;
 use App\Models\Faction;
 use App\Models\Items\InventoryItem;
 use App\Models\User;
@@ -69,6 +70,11 @@ class Company extends Model
         $this->hasMany(Event::class);
     }
     
+    public function loadouts()
+    {
+        $this->hasManyThrough(Loadout::class, Character::class);
+    }
+    
     /*public function weapons()
     {
         return $this->hasMany(Weapon::class);
@@ -109,6 +115,15 @@ class Company extends Model
         ;
     }
     
+    /** @method withMembers() */
+    public function scopeWithMembers( Builder $query )
+    {
+        return $query->with('characters')
+            ->whereRelation('characters', 'company_id', '=', $this->id)
+            ->orderBy('name')
+        ;
+    }
+    
 // -- MISC
     public static function asArrayForDropDown()
     {
@@ -120,5 +135,10 @@ class Company extends Model
                 $company->slug => $company->name . ' ('.$company->faction->name.')'
             ];
         })->all();
+    }
+
+    public function members()
+    {
+        return $this->characters;
     }
 }

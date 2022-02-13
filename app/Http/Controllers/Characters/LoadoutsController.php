@@ -2,13 +2,26 @@
 
 namespace App\Http\Controllers\Characters;
 
+use App\Enums\AttributeType;
+use App\Enums\GearCheckThreshold;
+use App\Enums\Rarity;
+use App\Exceptions\MissingLoadoutSlotException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoadoutUpsertRequest;
 use App\Models\Characters\Character;
 use App\Models\Characters\Loadout;
 use App\Models\Items\BaseWeapon;
+use App\Models\Items\Perk;
+use App\Providers\RouteServiceProvider;
+use App\Services\ArmorService;
+use App\Services\LoadoutService;
+use App\Services\WeaponService;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 use function dump;
 use function redirect;
@@ -17,20 +30,28 @@ use function view;
 
 class LoadoutsController extends Controller
 {
+    /**
+     * @var array[]
+     */
+    private array $equipmentSlots;
+
+    public function __construct(
+        protected ArmorService $armorService,
+        protected WeaponService $weaponService,
+        protected LoadoutService $loadoutService,
+    ) {
+    }
+
     public function index()
     {
-        $loadouts = Loadout::with('character','main','offhand')->orderBy('name')->orderBy('weight')->get()->mapWithKeys(function($loadout){
-            return [$loadout->id => $loadout->name . ' (Main: '.$loadout->main->name.' -- Offhand: '.$loadout->off?->name.')'];
-        })->all();
-        
+        $loadouts = Loadout::asArrayForDropDown();
+
         dump($loadouts);
     }
-    
+
     public function choose()
     {
-        $loadouts = Loadout::orderBy('name')->orderBy('weight')->get()->mapWithKeys(function($loadout){
-            return [$loadout->id => $loadout->name];
-        })->all();
+        $loadouts = Loadout::asArrayForDropDown();
         $form_action = route('loadouts.find');
 
         return view(
@@ -42,149 +63,253 @@ class LoadoutsController extends Controller
     public function find(Request $request)
     {
 //    ddd($request);
-        return redirect(route('loadouts.'.$request->action, ['loadout'=>$request->loadout]));
+        return redirect(route('loadouts.' . $request->action, ['loadout' => $request->loadout]));
     }
 
     /**
      * Show Loadout create form
      *
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Contracts\View\View
      */
-    public function create() : View
+    public function create(Request $request) : View
     {
-        $characters = Character::with('class')->orderBy('name')->get()->mapWithKeys(function($class){
-            return [$class->id => $class->name];
-        })->all();
-
-        $weapons = BaseWeapon::orderBy( 'name')->get()->mapWithKeys(function($weapon){
-            return [$weapon->id => $weapon->name.' ('.$weapon->type->name.')'];
-        })->all();
+        if ( !empty($request->old()) ) {
+            // on failed submission
+            // populate the old form data
+            $this->loadoutService->populateDropdowns($this->weaponService, $request->old());
+        }
         
-        $form_action = route('loadouts.store');
-        $button_text = 'Add';
+        if(!empty($request->query('login'))){
+            // explain to user that this is required
+            $request->session()->flash('status', [
+               'type'    => 'warning',
+               'message' => 'You must create a loadout before accessing the dashboard.',
+           ]);
+        }
+        /*$request->session()->flash('status' => [
+           'type'    => 'info',
+           'message' => 'You must create a loadout before accessing the dashboard.',
+       ]);*/
 
         return view(
             'dashboard.loadout.create-edit',
-            compact('weapons', 'characters', 'form_action', 'button_text')
+            [
+                'equipment_slots'      => $this->loadoutService->equipmentSlots,
+                'perk_options'         => $this->weaponService->perkOptions(),
+                'raritys'              => Rarity::valueToAssociative(),
+                'tier_options'         => $this->weaponService->tierOptions(),
+                'weight_class_options' => $this->armorService->weightClassOptions(),
+                'attribute_options'    => $this->weaponService->attributeOptions(),
+                'method'               => 'POST',
+                'form_action'          => route('loadouts.store', [
+                    'login' => $request->query('login')
+                ]),
+                'button_text'          => 'Add',
+            ]
         );
     }
 
-    public function store( LoadoutUpsertRequest $request )
+    public function store(LoadoutUpsertRequest $request)
     {
         $validated = $request->validated();
-//dump($validated, $loadout, $loadout->weapons->pluck('pivot')->pluck('level')/*, $request*/);
+        try {
+            $inventory = $this->loadoutService->updateOrCreateItemsForSlots(
+                $validated,
+                $request->user()->character()
+            );
+        } catch ( ModelNotFoundException $e ) {
+            Log::warning('Loadout creation failed: ' . $e->getMessage());
+
+            return redirect()->back()->with([
+                'status' => [
+                    'type'    => 'error',
+                    'message' => 'Loadout creation failed. Please try again.',
+                ],
+            ])
+                ->withInput();
+        }
+
         $loadout = Loadout::create([
-            'name' => $validated['name'],
-            'weight' => $validated['weight'],
-            // relations
-            'character_id' => $validated['character'],
-            'main_hand_id' => $validated['main_hand'],
-            'offhand_id' => $validated['offhand'],
-        ]);
-        
+           'weight'       => $weight ?? null,
+           'gear_score'   => $validated['gear_score']['character'],
+           // relations
+           'character_id' => request()->user()->character()->id,
+           'main_hand_id' => $inventory['main']->id,
+           'offhand_id'   => $inventory['offhand']->id,
+           'head_id'      => $inventory['head']->id,
+           'chest_id'     => $inventory['chest']->id,
+           'legs_id'      => $inventory['legs']->id,
+           'feet_id'      => $inventory['feet']->id,
+           'hands_id'     => $inventory['hands']->id,
+           'neck_id'      => $inventory['neck']->id,
+           'ring_id'      => $inventory['ring']->id,
+           'earring_id'   => $inventory['earring']->id,
+           'shield_id'    => isset($inventory['shield']) ? $inventory['shield']->id : null,
+       ]);
+
+        // todo: fire Event?
+
+        if ( $request->query('login') ) {
+            return redirect(RouteServiceProvider::DASHBOARD)->with([
+               'status' => [
+                   'type'    => 'success',
+                   'message' => 'Loadout created successfully',
+               ],
+           ]);
+        }
+
         return redirect(route('dashboard'))->with([
-            'status'=> [
-                'type'=>'success',
-                'message' => 'Loadout created successfully'
-            ]
-        ]);
+              'status' => [
+                  'type'    => 'success',
+                  'message' => 'Loadout created successfully',
+              ],
+          ]);
     }
 
-    public function show( Loadout $loadout )
+    public function show(Loadout $loadout)
     {
-        //
+        $owner = $loadout->main->item->itemable->owner();
+        $ownerType = Str::afterLast(strtolower($owner::class), '\\');
+        $character_name = Str::title($loadout->character->name);
+        $gear_score = $loadout->gear_score;
+        $loadout_check = GearCheckThreshold::passes($gear_score);
+        $inventory = $loadout->main->item->itemable->ownerInventory();
+
+        [$weapon_slot, $armor_slot, $jewelry_slot] = $this->loadoutService->populateEquipmentSlotGroups($loadout);
+
+        return view('loadouts.show', [
+            'loadout'        => $loadout,
+            'loadout_check'  => $loadout_check,
+            'gear_score'     => $gear_score,
+            'character_name' => $character_name,
+            'owner'          => $owner,
+            'ownerType'      => $ownerType,
+            'inventory'      => $inventory,
+            'jewelry_slot'   => $jewelry_slot,
+            'armor_slot'     => $armor_slot,
+            'weapon_slot'    => $weapon_slot,
+        ]);
     }
 
     /**
      * Loadout edit form
      *
+     * @param \Illuminate\Http\Request       $request
      * @param \App\Models\Characters\Loadout $loadout
      *
      * @return \Illuminate\Contracts\View\View
      */
-    public function edit( Loadout $loadout )
+    public function edit(Request $request, Loadout $loadout)
     {
-        $characters = Character::with('class')->orderBy('name')->get()->mapWithKeys(function($class){
-            return [$class->id => $class->name];
-        })->all();
+        // on failed submission
+        // get from 
+        $values = empty($request->old())
+            ? $this->loadoutService->getDropdownValuesFromLoadout($loadout)
+            : $request->old();
 
-        $loadout = $loadout->load('main', 'offhand', 'character');
-
-        $weapons = BaseWeapon::orderBy( 'name')->get()->mapWithKeys(function($weapon){
-            return [$weapon->id => $weapon->name.' ('.$weapon->type->name.')'];
-        })->all();
-
-        $character_options = '';
-        foreach($characters as $value => $text) {
-            $character_options .= '<option value="'.$value.'"';
-            if($loadout->character->id === $value){
-                $character_options .= ' SELECTED ';
-            }
-            $character_options .= '>'.$text.'</option>';
-        }
-
-        $main_options = '';
-        foreach($weapons as $value => $text) {
-            $main_options .= '<option value="'.$value.'"';
-            if($loadout->main->id === $value){
-                $main_options .= ' SELECTED ';
-            }
-            $main_options .= '>'.$text.'</option>';
-        }
-
-        $offhand_options = '';
-        foreach($weapons as $value => $text) {
-            $offhand_options .= '<option value="'.$value.'"';
-            if($loadout->offhand->id === $value){
-                $offhand_options .= ' SELECTED ';
-            }
-            $offhand_options .= '>'.$text.'</option>';
-        }
+        // populate the old form data
+        $this->loadoutService->populateDropdowns($this->weaponService, $values);
 
         return view(
-        'dashboard.loadout.create-edit',
-        [
-            'loadout' => $loadout,
-            'character_options' => $character_options,
-            'main_options' => $main_options,
-            'offhand_options' => $offhand_options,
-            'method' => 'PUT',
-            'form_action' => route('loadouts.update', ['loadout'=>$loadout]),
-            'button_text' => 'Edit',
-        ]
+            'dashboard.loadout.create-edit',
+            [
+                'loadout'              => $loadout,
+                'equipment_slots'      => $this->loadoutService->equipmentSlots,
+                'perk_options'         => $this->weaponService->perkOptions(),
+                'raritys'              => Rarity::valueToAssociative(),
+                'tier_options'         => $this->weaponService->tierOptions(),
+                'weight_class_options' => $this->armorService->weightClassOptions(),
+                'attribute_options'    => $this->weaponService->attributeOptions(),
+                'method'               => 'PUT',
+                'form_action'          => route('loadouts.update', ['loadout' => $loadout]),
+                'button_text'          => 'Edit',
+            ]
         );
     }
 
-    public function update( LoadoutUpsertRequest $request, Loadout $loadout )
+    public function update(LoadoutUpsertRequest $request, Loadout $loadout)
     {
         $validated = $request->validated();
-//dump($validated, $loadout, $loadout->weapons->pluck('pivot')->pluck('level')/*, $request*/);
-        $loadout->name = $validated['name'];
-        $loadout->weight = $validated['weight'];
-        // relations
-        $loadout->character()->associate($validated['character']);
-        $loadout->main()->associate($validated['main']);
-        $loadout->offhand()->associate($validated['offhand']);
-        $loadout->save();
         
-//        dump($loadout, $loadout->weapons->pluck('pivot')->pluck('level'));
+        $originalBaseItems = $this->loadoutService->getBaseItems($loadout);
+   
+        try {
+            $inventory = $this->loadoutService->updateOrCreateItemsForSlots(
+                $validated,
+                $request->user()->character(),
+                $loadout
+            );
+        } catch ( ModelNotFoundException $e ) {
+            Log::warning('Loadout edit failed: ' . $e->getMessage());
+
+            return redirect()->back()->with([
+                'status' => [
+                    'type'    => 'error',
+                    'message' => 'Loadout edit failed. Please try again.',
+                ],
+            ])
+                ->withInput();
+        }
+
+        $loadout->update([
+             'weight'       => $weight ?? null,
+             'gear_score'   => $validated['gear_score']['character'],
+             'main_hand_id' => $inventory['main']->id,
+             'offhand_id'   => $inventory['offhand']->id,
+             'head_id'      => $inventory['head']->id,
+             'chest_id'     => $inventory['chest']->id,
+             'legs_id'      => $inventory['legs']->id,
+             'feet_id'      => $inventory['feet']->id,
+             'hands_id'     => $inventory['hands']->id,
+             'neck_id'      => $inventory['neck']->id,
+             'ring_id'      => $inventory['ring']->id,
+             'earring_id'   => $inventory['earring']->id,
+             'shield_id'    => isset($inventory['shield']) ? $inventory['shield']->id : null,
+         ]);
+         
+         $newBaseItems = $this->loadoutService->getBaseItems($loadout);
+
+        $valid_gear_check = !$loadout->approved() || $this->loadoutService->isGearCheckStillValid(
+                $originalBaseItems,
+                $newBaseItems
+            );
+        
+        $status = [
+            'type'    => 'success',
+            'message' => 'Loadout edited successfully',
+        ];
+
+        if ( !$valid_gear_check ) {
+            // base items changed; remove gear check
+            $loadout->gearCheck->delete();
+            $notice_msg = "gear check approval was removed because the items were changed.";
+
+            $status = [
+                'type'    => 'warning',
+                'message' => 'Loadout edited successfully. However, ' . $notice_msg,
+            ];
+
+            Log::info("({$loadout->character->id}) {$loadout->character->name}'s $notice_msg");
+        }
+
         return redirect(route('dashboard'))->with([
-            'status'=> [
-                'type'=>'success',
-                'message' => 'Loadout updated successfully'
-            ]
-        ]);
+              'status' => $status,
+          ]);
     }
 
-    public function destroy( Loadout $loadout )
+    public function destroy(Loadout $loadout)
     {
         Loadout::destroy($loadout);
 
+        // TODO: also remove from session?
+
         return redirect(route('dashboard'))->with([
-            'status'=> [
-                'type'=>'success',
-                'message' => 'Loadout deleted successfully'
-            ]
-        ]);
+              'status' => [
+                  'type'    => 'success',
+                  'message' => 'Loadout deleted successfully',
+              ],
+          ]);
     }
 }

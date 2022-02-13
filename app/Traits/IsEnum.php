@@ -47,4 +47,20 @@ trait IsEnum
             self::cases()
         ));
     }
+    
+    public static function selectOptions(array $enums=null, array $selected=[]) : string
+    {
+        $enums ??= static::valueToAssociative();
+        
+        $options = '<option value=""></option>'."\n";
+        foreach($enums as $value => $text) {
+//            $options .= '<option value="'.$value.'">'.$text.'</option>';
+            $options .= '<option value="'.$value.'"';
+                if(in_array($value, $selected)){
+                    $options .= ' SELECTED ';
+                }
+            $options .= '>'.$text.'</option>'."\n";
+        }
+        return $options;
+    }
 }

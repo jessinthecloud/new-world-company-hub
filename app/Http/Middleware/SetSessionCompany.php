@@ -8,7 +8,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class EnsureUserHasCompany
+class SetSessionCompany
 {
     public function __construct(protected DiscordService $discordService) { }
 

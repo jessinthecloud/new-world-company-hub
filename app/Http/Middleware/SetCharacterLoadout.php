@@ -8,7 +8,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class EnsureUserHasCharacter
+class SetCharacterLoadout
 {
     public function __construct(protected DiscordService $discordService) { }
 
@@ -27,26 +27,16 @@ class EnsureUserHasCharacter
             redirect(route('login'));
         }
         
-        if(!empty($request->user()->character())){
+        // make sure char info is up-to-date
+        if($request->user()->character()->isDirty()){
+            $request->user()->character()->refresh();
+        }
+
+        if(!empty($request->user()->character()->loadout)){
             return $next($request);
         }
         
-        // find user's characters tied to the current company (team_id)
-        $characters = $request->user()->characters
-            ->where('company.id', '=', $request->session()->get('team_id'));
-        
-        switch(true){
-            case $characters->count() === 0:
-                // no match -> create a character
-                return redirect(route('characters.login.create'));
-            case $characters->count() == 1: 
-                // single match -> set as selected character
-                return redirect(route('characters.login.login', [
-                    'character' => $characters->first()->slug
-                ]));
-        }
-
-        // multiple characters; send to choose a character page
-        return redirect(route('characters.login.choose'));
+        // create a loadout
+        return redirect(route('loadouts.create', ['login'=>1]));
     }
 }

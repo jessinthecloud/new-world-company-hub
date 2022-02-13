@@ -15,12 +15,19 @@ class WeaponService extends ItemService implements ItemServiceContract
     protected string $baseItemClass = BaseWeapon::class;
 
     /**
+     * @param bool $for_bank
+     *
      * @return array
      */
-    public function getAllBaseItems() : array
+    public function getAllBaseItems(bool $for_bank=true) : array
     {
-        return BaseWeapon::bankable()
-            ->orderBy('name')
+        if($for_bank){
+            $query = BaseWeapon::bankable();
+        }
+        else{
+            $query = BaseWeapon::query();
+        }
+        return $query->orderBy('name')
             ->orderBy('tier')
             ->distinct()
             ->get()->mapWithKeys(function($base_weapon){

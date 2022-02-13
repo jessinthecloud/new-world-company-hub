@@ -12,7 +12,7 @@ class RolePermissionSeeder extends Seeder
         $all_roles = Role::all(); 
     // -- SUPER / DEV
         $super = $all_roles->where('name', '=', 'super-admin')->first();
-        $super->givePermissionTo(
+        /*$super->givePermissionTo(
             'view characters', 'create characters', 'edit characters', 'delete characters', 
             'view loadouts', 'create loadouts', 'edit loadouts', 'delete loadouts',
             'view companies', 'create companies', 'edit companies', 'delete companies', 
@@ -22,10 +22,10 @@ class RolePermissionSeeder extends Seeder
             'view users', 'create users', 'edit users', 'delete users',
             'view guildbanks', 'create guildbanks', 'edit guildbanks', 'delete guildbanks',
             'view company members', 'create company members', 'edit company members', 
-            'remove company members',
-        );
+            'remove company members', 'approve loadouts', 
+        );*/
         $dev = $all_roles->where('name', '=', 'dev')->first();
-        $dev->givePermissionTo(
+        /*$dev->givePermissionTo(
             'view characters', 'create characters', 'edit characters', 'delete characters', 
             'view loadouts', 'create loadouts', 'edit loadouts', 'delete loadouts',
             'view companies', 'create companies', 'edit companies', 'delete companies', 
@@ -35,11 +35,11 @@ class RolePermissionSeeder extends Seeder
             'view users', 'create users', 'edit users', 'delete users',
             'view guildbanks', 'create guildbanks', 'edit guildbanks', 'delete guildbanks',
             'view company members', 'create company members', 'edit company members', 
-            'remove company members',
-        );
+            'remove company members', 'approve loadouts',
+        );*/
     // -- ADMIN
         $admin = $all_roles->where('name', '=', 'admin')->first();
-        $admin->givePermissionTo(
+        /*$admin->givePermissionTo(
             'view characters', 'create characters', 'edit characters', 
             'view loadouts', 'create loadouts', 'edit loadouts', 
             'view companies', 'create companies', 'edit companies', 
@@ -49,8 +49,8 @@ class RolePermissionSeeder extends Seeder
             'view users', 'edit users cosmetic info',
             'view guildbanks', 'create guildbanks', 'edit guildbanks',
             'view company members', 'create company members', 'edit company members', 
-            'remove company members',
-        );
+            'remove company members', 'approve loadouts',
+        );*/
     // -- BANKER
         $banker = $all_roles->where('name', '=', 'banker')->first();
         $banker->givePermissionTo(
@@ -81,7 +81,7 @@ class RolePermissionSeeder extends Seeder
                 'view own rosters',
                 'view own company rosters',
 
-                // -- company permissions
+            // -- company permissions
                 'view own company users',
                 'view own company characters',
 
@@ -93,6 +93,7 @@ class RolePermissionSeeder extends Seeder
                 'edit own company rosters',
 
                 'view own company loadouts',
+                'approve own company loadouts',
 
                 'view own company events',
                 'create own company events',
@@ -106,6 +107,8 @@ class RolePermissionSeeder extends Seeder
                 'create own company members',
                 'edit own company members',
                 'remove own company members',
+                'import own company members',
+                'export own company members',
 
                 // -- faction permissions
                 'view own faction companies',
@@ -147,6 +150,7 @@ class RolePermissionSeeder extends Seeder
             
             'view own company characters',
             'view own company loadouts',
+            'approve own company loadouts',
             
             'view own company guildbanks',
             
@@ -162,6 +166,8 @@ class RolePermissionSeeder extends Seeder
             'create own company members',
             'edit own company members',
             'remove own company members',
+            'import own company members',
+            'export own company members',
 
         // -- faction permissions
             'view own faction companies',
@@ -209,6 +215,7 @@ class RolePermissionSeeder extends Seeder
             'create own company members',
             'edit own company members',
             'remove own company members',
+            'import own company members',
 
     // -- faction permissions
             'view own faction companies',

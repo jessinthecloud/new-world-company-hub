@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers\Characters;
 
-use App\Enums\WeaponType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CharacterCreationRequest;
-use App\Http\Requests\CharacterUpsertRequest;
 use App\Models\Characters\Character;
 use App\Models\Characters\CharacterClass;
 use App\Models\Characters\SkillType;
-use App\Models\Companies\Company;
 use App\Models\Companies\Rank;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Contracts\View\View;
@@ -41,6 +38,12 @@ class CharacterLoginController extends Controller
      */
     public function choose(Request $request, string $action = 'Submit')
     {
+        // explain to user that this is required
+        $request->session()->flash('status', [
+           'type'    => 'warning',
+           'message' => 'You must choose a character before accessing the dashboard.',
+       ]);
+           
         $characters = Character::forUser($request->user()->id)
             ->get()
             ->mapWithKeys(function($character){
@@ -84,16 +87,15 @@ class CharacterLoginController extends Controller
      */
     public function create() : View
     {
-        $classes = CharacterClass::distinct()->get()->mapWithKeys(function($class){
-            return [$class->id => $class->name];
-        })->all();
-    
-        $skillTypes = SkillType::with(['skills' => function ($query) {
-            $query->orderBy('order');
-        }])->orderBy('order')->get()->all();
+        // explain to user that this is required
+        request()->session()->flash('status', [
+           'type'    => 'warning',
+           'message' => 'You must create a character before accessing the dashboard.',
+       ]);
         
-        $weapons = WeaponType::valueToAssociative();
-        asort($weapons);
+        $classes = CharacterClass::asArrayForDropDown();
+    
+        $skillTypes = SkillType::asArrayForDropDown();
         
         // pre-select class if it is assigned in discord
         $user_roles = request()->user()->getRoleNames()->all();
@@ -114,7 +116,7 @@ class CharacterLoginController extends Controller
     
         return view(
             'dashboard.character.create-edit', 
-            compact('skillTypes', 'weapons',
+            compact('skillTypes', 
                 'form_action', 'button_text', 'class_options')
         );
     }
@@ -137,8 +139,6 @@ class CharacterLoginController extends Controller
             'name' => $validated['name'],
             'slug' => Str::slug($validated['name']),
 //            'level' => $validated['level'],
-            'mainhand' => $validated['mainhand'],
-            'offhand' => $validated['offhand'],
             // relations
             'character_class_id' => $validated['class'], //$class->id,
             'rank_id' => $rank?->id ?? null,

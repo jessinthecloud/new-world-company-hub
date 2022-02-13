@@ -44,14 +44,15 @@
                 :buttonTexts="[
                     'view' => 'View Members',
                 ]"
-            >
-                {{--<x-dashboard.gated-button
-                    :can="['import', \App\Models\Companies\Roster::class]"
-                    :phpClass="\App\Models\Companies\Roster::class" 
-                    :route="route('rosters.import.create')"
+            >                
+                <x-dashboard.gated-button
+                    :can="['export', $company ?? null]"
+                    :phpClass="\App\Models\Companies\Company::class" 
+                    :route="route('companies.company.export', ['company'=>$company ?? null])"
+                    :instance="$company ?? null"
                 >
-                    Import
-                </x-dashboard.gated-button>--}}
+                    Export Members to Excel
+                </x-dashboard.gated-button>
             </x-dashboard.resource-index>
             
             {{-- Roster --}}
@@ -87,13 +88,14 @@
             />
             
             {{-- Loadout --}}
-            {{--<x-dashboard.resource-index
+            <x-dashboard.resource-index
                 :title="'Loadout'"
                 :phpClass="\App\Models\Characters\Loadout::class" 
                 :entityName="'loadout'"
                 :pluralEntityName="'loadouts'"
                 :instance="$loadout ?? null"
-            />--}}
+                :routeParamValue="$loadout?->id"
+            />
             
             {{-- Weapon --}}{{--
             <x-dashboard.resource-index
