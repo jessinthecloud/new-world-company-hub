@@ -443,8 +443,8 @@ class LoadoutService
     }
 
     /**
-     * @param \App\Models\Characters\Loadout $originalLoadout
-     * @param \App\Models\Characters\Loadout $newLoadout
+     * @param array $originalBaseItems
+     * @param array $newBaseItems
      *
      * @return bool
      */
