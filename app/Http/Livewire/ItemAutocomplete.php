@@ -28,19 +28,24 @@ class ItemAutocomplete extends Autocomplete
     
     // TODO: refactor
     public function query() {
-    
+        // tell the search algorithm to ignore this data for now
+        $ignore = [/*'of', 'the', */'of the Soldier', 'of the Fighter', 'of the Spellsword', 'of the Barbarian', 'of the Monk', 'of the Cavalier', 'of the Ranger', 'of the Assassin', 'of the Brigand', 'of the Duelist', 'of the Battlemage', 'of the Trickster', 'of the Scholar', 'of the Occultist', 'of the Mage', 'of the Knight', 'of the Warden', 'of the Druid', 'of the Sentry', 'of the Nomad', 'of the Zealot', 'of the Artificer', 'of the Priest', 'of the Cleric', 'of the Sage', 'Abyssal', 'Electrified', 'Empowered', 'Ignited', 'Frozen', 'Arboreal', 'Brash', 'Opportunistic', 'Vengeful', 'Exhilarating', 'Cruel', 'Scheming', 'Rallying', 'Abyssal', 'Fireproof', 'Iceproof', 'Insulated', 'Empowered', 'Arboreal', 'Burnished', 'Padded', 'Tempered', 'Reinforced', 'Primeval', 'Imbued', 'Spectral', 'Common', 'Uncommon', 'Rare', 'Epic', 'Legendary', 'Burning', 'Standard', 'Fine', 'Superior', 'Artisan', 'Flawless', 'Worn', 'Infused'];
+        $term = str_ireplace($ignore, '', $this->search);
+        $term = str_replace(' ', '%', trim($term));
+        $term = '%'.trim($term,'%').'%';
+//    dump($term);
         if($this->bank){
-            return BaseArmor::rawForBankSearch('%'.$this->search.'%')
-                ->union(BaseWeapon::rawForBankSearch('%'.$this->search.'%'))
+            return BaseArmor::rawForBankSearch($term)
+                ->union(BaseWeapon::rawForBankSearch($term))
                 ->orderBy('name');
         }
         
         if(isset($this->subtype)){
             // only for specific equipment slot
             return match ( $this->type ) {
-                "weapon" => BaseWeapon::rawForLoadout( '%' . $this->search . '%', $this->subtype )
+                "weapon" => BaseWeapon::rawForLoadout( $term, $this->subtype )
                     ->orderBy( 'name' ),
-                default => BaseArmor::rawForLoadout( '%' . $this->search . '%', $this->subtype )
+                default => BaseArmor::rawForLoadout( $term, $this->subtype )
                     ->orderBy( 'name' ),
             };
         }
@@ -48,15 +53,15 @@ class ItemAutocomplete extends Autocomplete
         if(isset($this->type)){
             // only for equipment type slot
             return match ( $this->type ) {
-                "weapon" => BaseWeapon::rawForSearch( '%' . $this->search . '%' )
+                "weapon" => BaseWeapon::rawForSearch( $term )
                     ->orderBy( 'name' ),
-                default => BaseArmor::rawForSearch( '%' . $this->search . '%' )
+                default => BaseArmor::rawForSearch( $term )
                     ->orderBy( 'name' ),
             };
         }
         
-        return BaseArmor::rawForSearch('%'.$this->search.'%')
-                ->union(BaseWeapon::rawForSearch('%'.$this->search.'%'))
+        return BaseArmor::rawForSearch($term)
+                ->union(BaseWeapon::rawForSearch($term))
                 ->orderBy('name');
     }
 }
