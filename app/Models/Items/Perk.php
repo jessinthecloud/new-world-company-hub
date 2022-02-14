@@ -51,10 +51,14 @@ class Perk extends Model
         return $query->where('name', 'like', $term);
     }
     
+    public function scopeForItemDropdown($query){
+        return $query->whereNotIn('perk_type', ['Gem', 'Inherent'])->orderBy('name');
+    }
+    
 // -- MISC
     public static function asArrayForDropDown() : array
     {
-        return static::orderBy('name')->get()->mapWithKeys(function($perk){
+        return Perk::forItemDropdown()->get()->mapWithKeys(function($perk){
             return [$perk->slug => $perk->name];
         })->all();
     }
