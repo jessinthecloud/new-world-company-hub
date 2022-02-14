@@ -88,7 +88,7 @@ Route::middleware( ['auth', 'company', 'character',] )->group( function () {
         ->name( 'loadouts.store' );
 } );
 
-Route::middleware( ['auth', 'company', 'character', 'loadout'] )->group( function () {
+Route::middleware( ['auth', 'company', 'character', /*'loadout'*/] )->group( function () {
     // dashboard
     Route::get( '/dashboard', [DashboardController::class, 'index'] )
         ->name( 'dashboard' );
