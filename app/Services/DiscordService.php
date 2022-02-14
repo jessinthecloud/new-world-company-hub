@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Companies\Rank;
 use App\Models\DiscordData;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
@@ -104,6 +105,18 @@ class DiscordService
 
         if(!empty($roles)){
             $user->syncRoles($roles);
+            // get rank from user roles
+            $rank = Rank::whereIn('name', $roles)->orderBy('order')->first();
+        }
+        
+        // if no ranks, but have member role, add settler rank
+        if(empty($rank) && in_array('breakpoint-member', $roles)){
+            $rank = Rank::where('name', 'Settler')->first();
+            $character = $user->characters->where('company_id', $company_id)->first();
+            if(isset($character)){
+                $character->rank_id = $rank->id;
+                $character->save();
+            }
         }
         
         if($user->isSuperAdmin()){

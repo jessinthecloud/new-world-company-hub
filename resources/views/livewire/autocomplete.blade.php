@@ -98,7 +98,12 @@
               data-result-inputName="{{ $equipSlotName }}"
             >
                 <span>
-                  {{ $result->name }} ({{ $result->type }})
+                  {{ $result->name }}
+                    @if(isset($result->subtype) 
+                        && null != \App\Enums\WeaponType::fromName($result->subtype)
+                    ) 
+                        ({{ \App\Enums\WeaponType::fromName($result->subtype)->value }})
+                    @endif
                 </span>
             </li>
           @empty

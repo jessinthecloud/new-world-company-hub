@@ -38,6 +38,12 @@ class CharacterLoginController extends Controller
      */
     public function choose(Request $request, string $action = 'Submit')
     {
+        // explain to user that this is required
+        $request->session()->flash('status', [
+           'type'    => 'warning',
+           'message' => 'You must choose a character before accessing the dashboard.',
+       ]);
+           
         $characters = Character::forUser($request->user()->id)
             ->get()
             ->mapWithKeys(function($character){
@@ -81,6 +87,12 @@ class CharacterLoginController extends Controller
      */
     public function create() : View
     {
+        // explain to user that this is required
+        request()->session()->flash('status', [
+           'type'    => 'warning',
+           'message' => 'You must create a character before accessing the dashboard.',
+       ]);
+        
         $classes = CharacterClass::asArrayForDropDown();
     
         $skillTypes = SkillType::asArrayForDropDown();

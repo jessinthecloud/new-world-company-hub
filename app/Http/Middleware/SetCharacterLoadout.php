@@ -31,7 +31,7 @@ class SetCharacterLoadout
         if($request->user()->character()->isDirty()){
             $request->user()->character()->refresh();
         }
-    
+
         if(!empty($request->user()->character()->loadout)){
             return $next($request);
         }

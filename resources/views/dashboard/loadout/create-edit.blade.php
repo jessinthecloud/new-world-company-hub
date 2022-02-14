@@ -45,7 +45,7 @@
                 />
             </x-forms.field>
             
-            <x-forms.field :name="'weight'">
+            {{--<x-forms.field :name="'weight'">
                 <x-forms.label for="weight" :required="false">Weight:</x-forms.label>
                 <x-forms.input
                     id="weight"
@@ -56,7 +56,7 @@
                     value="{{ old('weight') ?? $loadout->weight ?? '' }}"
                     :required="true"
                 />
-            </x-forms.field>
+            </x-forms.field>--}}
             
             @foreach($equipment_slots as $name => $equipment)
                 <x-forms.equipment-slot

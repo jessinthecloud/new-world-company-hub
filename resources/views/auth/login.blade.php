@@ -6,13 +6,6 @@
             </a>--}}
         </x-slot>
         
-        @if(!empty(session('status')))
-            <x-utils.card>
-                <!-- Session Status -->
-                <x-auth-session-status class="mb-4" :status="session('status')" />
-            </x-utils.card>
-        @endif
-        
         <!-- Validation Errors -->
         <x-forms.form-errors class="w-full sm:max-w-md"/>
 

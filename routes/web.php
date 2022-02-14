@@ -45,7 +45,7 @@ Route::middleware( ['guest'] )->group( function () {
 // ##
 
 Route::middleware( ['auth'] )->group( function () {
-// character is chosen on login
+// must have company on login
     Route::get( '/companies/{company}/login', [
         CompanyLoginController::class,
         'login',
@@ -59,7 +59,7 @@ Route::middleware( ['auth'] )->group( function () {
 } );
 
 Route::middleware( ['auth', 'company',] )->group( function () {
-// character is chosen on login
+// must have character on login
     Route::get( '/characters/{character}/login',
                 [CharacterLoginController::class, 'login']
     )
@@ -79,6 +79,7 @@ Route::middleware( ['auth', 'company',] )->group( function () {
 } );
 
 Route::middleware( ['auth', 'company', 'character',] )->group( function () {
+// must have loadout on login
     Route::get( '/loadouts/create', [LoadoutsController::class, 'create']
     )
         ->name( 'loadouts.create' );
@@ -214,6 +215,10 @@ Route::middleware( ['auth', 'company', 'character', 'loadout'] )->group( functio
         Route::post( '/import', [ImportRosterController::class, 'store'] )
             ->name( 'rosters.import.store' );
 
+        // export full company roster
+        Route::get( '/companies/{company}/export', [CompanyMembersController::class, 'export'] )
+            ->name( 'companies.company.export' );            
+
         Route::resource( 'rosters', RostersController::class )
             ->except( ['create', 'index', 'show'] );
 
@@ -262,7 +267,7 @@ Route::middleware( ['auth', 'company', 'character', 'loadout'] )->group( functio
         
         // gear check approval removal (could be from editing)
         Route::delete( '/loadouts/{loadout}', [GearCheckController::class, 'destroy'] )
-            ->name( 'loadouts.destroy' );
+            ->name( 'loadouts.gear-check.destroy' );
         
 // ## CHOOSE
         // choose from drop down

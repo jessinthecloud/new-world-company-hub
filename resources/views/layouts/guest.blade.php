@@ -22,11 +22,9 @@
             @endempty
         </div>
     </header>
-    
-    @if(!empty(session('status')))
+
     <!-- Session Status -->
-        <x-auth-session-status class="mb-6" :status="session('status')" />
-    @endif
+    <x-auth-session-status class="mb-6" :status="session('status') ?? null" />
 
     <!-- Page Content -->
     <main>

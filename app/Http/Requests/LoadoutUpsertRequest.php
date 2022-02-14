@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Models\Characters\Loadout;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 
 class LoadoutUpsertRequest extends FormRequest
 {
@@ -43,8 +44,11 @@ class LoadoutUpsertRequest extends FormRequest
         
         // TODO: refactor required vs optional checks
         foreach ( $required_equipment as $item ) {
+            // weapons or armors table
+            $item_table_to_check = strtolower(Str::plural($this->get('itemType')[$item]));
+      
             // fields for edit
-            $rules[ 'id.'.$item] = ['nullable', 'integer', 'exists:inventory_items,id'];
+            $rules[ 'id.'.$item] = ['nullable', 'integer', 'exists:'.$item_table_to_check.',id'];
             $rules[ 'slug.'.$item] = ['string', 'nullable'];
             $rules[ 'itemType.'.$item] = ['string', 'nullable'];
             // auto filled fields
@@ -82,7 +86,11 @@ class LoadoutUpsertRequest extends FormRequest
         
         foreach ( $other_equipment as $item ) {
             // fields for edit
-            $rules[ 'id.'.$item] = ['nullable', 'integer', 'exists:inventory_items,id'];
+            // weapons or armors table
+            $item_table_to_check = strtolower(Str::plural($this->get('itemType')[$item]));
+      
+            // fields for edit
+            $rules[ 'id.'.$item] = ['nullable', 'integer', 'exists:'.$item_table_to_check.',id'];
             $rules[ 'slug.'.$item] = ['string', 'nullable'];
             $rules[ 'itemType.'.$item] = ['string', 'nullable'];
             // automatically filled fields

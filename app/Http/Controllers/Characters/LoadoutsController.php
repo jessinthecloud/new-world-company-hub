@@ -19,6 +19,7 @@ use App\Services\WeaponService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
@@ -78,6 +79,14 @@ class LoadoutsController extends Controller
             // on failed submission
             // populate the old form data
             $this->loadoutService->populateDropdowns($this->weaponService, $request->old());
+        }
+        
+        if(!empty($request->query('login'))){
+            // explain to user that this is required
+            $request->session()->flash('status', [
+               'type'    => 'warning',
+               'message' => 'You must create a loadout before accessing the dashboard.',
+           ]);
         }
 
         return view(
@@ -139,15 +148,12 @@ class LoadoutsController extends Controller
         // todo: fire Event?
 
         if ( $request->query('login') ) {
-            return redirect(RouteServiceProvider::DASHBOARD)->with([
-               'status' => [
-                   'type'    => 'success',
-                   'message' => 'Loadout created successfully',
-               ],
-           ]);
+            // update session character
+            $request->user()->character()->refresh();
+            $request->session()->put('character', $request->user()->character());
         }
 
-        return redirect(route('dashboard'))->with([
+        return redirect(RouteServiceProvider::DASHBOARD)->with([
               'status' => [
                   'type'    => 'success',
                   'message' => 'Loadout created successfully',

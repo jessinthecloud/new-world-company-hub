@@ -26,7 +26,7 @@ class Character extends Model
      *
      * @var array
      */
-    protected $with = ['company', 'rank'];
+    protected $with = ['company', 'rank', 'loadout'];
     
     /**
      * Get the route key for the model.

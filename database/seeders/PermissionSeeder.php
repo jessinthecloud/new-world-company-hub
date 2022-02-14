@@ -112,14 +112,15 @@ class PermissionSeeder extends Seeder
         Permission::updateOrCreate(['name' => 'edit own faction loadouts']);
         Permission::updateOrCreate(['name' => 'delete own faction loadouts']);
         Permission::updateOrCreate(['name' => 'approve own faction loadouts']);
-        
+
     // -- rosters --
         // all
         Permission::updateOrCreate(['name' => 'view rosters']);
         Permission::updateOrCreate(['name' => 'create rosters']);
         Permission::updateOrCreate(['name' => 'edit rosters']);
         Permission::updateOrCreate(['name' => 'delete rosters']);
-        Permission::updateOrCreate(['name' => 'import rosters']);
+        Permission::updateOrCreate(['name' => 'import company rosters']);
+        Permission::updateOrCreate(['name' => 'export company rosters']);
         // their own
         Permission::updateOrCreate(['name' => 'view own rosters']);
         Permission::updateOrCreate(['name' => 'edit own rosters']);
@@ -130,12 +131,14 @@ class PermissionSeeder extends Seeder
         Permission::updateOrCreate(['name' => 'edit own company rosters']);
         Permission::updateOrCreate(['name' => 'delete own company rosters']);
         Permission::updateOrCreate(['name' => 'import own company rosters']);
+        Permission::updateOrCreate(['name' => 'export own company rosters']);
         // their factions'
         Permission::updateOrCreate(['name' => 'view own faction rosters']);
         Permission::updateOrCreate(['name' => 'create own faction rosters']);
         Permission::updateOrCreate(['name' => 'edit own faction rosters']);
         Permission::updateOrCreate(['name' => 'delete own faction rosters']);
         Permission::updateOrCreate(['name' => 'import own faction rosters']);
+        Permission::updateOrCreate(['name' => 'export own faction rosters']);
     // -- events --
         // all
         Permission::updateOrCreate(['name' => 'view events']);
@@ -190,6 +193,17 @@ class PermissionSeeder extends Seeder
         Permission::updateOrCreate(['name' => 'view own faction users']);
         Permission::updateOrCreate(['name' => 'view own company users']);
         Permission::updateOrCreate(['name' => 'edit users cosmetic info']);
+      
+    // -- company members
+        // all 
+        Permission::updateOrCreate(['name' => 'import company members']);
+        Permission::updateOrCreate(['name' => 'export company members']);
+        // their companies'
+        Permission::updateOrCreate(['name' => 'import own company members']);
+        Permission::updateOrCreate(['name' => 'export own company members']);
+        // their factions'
+        Permission::updateOrCreate(['name' => 'import own faction company members']);
+        Permission::updateOrCreate(['name' => 'export own faction company members']);
         
     // -- miscellaneous
         

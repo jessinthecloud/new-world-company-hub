@@ -209,7 +209,7 @@ class LoadoutService
                 ->map(function ($attr) {
                     return $attr->pivot->amount;
                 })->all();
-            // related item
+            // related specific item
             $values['item'][ $name ] = $loadout->$name->item->itemable;
             // rarity
             $values['rarity'][ $name ] = $loadout->$name->item->itemable->rarity;

@@ -1,4 +1,4 @@
-@props(['status'])
+@props(['status'=>null])
 
 @isset ($status['message'])
     <div {{ $attributes->merge(['class' => 'font-medium text-sm alert alert-'.$status['type']]) }}>

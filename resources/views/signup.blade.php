@@ -6,13 +6,6 @@
             </a>
         </x-slot>
         
-        @if(!empty(session('status')))
-            <x-utils.card>
-                <!-- Session Status -->
-                <x-auth-session-status class="mb-4" :status="session('status')" />
-            </x-utils.card>
-        @endif
-        
         <x-utils.card>
             <div class="flex flex-wrap items-center justify-center">
                 <x-button-link class="block bg-indigo-500 ml-3" href="{{ route('discord.redirect') }}">
