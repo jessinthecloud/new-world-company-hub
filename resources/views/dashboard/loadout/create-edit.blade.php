@@ -58,6 +58,14 @@
                 />
             </x-forms.field>--}}
             
+            <p class="font-bold mb-0">
+                <span class="text-red-600">PLEASE NOTE:</span> when entering your items, be sure to select from the list that pops up, do not just type the name in. <BR>
+                <em>If your item does not show up, choose the closest alternative.</em>
+            </p>
+            <p>
+                For example: <strong><em>Reinforced Infused Silk Pants of the Soldier</em></strong> --> <em>Infused Silk Pants of the Soldier</em>
+            </p>
+            
             @foreach($equipment_slots as $name => $equipment)
                 <x-forms.equipment-slot
                     :title="ucfirst($name)"
