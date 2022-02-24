@@ -26,6 +26,11 @@ class Event extends Model
     {
         return $this->hasOne(Roster::class);
     }
+    
+    public function warPlans()
+    {
+        return $this->hasMany(WarPlan::class);
+    }
 
     public function warBoards()
     {
