@@ -2,14 +2,12 @@
 
 namespace App\Models\Characters;
 
-use App\CompanyInventory;
 use App\Models\Companies\Company;
-use App\Models\Companies\Position;
 use App\Models\Companies\Rank;
+use App\Models\Events\Position;
+use App\Models\Events\WarGroupSlots;
 use App\Models\Faction;
-use App\Models\Items\Armor;
 use App\Models\Items\InventoryItem;
-use App\Models\Items\Weapon;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -93,6 +91,11 @@ class Character extends Model
     public function inventoryItem(  )
     {
         return $this->morphMany(InventoryItem::class, 'ownerable');
+    }
+    
+    public function warGroupSlots()
+    {
+        return $this->morphMany(WarGroupSlots::class, 'slottable');
     }
 
     public static function asArrayForDropDown()

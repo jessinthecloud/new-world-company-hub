@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Models\Companies;
+namespace App\Models\Events;
 
+use App\Models\Companies\Company;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,5 +25,10 @@ class Event extends Model
     public function roster()
     {
         return $this->hasOne(Roster::class);
+    }
+
+    public function warBoards()
+    {
+        return $this->hasMany(WarBoard::class);
     }
 }

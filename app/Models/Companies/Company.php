@@ -5,6 +5,7 @@ namespace App\Models\Companies;
 use App\CompanyInventory;
 use App\Models\Characters\Character;
 use App\Models\Characters\Loadout;
+use App\Models\Events\Event;
 use App\Models\Faction;
 use App\Models\Items\InventoryItem;
 use App\Models\User;

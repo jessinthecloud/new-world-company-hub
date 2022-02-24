@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Companies;
+namespace App\Models\Events;
 
 use App\Models\Characters\Character;
 use App\Models\Characters\CharacterClassType;

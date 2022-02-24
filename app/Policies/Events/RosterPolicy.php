@@ -1,12 +1,10 @@
 <?php
 
-namespace App\Policies\Companies;
+namespace App\Policies\Events;
 
-use App\Models\Companies\Roster;
+use App\Models\Events\Roster;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
-
-use function dump;
 
 class RosterPolicy
 {
@@ -20,13 +18,13 @@ class RosterPolicy
     /**
      * To check specific permissions via this policy:
      *
-     * Gate::allows('viewAny', App\Models\Companies\Roster::character);
+     * Gate::allows('viewAny', App\Models\Events\Roster::character);
      *
      * OR in a blade template:
-     * @can('viewAny', App\Models\Companies\Roster::character) <elements/> @endcan
+     * @can('viewAny', App\Models\Events\Roster::character) <elements/> @endcan
      *
      * OR in a controller method:
-     * $this->authorize('viewAny', App\Models\Companies\Roster::character);
+     * $this->authorize('viewAny', App\Models\Events\Roster::character);
      * 
      * @param \App\Models\User $user
      *
