@@ -29,6 +29,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get( '/war-board', function () {
+    return view('dashboard.event.war-board.create-edit');
+});
+
 Route::get( '/', function () {
     if ( Auth::user() !== null ) {
         return redirect( 'dashboard' );
@@ -88,7 +92,7 @@ Route::middleware( ['auth', 'company', 'character',] )->group( function () {
         ->name( 'loadouts.store' );
 } );
 
-Route::middleware( ['auth', 'company', 'character', 'loadout'] )->group( function () {
+Route::middleware( ['auth', 'company', 'character'/*, 'loadout'*/] )->group( function () {
     // dashboard
     Route::get( '/dashboard', [DashboardController::class, 'index'] )
         ->name( 'dashboard' );

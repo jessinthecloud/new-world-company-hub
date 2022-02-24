@@ -114,6 +114,15 @@
                 :pluralEntityName="'armors'"
                 :instance="$armor ?? null"
             />--}}
+            
+            {{-- War Boards --}}
+            <x-dashboard.resource-index
+                :title="'War Boards'"
+                :phpClass="\App\Models\Events\WarBoard::class" 
+                :entityName="'warBoard'"
+                :pluralEntityName="'warBoards'"
+                :instance="$warBoard ?? null"
+            />
         </div>
     @endempty
 
