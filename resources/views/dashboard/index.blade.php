@@ -1,7 +1,7 @@
 <x-layouts.dashboard>
-    
     {{-- If user has no access, tell them they're a loser --}}
-    @empty(Auth::user()->getAllPermissions()->all())
+    @if(!Auth::user()->hasAnyRole(['super-admin','admin','dev']) 
+        && empty(Auth::user()->getAllPermissions()->all()))
         <div class="w-full
             sm:px-6 
             lg:px-8
@@ -124,7 +124,7 @@
                 :instance="$warBoard ?? null"
             />
         </div>
-    @endempty
+    @endif
 
         
 </x-layouts.dashboard>
