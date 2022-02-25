@@ -34,7 +34,7 @@
                             ])" 
                             :active="request()->routeIs('companies.show')"
                         >
-                            {{ __('Roster') }}
+                            {{ __('Members') }}
                         </x-nav-link>
                     @endif
                 </div>
@@ -109,7 +109,7 @@
                     ])" 
                     :active="request()->routeIs('companies.show')"
                 >
-                    {{ __('Roster') }}
+                    {{ __('Members') }}
                 </x-responsive-nav-link>
             @endif
         </div>
