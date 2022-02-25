@@ -5,6 +5,9 @@ namespace App\Models\Companies;
 use App\CompanyInventory;
 use App\Models\Characters\Character;
 use App\Models\Characters\Loadout;
+use App\Models\Events\Event;
+use App\Models\Events\WarBoard;
+use App\Models\Events\WarPlan;
 use App\Models\Faction;
 use App\Models\Items\InventoryItem;
 use App\Models\User;
@@ -67,12 +70,22 @@ class Company extends Model
 
     public function events()
     {
-        $this->hasMany(Event::class);
+        return $this->hasMany(Event::class);
+    }
+    
+    public function warPlans()
+    {
+        return $this->hasMany(WarPlan::class);
+    }
+    
+    public function warBoards()
+    {
+        return $this->hasMany(WarBoard::class);
     }
     
     public function loadouts()
     {
-        $this->hasManyThrough(Loadout::class, Character::class);
+        return $this->hasManyThrough(Loadout::class, Character::class);
     }
     
     /*public function weapons()

@@ -16,8 +16,8 @@ class AuthServiceProvider extends ServiceProvider
         'App\CompanyInventory'            => 'App\Policies\Companies\CompanyInventoryPolicy',
         'App\Models\Characters\Character'   => 'App\Policies\Characters\CharacterPolicy',
         'App\Models\Companies\Company'   => 'App\Policies\Companies\CompanyPolicy',
-        
-        'App\Models\Companies\Roster'    => 'App\Policies\Companies\RosterPolicy',
+
+        'App\Models\Events\Roster'       => 'App\Policies\Events\RosterPolicy',
         'App\Models\Items\LoadoutPolicy' => 'App\Policies\Items\LoadoutPolicy',
         'App\Models\Items\WeaponPolicy'  => 'App\Policies\Items\WeaponPolicy',
         

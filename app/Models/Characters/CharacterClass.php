@@ -2,6 +2,7 @@
 
 namespace App\Models\Characters;
 
+use App\Models\Events\WarGroupSlots;
 use Illuminate\Database\Eloquent\Model;
 
 class CharacterClass extends Model
@@ -14,6 +15,11 @@ class CharacterClass extends Model
     public function characters()
     {
         return $this->hasMany(Character::class);
+    }
+    
+    public function warGroupSlots()
+    {
+        return $this->morphMany(WarGroupSlots::class, 'slottable');
     }
     
     public static function asArrayForDropDown()

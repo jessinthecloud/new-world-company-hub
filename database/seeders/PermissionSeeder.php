@@ -160,6 +160,23 @@ class PermissionSeeder extends Seeder
         Permission::updateOrCreate(['name' => 'create own faction events']);
         Permission::updateOrCreate(['name' => 'edit own faction events']);
         Permission::updateOrCreate(['name' => 'delete own faction events']);
+        
+// -- war boards --
+        // all
+        Permission::updateOrCreate(['name' => 'view warboards']);
+        Permission::updateOrCreate(['name' => 'create warboards']);
+        Permission::updateOrCreate(['name' => 'edit warboards']);
+        Permission::updateOrCreate(['name' => 'delete warboards']);
+        // their company's
+        Permission::updateOrCreate(['name' => 'view own company warboards']);
+        Permission::updateOrCreate(['name' => 'create own company warboards']);
+        Permission::updateOrCreate(['name' => 'edit own company warboards']);
+        Permission::updateOrCreate(['name' => 'delete own company warboards']);
+        // their factions'
+        Permission::updateOrCreate(['name' => 'view own faction warboards']);
+        Permission::updateOrCreate(['name' => 'create own faction warboards']);
+        Permission::updateOrCreate(['name' => 'edit own faction warboards']);
+        Permission::updateOrCreate(['name' => 'delete own faction warboards']);
 
 // -- positions --
         // all

@@ -109,6 +109,11 @@ class RolePermissionSeeder extends Seeder
                 'remove own company members',
                 'import own company members',
                 'export own company members',
+                
+                'view own company warboards',
+                'create own company warboards',
+                'edit own company warboards',
+                'delete own company warboards',
 
                 // -- faction permissions
                 'view own faction companies',
@@ -168,6 +173,11 @@ class RolePermissionSeeder extends Seeder
             'remove own company members',
             'import own company members',
             'export own company members',
+            
+            'view own company warboards',
+            'create own company warboards',
+            'edit own company warboards',
+            'delete own company warboards',
 
         // -- faction permissions
             'view own faction companies',
@@ -216,6 +226,8 @@ class RolePermissionSeeder extends Seeder
             'edit own company members',
             'remove own company members',
             'import own company members',
+            
+            'view own company warboards',
 
     // -- faction permissions
             'view own faction companies',
@@ -235,12 +247,13 @@ class RolePermissionSeeder extends Seeder
             'delete own loadouts',
     
             'view own companies',
-    
+
+            'view own rosters',
             'view own faction companies',
             'view own company rosters',
             'view own company guildbanks',
-            'view own rosters',
             'view own company members',
+            'view own company warboards',
         );
     }
 }
