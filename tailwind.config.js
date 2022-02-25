@@ -27,6 +27,20 @@ module.exports = {
                 '2/3': '66%',
                 '3/4': '75%',
             },
+            maxHeight: {
+                '1/4': '25vh',
+                '1/3': '33vh',
+                '1/2': '50vh',
+                '2/3': '66vh',
+                '3/4': '75vh',
+            },
+            minHeight: {
+                '1/4': '25%',
+                '1/3': '33%',
+                '1/2': '50%',
+                '2/3': '66%',
+                '3/4': '75%',
+            },
             colors: {
                 transparent: 'transparent',
                 current: 'currentColor',

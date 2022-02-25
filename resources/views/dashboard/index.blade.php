@@ -120,7 +120,7 @@
                 :title="'War Boards'"
                 :phpClass="\App\Models\Events\WarBoard::class" 
                 :entityName="'warBoard'"
-                :pluralEntityName="'warBoards'"
+                :pluralEntityName="'war-boards'"
                 :instance="$warBoard ?? null"
             />
         </div>

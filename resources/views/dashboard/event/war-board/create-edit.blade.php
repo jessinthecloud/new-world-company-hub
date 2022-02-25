@@ -8,97 +8,33 @@
             // when an element is being removed
             removing: false
         }">
-            <div class="war-board flex-grow flex flex-wrap mr-4 border border-black">
-    
-                <!-- drop target -->
-                <ul class="war-group drop-target w-1/5 bg-gray-300 mx-1 border border-black"
-                    {{--:class="{ 'bg-green-300': adding }"--}}
-                    x-on:drop="adding = false"
-                    x-on:drop.prevent="const id = event.dataTransfer.getData('text/plain');
-                        const target = event.target.closest('ul');
-                        const element = document.getElementById(id);
-                        target.appendChild(element);
-                        element.classList.add('border border-black p-1 rounded');
-                    "
-                    x-on:dragover.prevent="adding = true"
-                    x-on:dragleave.prevent="adding = false"
-                >
-                    <h3>Group 1</h3>
-                </ul>
-                
-                <!-- drop target -->
-                <ul class="war-group drop-target w-1/5 bg-gray-300 mx-1 border border-black" 
-                    x-on:drop="adding = false"
-                    x-on:drop.prevent="const id = event.dataTransfer.getData('text/plain');
-                        const target = event.target.closest('ul');
-                        const element = document.getElementById(id);
-                        target.appendChild(element);
-                    "
-                    x-on:dragover.prevent="adding = true"
-                    x-on:dragleave.prevent="adding = false"
-                >
-                    <h3>Group 2</h3>
-                </ul>
-                
-                <!-- drop target -->
-                <ul class="war-group drop-target w-1/5 bg-gray-300 mx-1 border border-black" 
-                    x-on:drop="adding = false"
-                    x-on:drop.prevent="const id = event.dataTransfer.getData('text/plain');
-                        const target = event.target.closest('ul');
-                        const element = document.getElementById(id);
-                        target.appendChild(element);
-                    "
-                    x-on:dragover.prevent="adding = true"
-                    x-on:dragleave.prevent="adding = false"
-                >
-                    <h3>Group 3</h3>
-                </ul>
-                
-                <!-- drop target -->
-                <ul class="war-group drop-target w-1/5 bg-gray-300 mx-1 border border-black" 
-                    x-on:drop="adding = false"
-                    x-on:drop.prevent="const id = event.dataTransfer.getData('text/plain');
-                        const target = event.target.closest('ul');
-                        const element = document.getElementById(id);
-                        target.appendChild(element);
-                    "
-                    x-on:dragover.prevent="adding = true"
-                    x-on:dragleave.prevent="adding = false"
-                >
-                    <h3>Group 4</h3>
-                </ul>
-                
-                <!-- drop target -->
-                <ul class="war-group drop-target w-1/5 bg-gray-300 mx-1 border border-black" 
-                    x-on:drop="adding = false"
-                    x-on:drop.prevent="const id = event.dataTransfer.getData('text/plain');
-                        const target = event.target.closest('ul');
-                        const element = document.getElementById(id);
-                        target.appendChild(element);
-                    "
-                    x-on:dragover.prevent="adding = true"
-                    x-on:dragleave.prevent="adding = false"
-                >
-                    <h3>Group 5</h3>
-                </ul>
+            <div class="war-board w-3/4 h-screen grid grid-cols-5 grid-rows-2 gap-2 p-2">
+                @for($i=0;$i<10;$i++)
+                    <!-- drop target -->
+                    <x-events.war-group :title="'Group '.($i+1)" />
+                @endfor
             </div>
             
-            <?php
-            $chars = \App\Models\Characters\Character::where('company_id', 1)->get(); 
-            ?>
             <ul class="character-list w-1/4" 
                 x-on:drop="removing = false"
                 x-on:drop.prevent="const id = event.dataTransfer.getData('text/plain');
                     const target = event.target.closest('ul');
                     const element = document.getElementById(id);
                     target.appendChild(element);
+                    element.classList.remove('bg-gray-300');
+                    element.classList.add('flex');
+                    element.classList.remove('flex-col');
+                    let spacer = document.createElement('div');
+                    element.appendChild(spacer);
                 "
                 x-on:dragover.prevent="removing = true"
                 x-on:dragleave.prevent="removing = false"
             >
                 @foreach($chars as $char)
-                    <li id="{{$char->name}}-list-item" class="p-2"
-                        :class="{ 'bg-red-300': dragging }"
+                    <li id="{{$char->name}}-list-item" 
+                        class="p-1 flex justify-between items-center hover:bg-gray-100"
+                        style="cursor:grab; /* tailwind not working */"
+                        :class="{ 'bg-red-300 cursor-grabbing': dragging }"
                         draggable="true"
                         x-data="{ dragging: false }"
                         x-on:dragend="dragging = false"
@@ -111,7 +47,13 @@
                             event.dataTransfer.setData('text/plain', event.target.id);
                         "
                     >
-                        {{ $char->name }} - {{ $char->class->name }}
+                        <div class="w-3/6">{{ $char->name }}</div>
+                        <div class="w-2/6">{{ $char->class->name }}</div> 
+                        @if($char->loadout?->approved())
+                            <x-utils.icons.checkmark class="w-1/6 text-green-500"/>
+                        @else
+                            <div class="w-1/6"></div>
+                        @endif
                     </li>
                 @endforeach
             </ul>

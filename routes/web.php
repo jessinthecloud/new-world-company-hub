@@ -14,6 +14,7 @@ use App\Http\Controllers\GearCheckController;
 use App\Http\Controllers\Items\ArmorsController;
 use App\Http\Controllers\Items\CompanyInventoryController;
 use App\Http\Controllers\Items\WeaponsController;
+use App\Http\Controllers\WarBoards\WarBoardsController;
 use App\Models\Items\BaseArmor;
 use App\Models\Items\BaseWeapon;
 use Illuminate\Support\Facades\Route;
@@ -28,10 +29,6 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get( '/war-board', function () {
-    return view('dashboard.event.war-board.create-edit');
-});
 
 Route::get( '/', function () {
     if ( Auth::user() !== null ) {
@@ -204,6 +201,25 @@ Route::middleware( ['auth', 'company', 'character'/*, 'loadout'*/] )->group( fun
         // approve gear check
         Route::post( '/loadouts/approve/{loadout}', [GearCheckController::class, 'approve'] )
             ->name( 'loadouts.approve' );
+        
+        /*
+         * WAR BOARDS
+         */
+        // create form for war board for specific company
+        Route::get( '/war-boards/create', [WarBoardsController::class, 'create'] )
+            ->name( 'war-boards.create' );
+        // store war board for specific company
+        Route::post( '/war-boards', [WarBoardsController::class, 'store'] )
+            ->name( 'war-boards.store' );
+        /*// edit form for specific war board for specific company
+        Route::get( '/war-boards/{warBoard}/edit', [WarBoardsController::class, 'edit'] )
+            ->name( 'war-boards.edit' );
+        // update specific war board for specific company
+        Route::put( '/war-boards/{warBoard}', [WarBoardsController::class, 'update'] )
+            ->name( 'war-boards.update' );
+        // delete specific war board from specific company
+        Route::delete( '/war-boards/{warBoard}', [WarBoardsController::class, 'destroy'] )
+            ->name( 'war-boards.destroy' );*/
     } );
 // ##
 // ## END CONSUL
@@ -272,6 +288,10 @@ Route::middleware( ['auth', 'company', 'character'/*, 'loadout'*/] )->group( fun
         // gear check approval removal (could be from editing)
         Route::delete( '/loadouts/{loadout}', [GearCheckController::class, 'destroy'] )
             ->name( 'loadouts.gear-check.destroy' );
+            
+        // WAR BOARD
+        Route::get( '/war-boards/{warBoard}', [WarBoardsController::class, 'show'] )
+            ->name( 'war-boards.show' );
         
 // ## CHOOSE
         // choose from drop down

@@ -13,9 +13,15 @@ class WarBoardsController extends Controller
         //
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $chars = \App\Models\Characters\Character::where('company_id', $request->user()->company()->id)
+            ->orderBy('name')
+            ->get()
+            ->sortBy('class.name');
+     
+        return view('dashboard.event.war-board.create-edit',
+            ['chars'=>$chars]);
     }
 
     public function store(Request $request)
