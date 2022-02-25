@@ -8,14 +8,18 @@
             // when an element is being removed
             removing: false
         }">
-            <div class="war-board w-3/4 h-screen grid grid-cols-5 grid-rows-2 gap-2 p-2">
+            <div class="war-board w-3/4 grid grid-cols-5 grid-rows-3 gap-2 p-2">
                 @for($i=0;$i<10;$i++)
                     <!-- drop target -->
                     <x-events.war-group :title="'Group '.($i+1)" />
                 @endfor
+                @for($i=0;$i<5;$i++)
+                    <!-- drop target -->
+                    <x-events.war-group :title="'Alt Group '.($i+1)" />
+                @endfor
             </div>
             
-            <ul class="character-list w-1/4" 
+            <ul class="character-list w-1/4 max-h-screen overflow-auto" 
                 x-on:drop="removing = false"
                 x-on:drop.prevent="const id = event.dataTransfer.getData('text/plain');
                     const target = event.target.closest('ul');
@@ -32,9 +36,9 @@
             >
                 @foreach($chars as $char)
                     <li id="{{$char->name}}-list-item" 
-                        class="p-1 flex justify-between items-center hover:bg-gray-100"
+                        class="flex justify-between items-center p-1 mt-1 hover:bg-gray-100"
                         style="cursor:grab; /* tailwind not working */"
-                        :class="{ 'bg-red-300 cursor-grabbing': dragging }"
+                        :class="{ 'cursor-grabbing': dragging }"
                         draggable="true"
                         x-data="{ dragging: false }"
                         x-on:dragend="dragging = false"
