@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Companies;
 
 use App\Http\Controllers\Controller;
-use App\Models\Companies\Roster;
+use App\Models\Events\Roster;
 use Illuminate\Http\Request;
 
 use function redirect;
@@ -19,7 +19,7 @@ class RostersController extends Controller
     
     public function choose()
     {
-        $rosters = Roster::with('roster')->orderBy('name')->get()->mapWithKeys(function($roster){
+        $rosters = \App\Models\Events\Roster::with('roster')->orderBy('name')->get()->mapWithKeys(function($roster){
             return [$roster->id => $roster->name.' ('.$roster->faction->name.')'];
         })->all();
         $form_action = route('rosters.find');
@@ -46,7 +46,7 @@ class RostersController extends Controller
         //
     }
 
-    public function show( Roster $roster=null )
+    public function show( \App\Models\Events\Roster $roster=null )
     {
         //
     }

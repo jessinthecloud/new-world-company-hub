@@ -58,7 +58,7 @@
             {{-- Roster --}}
             {{--<x-dashboard.resource-index
                 :title="'Roster'"
-                :phpClass="\App\Models\Companies\Roster::class" 
+                :phpClass="\App\Models\Events\Roster::class" 
                 :entityName="'roster'"
                 :pluralEntityName="'rosters'"
                 :instance="$roster ?? null"
@@ -114,6 +114,15 @@
                 :pluralEntityName="'armors'"
                 :instance="$armor ?? null"
             />--}}
+            
+            {{-- War Boards --}}
+            <x-dashboard.resource-index
+                :title="'War Boards'"
+                :phpClass="\App\Models\Events\WarBoard::class" 
+                :entityName="'warBoard'"
+                :pluralEntityName="'war-boards'"
+                :instance="$warBoard ?? null"
+            />
         </div>
     @endempty
 
