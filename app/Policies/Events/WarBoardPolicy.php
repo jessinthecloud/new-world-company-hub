@@ -27,10 +27,12 @@ class WarBoardPolicy
     public function view(User $user, WarBoard $warBoard) : bool
     {
         return (
+            $user->can('view warboards')
+            ||
             (
                 $user->can('view own company warboards') 
-                &&
-                $user->company()->id == $warBoard->company->id
+                /*&&
+                $user->company()->id == $warBoard->company->id*/
             )
             ||
             (
