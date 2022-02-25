@@ -2,6 +2,16 @@
     <x-dashboard.section
         :title="'War Board'"
     >    
+        <p class="max-w-5xl px-2 italic">
+            <strong>Note:</strong> This is essentially a prototype. 
+            <span class="font-bold text-red-500">Your changes will not be saved anywhere and there is no mobile support.</span>
+            If you're interested in what features are planned or have a request, feel free to 
+            <a href="https://github.com/jessinthecloud/new-world-company-hub/issues/55" rel="noopener" target="_blank" class="underline text-blue-500">take a look on github</a>
+        </p>
+        <p class="max-w-5xl px-2">
+            For the time being, please take a screenshot if you want to save your board setup and share it with others.
+        </p>
+        
         <div class="board-wrapper flex flex-wrap w-full" x-data="{
             // when an element is being added
             adding: false, 
