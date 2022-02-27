@@ -38,7 +38,7 @@ class CreateNewPerksTable extends Migration
             $table->string('slug')->unique();
             $table->text('description')->nullable();
             $table->foreignId('perk_type_id')->constrained();
-            $table->foreignId('affix_id')->nullable()->constrained();
+//            $table->foreignId('affix_id')->nullable()->constrained();
             $table->foreignId('prefix_id')->nullable()->constrained();
             $table->foreignId('suffix_id')->nullable()->constrained();
             

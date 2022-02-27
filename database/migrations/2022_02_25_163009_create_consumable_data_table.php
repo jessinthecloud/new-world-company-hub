@@ -8,7 +8,7 @@ class CreateConsumableDataTable extends Migration
 {
     public function up()
     {
-        Schema::create('consumable_data', function (Blueprint $table) {
+        /*Schema::create('consumable_data', function (Blueprint $table) {
             $table->id();
 
             // base item this data belongs to
@@ -43,7 +43,7 @@ class CreateConsumableDataTable extends Migration
             $table->string('cooldown_id')->nullable();
 
             $table->timestamps();
-        });
+        });*/
     }
 
     public function down()

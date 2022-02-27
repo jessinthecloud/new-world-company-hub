@@ -8,7 +8,7 @@ class CreateArmorDataTable extends Migration
 {
     public function up()
     {
-        Schema::create('armor_data', function (Blueprint $table) {
+        /*Schema::create('armor_data', function (Blueprint $table) {
             $table->id();
             
             // base item this data belongs to
@@ -106,7 +106,7 @@ class CreateArmorDataTable extends Migration
             $table->string('a_f_a_curse')->nullable();
 
             $table->timestamps();
-        });
+        });*/
     }
 
     public function down()

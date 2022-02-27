@@ -8,7 +8,7 @@ class CreateWeaponDataTable extends Migration
 {
     public function up()
     {
-        Schema::create('weapon_data', function (Blueprint $table) {
+        /*Schema::create('weapon_data', function (Blueprint $table) {
             $table->id();
             
             // base item this data belongs to
@@ -108,7 +108,7 @@ class CreateWeaponDataTable extends Migration
             $table->string('base_accuracy')->nullable();
 
             $table->timestamps();
-        });
+        });*/
     }
 
     public function down()
