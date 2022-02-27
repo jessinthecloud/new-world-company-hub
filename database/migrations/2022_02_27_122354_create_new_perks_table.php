@@ -8,6 +8,9 @@ class CreateNewPerksTable extends Migration
 {
     public function up()
     {
+        // make sure we don't overwrite old version
+//        Schema::rename('perks', 'old_perks');
+    
         Schema::create('perk_types', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name', 50)->unique(); // gem, attribute, perk

@@ -8,7 +8,7 @@ class CreatePerksTable extends Migration
 {
     public function up()
     {
-        Schema::create( 'perks', function ( Blueprint $table ) {
+        Schema::create( 'old_perks', function ( Blueprint $table ) {
             $table->bigIncrements( 'id' );
 
             $table->string('name');
@@ -33,6 +33,6 @@ class CreatePerksTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists( 'perks' );
+        Schema::dropIfExists( 'old_perks' );
     }
 }

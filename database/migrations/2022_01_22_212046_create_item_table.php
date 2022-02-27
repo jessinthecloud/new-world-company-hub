@@ -8,7 +8,7 @@ class CreateItemTable extends Migration
 {
     public function up()
     {
-        Schema::create( 'items', function ( Blueprint $table ) {
+        Schema::create( 'old_items', function ( Blueprint $table ) {
             $table->bigIncrements( 'id' );
 
             $table->string('itemable_type');

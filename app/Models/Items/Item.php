@@ -8,6 +8,8 @@ class Item extends Model
 {
     protected $guarded = ['id'];
     
+    protected $table = 'old_items';
+    
     /**
      * The relationships that should always be loaded.
      *
