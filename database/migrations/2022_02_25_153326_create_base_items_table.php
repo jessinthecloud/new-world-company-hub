@@ -21,6 +21,7 @@ class CreateBaseItemsTable extends Migration
         Schema::create( 'item_subtypes', function ( Blueprint $table ) {
             $table->bigIncrements( 'id' );
             $table->string('name');
+            $table->string('json_key');
             $table->string('slug')->unique();
             $table->string('data_key')->unique();
             $table->foreignId('item_type_id')->nullable()->constrained();

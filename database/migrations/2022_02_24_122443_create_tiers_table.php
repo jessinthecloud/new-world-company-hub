@@ -12,7 +12,7 @@ class CreateTiersTable extends Migration
             $table->id();
 
             $table->string('name'); // Tier 1
-            $table->string('number'); // 1
+            $table->tinyInteger('number'); // 1
             $table->string('code')->nullable(); // T1
 
             $table->timestamps();

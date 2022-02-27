@@ -14,18 +14,21 @@ class CreateNewPerksTable extends Migration
         Schema::create('perk_types', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name', 50)->unique(); // gem, attribute, perk
+            $table->string('slug', 50)->unique(); 
             $table->timestamps();
         });
 
         Schema::create('prefixes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name', 50)->unique(); // Empowered, Imbued...
+            $table->string('slug', 50)->unique();
             $table->timestamps();
         });
 
         Schema::create('suffixes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name', 50)->unique(); // of the Soldier, of the Scholar...
+            $table->string('slug', 50)->unique();
             $table->timestamps();
         });
 
@@ -33,9 +36,9 @@ class CreateNewPerksTable extends Migration
             $table->bigIncrements('id');
 
             $table->string('name');
+            $table->string('slug')->unique();
             // key from the json data
             $table->string('json_key')->unique();
-            $table->string('slug')->unique();
             $table->text('description')->nullable();
             $table->foreignId('perk_type_id')->constrained();
 //            $table->foreignId('affix_id')->nullable()->constrained();

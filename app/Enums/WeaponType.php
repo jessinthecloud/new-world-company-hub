@@ -14,7 +14,6 @@ enum WeaponType : string
     case GreatAxe = "Great Axe";
     case Axe = "Axe";
     case Hatchet = "Hatchet";
-//    case IceGauntlet = "Ice Gauntlet";
     case IceMagic = "Ice Gauntlet";
     case LifeStaff = "Life Staff";
     case Musket = "Musket";
