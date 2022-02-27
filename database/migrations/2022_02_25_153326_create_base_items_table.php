@@ -37,6 +37,8 @@ class CreateBaseItemsTable extends Migration
             $table->boolean('named')->default(0);
             // weapon, armor, consumable, etc
             $table->foreignId('item_type_id')->nullable()->constrained();
+            // Life Staff, Chest, etc
+            $table->foreignId('item_subtype_id')->nullable()->constrained();
             // tiers
             $table->foreignId('tier_id')->nullable()->constrained();
             
