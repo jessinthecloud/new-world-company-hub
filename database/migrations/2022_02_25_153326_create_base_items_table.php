@@ -35,6 +35,7 @@ class CreateBaseItemsTable extends Migration
             $table->string('json_key')->unique();
             $table->string('slug')->unique();
             $table->text('description')->nullable();
+            $table->boolean('named')->default(0);
             // weapon, armor, consumable, etc
             $table->foreignId('item_type_id')->nullable()->constrained();
             // tiers
@@ -112,7 +113,7 @@ class CreateBaseItemsTable extends Migration
     {
         Schema::dropIfExists( 'equippable_item_data' );
         Schema::dropIfExists( 'base_items' );
-        Schema::dropIfExists( 'item_types' );
         Schema::dropIfExists( 'item_subtypes' );
+        Schema::dropIfExists( 'item_types' );
     }
 }
