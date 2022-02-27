@@ -14,6 +14,7 @@ class CreateNewPerksTable extends Migration
         Schema::create('perk_types', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name', 50)->unique(); // gem, attribute, perk
+            $table->string('json_key', 50)->unique(); // gem, inherent, generated
             $table->string('slug', 50)->unique(); 
             $table->timestamps();
         });
@@ -40,12 +41,14 @@ class CreateNewPerksTable extends Migration
             // key from the json data
             $table->string('json_key')->unique();
             $table->text('description')->nullable();
+            $table->string('icon')->nullable();
             $table->foreignId('perk_type_id')->constrained();
 //            $table->foreignId('affix_id')->nullable()->constrained();
             $table->foreignId('prefix_id')->nullable()->constrained();
             $table->foreignId('suffix_id')->nullable()->constrained();
-            
-        // -- raw data
+            $table->foreignId('tier_id')->nullable()->constrained();
+
+            // -- raw data
             $table->string('group_name')->nullable();
             $table->string('condition_event')->nullable();
             $table->string('equip_ability')->nullable();
@@ -59,7 +62,6 @@ class CreateNewPerksTable extends Migration
             $table->string('applied_suffix', 100)->nullable();
             $table->string('name_priority', 100)->nullable();
             $table->string('icon_path')->nullable();
-            $table->string('icon')->nullable();
             $table->string('affix')->nullable();
             $table->string('day_phases')->nullable();
 

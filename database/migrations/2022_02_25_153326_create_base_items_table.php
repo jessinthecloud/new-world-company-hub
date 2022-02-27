@@ -13,7 +13,6 @@ class CreateBaseItemsTable extends Migration
             $table->bigIncrements( 'id' );
             $table->string('name');
             $table->string('slug')->unique();
-            $table->string('data_key')->unique();
             $table->timestamps();
         } );
         
@@ -21,9 +20,8 @@ class CreateBaseItemsTable extends Migration
         Schema::create( 'item_subtypes', function ( Blueprint $table ) {
             $table->bigIncrements( 'id' );
             $table->string('name');
-            $table->string('json_key');
+            $table->string('json_key')->unique();
             $table->string('slug')->unique();
-            $table->string('data_key')->unique();
             $table->foreignId('item_type_id')->nullable()->constrained();
             $table->timestamps();
         } );

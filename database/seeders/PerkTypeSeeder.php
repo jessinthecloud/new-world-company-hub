@@ -13,18 +13,21 @@ class PerkTypeSeeder extends Seeder
            [
                'name' => 'Attribute',
                'slug' => 'attribute',
+               'json_key' => 'Inherent',
                'created_at' => now(),
                'updated_at' => now(),
            ],
            [
                'name' => 'Gem',
                'slug' => 'gem',
+               'json_key' => 'Gem',
                'created_at' => now(),
                'updated_at' => now(),
            ],
            [
                'name' => 'Perk',
                'slug' => 'perk',
+               'json_key' => 'Generated',
                'created_at' => now(),
                'updated_at' => now(),
            ],

@@ -24,6 +24,6 @@ class SuffixesSeeder extends Seeder
             ]; 
         }
 
-        DB::table('prefixes')->upsert($upsert, ['slug']);
+        DB::table('suffixes')->upsert($upsert, ['slug']);
     }
 }
