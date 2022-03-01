@@ -7,7 +7,7 @@ use App\Models\Companies\Rank;
 use App\Models\Events\Position;
 use App\Models\Events\WarGroupSlots;
 use App\Models\Faction;
-use App\Models\Items\InventoryItem;
+use App\Models\Items\OldInventoryItem;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -90,7 +90,7 @@ class Character extends Model
     
     public function inventoryItem(  )
     {
-        return $this->morphMany(InventoryItem::class, 'ownerable');
+        return $this->morphMany(OldInventoryItem::class, 'ownerable');
     }
     
     public function warGroupSlots()

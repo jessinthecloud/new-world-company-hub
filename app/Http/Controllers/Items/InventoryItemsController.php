@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Items;
 
 use App\Http\Controllers\Controller;
-use App\Models\Items\InventoryItem;
+use App\Models\Items\OldInventoryItem;
 use Illuminate\Http\Request;
 
 class InventoryItemsController extends Controller
@@ -23,22 +23,22 @@ class InventoryItemsController extends Controller
         //
     }
 
-    public function show( InventoryItem $inventoryItem )
+    public function show( OldInventoryItem $inventoryItem )
     {
         //
     }
 
-    public function edit( InventoryItem $inventoryItem )
+    public function edit( OldInventoryItem $inventoryItem )
     {
         //
     }
 
-    public function update( Request $request, InventoryItem $inventoryItem )
+    public function update( Request $request, OldInventoryItem $inventoryItem )
     {
         //
     }
 
-    public function destroy( InventoryItem $inventoryItem )
+    public function destroy( OldInventoryItem $inventoryItem )
     {
         //
     }

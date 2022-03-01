@@ -17,10 +17,10 @@ class AuthServiceProvider extends ServiceProvider
         'App\Models\Characters\Character'   => 'App\Policies\Characters\CharacterPolicy',
         'App\Models\Companies\Company'   => 'App\Policies\Companies\CompanyPolicy',
 
-        'App\Models\Events\Roster'       => 'App\Policies\Events\RosterPolicy',
-        'App\Models\Items\Loadout' => 'App\Policies\Items\LoadoutPolicy',
-        'App\Models\Items\Weapon'  => 'App\Policies\Items\WeaponPolicy',
-        'App\Models\Events\WarBoard'  => 'App\Policies\Events\WarBoardPolicy',
+        'App\Models\Events\Roster'   => 'App\Policies\Events\RosterPolicy',
+        'App\Models\Items\Loadout'   => 'App\Policies\Items\LoadoutPolicy',
+        'App\Models\Items\OldWeapon' => 'App\Policies\Items\WeaponPolicy',
+        'App\Models\Events\WarBoard' => 'App\Policies\Events\WarBoardPolicy',
         
         // Policies with conventional naming are auto-registered here
     ];

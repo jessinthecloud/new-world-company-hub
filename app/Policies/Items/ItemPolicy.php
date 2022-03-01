@@ -2,7 +2,7 @@
 
 namespace App\Policies\Items;
 
-use App\Models\Items\Item;
+use App\Models\Items\OldItem;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -20,7 +20,7 @@ class ItemPolicy
         //
     }
 
-    public function view( User $user, Item $item ) : bool
+    public function view( User $user, OldItem $item ) : bool
     {
         //
     }
@@ -30,22 +30,22 @@ class ItemPolicy
         //
     }
 
-    public function update( User $user, Item $item ) : bool
+    public function update( User $user, OldItem $item ) : bool
     {
         //
     }
 
-    public function delete( User $user, Item $item ) : bool
+    public function delete( User $user, OldItem $item ) : bool
     {
         //
     }
 
-    public function restore( User $user, Item $item ) : bool
+    public function restore( User $user, OldItem $item ) : bool
     {
         //
     }
 
-    public function forceDelete( User $user, Item $item ) : bool
+    public function forceDelete( User $user, OldItem $item ) : bool
     {
         //
     }

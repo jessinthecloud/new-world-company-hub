@@ -7,7 +7,7 @@ use App\Models\Companies\Company;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
-class InventoryItem extends Model
+class OldInventoryItem extends Model
 {
     protected $guarded = ['id'];
     
@@ -25,7 +25,7 @@ class InventoryItem extends Model
 
     public function item(  )
     {
-        return $this->belongsTo(Item::class);
+        return $this->belongsTo(OldItem::class);
     }
 
     public function loadouts(  )

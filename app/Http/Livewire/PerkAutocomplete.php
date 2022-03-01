@@ -2,9 +2,9 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Items\BaseArmor;
-use App\Models\Items\BaseWeapon;
-use App\Models\Items\Perk;
+use App\Models\Items\OldBaseArmor;
+use App\Models\Items\OldBaseWeapon;
+use App\Models\Items\OldPerk;
 
 /**
  * Modified from:
@@ -21,7 +21,7 @@ class PerkAutocomplete extends Autocomplete
     }
 
     public function query() {        
-        return Perk::forSearch('%'.$this->search.'%')
+        return OldPerk::forSearch('%'.$this->search.'%')
                 ->orderBy('name');
     }
     

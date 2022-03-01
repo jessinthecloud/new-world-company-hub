@@ -6,7 +6,7 @@ use App\Enums\ArmorType;
 use App\Enums\AttributeType;
 use App\Enums\Rarity;
 use App\Http\Controllers\Controller;
-use App\Models\Items\Armor;
+use App\Models\Items\OldArmor;
 use Illuminate\Http\Request;
 
 class ArmorsController extends Controller
@@ -26,7 +26,7 @@ class ArmorsController extends Controller
         //
     }
 
-    public function show( Request $request, Armor $armor )
+    public function show( Request $request, OldArmor $armor )
     {
         $armor = $armor->load('perks', 'itemAttributes');
         
@@ -56,17 +56,17 @@ class ArmorsController extends Controller
         ]);
     }
 
-    public function edit( Armor $armor )
+    public function edit( OldArmor $armor )
     {
         //
     }
 
-    public function update( Request $request, Armor $armor )
+    public function update( Request $request, OldArmor $armor )
     {
         //
     }
 
-    public function destroy( Armor $armor )
+    public function destroy( OldArmor $armor )
     {
         //
     }

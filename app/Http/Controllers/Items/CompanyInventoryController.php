@@ -12,10 +12,10 @@ use App\Enums\WeightClass;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\InventoryUpsertRequest;
 use App\Models\Companies\Company;
-use App\Models\Items\Armor;
-use App\Models\Items\InventoryItem;
-use App\Models\Items\Perk;
-use App\Models\Items\Weapon;
+use App\Models\Items\OldArmor;
+use App\Models\Items\OldInventoryItem;
+use App\Models\Items\OldPerk;
+use App\Models\Items\OldWeapon;
 use App\Services\ArmorService;
 use App\Services\WeaponService;
 use Illuminate\Http\Request;
@@ -31,13 +31,13 @@ class CompanyInventoryController extends Controller
     public function convertAll()
     {
         $company = Company::where('slug', 'breakpoint')->first();
-        $weapons = Weapon::all();
+        $weapons = OldWeapon::all();
         foreach($weapons as $weapon) {
             if(is_null($weapon->asItem)) {
                 $this->convert( $company, 'Weapon', $weapon );
             }
         }
-        $armors = Armor::all();
+        $armors = OldArmor::all();
         foreach($armors as $armor) {
             if(is_null($armor->asItem)){
                 $this->convert($company, 'Armor', $armor);
@@ -76,7 +76,7 @@ class CompanyInventoryController extends Controller
         $weapons = WeaponType::valueToAssociative();
         $weight_class = WeightClass::valueToAssociative();
         $rarity = Rarity::valueToAssociative();
-        $perks = Perk::asArrayForDropDown();
+        $perks = OldPerk::asArrayForDropDown();
 
         // add "Any" to the front of the filter arrays
         $armors = collect($armors)->prepend('Any', '')->all();
@@ -157,7 +157,7 @@ class CompanyInventoryController extends Controller
         ]);
     }
 
-    public function edit( Company $company, InventoryItem $inventoryItem )
+    public function edit( Company $company, OldInventoryItem $inventoryItem )
     {
 //        dump($inventoryItem);
         
@@ -165,7 +165,7 @@ class CompanyInventoryController extends Controller
         $item = $inventoryItem->item->itemable;
         $itemType = Str::afterLast($item::class, '\\');
         
-        $perks = Perk::orderBy('name')->distinct()->get()->mapWithKeys(function($perk){
+        $perks = OldPerk::orderBy('name')->distinct()->get()->mapWithKeys(function($perk){
             return [$perk->slug => $perk->name];
         });
         // existing perks
@@ -208,7 +208,7 @@ class CompanyInventoryController extends Controller
         );
     }
 
-    public function update( InventoryUpsertRequest $request, Company $company, InventoryItem $inventoryItem )
+    public function update( InventoryUpsertRequest $request, Company $company, OldInventoryItem $inventoryItem )
     {
         // get item specifics
         $specificItem = $inventoryItem->item->itemable;
@@ -241,7 +241,7 @@ class CompanyInventoryController extends Controller
         ]);
     }
 
-    public function destroy( Company $company, InventoryItem $inventoryItem )
+    public function destroy( Company $company, OldInventoryItem $inventoryItem )
     {
         $specificItem = $inventoryItem->item->itemable;
         

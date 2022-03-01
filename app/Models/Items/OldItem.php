@@ -4,7 +4,7 @@ namespace App\Models\Items;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Item extends Model
+class OldItem extends Model
 {
     protected $guarded = ['id'];
     
@@ -24,6 +24,6 @@ class Item extends Model
 
     public function inventory(  )
     {
-        return $this->hasOne(InventoryItem::class);
+        return $this->hasOne(OldInventoryItem::class);
     }
 }

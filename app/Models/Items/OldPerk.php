@@ -5,7 +5,7 @@ namespace App\Models\Items;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
-class Perk extends Model
+class OldPerk extends Model
 {
     /**
      * The relationships that should always be loaded.
@@ -26,22 +26,22 @@ class Perk extends Model
 
     public function weapons()
     {
-        return $this->belongsToMany(Weapon::class)->withPivot('amount');
+        return $this->belongsToMany(OldWeapon::class)->withPivot('amount');
     }
     
     public function armors()
     {
-        return $this->belongsToMany(Armor::class)->withPivot('amount');
+        return $this->belongsToMany(OldArmor::class)->withPivot('amount');
     }
     
     public function baseWeapons()
     {
-        return $this->belongsToMany(BaseWeapon::class,)->withPivot('amount');
+        return $this->belongsToMany(OldBaseWeapon::class,)->withPivot('amount');
     }
     
     public function baseArmor()
     {
-        return $this->belongsToMany(BaseArmor::class)->withPivot('amount');
+        return $this->belongsToMany(OldBaseArmor::class)->withPivot('amount');
     }
 // -- SCOPES
     
@@ -58,7 +58,7 @@ class Perk extends Model
 // -- MISC
     public static function asArrayForDropDown() : array
     {
-        return Perk::forItemDropdown()->get()->mapWithKeys(function($perk){
+        return OldPerk::forItemDropdown()->get()->mapWithKeys(function($perk){
             return [$perk->slug => $perk->name];
         })->all();
     }

@@ -7,7 +7,7 @@ use App\Http\Requests\CompanyUpsertRequest;
 use App\Models\Characters\CharacterClass;
 use App\Models\Companies\Company;
 use App\Models\Faction;
-use App\Models\Items\BaseWeapon;
+use App\Models\Items\OldBaseWeapon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

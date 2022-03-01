@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/** @mixin \App\Models\Items\BaseWeapon */
+/** @mixin \App\Models\Items\OldBaseWeapon */
 class BaseWeaponResource extends JsonResource
 {
     /**

@@ -6,11 +6,11 @@ use App\Contracts\InventoryItemContract;
 use App\Enums\AttributeType;
 use App\Enums\Rarity;
 use App\Enums\Tier;
-use App\Models\Items\Attribute;
-use App\Models\Items\BaseItem;
-use App\Models\Items\InventoryItem;
-use App\Models\Items\Item;
-use App\Models\Items\Perk;
+use App\Models\Items\OldAttribute;
+use App\Models\Items\OldBaseItem;
+use App\Models\Items\OldInventoryItem;
+use App\Models\Items\OldItem;
+use App\Models\Items\OldPerk;
 use Illuminate\Support\Str;
 
 abstract class ItemService implements ItemServiceContract
@@ -23,9 +23,9 @@ abstract class ItemService implements ItemServiceContract
      */
     public function perkOptions( array $perks=null ) : string
     {
-        $perks ??= Perk::asArrayForDropDown();
+        $perks ??= OldPerk::asArrayForDropDown();
 
-        return Perk::selectOptions($perks);
+        return OldPerk::selectOptions($perks);
     }
 
     /**
@@ -40,7 +40,7 @@ abstract class ItemService implements ItemServiceContract
         $i=0;
         foreach($item_perks as $perk){
             // allow $item_perks to be array of slugs
-            $slug = ($perk instanceof Perk) ? $perk->slug : $perk;
+            $slug = ($perk instanceof OldPerk) ? $perk->slug : $perk;
             
             $existing_perk_options [$i]= '<option value=""></option>';
             foreach($perks as $value => $text) {
@@ -70,8 +70,8 @@ abstract class ItemService implements ItemServiceContract
         $i=0;
         foreach($item_attributes as $attribute){
             // allow $item_attributes to be an array of strings
-            $name = ($attribute instanceof Attribute) ? $attribute->name : $attribute;
-            $amount = ($attribute instanceof Attribute) ? $attribute->pivot->amount : ($amounts[$i] ?? 0);
+            $name = ($attribute instanceof OldAttribute) ? $attribute->name : $attribute;
+            $amount = ($attribute instanceof OldAttribute) ? $attribute->pivot->amount : ($amounts[$i] ?? 0);
        
             $existing_attribute_amounts [$i]= $amount;
             $existing_attribute_options [$i]= '<option value=""></option>';
@@ -214,7 +214,7 @@ abstract class ItemService implements ItemServiceContract
 //        return (Str::after);
     }
 
-    public function initGenericItemAttributes( array $validated, array $values, BaseItem $base=null ) : array
+    public function initGenericItemAttributes( array $validated, array $values, OldBaseItem $base=null ) : array
     {
   
         $values['name']= $validated['name'] ?? $base->name;
@@ -241,9 +241,9 @@ abstract class ItemService implements ItemServiceContract
     /**
      * @param string $slug
      *
-     * @return \App\Models\Items\BaseItem|null
+     * @return \App\Models\Items\OldBaseItem|null
      */
-    public function baseItemBySlug(string $slug) : ?BaseItem
+    public function baseItemBySlug(string $slug) : ?OldBaseItem
     {
         // make sure the slug is a match even when it has a dupe
         // don't mistake last - segment for a dupe 
@@ -255,9 +255,9 @@ abstract class ItemService implements ItemServiceContract
     /**
      * @param string $slug
      *
-     * @return \App\Models\Items\BaseItem|null
+     * @return \App\Models\Items\OldBaseItem|null
      */
-    public function baseItem($id) : ?BaseItem
+    public function baseItem($id) : ?OldBaseItem
     {
         return $this->baseItemClass::where('id', '=', $id)->firstOrFail();
     }
@@ -265,11 +265,11 @@ abstract class ItemService implements ItemServiceContract
     /**
      * @param array                                $validated
      * @param \App\Contracts\InventoryItemContract $item
-     * @param \App\Models\Items\BaseItem|null      $base
+     * @param \App\Models\Items\OldBaseItem|null   $base
      *
      * @return \App\Contracts\InventoryItemContract
      */
-    public function saveSpecificItemRelations( array $validated, InventoryItemContract $item, BaseItem $base=null )
+    public function saveSpecificItemRelations( array $validated, InventoryItemContract $item, OldBaseItem $base=null )
     {
         if(isset($base)) {
             // attach to base item
@@ -278,7 +278,7 @@ abstract class ItemService implements ItemServiceContract
         }
         
         // attach perks
-        $perks = Perk::whereIn('slug', $validated['perks'])->get();
+        $perks = OldPerk::whereIn('slug', $validated['perks'])->get();
 
         if(!empty(array_filter($perks->pluck('id')->all()))) {
             $item->perks()->sync(array_filter($perks->pluck('id')->all()));
@@ -294,7 +294,7 @@ abstract class ItemService implements ItemServiceContract
                 $amounts [strtolower($attr_slug)]= $validated['attribute_amounts'][$key];
             }
       
-            $attributes = Attribute::whereIn( 'slug', $attrs)->get();
+            $attributes = OldAttribute::whereIn('slug', $attrs)->get();
 
             if ( !empty( $attributes->pluck( 'id' )->all() ) ) {
                 $attrs_to_sync = [];
@@ -311,14 +311,14 @@ abstract class ItemService implements ItemServiceContract
         return $item;
     }
     
-    public function createSpecificItem(array $validated, BaseItem $base=null)
+    public function createSpecificItem(array $validated, OldBaseItem $base=null)
     {
         return $this->itemClass::create(
             $this->initItemAttributes($validated, $base)
         );
     }
     
-    public function updateSpecificItem(array $validated, InventoryItemContract $item, BaseItem $base=null)
+    public function updateSpecificItem(array $validated, InventoryItemContract $item, OldBaseItem $base=null)
     {
         $item->update(
             $this->initItemAttributes($validated, $base)
@@ -329,7 +329,7 @@ abstract class ItemService implements ItemServiceContract
 
     public function createMorphableItem( $specificItem )
     {
-        return Item::create([
+        return OldItem::create([
             'itemable_type' => $specificItem::class,
             'itemable_id' => $specificItem->id,
         ]);
@@ -337,7 +337,7 @@ abstract class ItemService implements ItemServiceContract
     
     public function createInventoryItem( $item, $owner )
     {
-        return InventoryItem::create([
+        return OldInventoryItem::create([
             'item_id' => $item->id,
             'ownerable_type' => $owner::class,
             'ownerable_id' => $owner->id,

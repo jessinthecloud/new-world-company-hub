@@ -4,15 +4,15 @@ namespace App\Services;
 
 use App\Contracts\InventoryItemContract;
 use App\Enums\WeaponType;
-use App\Models\Items\BaseItem;
-use App\Models\Items\BaseWeapon;
-use App\Models\Items\Weapon;
+use App\Models\Items\OldBaseItem;
+use App\Models\Items\OldBaseWeapon;
+use App\Models\Items\OldWeapon;
 use Illuminate\Support\Str;
 
 class WeaponService extends ItemService implements ItemServiceContract
 {
-    protected string $itemClass = Weapon::class;
-    protected string $baseItemClass = BaseWeapon::class;
+    protected string $itemClass = OldWeapon::class;
+    protected string $baseItemClass = OldBaseWeapon::class;
 
     /**
      * @param bool $for_bank
@@ -22,10 +22,10 @@ class WeaponService extends ItemService implements ItemServiceContract
     public function getAllBaseItems(bool $for_bank=true) : array
     {
         if($for_bank){
-            $query = BaseWeapon::bankable();
+            $query = OldBaseWeapon::bankable();
         }
         else{
-            $query = BaseWeapon::query();
+            $query = OldBaseWeapon::query();
         }
         return $query->orderBy('name')
             ->orderBy('tier')
@@ -40,7 +40,7 @@ class WeaponService extends ItemService implements ItemServiceContract
         })->all();   
     }
 
-    public function initItemAttributes( array $validated, BaseItem $base=null )
+    public function initItemAttributes( array $validated, OldBaseItem $base=null )
     {
         $values = [];
         

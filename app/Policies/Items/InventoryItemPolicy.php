@@ -2,7 +2,7 @@
 
 namespace App\Policies\Items;
 
-use App\Models\Items\InventoryItem;
+use App\Models\Items\OldInventoryItem;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -20,7 +20,7 @@ class InventoryItemPolicy
         return true;
     }
 
-    public function view( User $user, InventoryItem $inventoryItem ) : bool
+    public function view( User $user, OldInventoryItem $inventoryItem ) : bool
     {
         return true;
     }
@@ -30,22 +30,22 @@ class InventoryItemPolicy
         return true;
     }
 
-    public function update( User $user, InventoryItem $inventoryItem ) : bool
+    public function update( User $user, OldInventoryItem $inventoryItem ) : bool
     {
         return true;
     }
 
-    public function delete( User $user, InventoryItem $inventoryItem ) : bool
+    public function delete( User $user, OldInventoryItem $inventoryItem ) : bool
     {
         return true;
     }
 
-    public function restore( User $user, InventoryItem $inventoryItem ) : bool
+    public function restore( User $user, OldInventoryItem $inventoryItem ) : bool
     {
         return true;
     }
 
-    public function forceDelete( User $user, InventoryItem $inventoryItem ) : bool
+    public function forceDelete( User $user, OldInventoryItem $inventoryItem ) : bool
     {
         return true;
     }

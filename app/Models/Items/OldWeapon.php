@@ -5,6 +5,7 @@ namespace App\Models\Items;
 use App\CompanyInventory;
 use App\Contracts\InventoryItemContract;
 use App\Models\Characters\Character;
+use App\Models\Characters\Loadout;
 use App\Models\Companies\Company;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-class Armor extends Model implements InventoryItemContract
+class OldWeapon extends Model implements InventoryItemContract
 {
     use HasFactory;
 
@@ -34,25 +35,40 @@ class Armor extends Model implements InventoryItemContract
     {
         return 'slug';
     }
-
+    
     public function base()
     {
-        return $this->belongsTo(BaseArmor::class);
+        return $this->belongsTo(OldBaseWeapon::class);
     }
     
     public function sets()
     {
-        return $this->belongsToMany(ArmorSet::class);
+        return $this->belongsToMany(WeaponSet::class);
     }
     
     public function perks()
     {
-        return $this->belongsToMany(Perk::class);
+        return $this->belongsToMany(OldPerk::class)->distinct(); //->groupBy('perks.id');
     }
     
     public function itemAttributes()
     {
-        return $this->belongsToMany(Attribute::class, 'attribute_armor')->withPivot('amount');
+        return $this->belongsToMany(OldAttribute::class)->withPivot('amount');
+    }
+
+    public function mainLoadout()
+    {
+        return $this->hasMany(Loadout::class, 'main_hand_id');
+    }
+
+    public function offhandLoadout()
+    {
+        return $this->hasMany(Loadout::class, 'offhand_id');
+    }
+    
+    public function asItem(  )
+    {
+        return $this->morphOne(OldItem::class, 'itemable');
     }
     
     public function company()
@@ -63,11 +79,6 @@ class Armor extends Model implements InventoryItemContract
     public function character()
     {
         return $this->asItem()->inventory()->where('ownerable_type', Character::class)->ownerable;
-    }
-
-    public function asItem(  )
-    {
-        return $this->morphOne(Item::class, 'itemable');
     }
     
     /**
@@ -91,27 +102,29 @@ class Armor extends Model implements InventoryItemContract
 // SCOPES ---
     public function scopeRawForCompany($query, Company $company)
     {
-        return $this->select(DB::raw('armors.id as id, armors.slug as slug, armors.name as name, armors.type as subtype, armors.rarity, armors.gear_score, armors.weight_class, "Armor" as type, armors.created_at as created_at'))
+        return $this->select(DB::raw('weapons.id as id, weapons.slug as slug, weapons.name as name, weapons.type as itemable_type, weapons.rarity, weapons.gear_score, null as weight_class, "Weapon" as type, weapons.created_at as created_at'))
             ->whereRelation('company', 'id', $company->id);
-    }
-    
-    public function scopeRawForInventory($query, InventoryItem $inventoryItem)
-    {
-        return $this->select(DB::raw('armors.id as id, armors.slug as slug, armors.name as name, armors.type as subtype, armors.rarity, armors.gear_score, armors.weight_class, "Armor" as type, armors.created_at as created_at'))
-            ->whereRelation('company', 'id', $inventoryItem->id);
+            
+            /*return $this->select(DB::raw('weapons.id as id, weapons.slug as slug, weapons.name as name, weapons.type as subtype, weapons.rarity, weapons.gear_score, null as weight_class, "Weapon" as type, perks.id as perk_id, perks.slug as perk_slug, perks.name as perk_name, perks.perk_type as perk_type, perks.description as perk_desc, perks.icon as perk_icon'))
+            ->whereRelation('company', 'id', $company->id)
+            ->leftJoin('perk_weapon', 'weapons.id', '=', 'perk_weapon.weapon_id')
+            ->join('perks', 'perk_weapon.perk_id', '=', 'perks.id')
+            ->groupBy('slug', 'perk_slug')
+            ;*/
     }
     
     public function scopeRawForGearScore($query/*, Item $item*/)
     {
-        return $this->select(DB::raw('id, gear_score'))
+        return $this->select(DB::raw('id,gear_score'))
 //            ->whereRelation('asItem', 'id', $item->id)
             ;
     }
-// -- SCOPES    
+    
     public function scopeSimilarSlugs(Builder $query, string $slug){
         return $query->where('slug', 'like' , $slug.'%');
     }
-// -- MISC
+    
+// -- MISC 
     public function numberOfUnusedPerkSlots(  )
     {
         $used_perk_slots = count($this->perks->all()) + count($this->itemAttributes->all());
@@ -121,4 +134,5 @@ class Armor extends Model implements InventoryItemContract
         
         return null;
     }
+    
 }

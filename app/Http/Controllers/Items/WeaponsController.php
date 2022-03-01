@@ -6,7 +6,7 @@ use App\Enums\WeaponType;
 use App\Enums\AttributeType;
 use App\Enums\Rarity;
 use App\Http\Controllers\Controller;
-use App\Models\Items\Weapon;
+use App\Models\Items\OldWeapon;
 use Illuminate\Http\Request;
 
 class WeaponsController extends Controller
@@ -26,7 +26,7 @@ class WeaponsController extends Controller
         //
     }
 
-    public function show( Request $request, Weapon $weapon )
+    public function show( Request $request, OldWeapon $weapon )
     {
         $weapon = $weapon->load('perks', 'itemAttributes');
         
@@ -56,17 +56,17 @@ class WeaponsController extends Controller
         ]);
     }
 
-    public function edit( Weapon $weapon )
+    public function edit( OldWeapon $weapon )
     {
         //
     }
 
-    public function update( Request $request, Weapon $weapon )
+    public function update( Request $request, OldWeapon $weapon )
     {
         //
     }
 
-    public function destroy( Weapon $weapon )
+    public function destroy( OldWeapon $weapon )
     {
         //
     }

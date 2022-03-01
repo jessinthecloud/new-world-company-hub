@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-abstract class BaseItem extends Model
+abstract class OldBaseItem extends Model
 {
 
     /**
@@ -26,7 +26,7 @@ abstract class BaseItem extends Model
 
     public function perks()
     {
-        return $this->belongsToMany(Perk::class)->withPivot('chance');
+        return $this->belongsToMany(OldPerk::class)->withPivot('chance');
     }
 
 // -- SCOPES

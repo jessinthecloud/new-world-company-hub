@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\DB;
 
-class BaseWeapon extends BaseItem
+class OldBaseWeapon extends OldBaseItem
 {
     use HasFactory;
     
@@ -20,7 +20,7 @@ class BaseWeapon extends BaseItem
     
     public function instances()
     {
-        return $this->hasMany(Weapon::class);
+        return $this->hasMany(OldWeapon::class);
     }
     
     public function sets()

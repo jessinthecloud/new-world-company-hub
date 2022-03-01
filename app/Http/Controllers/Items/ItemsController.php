@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Items;
 
 use App\Http\Controllers\Controller;
-use App\Models\Items\Item;
+use App\Models\Items\OldItem;
 use Illuminate\Http\Request;
 
 class ItemsController extends Controller
@@ -23,22 +23,22 @@ class ItemsController extends Controller
         //
     }
 
-    public function show( Item $item )
+    public function show( OldItem $item )
     {
         //
     }
 
-    public function edit( Item $item )
+    public function edit( OldItem $item )
     {
         //
     }
 
-    public function update( Request $request, Item $item )
+    public function update( Request $request, OldItem $item )
     {
         //
     }
 
-    public function destroy( Item $item )
+    public function destroy( OldItem $item )
     {
         //
     }

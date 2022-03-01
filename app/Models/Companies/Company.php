@@ -9,7 +9,7 @@ use App\Models\Events\Event;
 use App\Models\Events\WarBoard;
 use App\Models\Events\WarPlan;
 use App\Models\Faction;
-use App\Models\Items\InventoryItem;
+use App\Models\Items\OldInventoryItem;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -100,7 +100,7 @@ class Company extends Model
 
     public function inventoryItem(  )
     {
-        return $this->morphMany( InventoryItem::class, 'ownerable');
+        return $this->morphMany(OldInventoryItem::class, 'ownerable');
     }
 
     public function inventory()

@@ -4,15 +4,15 @@ namespace App\Services;
 
 use App\Enums\ArmorType;
 use App\Enums\WeightClass;
-use App\Models\Items\Armor;
-use App\Models\Items\BaseArmor;
-use App\Models\Items\BaseItem;
+use App\Models\Items\OldArmor;
+use App\Models\Items\OldBaseArmor;
+use App\Models\Items\OldBaseItem;
 use Illuminate\Support\Str;
 
 class ArmorService extends ItemService implements ItemServiceContract
 {
-    protected string $itemClass = Armor::class;
-    protected string $baseItemClass = BaseArmor::class;
+    protected string $itemClass = OldArmor::class;
+    protected string $baseItemClass = OldBaseArmor::class;
 
     /**
      * @param bool $for_bank
@@ -22,10 +22,10 @@ class ArmorService extends ItemService implements ItemServiceContract
     public function getAllBaseItems(bool $for_bank=true) : array
     {
         if($for_bank){
-            $query = BaseArmor::bankable();
+            $query = OldBaseArmor::bankable();
         }
         else{
-            $query = BaseArmor::query();
+            $query = OldBaseArmor::query();
         }
         
         return $query->orderBy('name')
@@ -58,12 +58,12 @@ class ArmorService extends ItemService implements ItemServiceContract
     }
 
     /**
-     * @param array                           $validated
-     * @param \App\Models\Items\BaseItem|null $base
+     * @param array                              $validated
+     * @param \App\Models\Items\OldBaseItem|null $base
      *
      * @return mixed
      */
-    public function initItemAttributes( array $validated, BaseItem $base = null )
+    public function initItemAttributes( array $validated, OldBaseItem $base = null )
     {
         $values = [];
         

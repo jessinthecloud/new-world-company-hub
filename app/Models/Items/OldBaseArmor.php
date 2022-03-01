@@ -5,7 +5,7 @@ namespace App\Models\Items;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
-class BaseArmor extends BaseItem
+class OldBaseArmor extends OldBaseItem
 {
     /**
      * The relationships that should always be loaded.
@@ -17,7 +17,7 @@ class BaseArmor extends BaseItem
 
     public function instances()
     {
-        return $this->hasMany(Armor::class);
+        return $this->hasMany(OldArmor::class);
     }
     
     public function sets()

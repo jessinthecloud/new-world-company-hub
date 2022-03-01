@@ -4,7 +4,7 @@ namespace App\Models\Items;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Attribute extends Model
+class OldAttribute extends Model
 {
     /**
      * The relationships that should always be loaded.
@@ -25,11 +25,11 @@ class Attribute extends Model
 
     public function weapons()
     {
-        return $this->belongsToMany(Weapon::class)->withPivot('amount');
+        return $this->belongsToMany(OldWeapon::class)->withPivot('amount');
     }
     
     public function armors()
     {
-        return $this->belongsToMany(Armor::class, 'attribute_armor')->withPivot('amount');
+        return $this->belongsToMany(OldArmor::class, 'attribute_armor')->withPivot('amount');
     }
 }
