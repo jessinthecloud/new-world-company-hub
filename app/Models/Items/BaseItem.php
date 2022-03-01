@@ -41,6 +41,17 @@ class BaseItem extends Model
     {
         return $this->belongsToMany(Perk::class);
     }
+    
+    public function tier()
+    {
+        return $this->belongsTo(Tier::class);
+    }
+    
+    public function rarity()
+    {
+        // TODO: implement
+        // return $this->belongsTo(Rarity::class);
+    }
 
 // -- SCOPES
     

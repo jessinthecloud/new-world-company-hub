@@ -23,6 +23,11 @@ class Perk extends Model
     {
         return 'slug';
     }
+    
+    public function type()
+    {
+        return $this->belongsTo(PerkType::class);
+    }
 
     public function items()
     {
@@ -32,6 +37,16 @@ class Perk extends Model
     public function baseItems()
     {
         return $this->belongsToMany(BaseItem::class);
+    }
+    
+    public function suffix()
+    {
+        return $this->belongsTo(Suffix::class);
+    }
+    
+    public function prefix()
+    {
+        return $this->belongsTo(Prefix::class);
     }
     
 // -- SCOPES    
