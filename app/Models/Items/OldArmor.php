@@ -2,7 +2,7 @@
 
 namespace App\Models\Items;
 
-use App\CompanyInventory;
+use App\OldCompanyInventory;
 use App\Contracts\InventoryItemContract;
 use App\Models\Characters\Character;
 use App\Models\Companies\Company;

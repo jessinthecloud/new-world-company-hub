@@ -13,9 +13,9 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'App\CompanyInventory'            => 'App\Policies\Companies\CompanyInventoryPolicy',
-        'App\Models\Characters\Character'   => 'App\Policies\Characters\CharacterPolicy',
-        'App\Models\Companies\Company'   => 'App\Policies\Companies\CompanyPolicy',
+        'App\OldCompanyInventory'         => 'App\Policies\Companies\CompanyInventoryPolicy',
+        'App\Models\Characters\Character' => 'App\Policies\Characters\CharacterPolicy',
+        'App\Models\Companies\Company'    => 'App\Policies\Companies\CompanyPolicy',
 
         'App\Models\Events\Roster'   => 'App\Policies\Events\RosterPolicy',
         'App\Models\Items\Loadout'   => 'App\Policies\Items\LoadoutPolicy',

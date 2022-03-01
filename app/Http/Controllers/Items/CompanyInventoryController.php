@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Items;
 
-use App\CompanyInventory;
+use App\OldCompanyInventory;
 use App\Contracts\InventoryItemContract;
 use App\Enums\ArmorType;
 use App\Enums\AttributeType;
@@ -67,7 +67,7 @@ class CompanyInventoryController extends Controller
     }
     
     
-    public function index(CompanyInventory $company)
+    public function index(OldCompanyInventory $company)
     {
         $companyInventory = $company;
         $company = Company::find($companyInventory->id);

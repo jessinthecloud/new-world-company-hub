@@ -2,7 +2,7 @@
 
 namespace App\Models\Companies;
 
-use App\CompanyInventory;
+use App\OldCompanyInventory;
 use App\Models\Characters\Character;
 use App\Models\Characters\Loadout;
 use App\Models\Events\Event;
@@ -105,7 +105,7 @@ class Company extends Model
 
     public function inventory()
     {
-        return new CompanyInventory($this->attributes);
+        return new OldCompanyInventory($this->attributes);
     }
     
     /**
