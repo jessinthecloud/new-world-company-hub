@@ -25,6 +25,7 @@ class BaseItemSeeder extends Seeder
             ;
 //dump($base_items[0], $base_items->count());
         $upsert = [];
+        $base_item_perks = [];
         foreach ( $base_items as $base_item_array ) {
             
             $base_item_array = (array)$base_item_array;
@@ -44,18 +45,6 @@ class BaseItemSeeder extends Seeder
             $tier_id = DB::table('tiers')
                 ->where('number', $base_item_array['Tier'])
                 ->first()?->id;
-            
-            // find perks
-            $perks = DB::table('perks')
-                ->whereIn('json_key', array_filter([
-                    $base_item_array['Perk1'],
-                    $base_item_array['Perk2'],
-                    $base_item_array['Perk3'],
-                    $base_item_array['Perk4'],
-                    $base_item_array['Perk5']
-                ]))
-                ->get();
-//if(!empty($perks->all())){ dd($perks->all()); }
                 
             // determine if named (perk buckets are empty)
             $named = 0;
@@ -69,6 +58,18 @@ class BaseItemSeeder extends Seeder
                 // no perk buckets means curated roll, means named item
                 $named = 1;
             }
+            
+            // find perks & save for later
+            $perks = DB::table('perks')
+                ->whereIn('json_key', array_filter([
+                    $base_item_array['Perk1'],
+                    $base_item_array['Perk2'],
+                    $base_item_array['Perk3'],
+                    $base_item_array['Perk4'],
+                    $base_item_array['Perk5']
+                ]))
+                ->get();
+            $base_item_perks [$base_item_array['ItemID']]=$perks;
 
             $row = [
                 'name'         => $base_item_name,
@@ -82,7 +83,7 @@ class BaseItemSeeder extends Seeder
 
             // make sure corresponding column exists in table
             $base_item_array = collect($base_item_array)->filter(function ($value, $key) {
-                return Schema::hasColumn('perks', Str::snake($key)) && $key != 'id';
+                return Schema::hasColumn('base_items', Str::snake($key)) && $key != 'id';
             })->all();
 
             // format like column names 
@@ -91,31 +92,34 @@ class BaseItemSeeder extends Seeder
             }, array_keys($base_item_array));
 
             $base_item_array = array_combine($keys, array_values($base_item_array));
-//dd(array_merge($base_item_array, $row));
 
             // combine generic data with bespoke array
             $insert = array_merge($base_item_array, $row);
-            
-            // insert
-            DB::table('base_items')->updateOrInsert(['json_key'=>$row['json_key']],$insert);
-            $id = DB::getPdo()->lastInsertId();
-            
-            // attach perks
-            $perk_insert = [];
-            foreach($perks as $perk){
-                $perk_insert = [
-                    'base_item_id' => $id,
-                    'perk_id' => $perk->id,
-                ];
-            }
-            DB::table('base_item_perk')->updateOrInsert($perk_insert, $perk_insert);
-//dd($insert, $perk_insert);
-//            $upsert []= $insert;
+
+            $upsert []= $insert;
 //dd($upsert);
         } // end each perks
-/*dd(end($upsert), reset($upsert));
+
         foreach(array_chunk($upsert, 2000) as $upsert_array){
             DB::table('base_items')->upsert($upsert_array, ['json_key']);
-        }*/
+        }
+        
+        /**
+         * attach perks
+         */
+        $perk_insert = [];
+        $base_items = DB::table('base_items')
+            ->select(['id','json_key'])
+            ->whereIn('json_key', array_keys($base_item_perks))
+            ->get();
+
+        foreach($base_items as $base_item){
+            $perk_insert []= [
+                'base_item_id' => $base_item->id,
+                'perk_id' => $base_item_perks[$base_item->json_key]->id,
+            ];
+        }
+        
+        DB::table('base_item_perk')->upsert($perk_insert, ['base_item_id', 'perk_id']);
     }
 }
