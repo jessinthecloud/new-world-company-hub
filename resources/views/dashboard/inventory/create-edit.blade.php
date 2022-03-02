@@ -107,8 +107,7 @@
             >
                 
             
-            <div id="perks-attr-wrapper" class="w-full flex flex-wrap justify-start"
-            >
+            <div id="perks-attr-wrapper" class="w-full flex flex-wrap justify-start">
                 <div class="perks border-r-2 border-slate-50 pr-4 mr-4">
                     <h3>Perks:</h3>
                     
@@ -125,7 +124,7 @@
                         @endforeach
                     @endif
                     
-                    <div id="perks-wrapper" class="block w-full flex flex-wrap justify-start items-end">
+                    <div id="perks-wrapper" class="perks-wrapper block w-full flex flex-wrap justify-start items-end">
                         <x-forms.field :name="'perks'" class="mb-6">
                             <x-forms.select name="perks[]" id="perks"
                                 :values="$perks ?? null"
@@ -134,11 +133,11 @@
                         </x-forms.field>
                     </div>
                     
-                    <div id="appended-perks">
+                    <div id="appended-perks" class="appended-perks">
                         
                     </div>
     
-                    <x-button id="add-perk" type="button" class="mb-4">Add Another Perk</x-button>
+                    <x-button id="add-perk" type="button" class="add-perk mb-4">Add Another Perk</x-button>
     
                 </div>
                 
@@ -170,7 +169,7 @@
                         @endforeach
                     @endif
                     
-                    <div id="attr-wrapper" class="block w-full flex flex-wrap justify-start items-end">
+                    <div id="attr-wrapper" class="attr-wrapper block w-full flex flex-wrap justify-start items-end">
                         <x-forms.field :name="'attribute_amounts[]'">
                             <x-forms.input
                                 id="attribute_amounts"
@@ -191,11 +190,11 @@
                         </x-forms.field>
                     </div>
                     
-                    <div id="appended-attrs">
+                    <div id="appended-attrs" class="appended-attrs">
                         
                     </div>
     
-                    <x-button id="add-attr" type="button" class="mb-4">Add Another Attribute</x-button>
+                    <x-button id="add-attr" type="button" class="add-attr mb-4">Add Another Attribute</x-button>
     
                 </div>
                 
