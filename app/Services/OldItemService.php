@@ -57,6 +57,8 @@ abstract class OldItemService implements ItemServiceContract
     }
 
     /**
+     * @deprecated 
+     *            
      * @param array $item_attributes - array of Attributes or array of Attribute slug strings
      * @param array $attributes      - array of AttributeType sorted by value
      * @param array $amounts         - optionally pass amounts as array of integers
@@ -101,7 +103,8 @@ abstract class OldItemService implements ItemServiceContract
         
         return $rarity_options;
     }
-
+    
+    /** @deprecated  */
     public function tierOptions( string $tier ='' )
     {
         $tier_options = '<option value=""></option>';
@@ -115,7 +118,8 @@ abstract class OldItemService implements ItemServiceContract
         
         return $tier_options;
     }
-
+    
+    /** @deprecated */
     public function attributeOptions(  )
     {
         $attribute_options = '<option value=""></option>';
@@ -149,6 +153,8 @@ abstract class OldItemService implements ItemServiceContract
     }
     
     /**
+     * @deprecated 
+     *            
      * @param string $itemType
      *
      * @return string
@@ -169,7 +175,8 @@ abstract class OldItemService implements ItemServiceContract
     }
     
     /**
-     *
+     * @deprecated 
+     *            
      * @param array       $fields
      * @param string|null $old_slug  if we are editing, make sure the slug retrieved isn't from this item
      *
@@ -209,11 +216,6 @@ abstract class OldItemService implements ItemServiceContract
         return $slug;
     }
 
-    public function isCustomSlug( string $slug )
-    {
-//        return (Str::after);
-    }
-
     public function initGenericItemAttributes( array $validated, array $values, OldBaseItem $base=null ) : array
     {
   
@@ -239,6 +241,7 @@ abstract class OldItemService implements ItemServiceContract
     }
 
     /**
+     * @deprecated 
      * @param string $slug
      *
      * @return \App\Models\Items\OldBaseItem|null
@@ -326,7 +329,8 @@ abstract class OldItemService implements ItemServiceContract
         
         return $item;
     }
-
+    
+    /** @deprecated */
     public function createMorphableItem( $specificItem )
     {
         return OldItem::create([
@@ -344,6 +348,7 @@ abstract class OldItemService implements ItemServiceContract
         ]);
     }
     
+    /** @deprecated */
     public function updateMorphableItem( $specificItem )
     {
         $specificItem->asItem->update([
