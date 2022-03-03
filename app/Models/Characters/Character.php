@@ -2,11 +2,14 @@
 
 namespace App\Models\Characters;
 
+use App\Models\CharacterInventory;
 use App\Models\Companies\Company;
 use App\Models\Companies\Rank;
+use App\Models\CompanyInventory;
 use App\Models\Events\Position;
 use App\Models\Events\WarGroupSlots;
 use App\Models\Faction;
+use App\Models\Items\Item;
 use App\Models\Items\OldInventoryItem;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
@@ -76,6 +79,16 @@ class Character extends Model
     public function positions()
     {
         return $this->hasMany(Position::class);
+    }
+    
+    public function items()
+    {
+        return $this->hasManythrough(Item::class, CharacterInventory::class);
+    }
+
+    public function bankInventory()
+    {
+        return $this->hasManyThrough(Item::class, CompanyInventory::class);
     }
     
     /*public function weapons()

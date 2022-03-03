@@ -2,6 +2,8 @@
 
 namespace App\Models\Companies;
 
+use App\Models\CompanyInventory;
+use App\Models\Items\Item;
 use App\OldCompanyInventory;
 use App\Models\Characters\Character;
 use App\Models\Characters\Loadout;
@@ -97,6 +99,11 @@ class Company extends Model
     {
         return $this->hasMany(Armor::class);
     }*/
+    
+    public function items()
+    {
+        return $this->hasManythrough(Item::class, CompanyInventory::class);
+    }
 
     public function inventoryItem(  )
     {

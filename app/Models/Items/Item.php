@@ -2,7 +2,10 @@
 
 namespace App\Models\Items;
 
+use App\Models\CharacterInventory;
+use App\Models\Characters\Character;
 use App\Models\Companies\Company;
+use App\Models\CompanyInventory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -69,10 +72,20 @@ class Item extends Model
     {
         return $this->belongsToMany(Perk::class);
     }
+
+    public function company()
+    {
+        return $this->hasOneThrough(Company::class, CompanyInventory::class);
+    }
+    
+    public function character()
+    {
+        return $this->hasOneThrough(Character::class, CharacterInventory::class);
+    }
     
     public function owner()
     {
-        // todo: implement
+        return $this->company ?? $this->character ?? null;
     }
     
 // -- SCOPES
