@@ -16,7 +16,7 @@ class Item extends Model
      *
      * @var array
      */
-    protected $with = [];
+    protected $with = ['type', 'subtype'];
     
     /**
      * Get the route key for the model.
@@ -36,7 +36,7 @@ class Item extends Model
     
     public function type()
     {
-        return $this->belongsTo(ItemType::class);
+        return $this->hasOneThrough(ItemType::class, BaseItem::class);
     }
     
     public function subtype()
