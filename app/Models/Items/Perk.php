@@ -74,7 +74,6 @@ class Perk extends Model
         
         $options = '<option value=""></option>'."\n";
         foreach($models as $value => $text) {
-//            $options .= '<option value="'.$value.'">'.$text.'</option>';
             $options .= '<option value="'.$value.'"';
                 if(in_array($value, $selected)){
                     $options .= ' SELECTED ';
