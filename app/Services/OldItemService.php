@@ -13,7 +13,7 @@ use App\Models\Items\OldItem;
 use App\Models\Items\OldPerk;
 use Illuminate\Support\Str;
 
-abstract class ItemService implements ItemServiceContract
+abstract class OldItemService implements ItemServiceContract
 {
     /**
      * @param array|null $perks     array of Perks

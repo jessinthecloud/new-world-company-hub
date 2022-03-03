@@ -18,7 +18,7 @@ class LoadoutService
 {
     public array $equipmentSlots;
 
-    public function __construct(protected WeaponService $weaponService, protected ArmorService $armorService)
+    public function __construct(protected WeaponServiceOld $weaponService, protected ArmorServiceOld $armorService)
     {
         $this->equipmentSlots = [
             'main'    => [
@@ -225,12 +225,12 @@ class LoadoutService
     /**
      * Populate the old form data
      *
-     * @param \App\Services\ItemService $itemService
-     * @param array                     $values
+     * @param \App\Services\OldItemService $itemService
+     * @param array                        $values
      *
      * @return void
      */
-    public function populateDropdowns(ItemService $itemService, array $values = [])
+    public function populateDropdowns(OldItemService $itemService, array $values = [])
     {
         // loop equip types
         foreach ( $this->equipmentSlots as $name => $info ) {

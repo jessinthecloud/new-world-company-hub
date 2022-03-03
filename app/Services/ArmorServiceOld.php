@@ -9,7 +9,7 @@ use App\Models\Items\OldBaseArmor;
 use App\Models\Items\OldBaseItem;
 use Illuminate\Support\Str;
 
-class ArmorService extends ItemService implements ItemServiceContract
+class ArmorServiceOld extends OldItemService implements ItemServiceContract
 {
     protected string $itemClass = Armor::class;
     protected string $baseItemClass = OldBaseArmor::class;

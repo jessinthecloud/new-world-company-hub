@@ -9,7 +9,7 @@ use App\Models\Items\OldBaseWeapon;
 use App\Models\Items\Weapon;
 use Illuminate\Support\Str;
 
-class WeaponService extends ItemService implements ItemServiceContract
+class WeaponServiceOld extends OldItemService implements ItemServiceContract
 {
     protected string $itemClass = Weapon::class;
     protected string $baseItemClass = OldBaseWeapon::class;

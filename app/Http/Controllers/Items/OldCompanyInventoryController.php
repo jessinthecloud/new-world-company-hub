@@ -16,15 +16,15 @@ use App\Models\Items\Armor;
 use App\Models\Items\OldInventoryItem;
 use App\Models\Items\OldPerk;
 use App\Models\Items\Weapon;
-use App\Services\ArmorService;
-use App\Services\WeaponService;
+use App\Services\ArmorServiceOld;
+use App\Services\WeaponServiceOld;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 /** @deprecated */
 class OldCompanyInventoryController extends Controller
 {
-    public function __construct(protected ArmorService $armorService, protected WeaponService $weaponService) 
+    public function __construct(protected ArmorServiceOld $armorService, protected WeaponServiceOld $weaponService) 
     {
          
     }
