@@ -12,6 +12,8 @@ class OldBaseWeapon extends OldBaseItem
 {
     use HasFactory;
     
+    protected $table = 'base_weapons';
+    
     /**
      * The relationships that should always be loaded.
      *

@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 /** @deprecated */
 class OldBaseArmor extends OldBaseItem
 {
+    protected $table = 'base_armors';
+    
     /**
      * The relationships that should always be loaded.
      *
