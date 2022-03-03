@@ -37,7 +37,7 @@ class Armor extends Model implements InventoryItemContract
 
     public function base()
     {
-        return $this->belongsTo(OldBaseArmor::class);
+        return $this->belongsTo(OldBaseArmor::class, 'base_armors');
     }
     
     public function sets()
@@ -47,7 +47,7 @@ class Armor extends Model implements InventoryItemContract
     
     public function perks()
     {
-        return $this->belongsToMany(OldPerk::class, 'armor_perk');
+        return $this->belongsToMany(OldPerk::class, 'armor_perk', 'armor_id', 'perk_id');
     }
     
     public function itemAttributes()
@@ -115,8 +115,8 @@ class Armor extends Model implements InventoryItemContract
     public function numberOfUnusedPerkSlots(  )
     {
         $used_perk_slots = count($this->perks->all()) + count($this->itemAttributes->all());
-        if($used_perk_slots < $this->base->num_perk_slots){
-            return $this->base->num_perk_slots - $used_perk_slots;
+        if($used_perk_slots < $this->base?->num_perk_slots){
+            return $this->base?->num_perk_slots - $used_perk_slots;
         }
         
         return null;

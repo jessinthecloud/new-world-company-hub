@@ -38,7 +38,7 @@ class Weapon extends Model implements InventoryItemContract
     
     public function base()
     {
-        return $this->belongsTo(OldBaseWeapon::class);
+        return $this->belongsTo(OldBaseWeapon::class, 'base_weapons');
     }
     
     public function sets()
@@ -48,7 +48,7 @@ class Weapon extends Model implements InventoryItemContract
     
     public function perks()
     {
-        return $this->belongsToMany(OldPerk::class)->distinct(); //->groupBy('perks.id');
+        return $this->belongsToMany(OldPerk::class, 'perk_weapon', 'weapon_id', 'perk_id')->distinct(); //->groupBy('perks.id');
     }
     
     public function itemAttributes()
@@ -128,8 +128,8 @@ class Weapon extends Model implements InventoryItemContract
     public function numberOfUnusedPerkSlots(  )
     {
         $used_perk_slots = count($this->perks->all()) + count($this->itemAttributes->all());
-        if($used_perk_slots < $this->base->num_perk_slots){
-            return $this->base->num_perk_slots - $used_perk_slots;
+        if($used_perk_slots < $this->base?->num_perk_slots){
+            return $this->base?->num_perk_slots - $used_perk_slots;
         }
         
         return null;

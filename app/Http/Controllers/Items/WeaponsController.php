@@ -41,8 +41,8 @@ class WeaponsController extends Controller
         
         // empty perk slots
         $used_perk_slots = count($weapon->perks->all()) + count($weapon->itemAttributes->all());
-        if($used_perk_slots < $weapon->base->num_perk_slots){
-            $empty_slots = $weapon->base->num_perk_slots - $used_perk_slots;
+        if($used_perk_slots < $weapon?->base?->num_perk_slots){
+            $empty_slots = $weapon?->base?->num_perk_slots - $used_perk_slots;
         }
         
         $view = $request->query('popup') == 1 ? 'weapons.popup' : 'weapons.show';
