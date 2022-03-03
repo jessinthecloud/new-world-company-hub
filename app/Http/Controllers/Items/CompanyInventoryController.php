@@ -12,10 +12,10 @@ use App\Enums\WeightClass;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\InventoryUpsertRequest;
 use App\Models\Companies\Company;
-use App\Models\Items\OldArmor;
+use App\Models\Items\Armor;
 use App\Models\Items\OldInventoryItem;
 use App\Models\Items\OldPerk;
-use App\Models\Items\OldWeapon;
+use App\Models\Items\Weapon;
 use App\Services\ArmorService;
 use App\Services\WeaponService;
 use Illuminate\Http\Request;
@@ -31,13 +31,13 @@ class CompanyInventoryController extends Controller
     public function convertAll()
     {
         $company = Company::where('slug', 'breakpoint')->first();
-        $weapons = OldWeapon::all();
+        $weapons = Weapon::all();
         foreach($weapons as $weapon) {
             if(is_null($weapon->asItem)) {
                 $this->convert( $company, 'Weapon', $weapon );
             }
         }
-        $armors = OldArmor::all();
+        $armors = Armor::all();
         foreach($armors as $armor) {
             if(is_null($armor->asItem)){
                 $this->convert($company, 'Armor', $armor);

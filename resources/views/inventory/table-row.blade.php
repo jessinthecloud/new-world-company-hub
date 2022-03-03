@@ -3,6 +3,7 @@
     {{-- tailwind not doing these:--}} 
     style="white-space:normal; min-width:225px; max-width:250px; "
 >
+
     {{ ucfirst($row->item->itemable->name) }}
     
     <x-dashboard.edit-delete-inventory-item-buttons

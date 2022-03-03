@@ -24,6 +24,6 @@ class OldItem extends Model
 
     public function inventory(  )
     {
-        return $this->hasOne(OldInventoryItem::class);
+        return $this->hasOne(OldInventoryItem::class, 'item_id');
     }
 }

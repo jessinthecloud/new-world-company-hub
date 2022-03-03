@@ -4,14 +4,14 @@ namespace App\Services;
 
 use App\Enums\ArmorType;
 use App\Enums\WeightClass;
-use App\Models\Items\OldArmor;
+use App\Models\Items\Armor;
 use App\Models\Items\OldBaseArmor;
 use App\Models\Items\OldBaseItem;
 use Illuminate\Support\Str;
 
 class ArmorService extends ItemService implements ItemServiceContract
 {
-    protected string $itemClass = OldArmor::class;
+    protected string $itemClass = Armor::class;
     protected string $baseItemClass = OldBaseArmor::class;
 
     /**

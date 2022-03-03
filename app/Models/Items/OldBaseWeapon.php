@@ -20,7 +20,7 @@ class OldBaseWeapon extends OldBaseItem
     
     public function instances()
     {
-        return $this->hasMany(OldWeapon::class);
+        return $this->hasMany(Weapon::class);
     }
     
     public function sets()

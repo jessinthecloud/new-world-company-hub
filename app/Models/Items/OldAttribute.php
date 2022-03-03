@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class OldAttribute extends Model
 {
+    protected $table = 'attributes';
     /**
      * The relationships that should always be loaded.
      *
@@ -25,11 +26,11 @@ class OldAttribute extends Model
 
     public function weapons()
     {
-        return $this->belongsToMany(OldWeapon::class)->withPivot('amount');
+        return $this->belongsToMany(Weapon::class, 'attribute_weapon', 'weapon_id')->withPivot('amount');
     }
     
     public function armors()
     {
-        return $this->belongsToMany(OldArmor::class, 'attribute_armor')->withPivot('amount');
+        return $this->belongsToMany(Armor::class, 'attribute_armor', 'armor_id')->withPivot('amount');
     }
 }

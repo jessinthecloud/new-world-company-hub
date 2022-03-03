@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class OldPerk extends Model
 {
+    protected $table = 'old_perks';
+    
     /**
      * The relationships that should always be loaded.
      *
@@ -26,22 +28,22 @@ class OldPerk extends Model
 
     public function weapons()
     {
-        return $this->belongsToMany(OldWeapon::class)->withPivot('amount');
+        return $this->belongsToMany(Weapon::class, 'perk_weapon', 'perk_id')->withPivot('amount');
     }
     
     public function armors()
     {
-        return $this->belongsToMany(OldArmor::class)->withPivot('amount');
+        return $this->belongsToMany(Armor::class, 'armor_perk', 'perk_id')->withPivot('amount');
     }
     
     public function baseWeapons()
     {
-        return $this->belongsToMany(OldBaseWeapon::class,)->withPivot('amount');
+        return $this->belongsToMany(OldBaseWeapon::class, 'base_weapon_perk')->withPivot('amount');
     }
     
     public function baseArmor()
     {
-        return $this->belongsToMany(OldBaseArmor::class)->withPivot('amount');
+        return $this->belongsToMany(OldBaseArmor::class, 'base_armor_perk')->withPivot('amount');
     }
 // -- SCOPES
     

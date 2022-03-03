@@ -6,12 +6,12 @@ use App\Contracts\InventoryItemContract;
 use App\Enums\WeaponType;
 use App\Models\Items\OldBaseItem;
 use App\Models\Items\OldBaseWeapon;
-use App\Models\Items\OldWeapon;
+use App\Models\Items\Weapon;
 use Illuminate\Support\Str;
 
 class WeaponService extends ItemService implements ItemServiceContract
 {
-    protected string $itemClass = OldWeapon::class;
+    protected string $itemClass = Weapon::class;
     protected string $baseItemClass = OldBaseWeapon::class;
 
     /**

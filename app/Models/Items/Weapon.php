@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-class OldWeapon extends Model implements InventoryItemContract
+class Weapon extends Model implements InventoryItemContract
 {
     use HasFactory;
 
@@ -53,7 +53,7 @@ class OldWeapon extends Model implements InventoryItemContract
     
     public function itemAttributes()
     {
-        return $this->belongsToMany(OldAttribute::class)->withPivot('amount');
+        return $this->belongsToMany(OldAttribute::class, 'attribute_weapon', 'weapon_id', 'attribute_id')->withPivot('amount');
     }
 
     public function mainLoadout()

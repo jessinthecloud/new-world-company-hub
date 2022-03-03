@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-class OldArmor extends Model implements InventoryItemContract
+class Armor extends Model implements InventoryItemContract
 {
     use HasFactory;
 
@@ -47,12 +47,12 @@ class OldArmor extends Model implements InventoryItemContract
     
     public function perks()
     {
-        return $this->belongsToMany(OldPerk::class);
+        return $this->belongsToMany(OldPerk::class, 'armor_perk');
     }
     
     public function itemAttributes()
     {
-        return $this->belongsToMany(OldAttribute::class, 'attribute_armor')->withPivot('amount');
+        return $this->belongsToMany(OldAttribute::class, 'attribute_armor', 'armor_id', 'attribute_id')->withPivot('amount');
     }
     
     public function company()

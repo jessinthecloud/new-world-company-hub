@@ -26,7 +26,7 @@ class OldInventoryItem extends Model
 
     public function item(  )
     {
-        return $this->belongsTo(OldItem::class);
+        return $this->belongsTo(OldItem::class, 'item_id');
     }
 
     public function loadouts(  )

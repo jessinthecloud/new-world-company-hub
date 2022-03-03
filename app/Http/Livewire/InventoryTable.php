@@ -2,10 +2,10 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Items\OldArmor;
+use App\Models\Items\Armor;
 use App\Models\Items\OldInventoryItem;
 use App\Models\Items\OldItem;
-use App\Models\Items\OldWeapon;
+use App\Models\Items\Weapon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Facades\DB;
@@ -22,11 +22,11 @@ class InventoryTable extends DataTableComponent
 
     // passed in as Collections and then made arrays
     /**
-     * @var OldArmor[]
+     * @var Armor[]
      */
     public array $armor_types;
     /**
-     * @var OldWeapon[]
+     * @var Weapon[]
      */
     public array $weapon_types;
     /**
@@ -156,7 +156,7 @@ class InventoryTable extends DataTableComponent
                     ->whereRelation('item', function($query) use ($weapon_type) {
                         return $query->whereMorphRelation(
                             'itemable',
-                            'App\\Models\\Items\\OldWeapon', 
+                            'App\\Models\\Items\\Weapon', 
                             'type', 
                             'like', 
                             '%'.$weapon_type.'%'
@@ -170,7 +170,7 @@ class InventoryTable extends DataTableComponent
                     ->whereRelation('item', function($query) use ($armor_type) {
                         return $query->whereMorphRelation(
                             'itemable',
-                            'App\\Models\\Items\\OldArmor', 
+                            'App\\Models\\Items\\Armor', 
                             'type', 
                             'like', 
                             '%'.$armor_type.'%'
@@ -184,7 +184,7 @@ class InventoryTable extends DataTableComponent
                     ->whereRelation('item', function($query) use ($weight_class) {
                         return $query->whereMorphRelation(
                             'itemable',
-                            'App\\Models\\Items\\OldArmor', 
+                            'App\\Models\\Items\\Armor', 
                             'weight_class', 
                             'like', 
                             '%'.$weight_class.'%'
@@ -226,7 +226,7 @@ class InventoryTable extends DataTableComponent
                         )
                         ->orWhereMorphRelation(
                             'itemable',
-                            'App\\Models\\Items\\OldArmor',
+                            'App\\Models\\Items\\Armor',
                             'weight_class', 
                             'like', 
                             '%'.$term.'%'

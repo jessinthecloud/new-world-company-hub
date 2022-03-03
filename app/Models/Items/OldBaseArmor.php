@@ -17,7 +17,7 @@ class OldBaseArmor extends OldBaseItem
 
     public function instances()
     {
-        return $this->hasMany(OldArmor::class);
+        return $this->hasMany(Armor::class);
     }
     
     public function sets()
