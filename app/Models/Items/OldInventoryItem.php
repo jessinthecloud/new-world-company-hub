@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class OldInventoryItem extends Model
 {
+    protected $table = 'inventory_items';
     protected $guarded = ['id'];
     
     /**
