@@ -19,10 +19,8 @@ class CreateItemsTable extends Migration
             $table->tinyInteger('gear_score')->nullable();
             
         // -- FOREIGN KEYS
-            // weapon, armor, consumable, etc
-            $table->foreignId('item_type_id')->nullable()->constrained();
             // base item data
-            $table->foreignId('base_item_id')->nullable()->constrained();
+            $table->foreignId('base_item_id')->constrained();
             
             $table->timestamps();
         } );
