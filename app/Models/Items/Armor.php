@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
+/** @deprecated */
 class Armor extends Model implements InventoryItemContract
 {
     use HasFactory;

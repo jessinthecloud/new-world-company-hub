@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\DB;
 
+/** @deprecated */
 class OldBaseWeapon extends OldBaseItem
 {
     use HasFactory;

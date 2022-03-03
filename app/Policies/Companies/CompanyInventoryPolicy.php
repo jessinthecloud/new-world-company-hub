@@ -7,6 +7,7 @@ use App\Models\Companies\Company;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
+/** @deprecated */
 class CompanyInventoryPolicy
 {
     use HandlesAuthorization;

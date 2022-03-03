@@ -50,7 +50,7 @@ class Character extends Model
     {
         return $this->belongsTo(Company::class);
     }
-    
+    /** @deprecated */
     public function companyInventory()
     {
         return isset($this->company) ? $this->company->inventory() : null;
@@ -101,6 +101,7 @@ class Character extends Model
         return $this->hasMany(Armor::class);
     }*/
     
+    /** @deprecated */
     public function inventoryItem(  )
     {
         return $this->morphMany(OldInventoryItem::class, 'ownerable');

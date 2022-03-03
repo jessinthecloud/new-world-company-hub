@@ -7,6 +7,7 @@ use App\Models\Companies\Company;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
+/** @deprecated */
 class OldInventoryItem extends Model
 {
     protected $table = 'inventory_items';

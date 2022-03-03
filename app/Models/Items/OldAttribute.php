@@ -4,6 +4,7 @@ namespace App\Models\Items;
 
 use Illuminate\Database\Eloquent\Model;
 
+/** @deprecated */
 class OldAttribute extends Model
 {
     protected $table = 'attributes';

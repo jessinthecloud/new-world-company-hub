@@ -5,6 +5,7 @@ namespace App\Models\Items;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
+/** @deprecated */
 class OldBaseArmor extends OldBaseItem
 {
     /**

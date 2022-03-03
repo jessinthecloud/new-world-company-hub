@@ -21,6 +21,7 @@ use App\Services\WeaponService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
+/** @deprecated */
 class OldCompanyInventoryController extends Controller
 {
     public function __construct(protected ArmorService $armorService, protected WeaponService $weaponService) 

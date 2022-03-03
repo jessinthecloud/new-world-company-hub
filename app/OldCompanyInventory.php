@@ -5,6 +5,7 @@ namespace App;
 use App\Models\Characters\Character;
 use App\Models\Companies\Company;
 
+/** @deprecated */
 class OldCompanyInventory extends Company
 {
     protected $table = 'companies';

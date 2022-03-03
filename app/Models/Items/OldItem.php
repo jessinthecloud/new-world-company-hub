@@ -4,6 +4,7 @@ namespace App\Models\Items;
 
 use Illuminate\Database\Eloquent\Model;
 
+/** @deprecated */
 class OldItem extends Model
 {
     protected $guarded = ['id'];

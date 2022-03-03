@@ -94,38 +94,6 @@ Route::middleware( ['auth', 'company', 'character', /*'loadout'*/] )->group( fun
     Route::get( '/dashboard', [DashboardController::class, 'index'] )
         ->name( 'dashboard' );
 
-// ## RESOURCES
-
-    Route::get( '/base-weapons/{baseWeapon}', function ( OldBaseWeapon $baseWeapon ) {
-        return new \App\Http\Resources\BaseWeaponResource( $baseWeapon->load( 'perks' ) );
-    } )
-        ->name( 'base-weapons.show' );
-
-    Route::get( '/base-weapons', function () {
-        $weapons = OldBaseWeapon::with('perks' )->orderBy('name' )->orderBy('tier' )->distinct()->get();
-
-        return new \App\Http\Resources\BaseWeaponCollection( $weapons );
-    } )
-        ->name( 'base-weapons.index' );
-
-    Route::get( '/base-armors/{baseArmor}', function ( OldBaseArmor $baseArmor ) {
-        return new \App\Http\Resources\BaseArmorResource( $baseArmor->load( 'perks' ) );
-    } )
-        ->name( 'base-armors.show' );
-
-    Route::get( '/base-armors', function () {
-        $armors = OldBaseArmor::with('perks' )->orderBy('name' )->orderBy('tier' )->distinct()->get();
-
-        return new \App\Http\Resources\BaseArmorCollection( $armors );
-    } )
-        ->name( 'base-armors.index' );
-
-
-    // BASE ARMOR
-//    Route::resource( 'base-armors', \App\Http\Controllers\Items\BaseArmorsController::class);
-//    // BASE WEAPON
-//    Route::resource( 'base-weapons', \App\Http\Controllers\Items\BaseWeaponsController::class);
-
 
 // ###################################
 // ## SUPER ADMIN

@@ -21,6 +21,8 @@ class AuthServiceProvider extends ServiceProvider
         'App\Models\Items\Loadout'   => 'App\Policies\Items\LoadoutPolicy',
         'App\Models\Items\Weapon'    => 'App\Policies\Items\WeaponPolicy',
         'App\Models\Events\WarBoard' => 'App\Policies\Events\WarBoardPolicy',
+
+        'App\Models\CompanyInventory'         => 'App\Policies\CompanyInventoryPolicy',
         
         // Policies with conventional naming are auto-registered here
     ];

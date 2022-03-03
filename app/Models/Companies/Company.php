@@ -104,12 +104,14 @@ class Company extends Model
     {
         return $this->hasManythrough(Item::class, CompanyInventory::class);
     }
-
+    
+    /** @deprecated */
     public function inventoryItem(  )
     {
         return $this->morphMany(OldInventoryItem::class, 'ownerable');
     }
-
+    
+    /** @deprecated */
     public function inventory()
     {
         return new OldCompanyInventory($this->attributes);

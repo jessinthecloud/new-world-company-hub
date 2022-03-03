@@ -5,6 +5,7 @@ namespace App\Models\Items;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
+/** @deprecated */
 class OldPerk extends Model
 {
     protected $table = 'old_perks';
