@@ -64,21 +64,6 @@ class ItemService
         return $rarity_options;
     }
     
-    // TODO: setup like perkOptions()
-    public function weightClassOptions( string $weight_class = '' ) : string
-    {
-        $weight_class_options = '<option value="">None</option>';
-        foreach ( WeightClass::cases() as $type ) {
-            $weight_class_options .= '<option value="' . $type->name . '"';
-            if ( strtolower( $type->value ) == strtolower( $weight_class ) ) {
-                $weight_class_options .= ' SELECTED ';
-            }
-            $weight_class_options .= '>' . $type->value . '</option>';
-        }
-
-        return $weight_class_options;
-    }
-    
     // base item info for autocomplete dropdown
     // TODO: update
     // TODO: setup like perkOptions()

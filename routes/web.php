@@ -12,11 +12,9 @@ use App\Http\Controllers\Companies\RostersController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GearCheckController;
 use App\Http\Controllers\Items\ArmorsController;
-use App\Http\Controllers\Items\OldCompanyInventoryController;
+use App\Http\Controllers\Items\CompanyInventoryController;
 use App\Http\Controllers\Items\WeaponsController;
 use App\Http\Controllers\WarBoards\WarBoardsController;
-use App\Models\Items\OldBaseArmor;
-use App\Models\Items\OldBaseWeapon;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -101,7 +99,7 @@ Route::middleware( ['auth', 'company', 'character', /*'loadout'*/] )->group( fun
     Route::middleware( ['role:super-admin'] )->group( function () {
         // convert all existing items to Inventory Items 
         Route::get( '/items/convert',
-                    [OldCompanyInventoryController::class, 'convertAll'] )
+                    [CompanyInventoryController::class, 'convertAll'] )
             ->name( 'companies.inventory.convertAll' );
     } ); // end super admin
 // ##
@@ -128,23 +126,23 @@ Route::middleware( ['auth', 'company', 'character', /*'loadout'*/] )->group( fun
     Route::middleware( ['role:super-admin|admin|banker'] )->group( function () {
         // create form for inventory item for specific company
         Route::get( '/companies/{company}/inventory/create',
-                    [OldCompanyInventoryController::class, 'create'] )
+                    [CompanyInventoryController::class, 'create'] )
             ->name( 'companies.inventory.create' );
         // store inventory item for specific company
         Route::post( '/companies/{company}/inventory',
-                     [OldCompanyInventoryController::class, 'store'] )
+                     [CompanyInventoryController::class, 'store'] )
             ->name( 'companies.inventory.store' );
         // edit form for specific inventory item for specific company
-        Route::get( '/companies/{company}/inventory/{inventoryItem}/edit',
-                    [OldCompanyInventoryController::class, 'edit'] )
+        Route::get( '/companies/{company}/inventory/{item}/edit',
+                    [CompanyInventoryController::class, 'edit'] )
             ->name( 'companies.inventory.edit' );
         // update specific inventory item for specific company
-        Route::put( '/companies/{company}/inventory/{inventoryItem}',
-                    [OldCompanyInventoryController::class, 'update'] )
+        Route::put( '/companies/{company}/inventory/{item}',
+                    [CompanyInventoryController::class, 'update'] )
             ->name( 'companies.inventory.update' );
         // delete specific inventory item from specific company
-        Route::delete( '/companies/{company}/inventory/{inventoryItem}',
-                       [OldCompanyInventoryController::class, 'destroy'] )
+        Route::delete( '/companies/{company}/inventory/{item}',
+                       [CompanyInventoryController::class, 'destroy'] )
             ->name( 'companies.inventory.destroy' );
     } );
 // ##
@@ -223,7 +221,7 @@ Route::middleware( ['auth', 'company', 'character', /*'loadout'*/] )->group( fun
     Route::middleware( ['role:super-admin|admin|governor|consul|officer|breakpoint-member'] )->group( function () {
         // view all of specific company's inventory
         Route::get( '/companies/{company}/inventory',
-                    [OldCompanyInventoryController::class, 'index'] )
+                    [CompanyInventoryController::class, 'index'] )
             ->name( 'companies.inventory.index' );
 
         Route::get( '/weapons/{weapon}', [WeaponsController::class, 'show'] )

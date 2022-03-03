@@ -13,39 +13,22 @@ class InventoryUpsertRequest extends FormRequest
 
     public function rules() : array
     {
-//    dd($this->request);
         return [
-            'id'           => [],
-            'base_id'      => [],
-            'base_slug'    => ['string', 'nullable'],
-            'slug'         => ['string', 'nullable'],
-            'itemType'     => ['string', 'nullable'],
-            'item'         => [
-                /*Rule::requiredIf(function () {
-                    return empty($this->name);
-                }),*/
-            ],
-            // always input
-            'gear_score'         => ['required', 'numeric'],
-            'rarity'             => ['required_without:custom_rarity', /*new Enum(Rarity::class)*/],
-            'custom_rarity'      => ['required_without:rarity', /*new Enum(Rarity::class)*/],
-            
+            'id'         => [],
+            'slug'       => ['string', 'nullable'],
+            'base_id'    => [],
+            'base_slug'  => ['string', 'nullable'],
+            'itemType'   => ['string', 'nullable'],
+            'item'       => [],
             // perks
-            'perks'               => ['array', 'nullable'],
-            'perks.*'             => ['exists:perks,slug', 'nullable'],
-            'attrs'               => ['array', 'nullable'],
-//            'attrs.*'             => [new Enum(AttributeType::class), 'nullable'],
-            'attribute_amounts.*' => ['required_with:attributes', 'numeric', 'nullable'],
-            
-            // custom 
-            'name'               => ['required_without:base_id', 'string', 'nullable'],
-            'armor_type'         => [/*'required_if:is_armor,true',*/ /*new Enum(ArmorType::class),*/ 'nullable'],
-            'weapon_type'        => [/*'required_if:is_weapon,true',*/ /*new Enum(WeaponType::class),*/ 'nullable'],
-            'tier'               => [/*new Enum(Tier::class),*/ 'nullable'],
-            'weight_class'       => ['nullable', /*new Enum(WeightClass::class)*/],
+            'perks'      => ['array', 'nullable'],
+            'perks.*'    => ['exists:perks,slug', 'nullable'],
+            // always input
+            'gear_score' => ['required', 'numeric'],
+            'rarity'     => ['required', /*new Enum(Rarity::class)*/],
         ];
     }
-    
+
     /**
      * Get the error messages for the defined validation rules.
      *
@@ -54,13 +37,10 @@ class InventoryUpsertRequest extends FormRequest
     public function messages()
     {
         return [
-            'weapon_gear_score.numeric' => 'Gear score must be a number',
-            'armor_gear_score.numeric' => 'Gear score must be a number',
-            'weapon.required_if' => 'Weapon is required',
-            'armor.required_if' => 'Armor is required',
+            'gear_score.numeric' => 'Gear score must be a number',
         ];
     }
-    
+
     /**
      * Get custom attributes for validator errors.
      *
