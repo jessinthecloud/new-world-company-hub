@@ -11,8 +11,9 @@ class CreateOwnerInventoryTables extends Migration
         Schema::create( 'company_inventory', function ( Blueprint $table ) {
             $table->bigIncrements( 'id' );
 
-            $table->foreignId('company_id');
-            $table->foreignId('item_id');
+            $table->foreignId('company_id')->constrained();
+            $table->foreignId('banker_id')->nullable()->constrained('characters');
+            $table->foreignId('item_id')->constrained();
 
             $table->timestamps();
         } );
@@ -20,8 +21,8 @@ class CreateOwnerInventoryTables extends Migration
         Schema::create( 'character_inventory', function ( Blueprint $table ) {
             $table->bigIncrements( 'id' );
 
-            $table->foreignId('character_id');
-            $table->foreignId('item_id');
+            $table->foreignId('character_id')->constrained();
+            $table->foreignId('item_id')->constrained();
 
             $table->timestamps();
         } );
