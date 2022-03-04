@@ -75,14 +75,14 @@ class Item extends Model
 
     public function company()
     {
-        return $this->belongsTo(Company::class)->using(CompanyInventory::class);
-//        return $this->hasOneThrough(Company::class, CompanyInventory::class);
+        // return $this->belongsTo(Company::class)->using(CompanyInventory::class);
+       return $this->hasOneThrough(Company::class, CompanyInventory::class);
     }
     
     public function character()
     {
-        return $this->belongsTo(Character::class)->using(CharacterInventory::class);
-//        return $this->hasOneThrough(Character::class, CharacterInventory::class);
+        // return $this->belongsTo(Character::class)->using(CharacterInventory::class);
+       return $this->hasOneThrough(Character::class, CharacterInventory::class);
     }
     
     /** @deprecated */
@@ -110,5 +110,27 @@ class Item extends Model
     public function numberOfUnusedPerkSlots()
     {
         // todo: implement
+    }
+
+    public function scopeOwnedBy( Builder $query, $owner )
+    {
+        // return $query
+        //     ->where('ownerable_type', $owner::class)
+        //     ->where('ownerable_id', $owner->id)
+        // ;
+    }
+    public function scopeOwnedByCompany( Builder $query, Company $company )
+    {
+        // return $query
+        //     ->where('ownerable_type', $company::class)
+        //     ->where('ownerable_id', $company->id)
+        // ;
+    }
+    public function scopeForTable( Builder $query )
+    {
+//         return $query
+// //            ->selectRaw('armors.id as id, armors.slug as slug, armors.name as name, armors.type as subtype, armors.rarity, armors.gear_score, armors.weight_class, "Armor" as type, armors.created_at as created_at')
+//             ->with('item.itemable')
+//         ;
     }
 }
