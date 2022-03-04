@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Policies\Companies;
+namespace App\Policies;
 
 use App\Models\Companies\Company;
-use App\Models\User;
 use App\Models\ItemOwner as ItemOwnerContract;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 
 trait HasInventoryPolicy

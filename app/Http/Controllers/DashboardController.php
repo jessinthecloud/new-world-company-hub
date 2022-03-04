@@ -22,6 +22,7 @@ class DashboardController extends Controller
 
         // determine what user is allowed to see on the dashboard
         $user = $request->user();
+dump($user->company()->inventory);
 
         return view( 'dashboard.index', [
             'form_action' => route( 'dashboard' ),

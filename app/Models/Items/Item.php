@@ -75,14 +75,17 @@ class Item extends Model
 
     public function company()
     {
-        return $this->hasOneThrough(Company::class, CompanyInventory::class);
+        return $this->belongsTo(Company::class)->using(CompanyInventory::class);
+//        return $this->hasOneThrough(Company::class, CompanyInventory::class);
     }
     
     public function character()
     {
-        return $this->hasOneThrough(Character::class, CharacterInventory::class);
+        return $this->belongsTo(Character::class)->using(CharacterInventory::class);
+//        return $this->hasOneThrough(Character::class, CharacterInventory::class);
     }
     
+    /** @deprecated */
     public function owner()
     {
         return $this->company ?? $this->character ?? null;

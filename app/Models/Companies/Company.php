@@ -118,12 +118,10 @@ class Company extends Model implements ItemOwner
         return new OldCompanyInventory($this->attributes);
     }
     
-    /**
-     * @return mixed
-     */
+    // ?? 
     public function inventory()
     {
-        // TODO: Implement inventory() method.
+        return $this->hasManyThrough(Item::class, CompanyInventory::class, 'company_id', 'id', 'item_id', 'item_id');
     }
     
     /**

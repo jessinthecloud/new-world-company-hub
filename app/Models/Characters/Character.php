@@ -103,12 +103,10 @@ class Character extends Model implements ItemOwner
         return $this->morphMany(OldInventoryItem::class, 'ownerable');
     }
     
-    /**
-     * @return mixed
-     */
+    // ?? 
     public function inventory()
     {
-        // TODO: Implement inventory() method.
+        return $this->hasManyThrough(Item::class, CompanyInventory::class, 'company_id', 'id', 'item_id', 'item_id');
     }
     
     public function warGroupSlots()

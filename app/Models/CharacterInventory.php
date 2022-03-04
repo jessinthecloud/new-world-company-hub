@@ -5,9 +5,12 @@ namespace App\Models;
 use App\Models\Characters\Character;
 use App\Models\Items\Item;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class CharacterInventory extends Model
 {
+    protected $table = 'character_inventory';
+
     protected $guarded = ['id'];
     
     /**

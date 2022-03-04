@@ -6,9 +6,12 @@ use App\Models\Characters\Character;
 use App\Models\Companies\Company;
 use App\Models\Items\Item;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class CompanyInventory extends Model
 {
+    protected $table = 'company_inventory';
+    
     protected $guarded = ['id'];
     
     /**
