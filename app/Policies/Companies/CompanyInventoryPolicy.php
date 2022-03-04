@@ -2,11 +2,12 @@
 
 namespace App\Policies\Companies;
 
-use App\CompanyInventory;
+use App\OldCompanyInventory;
 use App\Models\Companies\Company;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
+/** @deprecated */
 class CompanyInventoryPolicy
 {
     use HandlesAuthorization;
@@ -35,7 +36,7 @@ class CompanyInventoryPolicy
      *
      * @return bool
      */
-    public function viewAny( User $user, string $class=\App\CompanyInventory::class ) : bool
+    public function viewAny( User $user, string $class=\App\OldCompanyInventory::class ) : bool
     {
         return $user->canAny([
             'view guildbanks', 
@@ -52,7 +53,7 @@ class CompanyInventoryPolicy
      *
      * @return bool
      */
-    public function viewAll( User $user, string $class=\App\CompanyInventory::class ) : bool
+    public function viewAll( User $user, string $class=\App\OldCompanyInventory::class ) : bool
     {
         return $user->can(['view guildbanks']);
     }
@@ -66,7 +67,7 @@ class CompanyInventoryPolicy
      *
      * @return bool
      */
-    public function view( User $user, CompanyInventory $company, string $class=\App\CompanyInventory::class ) : bool
+    public function view( User $user, OldCompanyInventory $company, string $class=\App\OldCompanyInventory::class ) : bool
     {
         if($this->viewAll($user)){
             return true;
@@ -88,13 +89,13 @@ class CompanyInventoryPolicy
     }
 
     /**
-     * @param \App\Models\User      $user
-     * @param \App\CompanyInventory $company
-     * @param string                $class
+     * @param \App\Models\User         $user
+     * @param \App\OldCompanyInventory $company
+     * @param string                   $class
      *
      * @return bool
      */
-    public function create( User $user, CompanyInventory $company, string $class=\App\CompanyInventory::class ) : bool
+    public function create( User $user, OldCompanyInventory $company, string $class=\App\OldCompanyInventory::class ) : bool
     {
         return $user->canAny([
             'create guildbanks', 
@@ -110,7 +111,7 @@ class CompanyInventoryPolicy
      *
      * @return bool
      */
-    public function update( User $user, CompanyInventory $company, string $class=\App\CompanyInventory::class ) : bool
+    public function update( User $user, OldCompanyInventory $company, string $class=\App\OldCompanyInventory::class ) : bool
     {
         return (
             $user->can('edit guildbanks') 
@@ -141,7 +142,7 @@ class CompanyInventoryPolicy
      *
      * @return bool
      */
-    public function delete( User $user, CompanyInventory $company, string $class=\App\CompanyInventory::class ) : bool
+    public function delete( User $user, OldCompanyInventory $company, string $class=\App\OldCompanyInventory::class ) : bool
     {
         return (
             $user->can('delete guildbanks') 
@@ -171,7 +172,7 @@ class CompanyInventoryPolicy
      *
      * @return bool
      */
-    public function restore( User $user, CompanyInventory $company, string $class=\App\CompanyInventory::class ) : bool
+    public function restore( User $user, OldCompanyInventory $company, string $class=\App\OldCompanyInventory::class ) : bool
     {
         return $this->delete($user, $company);
     }
@@ -182,7 +183,7 @@ class CompanyInventoryPolicy
      *
      * @return bool
      */
-    public function forceDelete( User $user, CompanyInventory $company, string $class=\App\CompanyInventory::class ) : bool
+    public function forceDelete( User $user, OldCompanyInventory $company, string $class=\App\OldCompanyInventory::class ) : bool
     {
         return false;
     }

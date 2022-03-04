@@ -2,7 +2,13 @@
 
 namespace App\Models\Items;
 
+use App\Models\CharacterInventory;
+use App\Models\Characters\Character;
+use App\Models\Companies\Company;
+use App\Models\CompanyInventory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Item extends Model
 {
@@ -13,15 +19,96 @@ class Item extends Model
      *
      * @var array
      */
-    protected $with = ['itemable'];
-
-    public function itemable(  )
+    protected $with = ['type', 'subtype'];
+    
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
     {
-        return $this->morphTo();
+        return 'slug';
     }
 
-    public function inventory(  )
+// -- RELATIONSHIPS
+    public function base()
     {
-        return $this->hasOne(InventoryItem::class);
+        return $this->belongsTo(BaseItem::class);
+    }
+    
+    public function type()
+    {
+        return $this->hasOneThrough(ItemType::class, BaseItem::class);
+    }
+    
+    public function subtype()
+    {
+        return $this->belongsTo(ItemSubtype::class);
+    }
+    
+    public function tier()
+    {
+        return $this->belongsTo(Tier::class);
+    }
+    
+    public function rarity()
+    {
+        // TODO: implement
+        // return $this->belongsTo(Rarity::class);
+    }
+    
+    public function suffix()
+    {
+        return $this->hasOneThrough(Suffix::class, Perk::class);
+    }
+    
+    public function prefix()
+    {
+        return $this->hasOneThrough(Prefix::class, Perk::class);
+    }
+    
+    public function perks()
+    {
+        return $this->belongsToMany(Perk::class);
+    }
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class)->using(CompanyInventory::class);
+//        return $this->hasOneThrough(Company::class, CompanyInventory::class);
+    }
+    
+    public function character()
+    {
+        return $this->belongsTo(Character::class)->using(CharacterInventory::class);
+//        return $this->hasOneThrough(Character::class, CharacterInventory::class);
+    }
+    
+    /** @deprecated */
+    public function owner()
+    {
+        return $this->company ?? $this->character ?? null;
+    }
+    
+// -- SCOPES
+    public function scopeRawForCompany($query, Company $company)
+    {
+        /*return $this->select(DB::raw('weapons.id as id, weapons.slug as slug, weapons.name as name, weapons.type as itemable_type, weapons.rarity, weapons.gear_score, null as weight_class, "Weapon" as type, weapons.created_at as created_at'))
+            ->whereRelation('company', 'id', $company->id);*/
+    }
+    
+    public function scopeRawForGearScore($query/*, Item $item*/)
+    {
+        return $this->select(DB::raw('id,gear_score'));
+    }
+    
+    public function scopeSimilarSlugs(Builder $query, string $slug){
+        return $query->where('slug', 'like' , $slug.'%');
+    }
+    
+    public function numberOfUnusedPerkSlots()
+    {
+        // todo: implement
     }
 }

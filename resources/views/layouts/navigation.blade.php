@@ -16,8 +16,8 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     
-                    @if(Auth::user()?->character()?->companyInventory() !== null 
-                        && Auth::user()->can('view', Auth::user()->character()?->companyInventory(),))
+                    @if(Auth::user()?->character()?->company() !== null 
+                        && Auth::user()->can('viewInventory', Auth::user()->character()?->company()))
                         <x-nav-link :href="route('companies.inventory.index', [
                                 'company' => Auth::user()->company()->slug
                             ])" 
@@ -91,8 +91,8 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
-            @if(Auth::user()?->companyInventory() !== null 
-                && Auth::user()->can('view', Auth::user()->companyInventory(),))
+            @if(Auth::user()?->company() !== null 
+                && Auth::user()->can('viewInventory', Auth::user()->company(),))
                 <x-responsive-nav-link :href="route('companies.inventory.index', [
                         'company' => Auth::user()->company()->slug
                     ])" 

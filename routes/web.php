@@ -15,8 +15,6 @@ use App\Http\Controllers\Items\ArmorsController;
 use App\Http\Controllers\Items\CompanyInventoryController;
 use App\Http\Controllers\Items\WeaponsController;
 use App\Http\Controllers\WarBoards\WarBoardsController;
-use App\Models\Items\BaseArmor;
-use App\Models\Items\BaseWeapon;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -94,38 +92,6 @@ Route::middleware( ['auth', 'company', 'character', /*'loadout'*/] )->group( fun
     Route::get( '/dashboard', [DashboardController::class, 'index'] )
         ->name( 'dashboard' );
 
-// ## RESOURCES
-
-    Route::get( '/base-weapons/{baseWeapon}', function ( BaseWeapon $baseWeapon ) {
-        return new \App\Http\Resources\BaseWeaponResource( $baseWeapon->load( 'perks' ) );
-    } )
-        ->name( 'base-weapons.show' );
-
-    Route::get( '/base-weapons', function () {
-        $weapons = BaseWeapon::with( 'perks' )->orderBy( 'name' )->orderBy( 'tier' )->distinct()->get();
-
-        return new \App\Http\Resources\BaseWeaponCollection( $weapons );
-    } )
-        ->name( 'base-weapons.index' );
-
-    Route::get( '/base-armors/{baseArmor}', function ( BaseArmor $baseArmor ) {
-        return new \App\Http\Resources\BaseArmorResource( $baseArmor->load( 'perks' ) );
-    } )
-        ->name( 'base-armors.show' );
-
-    Route::get( '/base-armors', function () {
-        $armors = BaseArmor::with( 'perks' )->orderBy( 'name' )->orderBy( 'tier' )->distinct()->get();
-
-        return new \App\Http\Resources\BaseArmorCollection( $armors );
-    } )
-        ->name( 'base-armors.index' );
-
-
-    // BASE ARMOR
-//    Route::resource( 'base-armors', \App\Http\Controllers\Items\BaseArmorsController::class);
-//    // BASE WEAPON
-//    Route::resource( 'base-weapons', \App\Http\Controllers\Items\BaseWeaponsController::class);
-
 
 // ###################################
 // ## SUPER ADMIN
@@ -167,15 +133,15 @@ Route::middleware( ['auth', 'company', 'character', /*'loadout'*/] )->group( fun
                      [CompanyInventoryController::class, 'store'] )
             ->name( 'companies.inventory.store' );
         // edit form for specific inventory item for specific company
-        Route::get( '/companies/{company}/inventory/{inventoryItem}/edit',
+        Route::get( '/companies/{company}/inventory/{item}/edit',
                     [CompanyInventoryController::class, 'edit'] )
             ->name( 'companies.inventory.edit' );
         // update specific inventory item for specific company
-        Route::put( '/companies/{company}/inventory/{inventoryItem}',
+        Route::put( '/companies/{company}/inventory/{item}',
                     [CompanyInventoryController::class, 'update'] )
             ->name( 'companies.inventory.update' );
         // delete specific inventory item from specific company
-        Route::delete( '/companies/{company}/inventory/{inventoryItem}',
+        Route::delete( '/companies/{company}/inventory/{item}',
                        [CompanyInventoryController::class, 'destroy'] )
             ->name( 'companies.inventory.destroy' );
     } );

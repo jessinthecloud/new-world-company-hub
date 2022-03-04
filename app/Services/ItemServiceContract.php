@@ -3,8 +3,9 @@
 namespace App\Services;
 
 use App\Contracts\InventoryItemContract;
-use App\Models\Items\BaseItem;
+use App\Models\Items\OldBaseItem;
 
+/** @deprecated */
 interface ItemServiceContract
 {
     public function baseItemsOptions(InventoryItemContract $item=null) : string;
@@ -13,11 +14,12 @@ interface ItemServiceContract
 
     public function getAllBaseItems() : array;
     
+    /** @deprecated */
     public function createUniqueSlug(array $fields) : string;
 
-    public function initItemAttributes( array $validated, BaseItem $base=null );
+    public function initItemAttributes( array $validated, OldBaseItem $base=null );
     
-    public function createSpecificItem(array $validated, BaseItem $base=null);
+    public function createSpecificItem(array $validated, OldBaseItem $base=null);
 
-    public function baseItemBySlug(string $slug) : ?BaseItem;
+    public function baseItemBySlug(string $slug) : ?OldBaseItem;
 }

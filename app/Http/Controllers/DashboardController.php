@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\CompanyInventory;
+use App\OldCompanyInventory;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -22,13 +22,14 @@ class DashboardController extends Controller
 
         // determine what user is allowed to see on the dashboard
         $user = $request->user();
+dump($user->company()->inventory);
 
         return view( 'dashboard.index', [
             'form_action' => route( 'dashboard' ),
             'character'   => $user->character(),
             'faction'     => $user->faction(),
             'company'     => $user->company(),
-            'companyInventory' => CompanyInventory::find($user->company()->id),
+            'companyInventory' => OldCompanyInventory::find($user->company()->id),
             'rank'        => $user->rank(),
             'characters'  => $user->characters,
             'loadout'     => $user->character()?->loadout,

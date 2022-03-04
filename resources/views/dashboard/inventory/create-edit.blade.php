@@ -11,8 +11,6 @@
             :method="$method ?? null"
             :button-text="$button_text"
             class="flex flex-wrap justify-start"
-            
-             x-data="{weapons: {}, armors: {}, newEntry:{{ $newEntry ?? 0 }}, fetch:false}"
         >
             <x-forms.field :name="'gear_score'" class="mb-6 mr-4">
                 <x-forms.label for="gear_score" :required="true">Gear Score:</x-forms.label>
@@ -38,74 +36,6 @@
                     :required="true"
                 >{!! $rarity_options ?? '' !!}</x-forms.select>
             </x-forms.field>
-            
-            <div class="flex items-center" x-cloak x-show="!newEntry">
-                <x-button type="button" class="mb-6 bg-red-200 text-gray-700 hover:text-gray-100 hover:bg-red-500"
-                    @click="newEntry=true"
-                >
-                    My item isn't listed
-                </x-button>
-            </div>
-            
-            <div id="new-entry" class="w-full flex flex-wrap justify-start my-6" 
-                x-cloak x-show="newEntry"
-            >
-                <x-forms.field :name="'name'" class="mb-6" id="name-field">
-                    <x-forms.label for="name" :required="true">Name:</x-forms.label>
-                    <x-forms.input 
-                        id="name"
-                        class=""
-                        type="text"
-                        name="name" 
-                        value="{{ old('name') ?? '' }}"
-                        :required="true" 
-                    />
-                </x-forms.field>
-                
-                <x-forms.field :name="'armor_type'" class="mb-6" {{--x-show="isArmor"--}}>
-                    <x-forms.label for="armor_type" :required="true">Armor Type:</x-forms.label>
-                    <x-forms.select name="armor_type" id="armor_type"
-                        :values="$armor_types ?? null"
-                        :required="true"
-                    >{!! $armor_type_options ?? '' !!}</x-forms.select>
-                </x-forms.field>
-                
-                <x-forms.field :name="'weight_class'" class="mb-6" {{--x-show="isArmor"--}}>
-                    <x-forms.label for="weight_class" :required="false">Weight Class:</x-forms.label>
-                    <x-forms.select name="weight_class" id="weight_class"
-                        :values="$weight_classes ?? null"
-                        :required="false"
-                    >{!! $weight_class_options ?? '' !!}</x-forms.select>
-                </x-forms.field>
-        
-                <x-forms.field :name="'weapon_type'" class="mb-6" {{--x-show="isWeapon"--}}>
-                    <x-forms.label for="weapon_type" :required="true">Weapon Type:</x-forms.label>
-                    <x-forms.select name="weapon_type" id="weapon_type"
-                        :values="$weapon_types ?? null"
-                        :required="true"
-                    >{!! $weapon_type_options ?? '' !!}</x-forms.select>
-                </x-forms.field>
-                
-                <x-forms.field :name="'custom_rarity'" class="mb-6 mr-4">
-                    <x-forms.label for="custom-rarity" :required="true">Rarity:</x-forms.label>
-                    <x-forms.select name="custom_rarity" id="custom-rarity"
-                        :values="$raritys ?? null"
-                        :required="true"
-                    >{!! $rarity_options ?? '' !!}</x-forms.select>
-                </x-forms.field>
-                
-                <x-forms.field :name="'tier'" class="mb-6">
-                    <x-forms.label for="tier" :required="false">Tier:</x-forms.label>
-                    <x-forms.select name="tier" id="tier"
-                        :values="$tiers ?? null"
-                        :required="false"
-                    >{!! $tier_options ?? '' !!}</x-forms.select>
-                </x-forms.field>
-            </div> <!-- end new entry -->
-            
-            <div id="perks-attr-wrapper" class="w-full flex flex-wrap justify-start"
-            >
-                
             
             <div id="perks-attr-wrapper" class="w-full flex flex-wrap justify-start">
                 <div class="perks border-r-2 border-slate-50 pr-4 mr-4">
@@ -141,70 +71,13 @@
     
                 </div>
                 
-                <div class="attributes ml-4">
-                    <h3>Attributes:</h3>
-                    
-                    @if(!empty($existing_attribute_options))
-                        @foreach($existing_attribute_options as $id => $options)
-                            <div id="attr-wrapper" class="block w-full flex flex-wrap justify-start items-end">
-                                <x-forms.field :name="'attribute_amounts[]'">
-                                    <x-forms.input
-                                        id="attribute_amounts"
-                                        class=""
-                                        type="text"
-                                        name="attribute_amounts[]"
-                                        value="{{ $existing_attribute_amounts[$id] }}"
-                                        size="10"
-                                        :required="false"
-                                        placeholder="Amount"
-                                    />
-                                </x-forms.field>
-                                <x-forms.field :name="'attrs'" class="mb-6">
-                                    <x-forms.select name="attrs[]" id="attrs"
-                                        :values="$attrs ?? null"
-                                        :required="false"
-                                    >{!! $options ?? '' !!}</x-forms.select>
-                                </x-forms.field>
-                            </div>
-                        @endforeach
-                    @endif
-                    
-                    <div id="attr-wrapper" class="attr-wrapper block w-full flex flex-wrap justify-start items-end">
-                        <x-forms.field :name="'attribute_amounts[]'">
-                            <x-forms.input
-                                id="attribute_amounts"
-                                class=""
-                                type="text"
-                                name="attribute_amounts[]"
-                                value="{{ old('attribute_amounts[]') ?? null }}"
-                                size="10"
-                                :required="false"
-                                placeholder="Amount"
-                            />
-                        </x-forms.field>
-                        <x-forms.field :name="'attrs'" class="mb-6">
-                            <x-forms.select name="attrs[]" id="attrs"
-                                :values="$attrs ?? null"
-                                :required="false"
-                            >{!! $attribute_options ?? '' !!}</x-forms.select>
-                        </x-forms.field>
-                    </div>
-                    
-                    <div id="appended-attrs" class="appended-attrs">
-                        
-                    </div>
-    
-                    <x-button id="add-attr" type="button" class="add-attr mb-4">Add Another Attribute</x-button>
-    
-                </div>
-                
             </div> 
             <!-- end perks-attr-wrapper -->
                 
             <input id="base-model-id" type="hidden" name="base_id" value="{{ isset($item) && isset($item->base) ? $item->base->id : '' }}"/>
             <input id="base-model-slug" type="hidden" name="base_slug" value="{{ isset($item) && isset($item->base) ? $item->base->slug : '' }}"/>
             <input id="model-id" type="hidden" name="id" value="{{ isset($item) ? $item->id : '' }}"/>
-            <input type="hidden" name="slug" value="{{ isset($item) ? $item->slug : '' }}"/>
+            <input id="model-slug" type="hidden" name="slug" value="{{ isset($item) ? $item->slug : '' }}"/>
             <input id="itemType" type="hidden" name="itemType" value="{{ $itemType ?? '' }}"/>
 
             <x-slot name="button">

@@ -1,6 +1,6 @@
 @props(['inventory', 'ownerType', 'owner', 'inventoryItem'=>null, 'title', 'buttonTexts'=>[],])
 
-@can('viewAny', \App\CompanyInventory::class)
+@can('viewAny', \App\OldCompanyInventory::class)
     <x-dashboard.section
         :title="$title"
         class=""

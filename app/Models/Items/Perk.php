@@ -23,28 +23,33 @@ class Perk extends Model
     {
         return 'slug';
     }
+    
+    public function type()
+    {
+        return $this->belongsTo(PerkType::class);
+    }
 
-    public function weapons()
+    public function items()
     {
-        return $this->belongsToMany(Weapon::class)->withPivot('amount');
+        return $this->belongsToMany(Item::class);
     }
     
-    public function armors()
+    public function baseItems()
     {
-        return $this->belongsToMany(Armor::class)->withPivot('amount');
+        return $this->belongsToMany(BaseItem::class);
     }
     
-    public function baseWeapons()
+    public function suffix()
     {
-        return $this->belongsToMany(BaseWeapon::class,)->withPivot('amount');
+        return $this->belongsTo(Suffix::class);
     }
     
-    public function baseArmor()
+    public function prefix()
     {
-        return $this->belongsToMany(BaseArmor::class)->withPivot('amount');
+        return $this->belongsTo(Prefix::class);
     }
-// -- SCOPES
     
+// -- SCOPES    
     /** @method forSearch() */
     public function scopeForSearch( Builder $query, string $term )
     {
@@ -69,7 +74,6 @@ class Perk extends Model
         
         $options = '<option value=""></option>'."\n";
         foreach($models as $value => $text) {
-//            $options .= '<option value="'.$value.'">'.$text.'</option>';
             $options .= '<option value="'.$value.'"';
                 if(in_array($value, $selected)){
                     $options .= ' SELECTED ';

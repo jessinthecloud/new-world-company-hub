@@ -10,15 +10,15 @@ use App\Enums\WeaponType;
 use App\Exceptions\MissingLoadoutSlotException;
 use App\Models\Characters\Character;
 use App\Models\Characters\Loadout;
-use App\Models\Items\BaseItem;
-use App\Models\Items\Perk;
+use App\Models\Items\OldBaseItem;
+use App\Models\Items\OldPerk;
 use Illuminate\Support\Str;
 
 class LoadoutService
 {
     public array $equipmentSlots;
 
-    public function __construct(protected WeaponService $weaponService, protected ArmorService $armorService)
+    public function __construct(protected WeaponServiceOld $weaponService, protected ArmorServiceOld $armorService)
     {
         $this->equipmentSlots = [
             'main'    => [
@@ -225,12 +225,12 @@ class LoadoutService
     /**
      * Populate the old form data
      *
-     * @param \App\Services\ItemService $itemService
-     * @param array                     $values
+     * @param \App\Services\OldItemService $itemService
+     * @param array                        $values
      *
      * @return void
      */
-    public function populateDropdowns(ItemService $itemService, array $values = [])
+    public function populateDropdowns(OldItemService $itemService, array $values = [])
     {
         // loop equip types
         foreach ( $this->equipmentSlots as $name => $info ) {
@@ -239,7 +239,7 @@ class LoadoutService
             // existing perks
             $this->equipmentSlots[ $name ]['existing_perk_options'] = $itemService->existingPerkOptions(
                 array_filter($values['perks'][ $name ] ?? []),
-                Perk::asArrayForDropDown(),
+                OldPerk::asArrayForDropDown(),
             );
 
             // existing attributes
@@ -464,12 +464,12 @@ class LoadoutService
     }
 
     /**
-     * @param \App\Models\Items\BaseItem $originalBaseItem
-     * @param \App\Models\Items\BaseItem $newBaseItem
+     * @param \App\Models\Items\OldBaseItem $originalBaseItem
+     * @param \App\Models\Items\OldBaseItem $newBaseItem
      *
      * @return bool
      */
-    public function hasSameBaseItem(BaseItem $originalBaseItem, BaseItem $newBaseItem) : bool
+    public function hasSameBaseItem(OldBaseItem $originalBaseItem, OldBaseItem $newBaseItem) : bool
     {
         return $originalBaseItem->is($newBaseItem);
     }

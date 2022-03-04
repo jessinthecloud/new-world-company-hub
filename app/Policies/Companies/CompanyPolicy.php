@@ -4,11 +4,12 @@ namespace App\Policies\Companies;
 
 use App\Models\Companies\Company;
 use App\Models\User;
+use App\Policies\HasInventoryPolicy;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class CompanyPolicy
 {
-    use HandlesAuthorization;
+    use HandlesAuthorization, HasInventoryPolicy;
 
     public function __construct()
     {

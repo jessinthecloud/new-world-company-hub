@@ -2,7 +2,7 @@
 
 namespace App\Models\Items;
 
-use App\CompanyInventory;
+use App\OldCompanyInventory;
 use App\Contracts\InventoryItemContract;
 use App\Models\Characters\Character;
 use App\Models\Characters\Loadout;
@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
+/** @deprecated */
 class Weapon extends Model implements InventoryItemContract
 {
     use HasFactory;
@@ -38,7 +39,7 @@ class Weapon extends Model implements InventoryItemContract
     
     public function base()
     {
-        return $this->belongsTo(BaseWeapon::class);
+        return $this->belongsTo(OldBaseWeapon::class, 'base_weapons');
     }
     
     public function sets()
@@ -48,12 +49,12 @@ class Weapon extends Model implements InventoryItemContract
     
     public function perks()
     {
-        return $this->belongsToMany(Perk::class)->distinct(); //->groupBy('perks.id');
+        return $this->belongsToMany(OldPerk::class, 'perk_weapon', 'weapon_id', 'perk_id')->distinct(); //->groupBy('perks.id');
     }
     
     public function itemAttributes()
     {
-        return $this->belongsToMany(Attribute::class)->withPivot('amount');
+        return $this->belongsToMany(OldAttribute::class, 'attribute_weapon', 'weapon_id', 'attribute_id')->withPivot('amount');
     }
 
     public function mainLoadout()
@@ -68,7 +69,7 @@ class Weapon extends Model implements InventoryItemContract
     
     public function asItem(  )
     {
-        return $this->morphOne(Item::class, 'itemable');
+        return $this->morphOne(OldItem::class, 'itemable');
     }
     
     public function company()
@@ -128,8 +129,8 @@ class Weapon extends Model implements InventoryItemContract
     public function numberOfUnusedPerkSlots(  )
     {
         $used_perk_slots = count($this->perks->all()) + count($this->itemAttributes->all());
-        if($used_perk_slots < $this->base->num_perk_slots){
-            return $this->base->num_perk_slots - $used_perk_slots;
+        if($used_perk_slots < $this->base?->num_perk_slots){
+            return $this->base?->num_perk_slots - $used_perk_slots;
         }
         
         return null;

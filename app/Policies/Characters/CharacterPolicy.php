@@ -4,11 +4,12 @@ namespace App\Policies\Characters;
 
 use App\Models\Characters\Character;
 use App\Models\User;
+use App\Policies\HasInventoryPolicy;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class CharacterPolicy
 {
-    use HandlesAuthorization;
+    use HandlesAuthorization, HasInventoryPolicy;
 
     public function __construct()
     {
@@ -41,14 +42,12 @@ class CharacterPolicy
     }
     
     /**
-     * 
      * @param \App\Models\User $user
      *
      * @return bool
      */
     public function viewAll( User $user ) : bool
     {
-//    dump('COMPANY viewAll: '.$user->can(['view characters']));
         return $user->can(['view characters']);
     }
 
@@ -81,7 +80,6 @@ class CharacterPolicy
 
     public function create( User $user ) : bool
     {
-//dump('COMPANY create: '.$user->canAny(['create characters', 'create own faction characters']));
         return $user->canAny(['create characters', 'create own characters', 'create own company characters', 'create own faction characters']);
     }
 

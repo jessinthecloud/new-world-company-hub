@@ -2,18 +2,22 @@
 
 namespace App\Models\Characters;
 
+use App\Models\CharacterInventory;
 use App\Models\Companies\Company;
 use App\Models\Companies\Rank;
+use App\Models\CompanyInventory;
 use App\Models\Events\Position;
 use App\Models\Events\WarGroupSlots;
 use App\Models\Faction;
-use App\Models\Items\InventoryItem;
+use App\Models\ItemOwner;
+use App\Models\Items\Item;
+use App\Models\Items\OldInventoryItem;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Character extends Model
+class Character extends Model implements ItemOwner
 {
     use HasFactory;
     
@@ -47,11 +51,6 @@ class Character extends Model
     {
         return $this->belongsTo(Company::class);
     }
-    
-    public function companyInventory()
-    {
-        return isset($this->company) ? $this->company->inventory() : null;
-    }
 
     public function rank()
     {
@@ -78,6 +77,16 @@ class Character extends Model
         return $this->hasMany(Position::class);
     }
     
+    public function items()
+    {
+        return $this->hasManythrough(Item::class, CharacterInventory::class);
+    }
+
+    public function bankInventory()
+    {
+        return $this->hasManyThrough(Item::class, CompanyInventory::class);
+    }
+    
     /*public function weapons()
     {
         return $this->hasMany(Weapon::class);
@@ -88,9 +97,16 @@ class Character extends Model
         return $this->hasMany(Armor::class);
     }*/
     
+    /** @deprecated */
     public function inventoryItem(  )
     {
-        return $this->morphMany(InventoryItem::class, 'ownerable');
+        return $this->morphMany(OldInventoryItem::class, 'ownerable');
+    }
+    
+    // ?? 
+    public function inventory()
+    {
+        return $this->hasManyThrough(Item::class, CompanyInventory::class, 'company_id', 'id', 'item_id', 'item_id');
     }
     
     public function warGroupSlots()

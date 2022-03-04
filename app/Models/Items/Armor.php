@@ -2,7 +2,7 @@
 
 namespace App\Models\Items;
 
-use App\CompanyInventory;
+use App\OldCompanyInventory;
 use App\Contracts\InventoryItemContract;
 use App\Models\Characters\Character;
 use App\Models\Companies\Company;
@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
+/** @deprecated */
 class Armor extends Model implements InventoryItemContract
 {
     use HasFactory;
@@ -37,7 +38,7 @@ class Armor extends Model implements InventoryItemContract
 
     public function base()
     {
-        return $this->belongsTo(BaseArmor::class);
+        return $this->belongsTo(OldBaseArmor::class, 'base_armors');
     }
     
     public function sets()
@@ -47,12 +48,12 @@ class Armor extends Model implements InventoryItemContract
     
     public function perks()
     {
-        return $this->belongsToMany(Perk::class);
+        return $this->belongsToMany(OldPerk::class, 'armor_perk', 'armor_id', 'perk_id');
     }
     
     public function itemAttributes()
     {
-        return $this->belongsToMany(Attribute::class, 'attribute_armor')->withPivot('amount');
+        return $this->belongsToMany(OldAttribute::class, 'attribute_armor', 'armor_id', 'attribute_id')->withPivot('amount');
     }
     
     public function company()
@@ -67,7 +68,7 @@ class Armor extends Model implements InventoryItemContract
 
     public function asItem(  )
     {
-        return $this->morphOne(Item::class, 'itemable');
+        return $this->morphOne(OldItem::class, 'itemable');
     }
     
     /**
@@ -95,7 +96,7 @@ class Armor extends Model implements InventoryItemContract
             ->whereRelation('company', 'id', $company->id);
     }
     
-    public function scopeRawForInventory($query, InventoryItem $inventoryItem)
+    public function scopeRawForInventory($query, OldInventoryItem $inventoryItem)
     {
         return $this->select(DB::raw('armors.id as id, armors.slug as slug, armors.name as name, armors.type as subtype, armors.rarity, armors.gear_score, armors.weight_class, "Armor" as type, armors.created_at as created_at'))
             ->whereRelation('company', 'id', $inventoryItem->id);
@@ -115,8 +116,8 @@ class Armor extends Model implements InventoryItemContract
     public function numberOfUnusedPerkSlots(  )
     {
         $used_perk_slots = count($this->perks->all()) + count($this->itemAttributes->all());
-        if($used_perk_slots < $this->base->num_perk_slots){
-            return $this->base->num_perk_slots - $used_perk_slots;
+        if($used_perk_slots < $this->base?->num_perk_slots){
+            return $this->base?->num_perk_slots - $used_perk_slots;
         }
         
         return null;

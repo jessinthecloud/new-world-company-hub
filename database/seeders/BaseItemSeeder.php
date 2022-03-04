@@ -93,7 +93,7 @@ class BaseItemSeeder extends Seeder
 
             $base_item_array = array_combine($keys, array_values($base_item_array));
 
-            // combine generic data with bespoke array  
+            // combine generic data with bespoke array
             $insert = array_merge($base_item_array, $row);
 
             $upsert []= $insert;

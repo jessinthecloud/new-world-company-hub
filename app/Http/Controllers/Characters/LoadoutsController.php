@@ -10,12 +10,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LoadoutUpsertRequest;
 use App\Models\Characters\Character;
 use App\Models\Characters\Loadout;
-use App\Models\Items\BaseWeapon;
-use App\Models\Items\Perk;
+use App\Models\Items\OldBaseWeapon;
+use App\Models\Items\OldPerk;
 use App\Providers\RouteServiceProvider;
-use App\Services\ArmorService;
+use App\Services\ArmorServiceOld;
 use App\Services\LoadoutService;
-use App\Services\WeaponService;
+use App\Services\WeaponServiceOld;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
@@ -36,8 +36,8 @@ class LoadoutsController extends Controller
     private array $equipmentSlots;
 
     public function __construct(
-        protected ArmorService $armorService,
-        protected WeaponService $weaponService,
+        protected ArmorServiceOld $armorService,
+        protected WeaponServiceOld $weaponService,
         protected LoadoutService $loadoutService,
     ) {
     }

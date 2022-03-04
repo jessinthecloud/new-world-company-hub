@@ -13,15 +13,14 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'App\CompanyInventory'            => 'App\Policies\Companies\CompanyInventoryPolicy',
-        'App\Models\Characters\Character'   => 'App\Policies\Characters\CharacterPolicy',
-        'App\Models\Companies\Company'   => 'App\Policies\Companies\CompanyPolicy',
+        'App\OldCompanyInventory'         => 'App\Policies\Companies\CompanyInventoryPolicy',
+        'App\Models\Characters\Character' => 'App\Policies\Characters\CharacterPolicy',
+        'App\Models\Companies\Company'    => 'App\Policies\Companies\CompanyPolicy',
+        'App\Models\Events\Roster'        => 'App\Policies\Events\RosterPolicy',
+        'App\Models\Items\Loadout'        => 'App\Policies\Items\LoadoutPolicy',
+        'App\Models\Items\Weapon'         => 'App\Policies\Items\WeaponPolicy',
+        'App\Models\Events\WarBoard'      => 'App\Policies\Events\WarBoardPolicy',
 
-        'App\Models\Events\Roster'       => 'App\Policies\Events\RosterPolicy',
-        'App\Models\Items\Loadout' => 'App\Policies\Items\LoadoutPolicy',
-        'App\Models\Items\Weapon'  => 'App\Policies\Items\WeaponPolicy',
-        'App\Models\Events\WarBoard'  => 'App\Policies\Events\WarBoardPolicy',
-        
         // Policies with conventional naming are auto-registered here
     ];
 
@@ -44,11 +43,11 @@ class AuthServiceProvider extends ServiceProvider
          *
          * @see https://spatie.be/docs/laravel-permission/v5/basic-usage/super-admin
          */
-        Gate::before( function ( $user, $ability ) {
-            return ($user->hasRole( ['super-admin', 'dev'] ) && in_array($user->email, [
-                'epwnaz@gmail.com',
-                // more emails
-            ])) ? true : null;
-        } );
+        Gate::before(function ($user, $ability) {
+            return ($user->hasRole(['super-admin', 'dev']) && in_array($user->email, [
+                    'epwnaz@gmail.com',
+                    // more emails
+                ])) ? true : null;
+        });
     }
 }

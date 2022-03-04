@@ -6,7 +6,7 @@ use App\Models\Characters\Character;
 use App\Models\Characters\CharacterClass;
 use App\Models\Companies\Company;
 use App\Models\DiscordData;
-use App\Models\Items\BaseWeapon;
+use App\Models\Items\OldBaseWeapon;
 use App\Models\User;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -91,8 +91,8 @@ class FormResponseImport implements ToCollection, WithHeadingRow, WithCalculated
                 ]
             );
                          
-            $mainhand = BaseWeapon::firstWhere( 'name', 'like', $row['main_hand_weapon']);
-            $offhand = BaseWeapon::firstWhere( 'name', 'like', $row['offhand_weapon']);
+            $mainhand = OldBaseWeapon::firstWhere('name', 'like', $row['main_hand_weapon']);
+            $offhand = OldBaseWeapon::firstWhere('name', 'like', $row['offhand_weapon']);
             
             /*$loadout = Loadout::updateOrCreate(
                 [

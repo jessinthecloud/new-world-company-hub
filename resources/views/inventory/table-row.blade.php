@@ -3,6 +3,7 @@
     {{-- tailwind not doing these:--}} 
     style="white-space:normal; min-width:225px; max-width:250px; "
 >
+
     {{ ucfirst($row->item->itemable->name) }}
     
     <x-dashboard.edit-delete-inventory-item-buttons
@@ -25,7 +26,7 @@
 
     @php 
         $itemtable = $row->item->itemable->getTable();
-        $perk_names = App\Models\Items\Perk::whereRelation(
+        $perk_names = App\Models\Items\OldPerk::whereRelation(
             $itemtable, $itemtable.'.id', '=', $row->item->itemable->id
         )->orderBy('name')->get();
     @endphp

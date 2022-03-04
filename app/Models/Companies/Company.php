@@ -2,19 +2,22 @@
 
 namespace App\Models\Companies;
 
-use App\CompanyInventory;
+use App\Models\CompanyInventory;
+use App\Models\ItemOwner;
+use App\Models\Items\Item;
+use App\OldCompanyInventory;
 use App\Models\Characters\Character;
 use App\Models\Characters\Loadout;
 use App\Models\Events\Event;
 use App\Models\Events\WarBoard;
 use App\Models\Events\WarPlan;
 use App\Models\Faction;
-use App\Models\Items\InventoryItem;
+use App\Models\Items\OldInventoryItem;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
-class Company extends Model
+class Company extends Model implements ItemOwner
 {
     protected $guarded = [];
     
@@ -97,15 +100,28 @@ class Company extends Model
     {
         return $this->hasMany(Armor::class);
     }*/
-
+    
+    public function items()
+    {
+        return $this->hasManythrough(Item::class, CompanyInventory::class);
+    }
+    
+    /** @deprecated */
     public function inventoryItem(  )
     {
-        return $this->morphMany( InventoryItem::class, 'ownerable');
+        return $this->morphMany(OldInventoryItem::class, 'ownerable');
     }
-
+    
+    /** @deprecated */
+    public function oldInventory()
+    {
+        return new OldCompanyInventory($this->attributes);
+    }
+    
+    // ?? 
     public function inventory()
     {
-        return new CompanyInventory($this->attributes);
+        return $this->hasManyThrough(Item::class, CompanyInventory::class, 'company_id', 'id', 'item_id', 'item_id');
     }
     
     /**

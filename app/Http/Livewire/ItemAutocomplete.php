@@ -2,8 +2,8 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Items\BaseArmor;
-use App\Models\Items\BaseWeapon;
+use App\Models\Items\OldBaseArmor;
+use App\Models\Items\OldBaseWeapon;
 
 /**
  * Modified from:
@@ -35,17 +35,17 @@ class ItemAutocomplete extends Autocomplete
         $term = '%'.trim($term,'%').'%';
 //    dump($term);
         if($this->bank){
-            return BaseArmor::rawForBankSearch($term)
-                ->union(BaseWeapon::rawForBankSearch($term))
+            return OldBaseArmor::rawForBankSearch($term)
+                ->union(OldBaseWeapon::rawForBankSearch($term))
                 ->orderBy('name');
         }
         
         if(isset($this->subtype)){
             // only for specific equipment slot
             return match ( $this->type ) {
-                "weapon" => BaseWeapon::rawForLoadout( $term, $this->subtype )
+                "weapon" => OldBaseWeapon::rawForLoadout($term, $this->subtype )
                     ->orderBy( 'name' ),
-                default => BaseArmor::rawForLoadout( $term, $this->subtype )
+                default => OldBaseArmor::rawForLoadout($term, $this->subtype )
                     ->orderBy( 'name' ),
             };
         }
@@ -53,15 +53,15 @@ class ItemAutocomplete extends Autocomplete
         if(isset($this->type)){
             // only for equipment type slot
             return match ( $this->type ) {
-                "weapon" => BaseWeapon::rawForSearch( $term )
+                "weapon" => OldBaseWeapon::rawForSearch($term )
                     ->orderBy( 'name' ),
-                default => BaseArmor::rawForSearch( $term )
+                default => OldBaseArmor::rawForSearch($term )
                     ->orderBy( 'name' ),
             };
         }
         
-        return BaseArmor::rawForSearch($term)
-                ->union(BaseWeapon::rawForSearch($term))
+        return OldBaseArmor::rawForSearch($term)
+                ->union(OldBaseWeapon::rawForSearch($term))
                 ->orderBy('name');
     }
 }
