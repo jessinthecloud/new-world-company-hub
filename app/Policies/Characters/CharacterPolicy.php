@@ -42,14 +42,12 @@ class CharacterPolicy
     }
     
     /**
-     * 
      * @param \App\Models\User $user
      *
      * @return bool
      */
     public function viewAll( User $user ) : bool
     {
-//    dump('COMPANY viewAll: '.$user->can(['view characters']));
         return $user->can(['view characters']);
     }
 
@@ -82,7 +80,6 @@ class CharacterPolicy
 
     public function create( User $user ) : bool
     {
-//dump('COMPANY create: '.$user->canAny(['create characters', 'create own faction characters']));
         return $user->canAny(['create characters', 'create own characters', 'create own company characters', 'create own faction characters']);
     }
 
