@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>DATABASE</ID>
+  <OriginalElement>2902e446-5035-4e87-9742-33a7365b04f9.TABLE:new_world.item_perk</OriginalElement>
+  <nodes>
+    <node x="562.5" y="1478.5129310344828">2902e446-5035-4e87-9742-33a7365b04f9.TABLE:new_world.prefixes</node>
+    <node x="512.0" y="0.0">2902e446-5035-4e87-9742-33a7365b04f9.TABLE:new_world.base_items</node>
+    <node x="218.0" y="1193.9956896551726">2902e446-5035-4e87-9742-33a7365b04f9.TABLE:new_world.perks</node>
+    <node x="562.5" y="1329.5129310344828">2902e446-5035-4e87-9742-33a7365b04f9.TABLE:new_world.suffixes</node>
+    <node x="829.0" y="748.6336206896552">2902e446-5035-4e87-9742-33a7365b04f9.TABLE:new_world.item_types</node>
+    <node x="238.5" y="738.2586206896552">2902e446-5035-4e87-9742-33a7365b04f9.TABLE:new_world.items</node>
+    <node x="830.5" y="491.75862068965523">2902e446-5035-4e87-9742-33a7365b04f9.TABLE:new_world.tiers</node>
+    <node x="0.0" y="1058.7586206896553">2902e446-5035-4e87-9742-33a7365b04f9.TABLE:new_world.item_perk</node>
+    <node x="562.5" y="1627.5129310344828">2902e446-5035-4e87-9742-33a7365b04f9.TABLE:new_world.perk_types</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="2902e446-5035-4e87-9742-33a7365b04f9.TABLE:new_world.items" target="2902e446-5035-4e87-9742-33a7365b04f9.TABLE:new_world.item_types" relationship="REFERENCES">
+      <point x="100.5" y="74.25" />
+      <point x="486.0" y="961.0086206896552" />
+      <point x="486.0" y="1195.5" />
+      <point x="803.0" y="1195.5" />
+      <point x="803.0" y="837.1336206896552" />
+      <point x="-83.5" y="-0.0" />
+    </edge>
+    <edge source="2902e446-5035-4e87-9742-33a7365b04f9.TABLE:new_world.perks" target="2902e446-5035-4e87-9742-33a7365b04f9.TABLE:new_world.prefixes" relationship="REFERENCES">
+      <point x="121.0" y="-0.0" />
+      <point x="486.0" y="1522.4956896551726" />
+      <point x="486.0" y="1543.0129310344828" />
+      <point x="-82.0" y="-0.0" />
+    </edge>
+    <edge source="2902e446-5035-4e87-9742-33a7365b04f9.TABLE:new_world.perks" target="2902e446-5035-4e87-9742-33a7365b04f9.TABLE:new_world.perk_types" relationship="REFERENCES">
+      <point x="121.0" y="219.0" />
+      <point x="486.0" y="1741.4956896551726" />
+      <point x="486.0" y="1692.0129310344828" />
+      <point x="-82.0" y="-0.0" />
+    </edge>
+    <edge source="2902e446-5035-4e87-9742-33a7365b04f9.TABLE:new_world.item_perk" target="2902e446-5035-4e87-9742-33a7365b04f9.TABLE:new_world.perks" relationship="REFERENCES">
+      <point x="84.0" y="38.25" />
+      <point x="193.0" y="1173.5086206896553" />
+      <point x="193.0" y="1522.4956896551726" />
+      <point x="-121.0" y="-0.0" />
+    </edge>
+    <edge source="2902e446-5035-4e87-9742-33a7365b04f9.TABLE:new_world.item_perk" target="2902e446-5035-4e87-9742-33a7365b04f9.TABLE:new_world.items" relationship="REFERENCES">
+      <point x="84.0" y="-38.25" />
+      <point x="193.0" y="1097.0086206896553" />
+      <point x="193.0" y="886.7586206896552" />
+      <point x="-100.5" y="-0.0" />
+    </edge>
+    <edge source="2902e446-5035-4e87-9742-33a7365b04f9.TABLE:new_world.base_items" target="2902e446-5035-4e87-9742-33a7365b04f9.TABLE:new_world.item_types" relationship="REFERENCES">
+      <point x="132.5" y="296.25" />
+      <point x="803.0" y="888.75" />
+      <point x="803.0" y="837.1336206896552" />
+      <point x="-83.5" y="-0.0" />
+    </edge>
+    <edge source="2902e446-5035-4e87-9742-33a7365b04f9.TABLE:new_world.perks" target="2902e446-5035-4e87-9742-33a7365b04f9.TABLE:new_world.suffixes" relationship="REFERENCES">
+      <point x="121.0" y="-219.0" />
+      <point x="486.0" y="1303.4956896551726" />
+      <point x="486.0" y="1394.0129310344828" />
+      <point x="-82.0" y="-0.0" />
+    </edge>
+    <edge source="2902e446-5035-4e87-9742-33a7365b04f9.TABLE:new_world.items" target="2902e446-5035-4e87-9742-33a7365b04f9.TABLE:new_world.base_items" relationship="REFERENCES">
+      <point x="100.5" y="-74.25" />
+      <point x="486.0" y="812.5086206896552" />
+      <point x="486.0" y="592.5" />
+      <point x="-132.5" y="-0.0" />
+    </edge>
+    <edge source="2902e446-5035-4e87-9742-33a7365b04f9.TABLE:new_world.base_items" target="2902e446-5035-4e87-9742-33a7365b04f9.TABLE:new_world.tiers" relationship="REFERENCES">
+      <point x="132.5" y="-296.25" />
+      <point x="803.0" y="296.25" />
+      <point x="803.0" y="580.2586206896552" />
+      <point x="-82.0" y="-0.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.4778193479422769" showDependencies="false" x="498.0" y="925.5" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Columns</Category>
+    <Category>Comments</Category>
+    <Category>Key columns</Category>
+    <Category>Virtual foreign keys</Category>
+  </Categories>
+</Diagram>
+
