@@ -8,7 +8,7 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 
 class CompanyPolicy
 {
-    use HandlesAuthorization;
+    use HandlesAuthorization, HasInventoryPolicy;
 
     public function __construct()
     {

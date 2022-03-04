@@ -4,11 +4,12 @@ namespace App\Policies\Characters;
 
 use App\Models\Characters\Character;
 use App\Models\User;
+use App\Policies\Companies\HasInventoryPolicy;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class CharacterPolicy
 {
-    use HandlesAuthorization;
+    use HandlesAuthorization, HasInventoryPolicy;
 
     public function __construct()
     {

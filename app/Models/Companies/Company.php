@@ -3,6 +3,7 @@
 namespace App\Models\Companies;
 
 use App\Models\CompanyInventory;
+use App\Models\ItemOwner;
 use App\Models\Items\Item;
 use App\OldCompanyInventory;
 use App\Models\Characters\Character;
@@ -16,7 +17,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
-class Company extends Model
+class Company extends Model implements ItemOwner
 {
     protected $guarded = [];
     
@@ -112,9 +113,17 @@ class Company extends Model
     }
     
     /** @deprecated */
-    public function inventory()
+    public function oldInventory()
     {
         return new OldCompanyInventory($this->attributes);
+    }
+    
+    /**
+     * @return mixed
+     */
+    public function inventory()
+    {
+        // TODO: Implement inventory() method.
     }
     
     /**

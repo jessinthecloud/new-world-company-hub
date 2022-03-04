@@ -9,6 +9,7 @@ use App\Models\CompanyInventory;
 use App\Models\Events\Position;
 use App\Models\Events\WarGroupSlots;
 use App\Models\Faction;
+use App\Models\ItemOwner;
 use App\Models\Items\Item;
 use App\Models\Items\OldInventoryItem;
 use App\Models\User;
@@ -16,7 +17,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Character extends Model
+class Character extends Model implements ItemOwner
 {
     use HasFactory;
     
@@ -49,11 +50,6 @@ class Character extends Model
     public function company()
     {
         return $this->belongsTo(Company::class);
-    }
-    /** @deprecated */
-    public function companyInventory()
-    {
-        return isset($this->company) ? $this->company->inventory() : null;
     }
 
     public function rank()
@@ -105,6 +101,14 @@ class Character extends Model
     public function inventoryItem(  )
     {
         return $this->morphMany(OldInventoryItem::class, 'ownerable');
+    }
+    
+    /**
+     * @return mixed
+     */
+    public function inventory()
+    {
+        // TODO: Implement inventory() method.
     }
     
     public function warGroupSlots()
