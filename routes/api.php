@@ -22,19 +22,18 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
     })
         ->name('base-weapons.show');
         
-    Route::get('/base-weapons/{baseWeapon}/perks', function (Request $request, BaseWeapon $baseWeapon) {
+    Route::get('/base-weapons/{baseWeapon}/perks', function (BaseWeapon $baseWeapon) {
         $perks = Perk::whereRelation('baseWeapons', 'base_weapons.id', $baseWeapon->id)->get();
         // todo: parse $request query string for constraints
         return \App\Http\Resources\PerkResource::collection($perks);
     })
         ->name('base-weapons.show.perks');
         
-    Route::get('/base-weapons', function (Request $request) {
-        return \App\Http\Resources\BaseWeaponResource::collection(BaseWeapon::paginate());
+    Route::get('/base-weapons', function () {
+        $weapons = !empty(request()->query('page')) ? BaseWeapon::paginate() : BaseWeapon::all();
+        return \App\Http\Resources\BaseWeaponResource::collection($weapons);
     })
         ->name('base-weapons.index');
- 
-    
 });
 
 /*Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
