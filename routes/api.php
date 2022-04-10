@@ -22,8 +22,10 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
     })
         ->name('base-weapons.show');
         
-    Route::get('/base-weapons/{baseWeapon}/perks', function (BaseWeapon $baseWeapon) {
-        return new \App\Http\Resources\PerkResource(Perk::whereRelation('baseWeapons', 'base_weapons.id', $baseWeapon->id)->get());
+    Route::get('/base-weapons/{baseWeapon}/perks', function (Request $request, BaseWeapon $baseWeapon) {
+        $perks = Perk::whereRelation('baseWeapons', 'base_weapons.id', $baseWeapon->id)->get();
+        // todo: parse $request query string for constraints
+        return new \App\Http\Resources\PerkResource($perks);
     })
         ->name('base-weapons.show.perks');
         
