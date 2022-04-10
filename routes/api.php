@@ -30,7 +30,7 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         ->name('base-weapons.show.perks');
         
     Route::get('/base-weapons', function (Request $request) {
-        return \App\Http\Resources\BaseWeaponResource::collection(BaseWeapon::all());
+        return \App\Http\Resources\BaseWeaponResource::collection(BaseWeapon::paginate());
     })
         ->name('base-weapons.index');
  
