@@ -123,10 +123,10 @@ Host: breakpoint.company
         // more weapons...
     ],
     "links":{
-        "first":"https://dev.breakpoint.company/api/v1/base-weapons?page=1",
-        "last":"https://dev.breakpoint.company/api/v1/base-weapons?page=233",
+        "first":"https://breakpoint.company/api/v1/base-weapons?page=1",
+        "last":"https://breakpoint.company/api/v1/base-weapons?page=233",
         "prev":null,
-        "next":"https://dev.breakpoint.company/api/v1/base-weapons?page=2"
+        "next":"https://breakpoint.company/api/v1/base-weapons?page=2"
     },
     "meta":
     {
@@ -135,22 +135,22 @@ Host: breakpoint.company
         "last_page":233,
         "links":[
             {"url":null, "label":"&laquo; Previous", "active":false},
-            {"url":"https://dev.breakpoint.company/api/v1/base-weapons?page=1", "label":"1", "active":true},
-            {"url":"https://dev.breakpoint.company/api/v1/base-weapons?page=2", "label":"2", "active":false},
-            {"url":"https://dev.breakpoint.company/api/v1/base-weapons?page=3", "label":"3", "active":false},
-            {"url":"https://dev.breakpoint.company/api/v1/base-weapons?page=4", "label":"4", "active":false},
-            {"url":"https://dev.breakpoint.company/api/v1/base-weapons?page=5", "label":"5", "active":false},
-            {"url":"https://dev.breakpoint.company/api/v1/base-weapons?page=6", "label":"6", "active":false},
-            {"url":"https://dev.breakpoint.company/api/v1/base-weapons?page=7", "label":"7", "active":false},
-            {"url":"https://dev.breakpoint.company/api/v1/base-weapons?page=8", "label":"8", "active":false},
-            {"url":"https://dev.breakpoint.company/api/v1/base-weapons?page=9", "label":"9", "active":false},
-            {"url":"https://dev.breakpoint.company/api/v1/base-weapons?page=10", "label":"10", "active":false},
+            {"url":"https://breakpoint.company/api/v1/base-weapons?page=1", "label":"1", "active":true},
+            {"url":"https://breakpoint.company/api/v1/base-weapons?page=2", "label":"2", "active":false},
+            {"url":"https://breakpoint.company/api/v1/base-weapons?page=3", "label":"3", "active":false},
+            {"url":"https://breakpoint.company/api/v1/base-weapons?page=4", "label":"4", "active":false},
+            {"url":"https://breakpoint.company/api/v1/base-weapons?page=5", "label":"5", "active":false},
+            {"url":"https://breakpoint.company/api/v1/base-weapons?page=6", "label":"6", "active":false},
+            {"url":"https://breakpoint.company/api/v1/base-weapons?page=7", "label":"7", "active":false},
+            {"url":"https://breakpoint.company/api/v1/base-weapons?page=8", "label":"8", "active":false},
+            {"url":"https://breakpoint.company/api/v1/base-weapons?page=9", "label":"9", "active":false},
+            {"url":"https://breakpoint.company/api/v1/base-weapons?page=10", "label":"10", "active":false},
             {"url":null, "label":"...", "active":false},
-            {"url":"https://dev.breakpoint.company/api/v1/base-weapons?page=232", "label":"232", "active":false},
-            {"url":"https://dev.breakpoint.company/api/v1/base-weapons?page=233", "label":"233", "active":false},
-            {"url":"https://dev.breakpoint.company/api/v1/base-weapons?page=2", "label":"Next &raquo;", "active":false}
+            {"url":"https://breakpoint.company/api/v1/base-weapons?page=232", "label":"232", "active":false},
+            {"url":"https://breakpoint.company/api/v1/base-weapons?page=233", "label":"233", "active":false},
+            {"url":"https://breakpoint.company/api/v1/base-weapons?page=2", "label":"Next &raquo;", "active":false}
         ],
-        "path":"https://dev.breakpoint.company/api/v1/base-weapons",
+        "path":"https://breakpoint.company/api/v1/base-weapons",
         "per_page":15,
         "to":15,
         "total":3495
