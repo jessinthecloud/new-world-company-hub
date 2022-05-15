@@ -1,3 +1,7 @@
+A bit too busy and friends using it aren't playing anymore so I doubt this will be updated further.
+
+---
+
 # Temp Overview 
 A Laravel web app utilizing Laravel Livewire, Alpine, and Tailwind CSS to allow guilds from the game New World to organize their player roster and guild inventory outside the game.
 
