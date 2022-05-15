@@ -1,3 +1,13 @@
+# Temp Overview 
+A Laravel web app utilizing Laravel Livewire, Alpine, and Tailwind CSS to allow guilds from the game New World to organize their player roster and guild inventory outside the game.
+
+The app utilizes livewire datatables and spatie's laravel roles and permissions, integrated with the Discord API via Laravel Socialite.
+
+![newworld](https://user-images.githubusercontent.com/77401790/168481326-c62bf5a6-bbc6-4fb6-aba1-664aea343d27.png)
+
+---
+# Temp API example
+
 # GET
 ## Base Weapons
 ### A listing of all base (not-instanced) weapons
