@@ -3,7 +3,7 @@ A Laravel web app utilizing Laravel Livewire, Alpine, and Tailwind CSS to allow 
 
 The app utilizes livewire datatables and spatie's laravel roles and permissions, integrated with the Discord API via Laravel Socialite.
 
-![newworld](https://user-images.githubusercontent.com/77401790/168481326-c62bf5a6-bbc6-4fb6-aba1-664aea343d27.png)
+![Screenshot_33](https://user-images.githubusercontent.com/77401790/168481429-8f74fcbb-4b04-4039-bd04-f6eb7e52717a.png)
 
 ---
 # Temp API example
